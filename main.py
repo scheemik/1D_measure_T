@@ -1,4 +1,7 @@
 """
+Author: Mikhail Schee
+Email: mschee@physics.utoronto.ca
+Affiliation: University of Toronto Department of Physics
 
 1D Bousinessq streamfunction equation:
 
