@@ -14,13 +14,13 @@ DATETIME=`date +"%Y-%m-%d_%Hh%M"`
 # VER = 1
 #	-> run the script
 # VER = 2
-#	-> plot first (z vs. t and k vs. t for Psi)
+#	-> run the script and merge
 # VER = 3
 #	-> merge, plot frames, create gif, create mp4, etc
 # VER = 4
-#	-> run the script and plot first (z vs. t and k vs. t for Psi)
+#	-> merge, post-process
 # VER = 5
-# -> merge
+# -> merge, plot frames
 
 while getopts n:c:v: option
 do
@@ -67,8 +67,6 @@ merge_file="merge.py"
 cleanup_snapshots="True"
 # Name of first plotting file
 plot_first="plot_first.py"
-# Path to array files
-array_path="arrays"
 # Name of slice plotting file
 plot_file="plot_slices.py"
 # Name of output directory
@@ -80,8 +78,8 @@ gif_cre_file="create_gif.py"
 
 ###############################################################################
 # run the script
-#	if (VER = 0, 1, 4)
-if [ $VER -eq 0 ] || [ $VER -eq 1 ] || [ $VER -eq 4 ]
+#	if (VER = 0, 1, 2)
+if [ $VER -eq 0 ] || [ $VER -eq 1 ] || [ $VER -eq 2 ]
 then
 	echo ''
 	echo '--Running script--'
@@ -91,13 +89,6 @@ then
 		echo "Removing old snapshots"
 		rm -rf $snapshot_path
 	fi
-	# Check if arrays already exist. If so, remove them
-	if [ -e $array_path ]
-	then
-		echo "Removing old arrays"
-		rm -rf $array_path
-	fi
-	mkdir $array_path
   echo "Running Dedalus script for local pc"
 	if [ $CORES -eq 1 ]
 	then
@@ -111,31 +102,9 @@ then
 fi
 
 ###############################################################################
-# plot z vs. t and k vs. t for Psi
-#	if (VER = 0, 2, 4)
-if [ $VER -eq 0 ] || [ $VER -eq 2 ] || [ $VER -eq 4 ]
-then
-	echo ''
-	echo '--Checking for array files--'
-	# Check to make sure snapshots folder exists
-	echo "Checking for arrays in directory: $array_path"
-	if [ -e $array_path ]
-	then
-		echo "Found arrays"
-	else
-		echo "Cannot find arrays. Aborting script"
-		exit 1
-	fi
-  echo "Plotting first"
-	${python_command} $plot_first $NAME $switch_file
-  echo ""
-	echo 'Done'
-fi
-
-###############################################################################
 # merge snapshots
-#	if (VER = 0, 3, 5)
-if [ $VER -eq 0 ] || [ $VER -eq 3 ] || [ $VER -eq 5 ]
+#	if (VER = 0, 2, 3, 4, 5)
+if [ $VER -eq 0 ] || [ $VER -eq 2 ] || [ $VER -eq 3 ] || [ $VER -eq 4 ] || [ $VER -eq 5 ]
 then
 	echo ''
 	echo '--Merging snapshots--'
@@ -149,7 +118,7 @@ then
 		exit 1
 	fi
 	# Check if snapshots have already been merged
-	if [ -e $snapshot_path/snapshots_s1.h5 ] || [ -e $snapshot_path/snapshots_s01.h5 ]
+	if [ -e $snapshot_path/consolidated_analysis.h5 ] || [ -e $snapshot_path/snapshots_s1.h5 ] || [ -e $snapshot_path/snapshots_s01.h5 ]
 	then
 		echo "Snapshots already merged"
 	else
@@ -178,8 +147,8 @@ fi
 
 ###############################################################################
 # plot frames - note: already checked if snapshots exist in step above
-#	if (VER = 0, 3)
-if [ $VER -eq 0 ] || [ $VER -eq 3 ]
+#	if (VER = 0, 3, 5)
+if [ $VER -eq 0 ] || [ $VER -eq 3 ] || [ $VER -eq 5 ]
 then
 	echo ''
 	echo '--Plotting frames--'

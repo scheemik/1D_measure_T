@@ -14,7 +14,7 @@ from dedalus import public as de
 # Main parameters, the ones I'll change a lot. Many more below
 
 # Run parameters
-stop_n_periods = 50             # [] oscillation periods
+stop_n_periods = 30             # [] oscillation periods
 
 # Displayed domain parameters
 nz     = 1024                   # [] number of grid points in the z direction
@@ -171,8 +171,8 @@ g           = 9.81          # [m/s^2] Acceleration due to gravity
 
 plot_spacetime = True
 plot_wavespace = False
-plot_amplitude = False
-plot_windows   = False
+plot_amplitude = True
+plot_windows   = True
 # If true, plot will include full simulated domain, if false, just the display domain
 plot_full_domain = True
 

@@ -24,16 +24,28 @@ from docopt import docopt
 args = docopt(__doc__)
 h5_files = args['<files>']
 
+###############################################################################
+# Import SwitchBoard Parameters (sbp)
+#   This import assumes the switchboard is in the same directory as the core code
 import switchboard as sbp
-import helper_functions as hf
+# Physical parameters
+nu          = sbp.nu            # [m^2/s] Viscosity (momentum diffusivity)
+f_0         = sbp.f_0           # [s^-1]        Reference Coriolis parameter
+g           = sbp.g             # [m/s^2] Acceleration due to gravity
+# Problem parameters
+N_0         = sbp.N_0           # [rad/s]       Reference stratification
+lam_x       = sbp.lam_x         # [m]           Horizontal wavelength
+lam_z       = sbp.lam_z         # [m]           Vertical wavelength
+k           = sbp.k             # [m^-1]        Horizontal wavenumber
+m           = sbp.m             # [m^-1]        Vertical wavenumber
+k_total     = sbp.k_total       # [m^-1]        Total wavenumber
+theta       = sbp.theta         # [rad]         Propagation angle from vertical
+omega       = sbp.omega         # [rad s^-1]    Wave frequency
+T           = sbp.T             # [s]           Wave period
 
 # Parameters
 tasks = ['psi']
-T = sbp.T
 skip_nT = 0
-k = sbp.k
-m = sbp.m
-omega = sbp.omega
 z0_dis = sbp.z0_dis
 zf_dis = sbp.zf_dis
 dt = sbp.dt
@@ -45,6 +57,11 @@ step_th = sbp.step_th
 
 ###############################################################################
 # Helper functions
+#   This import assumes the helper functions are in the same directory as the core code
+import helper_functions as hf
+
+###############################################################################
+# Additional post-processing helper functions
 
 def get_h5_data(tasks, h5_files):
     for task in tasks:
@@ -107,8 +124,25 @@ def FT_in_space(t, z, data, dz):
     return ifzdp, ifzdn
 
 ###############################################################################
-
+# Get the data from the snapshot files
 t, z, data = get_h5_data(tasks, h5_files)
+
+BP_array = hf.BP_n_steps(sbp.n_steps, sbp.z, z0_dis, zf_dis, sbp.step_th)
+
+###############################################################################
+# Sanity check plots
+
+if sbp.plot_spacetime:
+    hf.plot_z_vs_t(z, t, T, data, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=sbp.plot_full_domain, nT=sbp.nT)#, title_str=run_name)
+
+if sbp.plot_wavespace:
+    hf.plot_k_vs_t(ks, t, T, arrays['psi_c_reals'], arrays['psi_c_imags'], k, m, omega)#, title_str=run_name)
+
+if sbp.plot_amplitude:
+    hf.plot_A_vs_t(t, T, data, sbp.A, k, m, omega, nT=sbp.nT)#, title_str=run_name)
+
+###############################################################################
+# Complex demodulation
 
 t_then_z = False
 if t_then_z == True:
@@ -129,7 +163,7 @@ else:
     up_field = up_f.real * np.exp(np.real(1j * up_f.imag))
     dn_field = dn_f.real * np.exp(np.real(1j * dn_f.imag))
 
-BP_array = hf.BP_n_steps(sbp.n_steps, sbp.z, z0_dis, zf_dis, sbp.step_th)
+
 
 big_T = hf.measure_T(data, z, -0.25, -0.75, dz)
 print("Transmission coefficient is:", big_T)
