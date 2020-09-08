@@ -43,9 +43,9 @@ import helper_functions as hf
 #   This import assumes the switchboard is in the same directory as the core code
 import switchboard as sbp
 # Physical parameters
-nu          = sbp.nu            # [m^2/s] Viscosity (momentum diffusivity)
+nu          = sbp.nu            # [m^2/s]       Viscosity (momentum diffusivity)
 f_0         = sbp.f_0           # [s^-1]        Reference Coriolis parameter
-g           = sbp.g             # [m/s^2] Acceleration due to gravity
+g           = sbp.g             # [m/s^2]       Acceleration due to gravity
 # Problem parameters
 N_0         = sbp.N_0           # [rad/s]       Reference stratification
 lam_x       = sbp.lam_x         # [m]           Horizontal wavelength
@@ -63,7 +63,7 @@ T           = sbp.T             # [s]           Wave period
 # Bases and domain
 z_basis     = sbp.z_basis
 domain      = sbp.domain
-# Z grid
+# Z grid parameters
 z_da        = sbp.z_da
 z           = sbp.z
 nz          = sbp.nz
@@ -71,13 +71,8 @@ dz          = sbp.dz
 # Getting wavenumbers
 ks          = sbp.ks
 
-# ks_mod = np.copy(np.array(ks))
-# kfile = open('ks_mod', "w")        # "wb" selects the "write binary" mode
-# np.savetxt(kfile, hf.sort_k_coeffs(ks_mod, nz))
-# kfile.close
-
 # Define problem
-problem = de.IVP(domain, variables=['psi', 'foo', 'psi_masked'])
+problem = de.IVP(domain, variables=['psi', 'foo'])
 problem.parameters['NU'] = nu
 problem.parameters['f0'] = f_0
 problem.parameters['N0'] = N_0
@@ -91,15 +86,8 @@ problem.parameters['k']     = k
 problem.parameters['m']     = m
 problem.parameters['omega'] = omega
 
-# Temporal ramp for boundary forcing
-if sbp.temporal_ramp:
-    problem.parameters['T']     = T       # [s] period of oscillation
-    problem.parameters['nT']    = sbp.nT  # [] number of periods for the ramp
-    problem.substitutions['ramp']   = "(1/2)*(tanh(4*t/(nT*T) - 2) + 1)"
-else:
-    problem.substitutions['ramp']   = "1"
-# Substitutions for boundary forcing (see C-R & B eq 13.7)
-problem.substitutions['f_psi'] = "(A*sin(m*z - omega*t))*ramp"
+# Substitution for boundary forcing (see C-R & B eq 13.7)
+problem.substitutions['f_psi'] = "A*sin(m*z - omega*t)"
 
 ###############################################################################
 # Background Profile for N_0
@@ -107,13 +95,6 @@ BP = domain.new_field(name = 'BP')
 BP_array = hf.BP_n_steps(sbp.n_steps, z, sbp.z0_dis, sbp.zf_dis, sbp.step_th)
 BP['g'] = BP_array
 problem.parameters['BP'] = BP
-
-###############################################################################
-# Masking to keep just display domain
-DD_mask = domain.new_field(name = 'DD_mask')
-DD_array = hf.make_DD_mask(z, sbp.z0_dis, sbp.zf_dis)
-DD_mask['g'] = DD_array
-problem.parameters['DD_mask'] = DD_mask
 
 ###############################################################################
 # Boundary forcing window
@@ -150,8 +131,6 @@ problem.add_equation("dt( dz(dz(foo)) - (k**2)*foo ) + f0*(dz(dz(psi))) " \
                      " + F_term_psi - S_term_psi ")
 # LHS must be first-order in ['dt'], so I'll define a temp variable
 problem.add_equation("foo - dt(psi) = 0")
-# Create copy of psi which is masked to the display domain
-problem.add_equation("psi_masked = DD_mask*psi")
 ###############################################################################
 
 # Build solver
@@ -164,14 +143,9 @@ solver.stop_iteration = sbp.stop_iteration
 # Above code modified from here: https://groups.google.com/forum/#!searchin/dedalus-users/%22wave$20equation%22%7Csort:date/dedalus-users/TJEOwHEDghU/g2x00YGaAwAJ
 
 ###############################################################################
-
 # Initial conditions
 psi = solver.state['psi']
-psi_masked = solver.state['psi_masked']
-
 psi['g']        = sbp.psi_initial
-psi_masked['g'] = sbp.psi_initial * DD_array
-
 
 ###############################################################################
 # Analysis
