@@ -65,18 +65,23 @@ import helper_functions as hf
 
 def get_h5_data(tasks, h5_files):
     for task in tasks:
+        # At the moment, this only works for one h5 file
         for filename in h5_files:
             with h5py.File(filename, mode='r') as f:
                 # The [()] syntax returns all data from an h5 object
-                psi = f['tasks'][task]
+                psi   = f['tasks'][task]
+                psi_c = f['tasks'][task]
                 # Need to transpose into the correct orientation
                 #   Also need to convert to np.array for plotting function
-                psi_array = np.transpose(np.array(psi[()]))
+                psi_array   = np.transpose(np.array(psi[()]))
+                psi_c_array = np.transpose(np.array(psi_c[()]))
                 # Just plotting the real part for now
                 psi_real = psi_array.real
-                t = np.array(f['scales']['sim_time'])
-                z = np.array(f['scales']['z']['1.0'])
-    return t, z, psi_real
+                # Grab the scales t, z, and kz
+                t  = np.array(f['scales']['sim_time'])
+                z  = np.array(f['scales']['z']['1.0'])
+                kz = np.array(f['scales']['kz'])
+    return t, z, kz, psi_real, psi_c_array
 
 # fourier transform in time, filter negative freq's, inverse fourier transform
 def FT_in_time(t, z, data, dt):
@@ -101,23 +106,20 @@ def FT_in_time(t, z, data, dt):
 
 # fourier transform in spatial dimension (z)
 #   similar to FT in time, but switch dimensions around
-def FT_in_space(t, z, data, dz):
+def FT_in_space(t, k_zs, data, dz):
     # FT in space (z) of the data (axis 0 is z) for positive wave numbers
     fzdp = np.fft.fft(data, axis=0)
     # make a copy for the negative wave numbers
     fzdn = fzdp.copy()
-    # find relevant wavenumbers
-    k_zs = np.fft.fftfreq(len(z), dz)
-    t_grid, k_grid = np.meshgrid(t, k_zs)
     # Filter out one half of wavenumbers to separate up and down
-    for i in range(k_grid.shape[0]):
-        for j in range(k_grid.shape[1]):
-            if k_grid[i][j] > 0.0:
-                # for down, remove values for positive wave numbers
-                fzdn[i][j] = 0.0
-            else:
-                # for up, remove values for negative wave numbers
-                fzdp[i][j] = 0.0
+    #   Looping only over wavenumbers because their positions don't change with t
+    for i in range(len(k_zs)):#k_grid.shape[0]):
+        if k_zs[i] > 0.0:
+            # for down, remove values for positive wave numbers
+            fzdn[i][:] = 0.0
+        else:
+            # for up, remove values for negative wave numbers
+            fzdp[i][:] = 0.0
     # inverse fourier transform in space (z)
     ifzdp = np.fft.ifft(fzdp, axis=0)
     ifzdn = np.fft.ifft(fzdn, axis=0)
@@ -125,7 +127,7 @@ def FT_in_space(t, z, data, dz):
 
 ###############################################################################
 # Get the data from the snapshot files
-t, z, data = get_h5_data(tasks, h5_files)
+t, z, kz, data, c_data = get_h5_data(tasks, h5_files)
 
 BP_array = hf.BP_n_steps(sbp.n_steps, sbp.z, z0_dis, zf_dis, sbp.step_th)
 
@@ -149,13 +151,13 @@ if t_then_z == True:
     ## Step 1
     ift_t_y = FT_in_time(t, z, data, dt)
     ### Step 2
-    ift_z_y_p, ift_z_y_n = FT_in_space(t, z, ift_t_y, dz)
+    ift_z_y_p, ift_z_y_n = FT_in_space(t, kz, ift_t_y, dz)
     # Get up and down fields as F = |mag_f| * exp(i*phi_f)
     up_field = ift_z_y_p.real * np.exp(np.real(1j * ift_z_y_p.imag))
     dn_field = ift_z_y_n.real * np.exp(np.real(1j * ift_z_y_n.imag))
 else:
     ## Step 1
-    ift_z_y_p, ift_z_y_n = FT_in_space(t, z, data, dz)
+    ift_z_y_p, ift_z_y_n = FT_in_space(t, kz, data, dz)
     ## Step 2
     up_f = FT_in_time(t, z, ift_z_y_p, dt)
     dn_f = FT_in_time(t, z, ift_z_y_n, dt)
@@ -163,6 +165,7 @@ else:
     up_field = up_f.real * np.exp(np.real(1j * up_f.imag))
     dn_field = dn_f.real * np.exp(np.real(1j * dn_f.imag))
 
+# Complex demodulation using c_data
 
 
 big_T = hf.measure_T(data, z, -0.25, -0.75, dz)
