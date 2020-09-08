@@ -65,8 +65,8 @@ snapshot_path="snapshots"
 merge_file="merge.py"
 # Clean up the snapshots after merging
 cleanup_snapshots="True"
-# Name of first plotting file
-plot_first="plot_first.py"
+# Name of post processing file
+post_process="post_process.py"
 # Name of slice plotting file
 plot_file="plot_slices.py"
 # Name of output directory
@@ -125,7 +125,7 @@ then
 		echo "Merging snapshots"
 		${mpiexec_command} -n $CORES python3 $merge_file $snapshot_path --cleanup=$cleanup_snapshots
 	fi
-    echo 'Done merging snapshots'
+  echo 'Done merging snapshots'
 
 	# Reformat snapshot file names if necessary
 	if [ -e $snapshot_path/snapshots_s10.h5 ]
@@ -143,6 +143,27 @@ then
 			fi
 		done
 	fi
+fi
+
+###############################################################################
+# post-process - note: already checked if snapshots exist in step above
+#	if (VER = 4)
+if [ $VER -eq 4 ]
+then
+	echo ''
+	echo '--Post processing--'
+	# Check to make sure snapshots exists
+	echo "Checking for snapshots in directory: $snapshot_path"
+	if [ -e $snapshot_path/consolidated_analysis.h5 ] || [ -e $snapshot_path/snapshots_s1.h5 ] || [ -e $snapshot_path/snapshots_s01.h5 ]
+	then
+		echo "Snapshots found"
+	else
+		echo "Cannot find snapshots. Aborting script"
+		exit 1
+	fi
+	echo 'Running post processing script'
+	${python_command} $post_process $snapshot_path/*.h5
+	echo 'Done post processing'
 fi
 
 ###############################################################################
