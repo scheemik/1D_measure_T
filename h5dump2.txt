@@ -1,0 +1,770 @@
+HDF5 "snapshots/consolidated_analysis.h5" {
+GROUP "/" {
+   ATTRIBUTE "handler_name" {
+      DATATYPE  H5T_STRING {
+         STRSIZE H5T_VARIABLE;
+         STRPAD H5T_STR_NULLTERM;
+         CSET H5T_CSET_UTF8;
+         CTYPE H5T_C_S1;
+      }
+      DATASPACE  SCALAR
+      DATA {
+      (0): "snapshots"
+      }
+   }
+   ATTRIBUTE "writes" {
+      DATATYPE  H5T_STD_I64LE
+      DATASPACE  SCALAR
+      DATA {
+      (0): 1067
+      }
+   }
+   GROUP "scales" {
+      DATASET "constant" {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+      }
+      DATASET "iteration" {
+         DATATYPE  H5T_STD_I64LE
+         DATASPACE  SIMPLE { ( 1067 ) / ( H5S_UNLIMITED ) }
+         ATTRIBUTE "CLASS" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 16;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+            DATA {
+            (0): "DIMENSION_SCALE"
+            }
+         }
+         ATTRIBUTE "NAME" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 10;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+            DATA {
+            (0): "iteration"
+            }
+         }
+         ATTRIBUTE "REFERENCE_LIST" {
+            DATATYPE  H5T_COMPOUND {
+               H5T_REFERENCE { H5T_STD_REF_OBJECT } "dataset";
+               H5T_STD_I32LE "dimension";
+            }
+            DATASPACE  SIMPLE { ( 9 ) / ( 9 ) }
+            DATA {
+            (0): {
+                  GROUP 0,
+                  0
+               },
+            (1): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (2): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (3): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (4): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (5): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (6): {
+                  DATASET 93096 /tasks/foo ,
+                  0
+               },
+            (7): {
+                  DATASET 136992 /tasks/psi ,
+                  0
+               },
+            (8): {
+                  DATASET 138440 /tasks/psi_c ,
+                  0
+               }
+            }
+         }
+      }
+      DATASET "kz" {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SIMPLE { ( 1023 ) / ( 1023 ) }
+         ATTRIBUTE "CLASS" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 16;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+            DATA {
+            (0): "DIMENSION_SCALE"
+            }
+         }
+         ATTRIBUTE "NAME" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 3;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+            DATA {
+            (0): "kz"
+            }
+         }
+         ATTRIBUTE "REFERENCE_LIST" {
+            DATATYPE  H5T_COMPOUND {
+               H5T_REFERENCE { H5T_STD_REF_OBJECT } "dataset";
+               H5T_STD_I32LE "dimension";
+            }
+            DATASPACE  SIMPLE { ( 3 ) / ( 3 ) }
+            DATA {
+            (0): {
+                  4294967295- 140735680619336,
+                  1
+               },
+            (1): {
+                  4294967295- 140735680619336,
+                  1
+               },
+            (2): {
+                  DATASET 138440 /tasks/psi_c ,
+                  1
+               }
+            }
+         }
+      }
+      DATASET "sim_time" {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SIMPLE { ( 1067 ) / ( H5S_UNLIMITED ) }
+         ATTRIBUTE "CLASS" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 16;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+            DATA {
+            (0): "DIMENSION_SCALE"
+            }
+         }
+         ATTRIBUTE "NAME" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 9;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+            DATA {
+            (0): "sim_time"
+            }
+         }
+         ATTRIBUTE "REFERENCE_LIST" {
+            DATATYPE  H5T_COMPOUND {
+               H5T_REFERENCE { H5T_STD_REF_OBJECT } "dataset";
+               H5T_STD_I32LE "dimension";
+            }
+            DATASPACE  SIMPLE { ( 9 ) / ( 9 ) }
+            DATA {
+            (0): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (1): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (2): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (3): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (4): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (5): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (6): {
+                  DATASET 93096 /tasks/foo ,
+                  0
+               },
+            (7): {
+                  DATASET 136992 /tasks/psi ,
+                  0
+               },
+            (8): {
+                  DATASET 138440 /tasks/psi_c ,
+                  0
+               }
+            }
+         }
+      }
+      DATASET "timestep" {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SIMPLE { ( 25 ) / ( H5S_UNLIMITED ) }
+         ATTRIBUTE "CLASS" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 16;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+            DATA {
+            (0): "DIMENSION_SCALE"
+            }
+         }
+         ATTRIBUTE "NAME" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 9;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+            DATA {
+            (0): "timestep"
+            }
+         }
+         ATTRIBUTE "REFERENCE_LIST" {
+            DATATYPE  H5T_COMPOUND {
+               H5T_REFERENCE { H5T_STD_REF_OBJECT } "dataset";
+               H5T_STD_I32LE "dimension";
+            }
+            DATASPACE  SIMPLE { ( 9 ) / ( 9 ) }
+            DATA {
+            (0): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (1): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (2): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (3): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (4): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (5): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (6): {
+                  DATASET 93096 /tasks/foo ,
+                  0
+               },
+            (7): {
+                  DATASET 136992 /tasks/psi ,
+                  0
+               },
+            (8): {
+                  DATASET 138440 /tasks/psi_c ,
+                  0
+               }
+            }
+         }
+      }
+      DATASET "wall_time" {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SIMPLE { ( 1067 ) / ( H5S_UNLIMITED ) }
+         ATTRIBUTE "CLASS" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 16;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+            DATA {
+            (0): "DIMENSION_SCALE"
+            }
+         }
+         ATTRIBUTE "NAME" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 10;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+            DATA {
+            (0): "wall_time"
+            }
+         }
+         ATTRIBUTE "REFERENCE_LIST" {
+            DATATYPE  H5T_COMPOUND {
+               H5T_REFERENCE { H5T_STD_REF_OBJECT } "dataset";
+               H5T_STD_I32LE "dimension";
+            }
+            DATASPACE  SIMPLE { ( 9 ) / ( 9 ) }
+            DATA {
+            (0): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (1): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (2): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (3): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (4): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (5): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (6): {
+                  DATASET 93096 /tasks/foo ,
+                  0
+               },
+            (7): {
+                  DATASET 136992 /tasks/psi ,
+                  0
+               },
+            (8): {
+                  DATASET 138440 /tasks/psi_c ,
+                  0
+               }
+            }
+         }
+      }
+      DATASET "world_time" {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SIMPLE { ( 1067 ) / ( H5S_UNLIMITED ) }
+         ATTRIBUTE "CLASS" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 16;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+            DATA {
+            (0): "DIMENSION_SCALE"
+            }
+         }
+         ATTRIBUTE "NAME" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 11;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+            DATA {
+            (0): "world_time"
+            }
+         }
+         ATTRIBUTE "REFERENCE_LIST" {
+            DATATYPE  H5T_COMPOUND {
+               H5T_REFERENCE { H5T_STD_REF_OBJECT } "dataset";
+               H5T_STD_I32LE "dimension";
+            }
+            DATASPACE  SIMPLE { ( 9 ) / ( 9 ) }
+            DATA {
+            (0): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (1): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (2): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (3): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (4): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (5): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (6): {
+                  DATASET 93096 /tasks/foo ,
+                  0
+               },
+            (7): {
+                  DATASET 136992 /tasks/psi ,
+                  0
+               },
+            (8): {
+                  DATASET 138440 /tasks/psi_c ,
+                  0
+               }
+            }
+         }
+      }
+      DATASET "write_number" {
+         DATATYPE  H5T_STD_I64LE
+         DATASPACE  SIMPLE { ( 1067 ) / ( H5S_UNLIMITED ) }
+         ATTRIBUTE "CLASS" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 16;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+            DATA {
+            (0): "DIMENSION_SCALE"
+            }
+         }
+         ATTRIBUTE "NAME" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 13;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+            DATA {
+            (0): "write_number"
+            }
+         }
+         ATTRIBUTE "REFERENCE_LIST" {
+            DATATYPE  H5T_COMPOUND {
+               H5T_REFERENCE { H5T_STD_REF_OBJECT } "dataset";
+               H5T_STD_I32LE "dimension";
+            }
+            DATASPACE  SIMPLE { ( 9 ) / ( 9 ) }
+            DATA {
+            (0): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (1): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (2): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (3): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (4): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (5): {
+                  4294967295- 140735680619336,
+                  0
+               },
+            (6): {
+                  DATASET 93096 /tasks/foo ,
+                  0
+               },
+            (7): {
+                  DATASET 136992 /tasks/psi ,
+                  0
+               },
+            (8): {
+                  DATASET 138440 /tasks/psi_c ,
+                  0
+               }
+            }
+         }
+      }
+      GROUP "z" {
+         DATASET "1.0" {
+            DATATYPE  H5T_IEEE_F64LE
+            DATASPACE  SIMPLE { ( 1024 ) / ( 1024 ) }
+            ATTRIBUTE "CLASS" {
+               DATATYPE  H5T_STRING {
+                  STRSIZE 16;
+                  STRPAD H5T_STR_NULLTERM;
+                  CSET H5T_CSET_ASCII;
+                  CTYPE H5T_C_S1;
+               }
+               DATASPACE  SCALAR
+               DATA {
+               (0): "DIMENSION_SCALE"
+               }
+            }
+            ATTRIBUTE "NAME" {
+               DATATYPE  H5T_STRING {
+                  STRSIZE 6;
+                  STRPAD H5T_STR_NULLTERM;
+                  CSET H5T_CSET_ASCII;
+                  CTYPE H5T_C_S1;
+               }
+               DATASPACE  SCALAR
+               DATA {
+               (0): "z/1.0"
+               }
+            }
+            ATTRIBUTE "REFERENCE_LIST" {
+               DATATYPE  H5T_COMPOUND {
+                  H5T_REFERENCE { H5T_STD_REF_OBJECT } "dataset";
+                  H5T_STD_I32LE "dimension";
+               }
+               DATASPACE  SIMPLE { ( 6 ) / ( 6 ) }
+               DATA {
+               (0): {
+                     4294967295- 140735680619336,
+                     1
+                  },
+               (1): {
+                     4294967295- 140735680619336,
+                     1
+                  },
+               (2): {
+                     4294967295- 140735680619336,
+                     1
+                  },
+               (3): {
+                     4294967295- 140735680619336,
+                     1
+                  },
+               (4): {
+                     DATASET 93096 /tasks/foo ,
+                     1
+                  },
+               (5): {
+                     DATASET 136992 /tasks/psi ,
+                     1
+                  }
+               }
+            }
+         }
+      }
+   }
+   GROUP "tasks" {
+      DATASET "foo" {
+         DATATYPE  H5T_COMPOUND {
+            H5T_IEEE_F64LE "r";
+            H5T_IEEE_F64LE "i";
+         }
+         DATASPACE  SIMPLE { ( 1067, 1024 ) / ( 1067, 1024 ) }
+         ATTRIBUTE "DIMENSION_LABELS" {
+            DATATYPE  H5T_STRING {
+               STRSIZE H5T_VARIABLE;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SIMPLE { ( 2 ) / ( 2 ) }
+            DATA {
+            (0): "t", "z"
+            }
+         }
+         ATTRIBUTE "DIMENSION_LIST" {
+            DATATYPE  H5T_VLEN { H5T_REFERENCE { H5T_STD_REF_OBJECT }}
+            DATASPACE  SIMPLE { ( 2 ) / ( 2 ) }
+            DATA {
+            (0): (DATASET 19784 /scales/sim_time , DATASET 70720 /scales/world_time , DATASET 59904 /scales/wall_time , DATASET 20312 /scales/timestep , DATASET 18808 /scales/iteration , DATASET 81536 /scales/write_number ),
+            (1): (DATASET 82640 /scales/z/1.0 )
+            }
+         }
+         ATTRIBUTE "constant" {
+            DATATYPE  H5T_ENUM {
+               H5T_STD_I8LE;
+               "FALSE"            0;
+               "TRUE"             1;
+            }
+            DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+            DATA {
+            (0): FALSE
+            }
+         }
+         ATTRIBUTE "grid_space" {
+            DATATYPE  H5T_ENUM {
+               H5T_STD_I8LE;
+               "FALSE"            0;
+               "TRUE"             1;
+            }
+            DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+            DATA {
+            (0): TRUE
+            }
+         }
+         ATTRIBUTE "scales" {
+            DATATYPE  H5T_IEEE_F64LE
+            DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+            DATA {
+            (0): 1
+            }
+         }
+         ATTRIBUTE "task_number" {
+            DATATYPE  H5T_STD_I64LE
+            DATASPACE  SCALAR
+            DATA {
+            (0): 1
+            }
+         }
+      }
+      DATASET "psi" {
+         DATATYPE  H5T_COMPOUND {
+            H5T_IEEE_F64LE "r";
+            H5T_IEEE_F64LE "i";
+         }
+         DATASPACE  SIMPLE { ( 1067, 1024 ) / ( 1067, 1024 ) }
+         ATTRIBUTE "DIMENSION_LABELS" {
+            DATATYPE  H5T_STRING {
+               STRSIZE H5T_VARIABLE;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SIMPLE { ( 2 ) / ( 2 ) }
+            DATA {
+            (0): "t", "z"
+            }
+         }
+         ATTRIBUTE "DIMENSION_LIST" {
+            DATATYPE  H5T_VLEN { H5T_REFERENCE { H5T_STD_REF_OBJECT }}
+            DATASPACE  SIMPLE { ( 2 ) / ( 2 ) }
+            DATA {
+            (0): (DATASET 19784 /scales/sim_time , DATASET 70720 /scales/world_time , DATASET 59904 /scales/wall_time , DATASET 20312 /scales/timestep , DATASET 18808 /scales/iteration , DATASET 81536 /scales/write_number ),
+            (1): (DATASET 82640 /scales/z/1.0 )
+            }
+         }
+         ATTRIBUTE "constant" {
+            DATATYPE  H5T_ENUM {
+               H5T_STD_I8LE;
+               "FALSE"            0;
+               "TRUE"             1;
+            }
+            DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+            DATA {
+            (0): FALSE
+            }
+         }
+         ATTRIBUTE "grid_space" {
+            DATATYPE  H5T_ENUM {
+               H5T_STD_I8LE;
+               "FALSE"            0;
+               "TRUE"             1;
+            }
+            DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+            DATA {
+            (0): TRUE
+            }
+         }
+         ATTRIBUTE "scales" {
+            DATATYPE  H5T_IEEE_F64LE
+            DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+            DATA {
+            (0): 1
+            }
+         }
+         ATTRIBUTE "task_number" {
+            DATATYPE  H5T_STD_I64LE
+            DATASPACE  SCALAR
+            DATA {
+            (0): 0
+            }
+         }
+      }
+      DATASET "psi_c" {
+         DATATYPE  H5T_COMPOUND {
+            H5T_IEEE_F64LE "r";
+            H5T_IEEE_F64LE "i";
+         }
+         DATASPACE  SIMPLE { ( 1067, 1023 ) / ( 1067, 1023 ) }
+         ATTRIBUTE "DIMENSION_LABELS" {
+            DATATYPE  H5T_STRING {
+               STRSIZE H5T_VARIABLE;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SIMPLE { ( 2 ) / ( 2 ) }
+            DATA {
+            (0): "t", "kz"
+            }
+         }
+         ATTRIBUTE "DIMENSION_LIST" {
+            DATATYPE  H5T_VLEN { H5T_REFERENCE { H5T_STD_REF_OBJECT }}
+            DATASPACE  SIMPLE { ( 2 ) / ( 2 ) }
+            DATA {
+            (0): (DATASET 19784 /scales/sim_time , DATASET 70720 /scales/world_time , DATASET 59904 /scales/wall_time , DATASET 20312 /scales/timestep , DATASET 18808 /scales/iteration , DATASET 81536 /scales/write_number ),
+            (1): (DATASET 19328 /scales/kz )
+            }
+         }
+         ATTRIBUTE "constant" {
+            DATATYPE  H5T_ENUM {
+               H5T_STD_I8LE;
+               "FALSE"            0;
+               "TRUE"             1;
+            }
+            DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+            DATA {
+            (0): FALSE
+            }
+         }
+         ATTRIBUTE "grid_space" {
+            DATATYPE  H5T_ENUM {
+               H5T_STD_I8LE;
+               "FALSE"            0;
+               "TRUE"             1;
+            }
+            DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+            DATA {
+            (0): FALSE
+            }
+         }
+         ATTRIBUTE "scales" {
+            DATATYPE  H5T_IEEE_F64LE
+            DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+            DATA {
+            (0): 1
+            }
+         }
+         ATTRIBUTE "task_number" {
+            DATATYPE  H5T_STD_I64LE
+            DATASPACE  SCALAR
+            DATA {
+            (0): 2
+            }
+         }
+      }
+   }
+}
+}

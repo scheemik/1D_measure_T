@@ -46,6 +46,7 @@ T           = sbp.T             # [s]           Wave period
 # Parameters
 tasks = ['psi']
 skip_nT = 0
+nz = sbp.nz
 z0_dis = sbp.z0_dis
 zf_dis = sbp.zf_dis
 dt = sbp.dt
@@ -91,6 +92,7 @@ def FT_in_time(t, z, data, dt):
     freq = np.fft.fftfreq(len(t), dt)
     f_grid, z_grid = np.meshgrid(freq, z)
     # Filter out negative frequencies
+    #   I can make this more efficient, I only need to go over one dimension
     for i in range(f_grid.shape[0]):
         for j in range(f_grid.shape[1]):
             if f_grid[i][j] < 0.0:
@@ -106,7 +108,7 @@ def FT_in_time(t, z, data, dt):
 
 # fourier transform in spatial dimension (z)
 #   similar to FT in time, but switch dimensions around
-def FT_in_space(t, k_zs, data, dz):
+def FT_in_space(t, k_zs, data):
     # FT in space (z) of the data (axis 0 is z) for positive wave numbers
     fzdp = np.fft.fft(data, axis=0)
     # make a copy for the negative wave numbers
@@ -125,9 +127,29 @@ def FT_in_space(t, k_zs, data, dz):
     ifzdn = np.fft.ifft(fzdn, axis=0)
     return ifzdp, ifzdn
 
+# fourier transform in spatial dimension (z)
+#   similar to FT in time, but switch dimensions around
+def IFT_in_space(t, k_zs, data_up):
+    # make a copy for the negative wave numbers
+    data_dn = data_up.copy()
+    # Filter out one half of wavenumbers to separate up and down
+    #   Looping only over wavenumbers because their positions don't change with t
+    for i in range(len(k_zs)):#k_grid.shape[0]):
+        if k_zs[i] > 0.0:
+            # for down, remove values for positive wave numbers
+            data_dn[i][:] = 0.0
+        else:
+            # for up, remove values for negative wave numbers
+            data_up[i][:] = 0.0
+    # inverse fourier transform in space (z)
+    ifzdp = np.fft.ifft(data_up, axis=0)
+    ifzdn = np.fft.ifft(data_dn, axis=0)
+    return ifzdp, ifzdn
+
 ###############################################################################
 # Get the data from the snapshot files
-t, z, kz, data, c_data = get_h5_data(tasks, h5_files)
+t, z, kz, data, raw_data = get_h5_data(tasks, h5_files)
+c_data = hf.sort_k_coeffs(raw_data, nz)
 
 BP_array = hf.BP_n_steps(sbp.n_steps, sbp.z, z0_dis, zf_dis, sbp.step_th)
 
@@ -150,14 +172,14 @@ t_then_z = False
 if t_then_z == True:
     ## Step 1
     ift_t_y = FT_in_time(t, z, data, dt)
-    ### Step 2
-    ift_z_y_p, ift_z_y_n = FT_in_space(t, kz, ift_t_y, dz)
+    ## Step 2
+    ift_z_y_p, ift_z_y_n = FT_in_space(t, kz, ift_t_y)
     # Get up and down fields as F = |mag_f| * exp(i*phi_f)
     up_field = ift_z_y_p.real * np.exp(np.real(1j * ift_z_y_p.imag))
     dn_field = ift_z_y_n.real * np.exp(np.real(1j * ift_z_y_n.imag))
 else:
     ## Step 1
-    ift_z_y_p, ift_z_y_n = FT_in_space(t, kz, data, dz)
+    ift_z_y_p, ift_z_y_n = FT_in_space(t, kz, data)
     ## Step 2
     up_f = FT_in_time(t, z, ift_z_y_p, dt)
     dn_f = FT_in_time(t, z, ift_z_y_n, dt)
@@ -166,7 +188,14 @@ else:
     dn_field = dn_f.real * np.exp(np.real(1j * dn_f.imag))
 
 # Complex demodulation using c_data
-
+## Step 1
+data_c_up, data_c_dn = IFT_in_space(t, kz, c_data)
+## Step 2
+up_f = FT_in_time(t, z, data_c_up, dt)
+dn_f = FT_in_time(t, z, data_c_dn, dt)
+# Get up and down fields as F = |mag_f| * exp(i*phi_f)
+up_c = up_f.real * np.exp(np.real(1j * up_f.imag))
+dn_c = dn_f.real * np.exp(np.real(1j * dn_f.imag))
 
 big_T = hf.measure_T(data, z, -0.25, -0.75, dz)
 print("Transmission coefficient is:", big_T)
@@ -179,3 +208,6 @@ if sbp.plot_spacetime:
 
 if sbp.plot_spacetime:
     hf.plot_z_vs_t(z, t, T, dn_field, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=plot_f_d, nT=nT, filename='f_1D_dn_field.png')
+
+if sbp.plot_spacetime:
+    hf.plot_z_vs_t(z, t, T, up_c, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=plot_f_d, nT=nT, filename='f_1D_dn.png')

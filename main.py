@@ -154,7 +154,15 @@ def add_new_file_handler(snapshot_directory='snapshots/new', sdt=sbp.snap_dt):
 
 # Add file handler for snapshots and output state of variables
 snapshots = add_new_file_handler('snapshots')
+# Add analysis tasks for all state variables
 snapshots.add_system(solver.state)
+
+# # If not outputting the whole state, need to output z specifically
+# snapshots.add_task("z", )
+# # Add analysis task for just psi because I don't need foo
+# snapshots.add_task("psi", layout='c', name='psi')
+# Add analysis task for the 'c' grid of psi for filtering by wavenumbers in post-processing
+snapshots.add_task("psi", layout='c', name='psi_c')
 
 ###############################################################################
 # CFL

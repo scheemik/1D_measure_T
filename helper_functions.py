@@ -257,10 +257,15 @@ def plot_A_vs_t(t_array, T, data_array, A, k, m, omega, nT=0.0, title_str='Force
     plt.savefig(filename)
 
 def sort_k_coeffs(arr, nz):
-    sorted_arr = np.zeros(nz-1)
-    sorted_arr[0:(nz//2-1)] = arr[(nz//2):(nz-1)]
-    sorted_arr[(nz//2-1):(nz-1)] = arr[0:(nz//2)]
-    return sorted_arr
+    if len(arr.shape) == 1:
+        sorted_arr = np.zeros(nz-1)
+        sorted_arr[0:(nz//2-1)] = arr[(nz//2):(nz-1)]
+        sorted_arr[(nz//2-1):(nz-1)] = arr[0:(nz//2)]
+        return sorted_arr
+    else:
+        for i in range(arr.shape[1]):
+            arr[i][:] = sort_k_coeffs(arr[i][:], nz)
+        return arr
 
 def plot_k_vs_t(ks, t_array, T, real_array, imag_array, k, m, omega, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave_spectra.png'):
     # Set aspect ratio of overall figure
