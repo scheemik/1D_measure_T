@@ -48,13 +48,17 @@ def find_nearest_index(array, value, tolerance):
     else:
         return idx-1
 
-def measure_T(data, z, z_I, z_T, tol, T_skip=None):
+def measure_T(data, z, z_I, z_T, tol, T_skip=None, T=None, t=None, dt=None):
     """
     data        array of the psi wavefield, complex valued
     z           array of z values
     z_I         depth at which to measure incident wave
     z_T         depth at which to measure transmitted wave
+    tol         tolerance for finding nearest z indices
     T_skip      oscillation periods to skip before measuring
+    T           oscillation period in seconds
+    z           array of time values
+    dt          tolerance for finding nearest t indices
     """
     # Find the indicies of the z's closest to z_I and z_T
     idx_I = find_nearest_index(z, z_I, tol)
@@ -62,6 +66,11 @@ def measure_T(data, z, z_I, z_T, tol, T_skip=None):
     # Pull relevant depths from the data, take absolute value
     arr_I = data[:][idx_I]
     arr_T = data[:][idx_T]
+    if T_skip != None:
+        # find index of time after skip interval
+        idt   = find_nearest_index(t, T_skip*T, dt)
+        arr_I = arr_I[idt:]
+        arr_T = arr_T[idt:]
     # Multiply element wise by the complex conjugate, find maximum
     I_ = max(arr_I * np.conj(arr_I))
     T_ = max(arr_T * np.conj(arr_T))
@@ -250,9 +259,16 @@ def plot_A_of_I_T(z_array, t_array, T, dn_array, z_I, z_T, tol, k, m, omega, nT=
     # Find the indicies of the z's closest to z_I and z_T
     idx_I = find_nearest_index(z_array, z_I, tol)
     idx_T = find_nearest_index(z_array, z_T, tol)
+    # Create arrays for I and T
+    arr_I = dn_array[idx_I]
+    arr_T = dn_array[idx_T]
+    # Take complex conjugate
+    arr_I = arr_I * np.conj(arr_I)
+    arr_T = arr_T * np.conj(arr_T)
     #
-    axes[0].plot(t_array/T, dn_array[idx_I], color=my_clrs['b'], label=r'$I$')
-    axes[1].plot(t_array/T, dn_array[idx_T], color=my_clrs['b'], label=r'$T$')
+    axes[0].plot(t_array/T, arr_I, color=my_clrs['b'], label=r'$I$')
+    axes[1].plot(t_array/T, arr_T, color=my_clrs['b'], label=r'$T$')
+    axes[0].axvline(x=nT, color=my_clrs['black'], linestyle='--')
     axes[1].axvline(x=nT, color=my_clrs['black'], linestyle='--')
     #
     axes[0].set_xlim(t_array[0]/T, t_array[-1]/T)

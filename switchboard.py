@@ -67,11 +67,6 @@ adapt_dt                = False
 if extend_to_pwr_2 == True:
     adapt_dt = False
 
-# Simulation starting conditions
-temporal_ramp           = False  # If True, slowly ramps the amplitude up to avoid shock wave
-nT                      = 3.0   # number of oscillation periods long the ramp lasts
-steady_state_start      = False  # If True, automatically turns off temporal ramp
-
 # Terms in equations of motion
 viscous_term            = True
 pressure_term           = True
@@ -85,11 +80,11 @@ use_rayleigh_friction   = False
 boundary_forcing_region = True  # If False, waves will be forced over entire domain
 
 # Plotting parameters
-plot_spacetime = True
+plot_spacetime = False
 plot_wavespace = False
 plot_amplitude = True
-plot_windows   = True
-plot_up_dn     = True
+plot_windows   = False
+plot_up_dn     = False
 # If true, plot will include full simulated domain, if false, just the display domain
 plot_full_domain = True
 
@@ -157,7 +152,7 @@ else:
 # Parameters
 z_I             = -0.25         # [m] depth at which incident wave is measured
 z_T             = -0.75         # [m] depth at which transmitted wave is measured
-T_skip          = 3             # []  number of oscillation periods to skip before measuring
+T_skip          = 15            # []  number of oscillation periods to skip before measuring
 
 ###############################################################################
 # Run parameters
@@ -256,10 +251,7 @@ aux_snap_dir = 'aux_snapshots'
 
 ###############################################################################
 # Initial conditions
-if steady_state_start:
-    psi_initial = A * np.sin(m*z)
-else:
-    psi_initial = 0.0
+psi_initial = 0.0
 
 ###############################################################################
 # CFL parameters
@@ -281,140 +273,3 @@ logger_cadence  = 100
 iteration_str   = 'Iteration: %i, t/T: %e, dt/T: %e'
 flow_log_message= 'Max linear criterion = {0:f}'
 ###############################################################################
-
-###############################################################################
-################    Shouldn't need to edit below here    #####################
-###############################################################################
-#
-# ###############################################################################
-# # Imports for preparing physics modules
-# from mpi4py import MPI
-# comm = MPI.COMM_WORLD
-# rank = comm.Get_rank()
-# from shutil import copy2, rmtree
-# import os
-# import sys
-# p_module_dir = './_modules_physics/'
-#
-# ###############################################################################
-# # Boundary forcing
-#
-# # Need to add the path before every import
-# sys.path.insert(0, p_module_dir)
-# import boundary_forcing as bf
-# # See boundary forcing file for the meaning of these variables
-# N_0     = bf.N_0        # [rad s^-1]
-# k       = bf.k          # [m^-1]
-# omega   = bf.omega      # [rad s^-1]
-# theta   = bf.theta      # [rad]
-# k_x     = bf.k_x        # [m^-1]
-# k_z     = bf.k_z        # [m^-1]
-# lam_x   = bf.lam_x      # [m]
-# lam_z   = bf.lam_z      # [m]
-# T       = bf.T          # [s]
-# A       = bf.A          # []
-# nT      = bf.nT         # []
-# PolRel  = bf.PolRel     # Dictionary of coefficients for variables
-# # Dedalus specific string substitutions
-# bf_slope= bf.bf_slope
-# bfl_edge= bf.bfl_edge
-# bfr_edge= bf.bfr_edge
-# window  = bf.window
-# ramp    = bf.ramp
-# fu      = bf.fu
-# fw      = bf.fw
-# fb      = bf.fb
-# fp      = bf.fp
-#
-# # Calculate stop_sim_time if use_stop_sim_time=False
-# if use_stop_sim_time == False:
-#     stop_sim_time = stop_n_periods * T
-# # Set restart simulation parameters
-# restart_add_time = stop_sim_time
-# restart_file  = 'restart.h5'
-#
-# ###############################################################################
-# # Equations of Motion and Boundary Conditions
-#
-# # Need to add the path before every import
-# sys.path.insert(0, p_module_dir)
-# import eqs_and_bcs as eq
-# # Equations of motion
-# eq1_mc      = eq.eq1_mc
-# eq2_es      = eq.eq2_es
-# eq3_hm      = eq.eq3_hm
-# eq4_vm      = eq.eq4_vm
-# eq5_bz      = eq.eq5_bz
-# eq6_uz      = eq.eq6_uz
-# eq7_wz      = eq.eq7_wz
-# # Boundary contitions
-# bc1         = eq.bc1_u_bot
-# bc2         = eq.bc2_u_top
-# bc3         = eq.bc3_w_bot
-# bc3_cond    = eq.bc3_w_cond
-# bc4         = eq.bc4_w_top
-# bc5         = eq.bc5_b_bot
-# bc6         = eq.bc6_b_top
-# bc7         = eq.bc7_p_bot
-# bc7_cond    = eq.bc7_p_cond
-#
-#
-# ###############################################################################
-# # Sponge Layer Profile
-#
-# # Need to add the path before every import
-# sys.path.insert(0, p_module_dir)
-# import sponge_layer as sl
-# if take_sl_snaps==False:
-#     plot_sponge = False
-# if use_sponge==True:
-#     # The sponge layer profile generator function
-#     build_sl_array = sl.build_sl_array
-#     # Redefine the vertical domain length if need be
-#     L_z = L_z + sl.sl_thickness
-#     z_sim_f = sl.z_sl_bot
-#     if dis_eq_sim==True:
-#         L_z_dis = L_z
-# else:
-#     build_sl_array = sl.build_no_sl_array
-#
-# ###############################################################################
-# # Rayleigh Friction Profile
-#
-# # Need to add the path before every import
-# sys.path.insert(0, p_module_dir)
-# import rayleigh_friction as rf
-# if take_rf_snaps==False:
-#     plot_rf = False
-# if use_rayleigh_friction==True:
-#     # The sponge layer profile generator function
-#     build_rf_array = rf.build_rf_array
-#     # Redefine the vertical domain length if need be
-#     if use_sponge==False:
-#         L_z = L_z + rf.rf_thickness
-#         z_sim_f = rf.z_rf_bot
-#         if dis_eq_sim==True:
-#             L_z_dis = L_z
-# else:
-#     build_rf_array = rf.build_no_rf_array
-#
-# ###############################################################################
-# # Energy Flux Measurements
-#
-# # Need to add the path before every import
-# sys.path.insert(0, p_module_dir)
-# import energy_flux as ef
-# if take_ef_snaps==False and take_ef_comp==False:
-#     plot_ef = False
-# ef_snap_dicts = ef.ef_snap_dicts
-#
-# ###############################################################################
-# # Cleaning up the _modules-physics directory tree
-# for some_dir in os.scandir(p_module_dir):
-#     # Iterate through subdirectories in _modules-physics
-#     if some_dir.is_dir():
-#         dir=some_dir.name
-#         # If the directory isn't __pycache__, then delete it
-#         if dir!='__pycache__':
-#             dir_path = p_module_dir + dir
-#             rmtree(dir_path, ignore_errors=True)
