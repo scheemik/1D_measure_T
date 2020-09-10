@@ -77,22 +77,31 @@ def get_h5_data(tasks, h5_files):
                 psi_array   = np.transpose(np.array(psi[()]))
                 psi_c_array = np.transpose(np.array(psi_c[()]))
                 # Just plotting the real part for now
-                psi_real = psi_array.real
+                #psi_real = psi_array.real
                 # Grab the scales t, z, and kz
                 t  = np.array(f['scales']['sim_time'])
                 z  = np.array(f['scales']['z']['1.0'])
                 kz = np.array(f['scales']['kz'])
-    return t, z, kz, psi_real, psi_c_array
+    return t, z, kz, psi_array, psi_c_array
 
 # fourier transform in time, filter negative freq's, inverse fourier transform
 def FT_in_time(t, z, data, dt):
     # FT in time of the data (axis 1 is time)
     ftd = np.fft.fft(data, axis=1)
+    # print(ftd.shape)
     # find relevant frequencies
     freq = np.fft.fftfreq(len(t), dt)
+    # print('freq', len(freq))
     f_grid, z_grid = np.meshgrid(freq, z)
     # Filter out negative frequencies
     #   I can make this more efficient, I only need to go over one dimension
+    # for i in range(len(freq)-1):
+    #     if freq[i] < 0.0:
+    #         # Gets rid of negative freq's
+    #         ftd[i][:] = ftd[i][:] * 0.0
+    #     else:
+    #         # Corrects for lost amplitude
+    #         ftd[i][:] = ftd[i][:] * 2.0
     for i in range(f_grid.shape[0]):
         for j in range(f_grid.shape[1]):
             if f_grid[i][j] < 0.0:
@@ -148,8 +157,8 @@ def IFT_in_space(t, k_zs, data_up):
 
 ###############################################################################
 # Get the data from the snapshot files
-t, z, kz, data, raw_data = get_h5_data(tasks, h5_files)
-c_data = hf.sort_k_coeffs(raw_data, nz)
+t, z, kz, psi, psi_c = get_h5_data(tasks, h5_files)
+#c_data = hf.sort_k_coeffs(raw_data, nz)
 
 BP_array = hf.BP_n_steps(sbp.n_steps, sbp.z, z0_dis, zf_dis, sbp.step_th)
 
@@ -157,56 +166,71 @@ BP_array = hf.BP_n_steps(sbp.n_steps, sbp.z, z0_dis, zf_dis, sbp.step_th)
 # Sanity check plots
 
 if sbp.plot_spacetime:
-    hf.plot_z_vs_t(z, t, T, data, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=sbp.plot_full_domain, nT=sbp.nT)#, title_str=run_name)
+    hf.plot_z_vs_t(z, t, T, psi.real, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=sbp.plot_full_domain, nT=sbp.nT)#, title_str=run_name)
 
 if sbp.plot_wavespace:
-    hf.plot_k_vs_t(ks, t, T, arrays['psi_c_reals'], arrays['psi_c_imags'], k, m, omega)#, title_str=run_name)
+    hf.plot_k_vs_t(z, t, T, psi.real, psi.imag, k, m, omega, title_str='psi', filename='f_1D_psi_r_i.png')
+
+if sbp.plot_wavespace:
+    hf.plot_k_vs_t(hf.sort_k_coeffs(kz,1024), t, T, psi_c.real, psi_c.imag, k, m, omega, title_str='psi_c', filename='f_1D_psic_r_i.png')
 
 if sbp.plot_amplitude:
     hf.plot_A_vs_t(t, T, data, sbp.A, k, m, omega, nT=sbp.nT)#, title_str=run_name)
 
+# raise SystemExit(0)
+
 ###############################################################################
 # Complex demodulation
 
+def Complex_Demodulate(t_then_z, t, z, kz, data, dt):
+    if t_then_z == True:
+        ## Step 1
+        ift_t_y = FT_in_time(t, z, data, dt)
+        ## Step 2
+        ift_z_y_p, ift_z_y_n = FT_in_space(t, kz, ift_t_y)
+        # Get up and down fields as F = |mag_f| * exp(i*phi_f)
+        up_field = ift_z_y_p.real * np.exp(np.real(1j * ift_z_y_p.imag))
+        dn_field = ift_z_y_n.real * np.exp(np.real(1j * ift_z_y_n.imag))
+    else:
+        ## Step 1
+        ift_z_y_p, ift_z_y_n = FT_in_space(t, kz, data)
+        ## Step 2
+        up_f = FT_in_time(t, z, ift_z_y_p, dt)
+        dn_f = FT_in_time(t, z, ift_z_y_n, dt)
+        # Get up and down fields as F = |mag_f| * exp(i*phi_f)
+        up_field = up_f.real * np.exp(np.real(1j * up_f.imag))
+        dn_field = dn_f.real * np.exp(np.real(1j * dn_f.imag))
+    return up_field, dn_field
+
 t_then_z = False
-if t_then_z == True:
-    ## Step 1
-    ift_t_y = FT_in_time(t, z, data, dt)
-    ## Step 2
-    ift_z_y_p, ift_z_y_n = FT_in_space(t, kz, ift_t_y)
-    # Get up and down fields as F = |mag_f| * exp(i*phi_f)
-    up_field = ift_z_y_p.real * np.exp(np.real(1j * ift_z_y_p.imag))
-    dn_field = ift_z_y_n.real * np.exp(np.real(1j * ift_z_y_n.imag))
-else:
-    ## Step 1
-    ift_z_y_p, ift_z_y_n = FT_in_space(t, kz, data)
-    ## Step 2
-    up_f = FT_in_time(t, z, ift_z_y_p, dt)
-    dn_f = FT_in_time(t, z, ift_z_y_n, dt)
-    # Get up and down fields as F = |mag_f| * exp(i*phi_f)
-    up_field = up_f.real * np.exp(np.real(1j * up_f.imag))
-    dn_field = dn_f.real * np.exp(np.real(1j * dn_f.imag))
+profile_it = False
+up_field, dn_field = Complex_Demodulate(t_then_z, t, z, kz, psi, dt)
+if profile_it == True:
+    import cProfile
+    cProfile.run('Complex_Demodulate(t_then_z, t, z, kz, psi, dt)', 'restats')
+    import pstats
+    from pstats import SortKey
+    p = pstats.Stats('restats')
+    p.sort_stats(SortKey.CUMULATIVE).print_stats(10)
 
-# Complex demodulation using c_data
-## Step 1
-data_c_up, data_c_dn = IFT_in_space(t, kz, c_data)
-## Step 2
-up_f = FT_in_time(t, z, data_c_up, dt)
-dn_f = FT_in_time(t, z, data_c_dn, dt)
-# Get up and down fields as F = |mag_f| * exp(i*phi_f)
-up_c = up_f.real * np.exp(np.real(1j * up_f.imag))
-dn_c = dn_f.real * np.exp(np.real(1j * dn_f.imag))
+# # Complex demodulation using c_data
+# ## Step 1
+# data_c_up, data_c_dn = IFT_in_space(t, kz, c_data)
+# ## Step 2
+# up_f = FT_in_time(t, z, data_c_up, dt)
+# dn_f = FT_in_time(t, z, data_c_dn, dt)
+# # Get up and down fields as F = |mag_f| * exp(i*phi_f)
+# up_c = up_f.real * np.exp(np.real(1j * up_f.imag))
+# dn_c = dn_f.real * np.exp(np.real(1j * dn_f.imag))
 
-big_T = hf.measure_T(data, z, -0.25, -0.75, dz)
-print("Transmission coefficient is:", big_T)
+# big_T = hf.measure_T(dn_field, z, -0.25, -0.75, dz)
+# print("Transmission coefficient is:", big_T)
 
 if sbp.plot_spacetime:
     hf.plot_z_vs_t(z, t, T, data, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=plot_f_d, nT=nT)
 
-if sbp.plot_spacetime:
+if sbp.plot_up_dn:
     hf.plot_z_vs_t(z, t, T, up_field, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=plot_f_d, nT=nT, filename='f_1D_up_field.png')
-
-if sbp.plot_spacetime:
     hf.plot_z_vs_t(z, t, T, dn_field, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=plot_f_d, nT=nT, filename='f_1D_dn_field.png')
 
 if sbp.plot_spacetime:
