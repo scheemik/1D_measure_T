@@ -88,10 +88,10 @@ def get_h5_data(tasks, h5_files):
 def FT_in_time(t, z, data, dt):
     # FT in time of the data (axis 1 is time)
     ftd = np.fft.fft(data, axis=1)
-    # print(ftd.shape)
+    print(ftd.shape)
     # find relevant frequencies
     freq = np.fft.fftfreq(len(t), dt)
-    # print('freq', len(freq))
+    print('freq', len(freq))
     f_grid, z_grid = np.meshgrid(freq, z)
     # Filter out negative frequencies
     #   I can make this more efficient, I only need to go over one dimension

@@ -14,7 +14,8 @@ from dedalus import public as de
 # Main parameters, the ones I'll change a lot. Many more below
 
 # Run parameters
-stop_n_periods = 30             # [] oscillation periods
+stop_n_periods  = 35            # [] oscillation periods
+extend_to_pwr_2 = True          # [] Extend simulation time so dt is a power of 2
 
 # Displayed domain parameters
 nz     = 1024                   # [] number of grid points in the z direction
@@ -63,6 +64,8 @@ T       = 2*np.pi / omega       # [s]           Wave period
 
 # Determine whether adaptive time stepping is on or off
 adapt_dt                = False
+if extend_to_pwr_2 == True:
+    adapt_dt = False
 
 # Simulation starting conditions
 temporal_ramp           = False  # If True, slowly ramps the amplitude up to avoid shock wave
@@ -169,10 +172,11 @@ g           = 9.81          # [m/s^2] Acceleration due to gravity
 ###############################################################################
 # Plotting parameters
 
-plot_spacetime = True
+plot_spacetime = False
 plot_wavespace = False
-plot_amplitude = True
-plot_windows   = True
+plot_amplitude = False
+plot_windows   = False
+plot_up_dn     = True
 # If true, plot will include full simulated domain, if false, just the display domain
 plot_full_domain = True
 
