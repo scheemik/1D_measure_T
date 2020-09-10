@@ -160,12 +160,8 @@ snapshots = add_new_file_handler('snapshots')
 # Add analysis tasks for all state variables
 snapshots.add_system(solver.state)
 
-# # If not outputting the whole state, need to output z specifically
-# snapshots.add_task("z", )
-# # Add analysis task for just psi because I don't need foo
-# snapshots.add_task("psi", layout='c', name='psi')
 # Add analysis task for the 'c' grid of psi for filtering by wavenumbers in post-processing
-snapshots.add_task("psi", layout='c', name='psi_c')
+# snapshots.add_task("psi", layout='c', name='psi_c')
 
 ###############################################################################
 # CFL
@@ -187,10 +183,6 @@ adapt_dt        = sbp.adapt_dt
 logger_cadence  = sbp.logger_cadence
 iteration_str   = sbp.iteration_str
 flow_log_message= sbp.flow_log_message
-###############################################################################
-# Filtering in wavenumber space
-
-
 ###############################################################################
 # Main loop
 try:

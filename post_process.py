@@ -71,18 +71,18 @@ def get_h5_data(tasks, h5_files):
             with h5py.File(filename, mode='r') as f:
                 # The [()] syntax returns all data from an h5 object
                 psi   = f['tasks'][task]
-                psi_c = f['tasks'][task]
+                # psi_c = f['tasks'][task]
                 # Need to transpose into the correct orientation
                 #   Also need to convert to np.array for plotting function
                 psi_array   = np.transpose(np.array(psi[()]))
-                psi_c_array = np.transpose(np.array(psi_c[()]))
+                # psi_c_array = np.transpose(np.array(psi_c[()]))
                 # Just plotting the real part for now
                 #psi_real = psi_array.real
                 # Grab the scales t, z, and kz
                 t  = np.array(f['scales']['sim_time'])
                 z  = np.array(f['scales']['z']['1.0'])
                 kz = np.array(f['scales']['kz'])
-    return t, z, kz, psi_array, psi_c_array
+    return t, z, kz, psi_array#, psi_c_array
 
 # fourier transform in time, filter negative freq's, inverse fourier transform
 def FT_in_time(t, z, data, dt):
@@ -145,7 +145,7 @@ def IFT_in_space(t, k_zs, data_up):
 
 ###############################################################################
 # Get the data from the snapshot files
-t, z, kz, psi, psi_c = get_h5_data(tasks, h5_files)
+t, z, kz, psi = get_h5_data(tasks, h5_files)
 #c_data = hf.sort_k_coeffs(raw_data, nz)
 
 BP_array = hf.BP_n_steps(sbp.n_steps, sbp.z, z0_dis, zf_dis, sbp.step_th)
@@ -156,14 +156,14 @@ BP_array = hf.BP_n_steps(sbp.n_steps, sbp.z, z0_dis, zf_dis, sbp.step_th)
 if sbp.plot_spacetime:
     hf.plot_z_vs_t(z, t, T, psi.real, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=sbp.plot_full_domain, nT=sbp.nT)#, title_str=run_name)
 
-if sbp.plot_wavespace:
-    hf.plot_k_vs_t(z, t, T, psi.real, psi.imag, k, m, omega, title_str='psi', filename='f_1D_psi_r_i.png')
-
-if sbp.plot_wavespace:
-    hf.plot_k_vs_t(hf.sort_k_coeffs(kz,1024), t, T, psi_c.real, psi_c.imag, k, m, omega, title_str='psi_c', filename='f_1D_psic_r_i.png')
+# if sbp.plot_wavespace:
+#     hf.plot_k_vs_t(z, t, T, psi.real, psi.imag, k, m, omega, title_str='psi', filename='f_1D_psi_r_i.png')
+#
+# if sbp.plot_wavespace:
+#     hf.plot_k_vs_t(hf.sort_k_coeffs(kz,1024), t, T, psi_c.real, psi_c.imag, k, m, omega, title_str='psi_c', filename='f_1D_psic_r_i.png')
 
 if sbp.plot_amplitude:
-    hf.plot_A_vs_t(t, T, data, sbp.A, k, m, omega, nT=sbp.nT)#, title_str=run_name)
+    hf.plot_A_vs_t(t, T, psi.real, sbp.A, k, m, omega, nT=sbp.nT)#, title_str=run_name)
 
 # raise SystemExit(0)
 
@@ -210,14 +210,8 @@ big_T = hf.measure_T(dn_field, z, -0.25, -0.75, dz)
 print("Transmission coefficient is:", big_T)
 
 ###############################################################################
-# More plotting
-
-if sbp.plot_spacetime:
-    hf.plot_z_vs_t(z, t, T, data, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=plot_f_d, nT=nT)
+# More plotting for up and down waves
 
 if sbp.plot_up_dn:
     hf.plot_z_vs_t(z, t, T, up_field, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=plot_f_d, nT=nT, filename='f_1D_up_field.png')
     hf.plot_z_vs_t(z, t, T, dn_field, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=plot_f_d, nT=nT, filename='f_1D_dn_field.png')
-
-if sbp.plot_spacetime:
-    hf.plot_z_vs_t(z, t, T, up_c, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=plot_f_d, nT=nT, filename='f_1D_dn.png')

@@ -14,7 +14,7 @@ DATETIME=`date +"%Y-%m-%d_%Hh%M"`
 # VER = 1
 #	-> run the script
 # VER = 2
-#	-> run the script and merge
+#	-> run the script, merge, and post-process
 # VER = 3
 #	-> merge, plot frames, create gif, create mp4, etc
 # VER = 4
@@ -147,8 +147,8 @@ fi
 
 ###############################################################################
 # post-process - note: already checked if snapshots exist in step above
-#	if (VER = 4)
-if [ $VER -eq 4 ]
+#	if (VER = 2, 4)
+if [ $VER -eq 2 ] || [ $VER -eq 4 ]
 then
 	echo ''
 	echo '--Post processing--'

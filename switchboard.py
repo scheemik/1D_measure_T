@@ -14,8 +14,8 @@ from dedalus import public as de
 # Main parameters, the ones I'll change a lot. Many more below
 
 # Run parameters
-stop_n_periods  = 35            # [] oscillation periods
-extend_to_pwr_2 = True          # [] Extend simulation time so dt is a power of 2
+stop_n_periods  = 28            # [] oscillation periods
+extend_to_pwr_2 = True          # [] Extend simulation time so nt is a power of 2
 
 # Displayed domain parameters
 nz     = 1024                   # [] number of grid points in the z direction
@@ -83,6 +83,15 @@ rotation_term           = False
 use_sponge              = True
 use_rayleigh_friction   = False
 boundary_forcing_region = True  # If False, waves will be forced over entire domain
+
+# Plotting parameters
+plot_spacetime = True
+plot_wavespace = False
+plot_amplitude = True
+plot_windows   = True
+plot_up_dn     = True
+# If true, plot will include full simulated domain, if false, just the display domain
+plot_full_domain = True
 
 # # Measurements
 # take_ef_comp  = False # Energy flux terms recorded separately
@@ -171,14 +180,6 @@ g           = 9.81          # [m/s^2] Acceleration due to gravity
 
 ###############################################################################
 # Plotting parameters
-
-plot_spacetime = False
-plot_wavespace = False
-plot_amplitude = False
-plot_windows   = False
-plot_up_dn     = True
-# If true, plot will include full simulated domain, if false, just the display domain
-plot_full_domain = True
 
 # Dark mode on or off (ideally would make plots that have white text and alpha background)
 dark_mode = False
