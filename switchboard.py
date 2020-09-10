@@ -155,8 +155,8 @@ else:
 # Measuring the Transmission Coefficient
 
 # Parameters
-z_I             = 0.125         # [m] depth at which incident wave is measured
-z_T             = 32         # [m] depth at which transmitted wave is measured
+z_I             = -0.25         # [m] depth at which incident wave is measured
+z_T             = -0.75         # [m] depth at which transmitted wave is measured
 T_skip          = 3             # []  number of oscillation periods to skip before measuring
 
 ###############################################################################

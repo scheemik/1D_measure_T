@@ -237,6 +237,36 @@ def plot_z_vs_t(z, t_array, T, w_array, BP_array, k, m, omega, z0_dis=None, zf_d
     #plt.show()
     plt.savefig(filename)
 
+def plot_A_of_I_T(z_array, t_array, T, dn_array, z_I, z_T, tol, k, m, omega, nT=0.0, title_str='Forced 1D Wave', filename='f_1D_A_of_I_T.png'):
+    # Set aspect ratio of overall figure
+    w, h = mpl.figure.figaspect(0.5)
+    # This dictionary makes each subplot have the desired ratios
+    # The length of heights will be nrows and likewise len(widths)=ncols
+    plot_ratios = {'height_ratios': [1,1],
+                   'width_ratios': [1]}
+    # Set ratios by passing dictionary as 'gridspec_kw', and share y axis
+    fig, axes = plt.subplots(figsize=(w,h), nrows=2, ncols=1, gridspec_kw=plot_ratios, sharex=True)
+    #
+    # Find the indicies of the z's closest to z_I and z_T
+    idx_I = find_nearest_index(z_array, z_I, tol)
+    idx_T = find_nearest_index(z_array, z_T, tol)
+    #
+    axes[0].plot(t_array/T, dn_array[idx_I], color=my_clrs['b'], label=r'$I$')
+    axes[1].plot(t_array/T, dn_array[idx_T], color=my_clrs['b'], label=r'$T$')
+    axes[1].axvline(x=nT, color=my_clrs['black'], linestyle='--')
+    #
+    axes[0].set_xlim(t_array[0]/T, t_array[-1]/T)
+    axes[1].set_xlabel(r'$t/T$')
+    axes[0].set_ylabel(r'Amplitude')
+    axes[1].set_ylabel(r'Amplitude')
+    axes[0].set_title(r'$z_I=%s$' %(z_I))
+    axes[1].set_title(r'$z_T=%s$' %(z_T))
+    param_formated_str = latex_exp(k)+', '+latex_exp(m)+', '+latex_exp(omega)
+    fig.suptitle(r'%s, $(k,m,\omega)$=(%s)' %(title_str, param_formated_str))
+    #plt.show()
+    plt.savefig(filename)
+
+# Depricated function
 def plot_A_vs_t(t_array, T, data_array, A, k, m, omega, nT=0.0, title_str='Forced 1D Wave', filename='f_1D_A_vs_t.png'):
     # Set aspect ratio of overall figure
     w, h = mpl.figure.figaspect(0.5)

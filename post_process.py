@@ -56,6 +56,9 @@ nT=sbp.nT
 n_steps = sbp.n_steps
 step_th = sbp.step_th
 
+z_I = sbp.z_I
+z_T = sbp.z_T
+
 ###############################################################################
 # Helper functions
 #   This import assumes the helper functions are in the same directory as the core code
@@ -162,9 +165,6 @@ if sbp.plot_spacetime:
 # if sbp.plot_wavespace:
 #     hf.plot_k_vs_t(hf.sort_k_coeffs(kz,1024), t, T, psi_c.real, psi_c.imag, k, m, omega, title_str='psi_c', filename='f_1D_psic_r_i.png')
 
-if sbp.plot_amplitude:
-    hf.plot_A_vs_t(t, T, psi.real, sbp.A, k, m, omega, nT=sbp.nT)#, title_str=run_name)
-
 # raise SystemExit(0)
 
 ###############################################################################
@@ -206,11 +206,14 @@ if profile_it == True:
 ###############################################################################
 # Measuring the transmission coefficient
 
-big_T = hf.measure_T(dn_field, z, -0.25, -0.75, dz)
+big_T = hf.measure_T(dn_field, z, z_I, z_T, dz)
 print("Transmission coefficient is:", big_T)
 
 ###############################################################################
 # More plotting for up and down waves
+
+if sbp.plot_amplitude:
+    hf.plot_A_of_I_T(z, t, T, dn_field, z_I, z_T, dz, k, m, omega)
 
 if sbp.plot_up_dn:
     hf.plot_z_vs_t(z, t, T, up_field, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=plot_f_d, nT=nT, filename='f_1D_up_field.png')
