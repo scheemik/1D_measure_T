@@ -88,28 +88,16 @@ def get_h5_data(tasks, h5_files):
 def FT_in_time(t, z, data, dt):
     # FT in time of the data (axis 1 is time)
     ftd = np.fft.fft(data, axis=1)
-    print(ftd.shape)
     # find relevant frequencies
     freq = np.fft.fftfreq(len(t), dt)
-    print('freq', len(freq))
-    f_grid, z_grid = np.meshgrid(freq, z)
     # Filter out negative frequencies
-    #   I can make this more efficient, I only need to go over one dimension
-    # for i in range(len(freq)-1):
-    #     if freq[i] < 0.0:
-    #         # Gets rid of negative freq's
-    #         ftd[i][:] = ftd[i][:] * 0.0
-    #     else:
-    #         # Corrects for lost amplitude
-    #         ftd[i][:] = ftd[i][:] * 2.0
-    for i in range(f_grid.shape[0]):
-        for j in range(f_grid.shape[1]):
-            if f_grid[i][j] < 0.0:
-                # Gets rid of negative freq's
-                ftd[i][j] = 0
-            else:
-                # Corrects for lost amplitude
-                ftd[i][j] = ftd[i][j] * 2.0
+    for j in range(len(freq)):
+        if freq[j] < 0.0:
+            # Gets rid of negative freq's
+            ftd[:,j] = 0.0
+        else:
+            # Corrects for lost amplitude
+            ftd[:,j] = ftd[:,j] * 2.0
     # inverse fourier transform in time of the data
     iftd = np.fft.ifft(ftd, axis=1)
     #   a complex valued signal where iftd.real == data, or close enough
@@ -127,10 +115,10 @@ def FT_in_space(t, k_zs, data):
     for i in range(len(k_zs)):#k_grid.shape[0]):
         if k_zs[i] > 0.0:
             # for down, remove values for positive wave numbers
-            fzdn[i][:] = 0.0
+            fzdn[i,:] = 0.0
         else:
             # for up, remove values for negative wave numbers
-            fzdp[i][:] = 0.0
+            fzdp[i,:] = 0.0
     # inverse fourier transform in space (z)
     ifzdp = np.fft.ifft(fzdp, axis=0)
     ifzdn = np.fft.ifft(fzdn, axis=0)
@@ -203,8 +191,11 @@ def Complex_Demodulate(t_then_z, t, z, kz, data, dt):
     return up_field, dn_field
 
 t_then_z = False
-profile_it = False
 up_field, dn_field = Complex_Demodulate(t_then_z, t, z, kz, psi, dt)
+
+###############################################################################
+# Profiling the code
+profile_it = False
 if profile_it == True:
     import cProfile
     cProfile.run('Complex_Demodulate(t_then_z, t, z, kz, psi, dt)', 'restats')
@@ -212,19 +203,14 @@ if profile_it == True:
     from pstats import SortKey
     p = pstats.Stats('restats')
     p.sort_stats(SortKey.CUMULATIVE).print_stats(10)
+###############################################################################
+# Measuring the transmission coefficient
 
-# # Complex demodulation using c_data
-# ## Step 1
-# data_c_up, data_c_dn = IFT_in_space(t, kz, c_data)
-# ## Step 2
-# up_f = FT_in_time(t, z, data_c_up, dt)
-# dn_f = FT_in_time(t, z, data_c_dn, dt)
-# # Get up and down fields as F = |mag_f| * exp(i*phi_f)
-# up_c = up_f.real * np.exp(np.real(1j * up_f.imag))
-# dn_c = dn_f.real * np.exp(np.real(1j * dn_f.imag))
+big_T = hf.measure_T(dn_field, z, -0.25, -0.75, dz)
+print("Transmission coefficient is:", big_T)
 
-# big_T = hf.measure_T(dn_field, z, -0.25, -0.75, dz)
-# print("Transmission coefficient is:", big_T)
+###############################################################################
+# More plotting
 
 if sbp.plot_spacetime:
     hf.plot_z_vs_t(z, t, T, data, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=plot_f_d, nT=nT)
