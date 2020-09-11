@@ -22,25 +22,33 @@ def find_nearest_index(array, value, tolerance):
     value       the given value in question
     tolerance   how big a difference is allowed between values
     """
+    class Error(Exception):
+        pass
     # Use a bisection search function from numpy
     idx = np.searchsorted(array, value, side="left")
     # Check if the found index is one of the endpoints
     if idx == 0:
-        # Find difference between given and found values
-        diff = np.abs(value - array[0])
-        # If the difference > tolerance, return None
-        if diff > tolerance:
-            return None
-        else:
-            return idx
+        raise Error("Value to the left of index range")
+        return None
+        # # Find difference between given and found values
+        # diff = np.abs(value - array[0])
+        # # If the difference > tolerance, return None
+        # if diff > tolerance:
+        #     raise Error("Value to the left of index range")
+        #     return None
+        # else:
+        #     return idx
     elif idx == len(array):
-        # Find difference between given and found values
-        diff = np.abs(value - array[idx-1])
-        # If the difference > tolerance, return None
-        if diff > tolerance:
-            return None
-        else:
-            return idx-1
+        raise Error("Value to the right of index range")
+        return None
+        # # Find difference between given and found values
+        # diff = np.abs(value - array[idx-1])
+        # # If the difference > tolerance, return None
+        # if diff > tolerance:
+        #     raise Error("Value to the right of index range")
+        #     return None
+        # else:
+        #     return idx-1
     # If closer to the right index, return index
     elif np.abs(value - array[idx]) < np.abs(value - array[idx-1]):
         return idx
@@ -278,15 +286,24 @@ def plot_A_of_I_T(z_array, t_array, T, dn_array, z_I, z_T, tol, k, m, omega, nT=
     # Set ratios by passing dictionary as 'gridspec_kw', and share y axis
     fig, axes = plt.subplots(figsize=(w,h), nrows=2, ncols=1, gridspec_kw=plot_ratios, sharex=True)
     #
+    print('dn_array.shape', dn_array.shape)
     # Find the indicies of the z's closest to z_I and z_T
+    print('z_I', z_I)
+    print('z_T', z_T)
+    np.savetxt('z_array.csv', z_array)
+    print(z_array)
     idx_I = find_nearest_index(z_array, z_I, tol)
+    print('idx_I', idx_I)
     idx_T = find_nearest_index(z_array, z_T, tol)
     # Create arrays for I and T
+    print('dn_array[idx_I].shape', dn_array[idx_I].shape)
     arr_I = dn_array[idx_I]
     arr_T = dn_array[idx_T]
+    print('arr_I.shape', arr_I.shape)
     # Take complex conjugate
     arr_I = arr_I * np.conj(arr_I)
     arr_T = arr_T * np.conj(arr_T)
+    print('arr_I.shape', arr_I.shape)
     #
     axes[0].plot(t_array/T, arr_I, color=my_clrs['b'], label=r'$I$')
     axes[1].plot(t_array/T, arr_T, color=my_clrs['b'], label=r'$T$')

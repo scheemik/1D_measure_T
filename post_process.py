@@ -149,9 +149,10 @@ def IFT_in_space(t, k_zs, data_up):
 ###############################################################################
 # Get the data from the snapshot files
 t, z, kz, psi = get_h5_data(tasks, h5_files)
-#c_data = hf.sort_k_coeffs(raw_data, nz)
+# z array comes out sorted from most positive to most negative. I'll flip that around
+z = np.flip(z)
 
-BP_array = hf.BP_n_steps(sbp.n_steps, sbp.z, z0_dis, zf_dis, sbp.step_th)
+BP_array = hf.BP_n_steps(sbp.n_steps, sbp.z, sbp.z0_str, sbp.zf_str)
 
 ###############################################################################
 # Sanity check plots
@@ -206,8 +207,8 @@ if profile_it == True:
 ###############################################################################
 # Measuring the transmission coefficient
 
-big_T = hf.measure_T(dn_field, z, z_I, z_T, dz, T_skip=T_skip, T=T, t=t, dt=dt)
-print("Transmission coefficient is:", big_T)
+# big_T = hf.measure_T(dn_field, z, z_I, z_T, dz, T_skip=T_skip, T=T, t=t, dt=dt)
+# print("Transmission coefficient is:", big_T)
 
 ###############################################################################
 # More plotting for up and down waves
@@ -216,5 +217,5 @@ if sbp.plot_amplitude:
     hf.plot_A_of_I_T(z, t, T, dn_field, z_I, z_T, dz, k, m, omega, nT=T_skip)
 
 if sbp.plot_up_dn:
-    hf.plot_z_vs_t(z, t, T, up_field, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=plot_f_d, nT=T_skip, filename='f_1D_up_field.png')
-    hf.plot_z_vs_t(z, t, T, dn_field, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=plot_f_d, nT=T_skip, filename='f_1D_dn_field.png')
+    hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=plot_f_d, nT=T_skip, filename='f_1D_up_field.png')
+    hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=plot_f_d, nT=T_skip, filename='f_1D_dn_field.png')

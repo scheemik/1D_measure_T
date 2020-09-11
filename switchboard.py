@@ -14,7 +14,7 @@ from dedalus import public as de
 # Main parameters, the ones I'll change a lot. Many more below
 
 # Relevant parameters
-mL      = 1                     # [] vertical wave number times step length
+mL      = 5                     # [] vertical wave number times step length
 theta   = True                  # [] angle between wave's propagation and horizontal (or vertical?)
 
 # Run parameters
@@ -24,9 +24,9 @@ extend_to_pwr_2 = True          # [] Extend simulation time so nt is a power of 
 # Displayed domain parameters
 nz     = 1024                   # [] number of grid points in the z direction
 z0_dis = 0.0                    # [m] the top of the displayed z domain
-Lz_dis = 1.0                    # [m] the length of the z domain between forcing and sponge
-#
-zf_dis = z0_dis - Lz_dis        # [m] The bottom of the displayed domain
+# Lz_dis = 1.0                    # [m] the length of the z domain between forcing and sponge
+# #
+# zf_dis = z0_dis - Lz_dis        # [m] The bottom of the displayed domain
 
 # Problem parameters
 A       = 2.0e-4                # []            Amplitude of boundary forcing
@@ -34,7 +34,7 @@ N_0     = 1.0                   # [rad/s]       Reference stratification
 f_0     = 0.000                 # [s^-1]        Reference Coriolis parameter
 set_case= 1                     # Picks combination of variables to set in switch below
 if set_case == 1:
-    lam_z   = Lz_dis / 4.0          # [m]           Vertical wavelength
+    lam_z   = 1.0 / 4.0             # [m]           Vertical wavelength
     lam_x   = lam_z                 # [m]           Horizontal wavelength
     #
     m       = 2*np.pi / lam_z       # [m^-1]        Vertical wavenumber
@@ -84,11 +84,11 @@ use_rayleigh_friction   = False
 boundary_forcing_region = True  # If False, waves will be forced over entire domain
 
 # Plotting parameters
-plot_spacetime = False
+plot_spacetime = True
 plot_wavespace = False
-plot_amplitude = False
+plot_amplitude = True
 plot_windows   = True
-plot_up_dn     = False
+plot_up_dn     = True
 # If true, plot will include full simulated domain, if false, just the display domain
 plot_full_domain = True
 
@@ -100,7 +100,7 @@ plot_full_domain = True
 ###############################################################################
 # Background profile in N_0
 n_steps = 1
-step_th = 1.0/m
+step_th = mL/m
 L       = step_th
 
 ###############################################################################
