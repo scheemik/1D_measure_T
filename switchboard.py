@@ -13,16 +13,20 @@ from dedalus import public as de
 ###############################################################################
 # Main parameters, the ones I'll change a lot. Many more below
 
+# Relevant parameters
+mL      = 1                     # [] vertical wave number times step length
+theta   = True                  # [] angle between wave's propagation and horizontal (or vertical?)
+
 # Run parameters
 stop_n_periods  = 28            # [] oscillation periods
 extend_to_pwr_2 = True          # [] Extend simulation time so nt is a power of 2
 
 # Displayed domain parameters
 nz     = 1024                   # [] number of grid points in the z direction
-zf_dis = 0.0                    # [m] the top of the displayed z domain
+z0_dis = 0.0                    # [m] the top of the displayed z domain
 Lz_dis = 1.0                    # [m] the length of the z domain between forcing and sponge
 #
-z0_dis = zf_dis - Lz_dis        # [m] The bottom of the displayed domain
+zf_dis = z0_dis - Lz_dis        # [m] The bottom of the displayed domain
 
 # Problem parameters
 A       = 2.0e-4                # []            Amplitude of boundary forcing
@@ -82,8 +86,8 @@ boundary_forcing_region = True  # If False, waves will be forced over entire dom
 # Plotting parameters
 plot_spacetime = False
 plot_wavespace = False
-plot_amplitude = True
-plot_windows   = False
+plot_amplitude = False
+plot_windows   = True
 plot_up_dn     = False
 # If true, plot will include full simulated domain, if false, just the display domain
 plot_full_domain = True
@@ -94,24 +98,44 @@ plot_full_domain = True
 # take_ef_snaps = False # Total energy flux recorded
 
 ###############################################################################
+# Background profile in N_0
+n_steps = 1
+step_th = 1.0/m
+L       = step_th
+
+###############################################################################
+# Buffers and important depths
+
+# Buffers
+#   distance between ends of vertical structure extent and other points
+dis_buff    = 2*lam_z           # [m] buffer from vertical structure to display domain
+IT_buff     = dis_buff/2.0      # [m] buffer from vertical structure to measure I and T
+
+# Depths
+z0_str  = z0_dis - dis_buff     # [m] top of vertical structure
+z_I     = z0_str + IT_buff      # [m] depth at which to measure Incident wave
+zf_str  = z0_str - L            # [m] bottom of vertical structure
+z_T     = zf_str - IT_buff      # [m] depth at which to measure Transmitted wave
+zf_dis  = zf_str - dis_buff     # [m] bottom of display domain
+
+###############################################################################
 # Boundary forcing window parameters
 b_bf    = 1*lam_z               # [m] full width at half max of forcing window
 a_bf    = 3*b_bf                # [m] forcing area, height above display domain
-c_bf    = zf_dis + 0.5*a_bf     # [m] center of forcing area
-tau_bf  = 1.0e-0                 # [s] time constant for boundary forcing
+c_bf    = z0_dis + 0.5*a_bf     # [m] center of forcing area
+tau_bf  = 1.0e-0                # [s] time constant for boundary forcing
 
 # Sponge layer window parameters
 b_sp    = 1*lam_z               # [m] full width at half max of sponge window
 a_sp    = 3*b_sp                # [m] sponge area, height below display domain
-c_sp    = z0_dis - 0.5*a_sp     # [m] center of sponge area
+c_sp    = zf_dis - 0.5*a_sp     # [m] center of sponge area
 tau_sp  = 1.0e-0                # [s] time constant for sponge layer
 
 ###############################################################################
-###############################################################################
 # Simulated domain parameters
-zf     = zf_dis + a_bf          # [m] top of simulated domain
-z0     = z0_dis - a_sp          # [m] bottom of simulated domain
-Lz     = zf - z0                # [m] length of simulated domain
+z0     = z0_dis + a_bf          # [m] top of simulated domain
+zf     = zf_dis - a_sp          # [m] bottom of simulated domain
+Lz     = abs(zf - z0)           # [m] length of simulated domain
 dz     = Lz / nz                # [m] spacing between each grid point
 dealias= 3/2                    # [] dealiasing factor
 
@@ -125,11 +149,7 @@ z = domain.grid(0)
 ks = z_basis.wavenumbers
 
 ###############################################################################
-# Profiles for simulation
-
-# Background profile in N_0
-n_steps = 1
-step_th = 1.0/m
+# Windows for simulation
 
 # Boundary forcing window 2
 if boundary_forcing_region == True:
@@ -150,8 +170,6 @@ else:
 # Measuring the Transmission Coefficient
 
 # Parameters
-z_I             = -0.25         # [m] depth at which incident wave is measured
-z_T             = -0.75         # [m] depth at which transmitted wave is measured
 T_skip          = 15            # []  number of oscillation periods to skip before measuring
 
 ###############################################################################

@@ -128,24 +128,26 @@ def extended_stop_time(sim_time_stop, dt):
 ###############################################################################
 
 # Background profile in N_0
-def BP_n_steps(n, z, z0_dis, zf_dis, th):
+def BP_n_steps(n, z, z0_str, zf_str):
     """
     n           number of steps
     z           array of z values
-    z0_dis      bottom of display domain
-    zf_dis      top of display domain
-    th          step thickness
+    z0_str      top of vertical structure extent
+    zf_str      bottom of vertical structure extent
     """
     # create blank array the same size as z
     BP_array = z*0+1
-    # divide the display range for n steps
-    Lz_dis = zf_dis - z0_dis
+    # divide the vertical structure extent for n steps
+    Lz_str = abs(zf_str - z0_str)
     # find step separation
-    step_sep = Lz_dis / (n+1)
+    step_sep = Lz_str / (n+1)
+    # Loop across each i step
     for i in range(n):
-        step_c   = zf_dis - (i+1)*step_sep
-        step_top = step_c + (th/2)
-        step_bot = step_c - (th/2)
+        # Set center of step
+        step_c   = z0_str - (i+1)*step_sep
+        # Set top and bottom of step
+        step_top = step_c + step_sep
+        step_bot = step_c - step_sep
         for j in range(len(BP_array)):
             if z[j] < step_top and z[j] > step_bot:
                 BP_array[j] = 0
@@ -167,13 +169,24 @@ def make_DD_mask(z, z0_dis, zf_dis):
     return DD_array
 
 def add_dis_bounds(ax, z0_dis=None, zf_dis=None):
+    """
+    ax          axis for plot
+    z0_dis      top of vertical structure extent
+    zf_dis      bottom of vertical structure extent
+    """
     line_color = my_clrs['black']
-    if z0_dis != None:
+    if z0_dis != None and zf_dis != None:
         ax.axhline(y=z0_dis, color=line_color, linestyle='--')
         ax.axhline(y=zf_dis, color=line_color, linestyle='--')
 
 # Plot background profile
-def plot_BP(ax, BP, z, omega=None, z0_dis=None, zf_dis=None):
+def plot_BP(ax, BP, z, omega=None):
+    """
+    ax          axis for plot
+    BP          array of background profile in N_0
+    z           array of z values
+    omega       frequency of wave
+    """
     ax.plot(BP, z, color=my_clrs['N_0'], label=r'$N_0$')
     ax.set_xlabel(r'$N_0$ (s$^{-1}$)')
     ax.set_ylabel(r'$z$ (m)')
@@ -184,6 +197,15 @@ def plot_BP(ax, BP, z, omega=None, z0_dis=None, zf_dis=None):
         ax.legend()
 
 def plot_v_profiles(BP_array, bf_array, sp_array, z, omega=None, z0_dis=None, zf_dis=None, title_str='Forced 1D Wave', filename='f_1D_windows.png'):
+    """
+    BP_array    array of background profile in N_0
+    bf_array    array of boundary forcing window
+    sp_array    array of sponge layer window
+    z           array of z values
+    omega       frequency of wave
+    z0_dis      top of vertical structure extent
+    zf_dis      bottom of vertical structure extent
+    """
     # This dictionary makes each subplot have the desired ratios
     # The length of heights will be nrows and likewise len(widths)=ncols
     plot_ratios = {'height_ratios': [1],
@@ -196,7 +218,7 @@ def plot_v_profiles(BP_array, bf_array, sp_array, z, omega=None, z0_dis=None, zf
     #
     axes[1].plot(bf_array, z, color=my_clrs['F_bf'], label='Boundary forcing')
     axes[1].plot(sp_array, z, color=my_clrs['F_sp'], label='Sponge layer')
-    axes[1].plot(make_DD_mask(z, z0_dis, zf_dis), z, color=my_clrs['black'], label='Display Domain Mask')
+    # axes[1].plot(make_DD_mask(z, z0_dis, zf_dis), z, color=my_clrs['black'], label='Display Domain Mask')
     add_dis_bounds(axes[1], z0_dis, zf_dis)
     axes[1].set_xlabel('Amplitude')
     #axes[1].set_ylabel(r'$z$')

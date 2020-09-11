@@ -92,7 +92,7 @@ problem.substitutions['f_psi'] = "A*sin(m*z - omega*t)"
 ###############################################################################
 # Background Profile for N_0
 BP = domain.new_field(name = 'BP')
-BP_array = hf.BP_n_steps(sbp.n_steps, z, sbp.z0_dis, sbp.zf_dis, sbp.step_th)
+BP_array = hf.BP_n_steps(sbp.n_steps, z, sbp.z0_str, sbp.zf_str)
 BP['g'] = BP_array
 problem.parameters['BP'] = BP
 
@@ -122,6 +122,8 @@ problem.substitutions['S_term_psi'] = "win_sp * nabla2dt_psi / tau_sp"
 # Plotting windows
 if sbp.plot_windows:
     hf.plot_v_profiles(BP_array, sbp.win_bf_array, sbp.win_sp_array, z, omega, sbp.z0_dis, sbp.zf_dis, title_str=run_name)
+
+raise SystemExit(0)
 
 ###############################################################################
 # Define equations
