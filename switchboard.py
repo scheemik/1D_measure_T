@@ -14,7 +14,7 @@ from dedalus import public as de
 # Main parameters, the ones I'll change a lot. Many more below
 
 # Relevant parameters
-mL      = 5                     # [] vertical wave number times step length
+mL      = 1                     # [] vertical wave number times step length
 theta   = True                  # [] angle between wave's propagation and horizontal (or vertical?)
 
 # Run parameters

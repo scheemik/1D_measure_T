@@ -79,8 +79,6 @@ def get_h5_data(tasks, h5_files):
                 #   Also need to convert to np.array for plotting function
                 psi_array   = np.transpose(np.array(psi[()]))
                 # psi_c_array = np.transpose(np.array(psi_c[()]))
-                # Just plotting the real part for now
-                #psi_real = psi_array.real
                 # Grab the scales t, z, and kz
                 t  = np.array(f['scales']['sim_time'])
                 z  = np.array(f['scales']['z']['1.0'])
@@ -117,11 +115,11 @@ def FT_in_space(t, k_zs, data):
     #   Looping only over wavenumbers because their positions don't change with t
     for i in range(len(k_zs)):#k_grid.shape[0]):
         if k_zs[i] > 0.0:
-            # for down, remove values for positive wave numbers
-            fzdn[i,:] = 0.0
-        else:
-            # for up, remove values for negative wave numbers
+            # for up, remove values for positive wave numbers
             fzdp[i,:] = 0.0
+        else:
+            # for down, remove values for negative wave numbers
+            fzdn[i,:] = 0.0
     # inverse fourier transform in space (z)
     ifzdp = np.fft.ifft(fzdp, axis=0)
     ifzdn = np.fft.ifft(fzdn, axis=0)
@@ -149,8 +147,10 @@ def IFT_in_space(t, k_zs, data_up):
 ###############################################################################
 # Get the data from the snapshot files
 t, z, kz, psi = get_h5_data(tasks, h5_files)
-# z array comes out sorted from most positive to most negative. I'll flip that around
+# z and psi arrays come out sorted from most positive to most negative on z axis
+#   This flips things around (ud = up / down)
 z = np.flip(z)
+psi = np.flipud(psi)
 
 BP_array = hf.BP_n_steps(sbp.n_steps, sbp.z, sbp.z0_str, sbp.zf_str)
 
@@ -207,8 +207,8 @@ if profile_it == True:
 ###############################################################################
 # Measuring the transmission coefficient
 
-# big_T = hf.measure_T(dn_field, z, z_I, z_T, dz, T_skip=T_skip, T=T, t=t, dt=dt)
-# print("Transmission coefficient is:", big_T)
+big_T = hf.measure_T(dn_field, z, z_I, z_T, T_skip=T_skip, T=T, t=t)
+print("Transmission coefficient is:", big_T)
 
 ###############################################################################
 # More plotting for up and down waves

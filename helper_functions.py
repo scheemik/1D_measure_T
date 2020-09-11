@@ -15,40 +15,23 @@ from dedalus.extras.plot_tools import quad_mesh, pad_limits
 ###############################################################################
 # Measuring the Transmission Coefficient
 
-def find_nearest_index(array, value, tolerance):
+def find_nearest_index(array, value):
     """
     Assumes array is sorted
     array       a 1 D array of values
     value       the given value in question
-    tolerance   how big a difference is allowed between values
     """
     class Error(Exception):
         pass
     # Use a bisection search function from numpy
     idx = np.searchsorted(array, value, side="left")
-    # Check if the found index is one of the endpoints
+    # Assumes there is a problem if the result is an endpoint
     if idx == 0:
         raise Error("Value to the left of index range")
         return None
-        # # Find difference between given and found values
-        # diff = np.abs(value - array[0])
-        # # If the difference > tolerance, return None
-        # if diff > tolerance:
-        #     raise Error("Value to the left of index range")
-        #     return None
-        # else:
-        #     return idx
     elif idx == len(array):
         raise Error("Value to the right of index range")
         return None
-        # # Find difference between given and found values
-        # diff = np.abs(value - array[idx-1])
-        # # If the difference > tolerance, return None
-        # if diff > tolerance:
-        #     raise Error("Value to the right of index range")
-        #     return None
-        # else:
-        #     return idx-1
     # If closer to the right index, return index
     elif np.abs(value - array[idx]) < np.abs(value - array[idx-1]):
         return idx
@@ -56,27 +39,25 @@ def find_nearest_index(array, value, tolerance):
     else:
         return idx-1
 
-def measure_T(data, z, z_I, z_T, tol, T_skip=None, T=None, t=None, dt=None):
+def measure_T(data, z, z_I, z_T, T_skip=None, T=None, t=None):
     """
     data        array of the psi wavefield, complex valued
     z           array of z values
     z_I         depth at which to measure incident wave
     z_T         depth at which to measure transmitted wave
-    tol         tolerance for finding nearest z indices
     T_skip      oscillation periods to skip before measuring
     T           oscillation period in seconds
     z           array of time values
-    dt          tolerance for finding nearest t indices
     """
     # Find the indicies of the z's closest to z_I and z_T
-    idx_I = find_nearest_index(z, z_I, tol)
-    idx_T = find_nearest_index(z, z_T, tol)
+    idx_I = find_nearest_index(z, z_I)
+    idx_T = find_nearest_index(z, z_T)
     # Pull relevant depths from the data, take absolute value
     arr_I = data[:][idx_I]
     arr_T = data[:][idx_T]
     if T_skip != None:
         # find index of time after skip interval
-        idt   = find_nearest_index(t, T_skip*T, dt)
+        idt   = find_nearest_index(t, T_skip*T)
         arr_I = arr_I[idt:]
         arr_T = arr_T[idt:]
     # Multiply element wise by the complex conjugate, find maximum
@@ -286,24 +267,15 @@ def plot_A_of_I_T(z_array, t_array, T, dn_array, z_I, z_T, tol, k, m, omega, nT=
     # Set ratios by passing dictionary as 'gridspec_kw', and share y axis
     fig, axes = plt.subplots(figsize=(w,h), nrows=2, ncols=1, gridspec_kw=plot_ratios, sharex=True)
     #
-    print('dn_array.shape', dn_array.shape)
     # Find the indicies of the z's closest to z_I and z_T
-    print('z_I', z_I)
-    print('z_T', z_T)
-    np.savetxt('z_array.csv', z_array)
-    print(z_array)
-    idx_I = find_nearest_index(z_array, z_I, tol)
-    print('idx_I', idx_I)
-    idx_T = find_nearest_index(z_array, z_T, tol)
+    idx_I = find_nearest_index(z_array, z_I)
+    idx_T = find_nearest_index(z_array, z_T)
     # Create arrays for I and T
-    print('dn_array[idx_I].shape', dn_array[idx_I].shape)
     arr_I = dn_array[idx_I]
     arr_T = dn_array[idx_T]
-    print('arr_I.shape', arr_I.shape)
     # Take complex conjugate
     arr_I = arr_I * np.conj(arr_I)
     arr_T = arr_T * np.conj(arr_T)
-    print('arr_I.shape', arr_I.shape)
     #
     axes[0].plot(t_array/T, arr_I, color=my_clrs['b'], label=r'$I$')
     axes[1].plot(t_array/T, arr_T, color=my_clrs['b'], label=r'$T$')
