@@ -2,9 +2,10 @@
 Performs post-processing actions. Run with $ python3 post_process.py snapshots/*.h5
 
 Usage:
-    post_process.py <files>... [--output=<dir>]
+    post_process.py NAME <files>... [--output=<dir>]
 
 Options:
+    NAME        # name of the experiment run from -n
     <files>         # h5 snapshot files
 
 """
@@ -22,6 +23,7 @@ from dedalus.extras.plot_tools import quad_mesh
 # Parse input parameters
 from docopt import docopt
 args = docopt(__doc__)
+run_name = args['NAME']
 h5_files = args['<files>']
 
 ###############################################################################
@@ -158,7 +160,7 @@ BP_array = hf.BP_n_steps(sbp.n_steps, sbp.z, sbp.z0_str, sbp.zf_str)
 # Sanity check plots
 
 if sbp.plot_spacetime:
-    hf.plot_z_vs_t(z, t, T, psi.real, BP_array, k, m, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=sbp.plot_full_domain, nT=T_skip)#, title_str=run_name)
+    hf.plot_z_vs_t(z, t, T, psi.real, BP_array, k, m, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=sbp.plot_full_domain, nT=T_skip, title_str=run_name)
 
 # if sbp.plot_wavespace:
 #     hf.plot_k_vs_t(z, t, T, psi.real, psi.imag, k, m, omega, title_str='psi', filename='f_1D_psi_r_i.png')
@@ -214,8 +216,8 @@ print("Transmission coefficient is:", big_T)
 # More plotting for up and down waves
 
 if sbp.plot_amplitude:
-    hf.plot_A_of_I_T(z, t, T, dn_field, z_I, z_T, dz, k, m, omega, nT=T_skip)
+    hf.plot_A_of_I_T(z, t, T, dn_field, z_I, z_T, dz, k, m, omega, nT=T_skip, title_str=run_name)
 
 if sbp.plot_up_dn:
-    hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, k, m, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, filename='f_1D_up_field.png')
-    hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, k, m, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, filename='f_1D_dn_field.png')
+    hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, k, m, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, title_str=run_name, filename='f_1D_up_field.png')
+    hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, k, m, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, title_str=run_name, filename='f_1D_dn_field.png')

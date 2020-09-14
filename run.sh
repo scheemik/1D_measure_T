@@ -162,7 +162,7 @@ then
 		exit 1
 	fi
 	echo 'Running post processing script'
-	${python_command} $post_process $snapshot_path/*.h5
+	${python_command} $post_process $NAME $snapshot_path/*.h5
 	echo 'Done post processing'
 fi
 
