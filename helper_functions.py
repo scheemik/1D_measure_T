@@ -23,6 +23,10 @@ def find_nearest_index(array, value):
     """
     class Error(Exception):
         pass
+    # Check to make sure array is in the correct order
+    if array[0] > array[-1]:
+        raise Error("Array sorted incorrectly")
+        return 0
     # Use a bisection search function from numpy
     idx = np.searchsorted(array, value, side="left")
     # Assumes there is a problem if the result is an endpoint
