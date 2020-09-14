@@ -18,15 +18,12 @@ mL      = 1                     # [] vertical wave number times step length
 theta   = True                  # [] angle between wave's propagation and horizontal (or vertical?)
 
 # Run parameters
+nz              = 1024          # [] number of grid points in the z direction
 stop_n_periods  = 28            # [] oscillation periods
 extend_to_pwr_2 = True          # [] Extend simulation time so nt is a power of 2
 
 # Displayed domain parameters
-nz     = 1024                   # [] number of grid points in the z direction
 z0_dis = 0.0                    # [m] the top of the displayed z domain
-# Lz_dis = 1.0                    # [m] the length of the z domain between forcing and sponge
-# #
-# zf_dis = z0_dis - Lz_dis        # [m] The bottom of the displayed domain
 
 # Problem parameters
 A       = 2.0e-4                # []            Amplitude of boundary forcing

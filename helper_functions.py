@@ -168,6 +168,17 @@ def add_dis_bounds(ax, z0_dis=None, zf_dis=None):
         ax.axhline(y=z0_dis, color=line_color, linestyle='--')
         ax.axhline(y=zf_dis, color=line_color, linestyle='--')
 
+def add_measure_lines(ax, z_I=None, z_T=None):
+    """
+    ax          axis for plot
+    z_I         depth at which to measure Incident wave
+    z_T         depth at which to measure Transmitted wave
+    """
+    line_color = my_clrs['w']
+    if z_I != None and z_T != None:
+        ax.axhline(y=z_I, color=line_color, linestyle='--')
+        ax.axhline(y=z_T, color=line_color, linestyle='--')
+
 # Plot background profile
 def plot_BP(ax, BP, z, omega=None):
     """
@@ -185,7 +196,7 @@ def plot_BP(ax, BP, z, omega=None):
         ax.axvline(x=omega, color=my_clrs['omega'], linestyle='--', label=r'$\omega$')
         ax.legend()
 
-def plot_v_profiles(BP_array, bf_array, sp_array, z, omega=None, z0_dis=None, zf_dis=None, title_str='Forced 1D Wave', filename='f_1D_windows.png'):
+def plot_v_profiles(BP_array, bf_array, sp_array, z, omega=None, z0_dis=None, zf_dis=None, z_I=None, z_T=None, title_str='Forced 1D Wave', filename='f_1D_windows.png'):
     """
     BP_array    array of background profile in N_0
     bf_array    array of boundary forcing window
@@ -204,11 +215,13 @@ def plot_v_profiles(BP_array, bf_array, sp_array, z, omega=None, z0_dis=None, zf
     #
     plot_BP(axes[0], BP_array, z, omega)
     add_dis_bounds(axes[0], z0_dis, zf_dis)
+    add_measure_lines(axes[0], z_I, z_T)
     #
     axes[1].plot(bf_array, z, color=my_clrs['F_bf'], label='Boundary forcing')
     axes[1].plot(sp_array, z, color=my_clrs['F_sp'], label='Sponge layer')
     # axes[1].plot(make_DD_mask(z, z0_dis, zf_dis), z, color=my_clrs['black'], label='Display Domain Mask')
     add_dis_bounds(axes[1], z0_dis, zf_dis)
+    add_measure_lines(axes[1], z_I, z_T)
     axes[1].set_xlabel('Amplitude')
     #axes[1].set_ylabel(r'$z$')
     axes[1].set_title(r'Windows')
