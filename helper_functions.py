@@ -39,15 +39,33 @@ def find_nearest_index(array, value):
     else:
         return idx-1
 
+def max_amp_at_z(data, T_skip=None, T=None, t=None):
+    """
+    data        1D array of wave field for certain z, complex valued
+    T_skip      oscillation periods to skip before measuring
+    T           oscillation period in seconds
+    t           array of time values
+    """
+    if T_skip != None:
+        # find index of time after skip interval
+        idt   = find_nearest_index(t, T_skip*T)
+        arr_A = data[idt:]
+    # Multiply element wise by the complex conjugate, find maximum
+    return max(arr_A * np.conj(arr_A))
+
+
 def measure_T(data, z, z_I, z_T, T_skip=None, T=None, t=None):
     """
+    Measures the transmission coefficient for a filtered wave field
+    Expects the data to be only one direction of propagation
+    
     data        array of the psi wavefield, complex valued
     z           array of z values
     z_I         depth at which to measure incident wave
     z_T         depth at which to measure transmitted wave
     T_skip      oscillation periods to skip before measuring
     T           oscillation period in seconds
-    z           array of time values
+    t           array of time values
     """
     # Find the indicies of the z's closest to z_I and z_T
     idx_I = find_nearest_index(z, z_I)
@@ -55,14 +73,9 @@ def measure_T(data, z, z_I, z_T, T_skip=None, T=None, t=None):
     # Pull relevant depths from the data, take absolute value
     arr_I = data[:][idx_I]
     arr_T = data[:][idx_T]
-    if T_skip != None:
-        # find index of time after skip interval
-        idt   = find_nearest_index(t, T_skip*T)
-        arr_I = arr_I[idt:]
-        arr_T = arr_T[idt:]
-    # Multiply element wise by the complex conjugate, find maximum
-    I_ = max(arr_I * np.conj(arr_I))
-    T_ = max(arr_T * np.conj(arr_T))
+    # # Multiply element wise by the complex conjugate, find maximum
+    I_ = max_amp_at_z(arr_I, T_skip, T, t)
+    T_ = max_amp_at_z(arr_T, T_skip, T, t)
     # Return the ratio, the Transmission Coefficient
     return T_ / I_
 
