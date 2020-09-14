@@ -167,7 +167,7 @@ else:
 # Measuring the Transmission Coefficient
 
 # Parameters
-T_skip          = 15            # []  number of oscillation periods to skip before measuring
+T_skip          = 20            # []  number of oscillation periods to skip before measuring
 
 ###############################################################################
 # Run parameters

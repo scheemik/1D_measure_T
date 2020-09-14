@@ -50,15 +50,18 @@ def max_amp_at_z(data, T_skip=None, T=None, t=None):
         # find index of time after skip interval
         idt   = find_nearest_index(t, T_skip*T)
         arr_A = data[idt:]
+        max_amp = max(arr_A * np.conj(arr_A))
+    else:
+        max_amp = max(data * np.conj(data))
     # Multiply element wise by the complex conjugate, find maximum
-    return max(arr_A * np.conj(arr_A))
+    return max_amp
 
 
 def measure_T(data, z, z_I, z_T, T_skip=None, T=None, t=None):
     """
     Measures the transmission coefficient for a filtered wave field
     Expects the data to be only one direction of propagation
-    
+
     data        array of the psi wavefield, complex valued
     z           array of z values
     z_I         depth at which to measure incident wave
@@ -290,6 +293,8 @@ def plot_z_vs_t(z, t_array, T, w_array, BP_array, k, m, omega, z0_dis=None, zf_d
     #plt.show()
     plt.savefig(filename)
 
+###############################################################################
+
 def plot_A_of_I_T(z_array, t_array, T, dn_array, z_I, z_T, tol, k, m, omega, nT=0.0, title_str='Forced 1D Wave', filename='f_1D_A_of_I_T.png'):
     # Set aspect ratio of overall figure
     w, h = mpl.figure.figaspect(0.5)
@@ -326,6 +331,51 @@ def plot_A_of_I_T(z_array, t_array, T, dn_array, z_I, z_T, tol, k, m, omega, nT=
     #plt.show()
     plt.savefig(filename)
 
+###############################################################################
+
+def plot_I_and_T_for_z(BP_array, dn_array, z, k, m, omega, T_skip=None, T=None, t=None, z0_dis=None, zf_dis=None, z_I=None, z_T=None, title_str='Forced 1D Wave', filename='f_1D_I_and_T_for_z.png'):
+    """
+    Plots the max of the wave field times its complex conjugate for all depths
+
+    BP_array    array of background profile in N_0
+    dn_array    downward psi wavefield, complex valued
+    z           array of z values
+    omega       frequency of wave
+    z0_dis      top of vertical structure extent
+    zf_dis      bottom of vertical structure extent
+    """
+    # This dictionary makes each subplot have the desired ratios
+    # The length of heights will be nrows and likewise len(widths)=ncols
+    plot_ratios = {'height_ratios': [1],
+                   'width_ratios': [1,4]}
+    # Set ratios by passing dictionary as 'gridspec_kw', and share y axis
+    fig, axes = plt.subplots(nrows=1, ncols=2, gridspec_kw=plot_ratios, sharey=True)
+    # Plot the background profile of N_0
+    plot_BP(axes[0], BP_array, z, omega)
+    # Find maximum value of the field times its complex conjugate for each z
+    I_and_T_for_z = z*0.0
+    for i in range(len(z)):
+        I_and_T_for_z[i] = max_amp_at_z(dn_array[i], T_skip, T, t)
+    # Plot boudnary forcing and sponge layer windows
+    axes[1].plot(I_and_T_for_z, z, color=my_clrs['incident'], label='Amp')
+    # Add horizontal lines
+    if z0_dis != None and zf_dis != None:
+        add_dis_bounds(axes[0], z0_dis, zf_dis)
+        add_dis_bounds(axes[1], z0_dis, zf_dis)
+    if z_I != None and z_T != None:
+        add_measure_lines(axes[1], z_I, z_T)
+        add_measure_lines(axes[0], z_I, z_T)
+    # Add labels
+    axes[1].set_xlabel('Amplitude')
+    #axes[1].set_ylabel(r'$z$')
+    axes[1].set_title(r'Windows')
+    axes[1].legend()
+    #
+    param_formated_str = latex_exp(k)+', '+latex_exp(m)+', '+latex_exp(omega)
+    fig.suptitle(r'%s, $(k,m,\omega)$=(%s)' %(title_str, param_formated_str))
+    plt.savefig(filename)
+
+###############################################################################
 # Depricated function
 def plot_A_vs_t(t_array, T, data_array, A, k, m, omega, nT=0.0, title_str='Forced 1D Wave', filename='f_1D_A_vs_t.png'):
     # Set aspect ratio of overall figure
@@ -357,6 +407,8 @@ def plot_A_vs_t(t_array, T, data_array, A, k, m, omega, nT=0.0, title_str='Force
     fig.suptitle(r'%s, $(A,k,m,\omega)$=(%s)' %(title_str, param_formated_str))
     #plt.show()
     plt.savefig(filename)
+
+###############################################################################
 
 def sort_k_coeffs(arr, nz):
     if len(arr.shape) == 1:

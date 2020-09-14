@@ -47,19 +47,20 @@ T           = sbp.T             # [s]           Wave period
 
 # Parameters
 tasks = ['psi']
-skip_nT = 0
-nz = sbp.nz
-z0_dis = sbp.z0_dis
-zf_dis = sbp.zf_dis
-dt = sbp.dt
-dz = sbp.dz
-plot_f_d=sbp.plot_full_domain
-T_skip  = sbp.T_skip
-n_steps = sbp.n_steps
-step_th = sbp.step_th
+nz          = sbp.nz
+z0_dis      = sbp.z0_dis
+zf_dis      = sbp.zf_dis
 
-z_I = sbp.z_I
-z_T = sbp.z_T
+dt          = sbp.dt
+dz          = sbp.dz
+
+plot_f_d    = sbp.plot_full_domain
+T_skip      = sbp.T_skip
+n_steps     = sbp.n_steps
+step_th     = sbp.step_th
+
+z_I         = sbp.z_I
+z_T         = sbp.z_T
 
 ###############################################################################
 # Helper functions
@@ -217,6 +218,9 @@ print("Transmission coefficient is:", big_T)
 
 if sbp.plot_amplitude:
     hf.plot_A_of_I_T(z, t, T, dn_field, z_I, z_T, dz, k, m, omega, nT=T_skip, title_str=run_name)
+
+if sbp.plot_amplitude:
+    hf.plot_I_and_T_for_z(BP_array, dn_field, z, k, m, omega, T_skip=T_skip, T=T, t=t, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, title_str=run_name, filename='f_1D_I_and_T_for_z.png')
 
 if sbp.plot_up_dn:
     hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, k, m, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, title_str=run_name, filename='f_1D_up_field.png')
