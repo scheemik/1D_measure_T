@@ -158,7 +158,7 @@ BP_array = hf.BP_n_steps(sbp.n_steps, sbp.z, sbp.z0_str, sbp.zf_str)
 # Sanity check plots
 
 if sbp.plot_spacetime:
-    hf.plot_z_vs_t(z, t, T, psi.real, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=sbp.plot_full_domain, nT=T_skip)#, title_str=run_name)
+    hf.plot_z_vs_t(z, t, T, psi.real, BP_array, k, m, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=sbp.plot_full_domain, nT=T_skip)#, title_str=run_name)
 
 # if sbp.plot_wavespace:
 #     hf.plot_k_vs_t(z, t, T, psi.real, psi.imag, k, m, omega, title_str='psi', filename='f_1D_psi_r_i.png')
@@ -217,5 +217,5 @@ if sbp.plot_amplitude:
     hf.plot_A_of_I_T(z, t, T, dn_field, z_I, z_T, dz, k, m, omega, nT=T_skip)
 
 if sbp.plot_up_dn:
-    hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=plot_f_d, nT=T_skip, filename='f_1D_up_field.png')
-    hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, k, m, omega, z0_dis, zf_dis, plot_full_domain=plot_f_d, nT=T_skip, filename='f_1D_dn_field.png')
+    hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, k, m, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, filename='f_1D_up_field.png')
+    hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, k, m, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, filename='f_1D_dn_field.png')

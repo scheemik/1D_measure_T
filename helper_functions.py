@@ -176,8 +176,8 @@ def add_measure_lines(ax, z_I=None, z_T=None):
     """
     line_color = my_clrs['w']
     if z_I != None and z_T != None:
-        ax.axhline(y=z_I, color=line_color, linestyle='--')
-        ax.axhline(y=z_T, color=line_color, linestyle='--')
+        ax.axhline(y=z_I, color=my_clrs['incident'], linestyle='--')
+        ax.axhline(y=z_T, color=my_clrs['transmission'], linestyle='--')
 
 # Plot background profile
 def plot_BP(ax, BP, z, omega=None):
@@ -212,16 +212,19 @@ def plot_v_profiles(BP_array, bf_array, sp_array, z, omega=None, z0_dis=None, zf
                    'width_ratios': [1,4]}
     # Set ratios by passing dictionary as 'gridspec_kw', and share y axis
     fig, axes = plt.subplots(nrows=1, ncols=2, gridspec_kw=plot_ratios, sharey=True)
-    #
+    # Plot the background profile of N_0
     plot_BP(axes[0], BP_array, z, omega)
-    add_dis_bounds(axes[0], z0_dis, zf_dis)
-    add_measure_lines(axes[0], z_I, z_T)
-    #
+    # Plot boudnary forcing and sponge layer windows
     axes[1].plot(bf_array, z, color=my_clrs['F_bf'], label='Boundary forcing')
     axes[1].plot(sp_array, z, color=my_clrs['F_sp'], label='Sponge layer')
-    # axes[1].plot(make_DD_mask(z, z0_dis, zf_dis), z, color=my_clrs['black'], label='Display Domain Mask')
-    add_dis_bounds(axes[1], z0_dis, zf_dis)
-    add_measure_lines(axes[1], z_I, z_T)
+    # Add horizontal lines
+    if z0_dis != None and zf_dis != None:
+        add_dis_bounds(axes[0], z0_dis, zf_dis)
+        add_dis_bounds(axes[1], z0_dis, zf_dis)
+    if z_I != None and z_T != None:
+        add_measure_lines(axes[1], z_I, z_T)
+        add_measure_lines(axes[0], z_I, z_T)
+    # Add labels
     axes[1].set_xlabel('Amplitude')
     #axes[1].set_ylabel(r'$z$')
     axes[1].set_title(r'Windows')
@@ -232,7 +235,7 @@ def plot_v_profiles(BP_array, bf_array, sp_array, z, omega=None, z0_dis=None, zf
 
 ###############################################################################
 
-def plot_z_vs_t(z, t_array, T, w_array, BP_array, k, m, omega, z0_dis=None, zf_dis=None, plot_full_domain=True, nT=0.0, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave.png'):
+def plot_z_vs_t(z, t_array, T, w_array, BP_array, k, m, omega, z0_dis=None, zf_dis=None, z_I=None, z_T=None, plot_full_domain=True, nT=0.0, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave.png'):
     # Set aspect ratio of overall figure
     w, h = mpl.figure.figaspect(0.5)
     # This dictionary makes each subplot have the desired ratios
@@ -255,13 +258,17 @@ def plot_z_vs_t(z, t_array, T, w_array, BP_array, k, m, omega, z0_dis=None, zf_d
     # Add colorbar to im
     cbar = plt.colorbar(im)#, format=ticker.FuncFormatter(latex_exp))
     cbar.ax.ticklabel_format(style='sci', scilimits=(-2,2), useMathText=True)
-    #
+    # Add horizontal lines
     if plot_full_domain:
         add_dis_bounds(axes[0], z0_dis, zf_dis)
+        add_dis_bounds(axes[1], z0_dis, zf_dis)
     else:
         axes[0].set_ylim([z0_dis,zf_dis])
         axes[1].set_ylim([z0_dis,zf_dis])
         axes[1].set_xlim([nT,t_array[-1]/T])
+    if z_I != None and z_T != None:
+        add_measure_lines(axes[1], z_I, z_T)
+        add_measure_lines(axes[0], z_I, z_T)
     #
     axes[1].set_xlabel(r'$t/T$')
     axes[1].set_title(r'$\Psi$ (m$^2$/s)')
