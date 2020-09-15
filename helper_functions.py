@@ -1,7 +1,8 @@
 # Helper functions for Dedalus experiment
 """
 Description:
-This contains helper functions for the Dedalus code so the same version of functions can be called by multiple scripts
+This contains helper functions for the Dedalus code so the same version of
+    functions can be called by multiple scripts
 """
 
 import numpy as np
@@ -90,10 +91,15 @@ def measure_T(data, z, z_I, z_T, T_skip=None, T=None, t=None):
 ###############################################################################
 # Takes an exponential number and returns a string formatted nicely for latex
 #   Expects numbers in the format 7.0E+2
-def latex_exp(num, pos=None):
+def latex_exp(num):
+    """
+    Takes in a number, returns a string
+
+    num         number to be formatted
+    """
     if (isinstance(num, int)):
         # integer type, don't reformat
-        return num
+        return str(num)
     else:
         float_str = "{:.1E}".format(num)
         if "E" in float_str:
@@ -117,7 +123,12 @@ def latex_exp(num, pos=None):
             return float_str
 
 # takes in a value in radians and outputs the value in degrees
-def rad_to_degs(num, pos=None):
+def rad_to_degs(num):
+    """
+    Takes in a number, returns a string
+
+    num         number to be converted to degrees
+    """
     deg = int(round(math.degrees(num)))
     deg_str = str(deg) + r'$^\circ$'
     return deg_str
@@ -255,7 +266,7 @@ def plot_v_profiles(BP_array, bf_array, sp_array, z, omega=None, z0_dis=None, zf
 
 ###############################################################################
 
-def plot_z_vs_t(z, t_array, T, w_array, BP_array, k, m, omega, z0_dis=None, zf_dis=None, z_I=None, z_T=None, plot_full_domain=True, nT=0.0, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave.png'):
+def plot_z_vs_t(z, t_array, T, w_array, BP_array, mL, theta, omega, z0_dis=None, zf_dis=None, z_I=None, z_T=None, plot_full_domain=True, nT=0.0, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave.png'):
     # Set aspect ratio of overall figure
     w, h = mpl.figure.figaspect(0.5)
     # This dictionary makes each subplot have the desired ratios
@@ -292,14 +303,14 @@ def plot_z_vs_t(z, t_array, T, w_array, BP_array, k, m, omega, z0_dis=None, zf_d
     #
     axes[1].set_xlabel(r'$t/T$')
     axes[1].set_title(r'$\Psi$ (m$^2$/s)')
-    param_formated_str = latex_exp(k)+', '+latex_exp(m)+', '+latex_exp(omega)
-    fig.suptitle(r'%s, $(k,m,\omega)$=(%s)' %(title_str, param_formated_str))
+    param_formated_str = latex_exp(mL)+', '+rad_to_degs(theta)+', '+latex_exp(omega)
+    fig.suptitle(r'%s, $(mL,\theta,\omega)$=(%s)' %(title_str, param_formated_str))
     #plt.show()
     plt.savefig(filename)
 
 ###############################################################################
 
-def plot_A_of_I_T(z_array, t_array, T, dn_array, z_I, z_T, tol, k, m, omega, nT=0.0, title_str='Forced 1D Wave', filename='f_1D_A_of_I_T.png'):
+def plot_A_of_I_T(z_array, t_array, T, dn_array, z_I, z_T, tol, mL, theta, omega, nT=0.0, title_str='Forced 1D Wave', filename='f_1D_A_of_I_T.png'):
     # Set aspect ratio of overall figure
     w, h = mpl.figure.figaspect(0.5)
     # This dictionary makes each subplot have the desired ratios
@@ -330,14 +341,14 @@ def plot_A_of_I_T(z_array, t_array, T, dn_array, z_I, z_T, tol, k, m, omega, nT=
     axes[1].set_ylabel(r'Amplitude')
     axes[0].set_title(r'$z_I=%s$' %(z_I))
     axes[1].set_title(r'$z_T=%s$' %(z_T))
-    param_formated_str = latex_exp(k)+', '+latex_exp(m)+', '+latex_exp(omega)
-    fig.suptitle(r'%s, $(k,m,\omega)$=(%s)' %(title_str, param_formated_str))
+    param_formated_str = latex_exp(mL)+', '+rad_to_degs(theta)+', '+latex_exp(omega)
+    fig.suptitle(r'%s, $(mL,\theta,\omega)$=(%s)' %(title_str, param_formated_str))
     #plt.show()
     plt.savefig(filename)
 
 ###############################################################################
 
-def plot_I_and_T_for_z(BP_array, dn_array, z, k, m, omega, T_skip=None, T=None, t=None, z0_dis=None, zf_dis=None, z_I=None, z_T=None, title_str='Forced 1D Wave', filename='f_1D_I_and_T_for_z.png'):
+def plot_AA_for_z(BP_array, dn_array, z, mL, theta, omega, T_skip=None, T=None, t=None, z0_dis=None, zf_dis=None, z_I=None, z_T=None, title_str='Forced 1D Wave', filename='f_1D_AA_for_z.png'):
     """
     Plots the max of the wave field times its complex conjugate for all depths
 
@@ -375,13 +386,13 @@ def plot_I_and_T_for_z(BP_array, dn_array, z, k, m, omega, T_skip=None, T=None, 
     axes[1].set_title(r'Windows')
     axes[1].legend()
     #
-    param_formated_str = latex_exp(k)+', '+latex_exp(m)+', '+latex_exp(omega)
-    fig.suptitle(r'%s, $(k,m,\omega)$=(%s)' %(title_str, param_formated_str))
+    param_formated_str = latex_exp(mL)+', '+rad_to_degs(theta)+', '+latex_exp(omega)
+    fig.suptitle(r'%s, $(mL,\theta,\omega)$=(%s)' %(title_str, param_formated_str))
     plt.savefig(filename)
 
 ###############################################################################
 # Depricated function
-def plot_A_vs_t(t_array, T, data_array, A, k, m, omega, nT=0.0, title_str='Forced 1D Wave', filename='f_1D_A_vs_t.png'):
+def plot_A_vs_t(t_array, T, data_array, A, mL, theta, omega, nT=0.0, title_str='Forced 1D Wave', filename='f_1D_A_vs_t.png'):
     # Set aspect ratio of overall figure
     w, h = mpl.figure.figaspect(0.5)
     # This dictionary makes each subplot have the desired ratios
@@ -407,8 +418,8 @@ def plot_A_vs_t(t_array, T, data_array, A, k, m, omega, nT=0.0, title_str='Force
     axes[1].set_xlabel(r'$t/T$')
     axes[0].set_ylabel(r'Amplitude')
     axes[1].set_ylabel(r'Ramp')
-    param_formated_str = latex_exp(A)+', '+latex_exp(k)+', '+latex_exp(m)+', '+latex_exp(omega)
-    fig.suptitle(r'%s, $(A,k,m,\omega)$=(%s)' %(title_str, param_formated_str))
+    param_formated_str = latex_exp(A)+', '+latex_exp(mL)+', '+rad_to_degs(theta)+', '+latex_exp(omega)
+    fig.suptitle(r'%s, $(A,mL,\theta,\omega)$=(%s)' %(title_str, param_formated_str))
     #plt.show()
     plt.savefig(filename)
 
@@ -425,6 +436,7 @@ def sort_k_coeffs(arr, nz):
             arr[i][:] = sort_k_coeffs(arr[i][:], nz)
         return arr
 
+# Depricated as of 2020-09-15
 def plot_k_vs_t(ks, t_array, T, real_array, imag_array, k, m, omega, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave_spectra.png'):
     # Set aspect ratio of overall figure
     w, h = mpl.figure.figaspect(0.5)

@@ -15,7 +15,7 @@ from dedalus import public as de
 
 # Relevant parameters
 mL      = 1                     # [] vertical wave number times step length
-theta   = True                  # [] angle between wave's propagation and horizontal (or vertical?)
+theta   = None                  # [] angle between wave's propagation and horizontal (or vertical?)
 
 # Run parameters
 nz              = 1024          # [] number of grid points in the z direction
@@ -167,7 +167,7 @@ else:
 # Measuring the Transmission Coefficient
 
 # Parameters
-T_skip          = 20            # []  number of oscillation periods to skip before measuring
+T_skip          = 15            # []  number of oscillation periods to skip before measuring
 
 ###############################################################################
 # Run parameters

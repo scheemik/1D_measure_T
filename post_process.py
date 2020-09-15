@@ -31,10 +31,11 @@ h5_files = args['<files>']
 #   This import assumes the switchboard is in the same directory as the core code
 import switchboard as sbp
 # Physical parameters
-nu          = sbp.nu            # [m^2/s] Viscosity (momentum diffusivity)
+nu          = sbp.nu            # [m^2/s]       Viscosity (momentum diffusivity)
 f_0         = sbp.f_0           # [s^-1]        Reference Coriolis parameter
-g           = sbp.g             # [m/s^2] Acceleration due to gravity
+g           = sbp.g             # [m/s^2]       Acceleration due to gravity
 # Problem parameters
+mL          = sbp.mL            # []            Ratio of vertical wavelength to stratification length
 N_0         = sbp.N_0           # [rad/s]       Reference stratification
 lam_x       = sbp.lam_x         # [m]           Horizontal wavelength
 lam_z       = sbp.lam_z         # [m]           Vertical wavelength
@@ -161,7 +162,7 @@ BP_array = hf.BP_n_steps(sbp.n_steps, sbp.z, sbp.z0_str, sbp.zf_str)
 # Sanity check plots
 
 if sbp.plot_spacetime:
-    hf.plot_z_vs_t(z, t, T, psi.real, BP_array, k, m, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=sbp.plot_full_domain, nT=T_skip, title_str=run_name)
+    hf.plot_z_vs_t(z, t, T, psi.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=sbp.plot_full_domain, nT=T_skip, title_str=run_name)
 
 # if sbp.plot_wavespace:
 #     hf.plot_k_vs_t(z, t, T, psi.real, psi.imag, k, m, omega, title_str='psi', filename='f_1D_psi_r_i.png')
@@ -217,11 +218,11 @@ print("Transmission coefficient is:", big_T)
 # More plotting for up and down waves
 
 if sbp.plot_amplitude:
-    hf.plot_A_of_I_T(z, t, T, dn_field, z_I, z_T, dz, k, m, omega, nT=T_skip, title_str=run_name)
+    hf.plot_A_of_I_T(z, t, T, dn_field, z_I, z_T, dz, mL, theta, omega, nT=T_skip, title_str=run_name)
 
 if sbp.plot_amplitude:
-    hf.plot_I_and_T_for_z(BP_array, dn_field, z, k, m, omega, T_skip=T_skip, T=T, t=t, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, title_str=run_name, filename='f_1D_I_and_T_for_z.png')
+    hf.plot_AA_for_z(BP_array, dn_field, z, mL, theta, omega, T_skip=T_skip, T=T, t=t, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, title_str=run_name, filename='f_1D_AA_for_z.png')
 
 if sbp.plot_up_dn:
-    hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, k, m, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, title_str=run_name, filename='f_1D_up_field.png')
-    hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, k, m, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, title_str=run_name, filename='f_1D_dn_field.png')
+    hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, title_str=run_name, filename='f_1D_up_field.png')
+    hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, title_str=run_name, filename='f_1D_dn_field.png')
