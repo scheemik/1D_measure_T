@@ -90,19 +90,40 @@ def get_h5_data(tasks, h5_files):
     return t, z, kz, psi_array#, psi_c_array
 
 # fourier transform in time, filter negative freq's, inverse fourier transform
-def FT_in_time(t, z, data, dt):
+# def FT_in_time(t, z, data, dt, omega):
+#     # FT in time of the data (axis 1 is time)
+#     ftd = np.fft.fft(data, axis=1)
+#     # find relevant frequencies
+#     freq = np.fft.fftfreq(len(t), dt)
+#     # Filter out negative frequencies
+#     for j in range(len(freq)):
+#         if freq[j] < 0.0:
+#             # Gets rid of negative freq's
+#             ftd[:,j] = 0.0
+#         else:
+#             # Corrects for lost amplitude
+#             ftd[:,j] = ftd[:,j] * 2.0
+#     # inverse fourier transform in time of the data
+#     iftd = np.fft.ifft(ftd, axis=1)
+#     #   a complex valued signal where iftd.real == data, or close enough
+#     return iftd
+
+# fourier transform in time, band pass around omega, inverse fourier transform
+def FT_in_time(t, z, data, dt, omega):
     # FT in time of the data (axis 1 is time)
     ftd = np.fft.fft(data, axis=1)
     # find relevant frequencies
     freq = np.fft.fftfreq(len(t), dt)
-    # Filter out negative frequencies
-    for j in range(len(freq)):
-        if freq[j] < 0.0:
-            # Gets rid of negative freq's
-            ftd[:,j] = 0.0
-        else:
-            # Corrects for lost amplitude
-            ftd[:,j] = ftd[:,j] * 2.0
+    # number of frequencies
+    nf = len(freq)
+    # Find index for band pass, only consider indices of positive freqs
+    idx_om = hf.find_nearest_index(freq[0:nf//2], omega)
+    # Filter out frequencies left of omega
+    ftd[:,0:idx_om-1]  = 0.0
+    # Filter out frequencies left of omega
+    ftd[:,idx_om+1:-1] = 0.0
+    # Correct for lost amplitude
+    ftd[:,idx_om] = ftd[:,idx_om] * 2.0
     # inverse fourier transform in time of the data
     iftd = np.fft.ifft(ftd, axis=1)
     #   a complex valued signal where iftd.real == data, or close enough
@@ -131,22 +152,22 @@ def FT_in_space(t, k_zs, data):
 
 # fourier transform in spatial dimension (z)
 #   similar to FT in time, but switch dimensions around
-def IFT_in_space(t, k_zs, data_up):
-    # make a copy for the negative wave numbers
-    data_dn = data_up.copy()
-    # Filter out one half of wavenumbers to separate up and down
-    #   Looping only over wavenumbers because their positions don't change with t
-    for i in range(len(k_zs)):#k_grid.shape[0]):
-        if k_zs[i] > 0.0:
-            # for down, remove values for positive wave numbers
-            data_dn[i][:] = 0.0
-        else:
-            # for up, remove values for negative wave numbers
-            data_up[i][:] = 0.0
-    # inverse fourier transform in space (z)
-    ifzdp = np.fft.ifft(data_up, axis=0)
-    ifzdn = np.fft.ifft(data_dn, axis=0)
-    return ifzdp, ifzdn
+# def IFT_in_space(t, k_zs, data_up):
+#     # make a copy for the negative wave numbers
+#     data_dn = data_up.copy()
+#     # Filter out one half of wavenumbers to separate up and down
+#     #   Looping only over wavenumbers because their positions don't change with t
+#     for i in range(len(k_zs)):#k_grid.shape[0]):
+#         if k_zs[i] > 0.0:
+#             # for down, remove values for positive wave numbers
+#             data_dn[i][:] = 0.0
+#         else:
+#             # for up, remove values for negative wave numbers
+#             data_up[i][:] = 0.0
+#     # inverse fourier transform in space (z)
+#     ifzdp = np.fft.ifft(data_up, axis=0)
+#     ifzdn = np.fft.ifft(data_dn, axis=0)
+#     return ifzdp, ifzdn
 
 ###############################################################################
 # Get the data from the snapshot files
@@ -175,10 +196,10 @@ if sbp.plot_spacetime:
 ###############################################################################
 # Complex demodulation
 
-def Complex_Demodulate(t_then_z, t, z, kz, data, dt):
+def Complex_Demodulate(t_then_z, t, z, kz, data, dt, omega):
     if t_then_z == True:
         ## Step 1
-        ift_t_y = FT_in_time(t, z, data, dt)
+        ift_t_y = FT_in_time(t, z, data, dt, omega)
         ## Step 2
         ift_z_y_p, ift_z_y_n = FT_in_space(t, kz, ift_t_y)
         # Get up and down fields as F = |mag_f| * exp(i*phi_f)
@@ -188,15 +209,15 @@ def Complex_Demodulate(t_then_z, t, z, kz, data, dt):
         ## Step 1
         ift_z_y_p, ift_z_y_n = FT_in_space(t, kz, data)
         ## Step 2
-        up_f = FT_in_time(t, z, ift_z_y_p, dt)
-        dn_f = FT_in_time(t, z, ift_z_y_n, dt)
+        up_f = FT_in_time(t, z, ift_z_y_p, dt, omega)
+        dn_f = FT_in_time(t, z, ift_z_y_n, dt, omega)
         # Get up and down fields as F = |mag_f| * exp(i*phi_f)
         up_field = up_f.real * np.exp(np.real(1j * up_f.imag))
         dn_field = dn_f.real * np.exp(np.real(1j * dn_f.imag))
     return up_field, dn_field
 
 t_then_z = False
-up_field, dn_field = Complex_Demodulate(t_then_z, t, z, kz, psi, dt)
+up_field, dn_field = Complex_Demodulate(t_then_z, t, z, kz, psi, dt, omega)
 
 ###############################################################################
 # Profiling the code

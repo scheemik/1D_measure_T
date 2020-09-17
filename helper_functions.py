@@ -18,7 +18,8 @@ from dedalus.extras.plot_tools import quad_mesh, pad_limits
 
 def find_nearest_index(array, value):
     """
-    Assumes array is sorted
+    Assumes array is sorted, returns the integer of the index which contains
+        the value closest to the value given. Assumes values are the same type
     array       a 1 D array of values
     value       the given value in question
     """
