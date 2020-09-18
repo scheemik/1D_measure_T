@@ -108,6 +108,26 @@ def get_h5_data(tasks, h5_files):
 #     #   a complex valued signal where iftd.real == data, or close enough
 #     return iftd
 
+def apply_band_pass(ftd, freq, nf, omega, bp_wid=1):
+    """
+    Applies band pass to data already FT in time. Fragile function
+
+    ftd         data as output by np.fft.fft
+    freq        array of frequencies as output by np.fft.fftfreq
+    nf          number of frequencies, len(freq)
+    omega       frequency of forced waves
+    bp_wid      number extra indices to include on either side of idx_om
+    """
+    # Find index for band pass, only consider indices of positive freqs
+    idx_om = hf.find_nearest_index(freq[0:nf//2], omega)
+    # Filter out frequencies left of band pass
+    ftd[:,0:idx_om-1-bp_wid]  = 0.0
+    # Filter out frequencies left of omega
+    ftd[:,idx_om+1+bp_wid:-1] = 0.0
+    # Correct for lost amplitude
+    ftd[:,idx_om-bp_wid:idx_om+bp_wid] = ftd[:,idx_om-bp_wid:idx_om+bp_wid] * 2.0
+    return ftd
+
 # fourier transform in time, band pass around omega, inverse fourier transform
 def FT_in_time(t, z, data, dt, omega):
     # FT in time of the data (axis 1 is time)
@@ -116,14 +136,8 @@ def FT_in_time(t, z, data, dt, omega):
     freq = np.fft.fftfreq(len(t), dt)
     # number of frequencies
     nf = len(freq)
-    # Find index for band pass, only consider indices of positive freqs
-    idx_om = hf.find_nearest_index(freq[0:nf//2], omega)
-    # Filter out frequencies left of omega
-    ftd[:,0:idx_om-1]  = 0.0
-    # Filter out frequencies left of omega
-    ftd[:,idx_om+1:-1] = 0.0
-    # Correct for lost amplitude
-    ftd[:,idx_om] = ftd[:,idx_om] * 2.0
+    # Apply band pass
+    ftd = apply_band_pass(ftd, freq, nf, omega, bp_wid=64)
     # inverse fourier transform in time of the data
     iftd = np.fft.ifft(ftd, axis=1)
     #   a complex valued signal where iftd.real == data, or close enough

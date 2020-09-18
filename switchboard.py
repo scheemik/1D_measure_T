@@ -19,7 +19,7 @@ theta   = None                  # [] angle between wave's propagation and horizo
 
 # Run parameters
 nz              = 1024          # [] number of grid points in the z direction
-stop_n_periods  = 28            # [] oscillation periods
+stop_n_periods  = 28            # [] oscillation periods (28, 57)
 extend_to_pwr_2 = True          # [] Extend simulation time so nt is a power of 2
 
 # Displayed domain parameters
