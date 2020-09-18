@@ -89,35 +89,30 @@ def get_h5_data(tasks, h5_files):
                 kz = np.array(f['scales']['kz'])
     return t, z, kz, psi_array#, psi_c_array
 
-# fourier transform in time, filter negative freq's, inverse fourier transform
-# def FT_in_time(t, z, data, dt, omega):
-#     # FT in time of the data (axis 1 is time)
-#     ftd = np.fft.fft(data, axis=1)
-#     # find relevant frequencies
-#     freq = np.fft.fftfreq(len(t), dt)
-#     # Filter out negative frequencies
-#     for j in range(len(freq)):
-#         if freq[j] < 0.0:
-#             # Gets rid of negative freq's
-#             ftd[:,j] = 0.0
-#         else:
-#             # Corrects for lost amplitude
-#             ftd[:,j] = ftd[:,j] * 2.0
-#     # inverse fourier transform in time of the data
-#     iftd = np.fft.ifft(ftd, axis=1)
-#     #   a complex valued signal where iftd.real == data, or close enough
-#     return iftd
+def filter_neg_freqs(ftd, freq):
+    # Find number of frequencies
+    nf = len(freq)
+    # Filter out negative frequencies
+    for j in range(nf):
+        if freq[j] < 0.0:
+            # Gets rid of negative freq's
+            ftd[:,j] = 0.0
+        else:
+            # Corrects for lost amplitude
+            ftd[:,j] = ftd[:,j] * 2.0
+    return ftd
 
-def apply_band_pass(ftd, freq, nf, omega, bp_wid=1):
+def apply_band_pass(ftd, freq, omega, bp_wid=1):
     """
-    Applies band pass to data already FT in time. Fragile function
+    Applies rectangular band pass to data already FT'd in time. Fragile function
 
     ftd         data as output by np.fft.fft
     freq        array of frequencies as output by np.fft.fftfreq
-    nf          number of frequencies, len(freq)
     omega       frequency of forced waves
     bp_wid      number extra indices to include on either side of idx_om
     """
+    # Find number of frequencies
+    nf = len(freq)
     # Find index for band pass, only consider indices of positive freqs
     idx_om = hf.find_nearest_index(freq[0:nf//2], omega)
     # Filter out frequencies left of band pass
@@ -134,10 +129,14 @@ def FT_in_time(t, z, data, dt, omega):
     ftd = np.fft.fft(data, axis=1)
     # find relevant frequencies
     freq = np.fft.fftfreq(len(t), dt)
-    # number of frequencies
-    nf = len(freq)
-    # Apply band pass
-    ftd = apply_band_pass(ftd, freq, nf, omega, bp_wid=64)
+    # Apply filtering on frequencies
+    use_bp = True
+    if use_bp:
+        # Apply band pass
+        ftd = apply_band_pass(ftd, freq, omega, bp_wid=63)
+    else:
+        # Filter out just the negative frequencies
+        ftd = filter_neg_freqs(ftd, freq)
     # inverse fourier transform in time of the data
     iftd = np.fft.ifft(ftd, axis=1)
     #   a complex valued signal where iftd.real == data, or close enough
