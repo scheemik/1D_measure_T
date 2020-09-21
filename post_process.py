@@ -130,7 +130,7 @@ def FT_in_time(t, z, data, dt, omega):
     # find relevant frequencies
     freq = np.fft.fftfreq(len(t), dt)
     # Apply filtering on frequencies
-    use_bp = True
+    use_bp = False
     if use_bp:
         # Apply band pass
         ftd = apply_band_pass(ftd, freq, omega, bp_wid=63)

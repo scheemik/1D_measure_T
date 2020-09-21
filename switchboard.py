@@ -81,11 +81,11 @@ use_rayleigh_friction   = False
 boundary_forcing_region = True  # If False, waves will be forced over entire domain
 
 # Plotting parameters
-plot_spacetime = False
+plot_spacetime = True
 plot_wavespace = False
 plot_amplitude = True
 plot_windows   = False
-plot_up_dn     = False
+plot_up_dn     = True
 # If true, plot will include full simulated domain, if false, just the display domain
 plot_full_domain = True
 
