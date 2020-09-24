@@ -1,12 +1,6 @@
 """
-Performs post-processing actions. Run with $ python3 post_process.py snapshots/*.h5
-
-Usage:
-    post_process.py NAME <files>... [--output=<dir>]
-
-Options:
-    NAME        # name of the experiment run from -n
-    <files>         # h5 snapshot files
+Runs an idealized steady state test of various functions.
+Run with $ python3 steady_state_test.py
 
 """
 
@@ -18,13 +12,13 @@ from matplotlib import ticker
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from dedalus.extras.plot_tools import quad_mesh
-#plt.ioff()
 
-# Parse input parameters
-from docopt import docopt
-args = docopt(__doc__)
-run_name = args['NAME']
-h5_files = args['<files>']
+run_name = "steady_state_test"
+
+###############################################################################
+# Helper functions
+#   This import assumes the helper functions are in the same directory as the core code
+import helper_functions as hf
 
 ###############################################################################
 # Import SwitchBoard Parameters (sbp)
@@ -53,41 +47,36 @@ z0_dis      = sbp.z0_dis
 zf_dis      = sbp.zf_dis
 
 dt          = sbp.dt
-dz          = sbp.dz
-
-plot_f_d    = sbp.plot_full_domain
-T_skip      = sbp.T_skip
-n_steps     = sbp.n_steps
-step_th     = sbp.step_th
+dz          = abs(z0_dis - zf_dis)/nz
 
 z_I         = sbp.z_I
 z_T         = sbp.z_T
 
+A           = 1.0
+B           = 1.0
+
 ###############################################################################
-# Helper functions
-#   This import assumes the helper functions are in the same directory as the core code
-import helper_functions as hf
+# Create ideal, steady-state, periodic boundary simulation data
+
+# Find space and time axes (z, t)
+z = np.linspace(zf_dis, z0_dis, nz) # careful about the order of endpoints
+stop_sim_time, nt  = hf.extended_stop_time(sbp.sim_time_stop, dt)
+t = np.linspace(0.0, stop_sim_time, nt)
+
+# Find wavenumbers
+kz = np.fft.fftfreq(len(z), dz)
+
+# Make a space time meshgrid
+tm, zm = np.meshgrid(t, z)
+
+# Manually separate up and down analytically for confirmation that CD is working
+up  = A*np.cos(omega * tm - m*zm)
+dn  = B*np.cos(omega * tm + m*zm)
+# Program psi field directly
+psi = up + dn
 
 ###############################################################################
 # Additional post-processing helper functions
-
-def get_h5_data(tasks, h5_files):
-    for task in tasks:
-        # At the moment, this only works for one h5 file
-        for filename in h5_files:
-            with h5py.File(filename, mode='r') as f:
-                # The [()] syntax returns all data from an h5 object
-                psi   = f['tasks'][task]
-                # psi_c = f['tasks'][task]
-                # Need to transpose into the correct orientation
-                #   Also need to convert to np.array for plotting function
-                psi_array   = np.transpose(np.array(psi[()]))
-                # psi_c_array = np.transpose(np.array(psi_c[()]))
-                # Grab the scales t, z, and kz
-                t  = np.array(f['scales']['sim_time'])
-                z  = np.array(f['scales']['z']['1.0'])
-                kz = np.array(f['scales']['kz'])
-    return t, z, kz, psi_array#, psi_c_array
 
 def filter_neg_freqs(ftd, freq):
     # Find number of frequencies
@@ -126,7 +115,7 @@ def apply_band_pass(ftd, freq, omega, bp_wid=1):
 # fourier transform in time, band pass around omega, inverse fourier transform
 def FT_in_time(t, z, data, dt, omega):
     # Should we apply the window?
-    apply_window = False
+    apply_window = True
     if apply_window:
         nz = len(z)
         # apply window to data
@@ -170,12 +159,10 @@ def FT_in_space(t, k_zs, data):
     return ifzdp, ifzdn
 
 ###############################################################################
-# Get the data from the snapshot files
-t, z, kz, psi = get_h5_data(tasks, h5_files)
 # z and psi arrays come out sorted from most positive to most negative on z axis
 #   This flips things around (ud = up / down)
-z = np.flip(z)
-psi = np.flipud(psi)
+# z = np.flip(z)
+# psi = np.flipud(psi)
 
 BP_array = hf.BP_n_steps(sbp.n_steps, sbp.z, sbp.z0_str, sbp.zf_str)
 
@@ -183,7 +170,7 @@ BP_array = hf.BP_n_steps(sbp.n_steps, sbp.z, sbp.z0_str, sbp.zf_str)
 # Sanity check plots
 
 if sbp.plot_spacetime:
-    hf.plot_z_vs_t(z, t, T, psi.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=sbp.plot_full_domain, nT=T_skip, title_str=run_name)
+    hf.plot_z_vs_t(z, t, T, psi.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=False, nT=0, title_str=run_name, filename='ss_1D_wave.png')
 
 # if sbp.plot_wavespace:
 #     hf.plot_k_vs_t(z, t, T, psi.real, psi.imag, k, m, omega, title_str='psi', filename='f_1D_psi_r_i.png')
@@ -239,20 +226,20 @@ print("Transmission coefficient is:", big_T)
 # More plotting for up and down waves
 
 if sbp.plot_amplitude:
-    hf.plot_A_of_I_T(z, t, T, dn_field, z_I, z_T, dz, mL, theta, omega, nT=T_skip, title_str=run_name)
+    hf.plot_A_of_I_T(z, t, T, dn_field, z_I, z_T, dz, mL, theta, omega, nT=0, title_str=run_name, filename='ss_1D_A_of_I_T.png')
 
 if sbp.plot_amplitude:
-    hf.plot_AA_for_z(BP_array, dn_field, z, mL, theta, omega, T_skip=T_skip, T=T, t=t, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, title_str=run_name, filename='f_1D_AA_for_z.png')
+    hf.plot_AA_for_z(BP_array, dn_field, z, mL, theta, omega, T_skip=0, T=T, t=t, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, title_str=run_name, filename='ss_1D_AA_for_z.png')
 
 if sbp.plot_up_dn:
-    hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, title_str=run_name, filename='f_1D_up_field.png')
-    hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, title_str=run_name, filename='f_1D_dn_field.png')
+    hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=False, nT=0, title_str=run_name, filename='ss_1D_up_field.png')
+    hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=False, nT=0, title_str=run_name, filename='ss_1D_dn_field.png')
 
 plot_CD_checks = False
 if plot_CD_checks:
     # Add up and down fields to see if they reproduce the original psi field
     up_plus_dn = up_field.real + dn_field.real
-    hf.plot_z_vs_t(z, t, T, up_plus_dn, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, title_str=run_name, filename='f_1D_up_plus_dn.png')
+    hf.plot_z_vs_t(z, t, T, up_plus_dn, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=False, nT=0, title_str=run_name, filename='ss_1D_up_plus_dn.png')
     # Plot the difference, which ideally should be zero everywhere
     CD_diff = psi.real - up_plus_dn
-    hf.plot_z_vs_t(z, t, T, CD_diff, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, title_str=run_name, filename='f_1D_CD_diff.png')
+    hf.plot_z_vs_t(z, t, T, CD_diff, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=False, nT=0, title_str=run_name, filename='ss_1D_CD_diff.png')

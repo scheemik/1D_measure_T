@@ -139,7 +139,7 @@ problem.add_equation("foo - dt(psi) = 0")
 solver = problem.build_solver(de.timesteppers.SBDF2)
 logger.info('Solver built')
 if sbp.extend_to_pwr_2 == True:
-    solver.stop_sim_time  = hf.extended_stop_time(sbp.sim_time_stop, sbp.dt)
+    solver.stop_sim_time, nt  = hf.extended_stop_time(sbp.sim_time_stop, sbp.dt)
 else:
     solver.stop_sim_time  = sbp.sim_time_stop
 solver.stop_wall_time = sbp.stop_wall_time

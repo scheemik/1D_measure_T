@@ -144,7 +144,8 @@ def extended_stop_time(sim_time_stop, dt):
     while (nt > 2**i):
         i += 1
     # Calculate new sim_time_stop
-    return dt * (2**i)
+    new_sim_time_stop = dt * (2**i)
+    return new_sim_time_stop, int(nt)
 
 ###############################################################################
 
