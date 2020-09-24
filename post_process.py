@@ -163,25 +163,6 @@ def FT_in_space(t, k_zs, data):
     ifzdn = np.fft.ifft(fzdn, axis=0)
     return ifzdp, ifzdn
 
-# fourier transform in spatial dimension (z)
-#   similar to FT in time, but switch dimensions around
-# def IFT_in_space(t, k_zs, data_up):
-#     # make a copy for the negative wave numbers
-#     data_dn = data_up.copy()
-#     # Filter out one half of wavenumbers to separate up and down
-#     #   Looping only over wavenumbers because their positions don't change with t
-#     for i in range(len(k_zs)):#k_grid.shape[0]):
-#         if k_zs[i] > 0.0:
-#             # for down, remove values for positive wave numbers
-#             data_dn[i][:] = 0.0
-#         else:
-#             # for up, remove values for negative wave numbers
-#             data_up[i][:] = 0.0
-#     # inverse fourier transform in space (z)
-#     ifzdp = np.fft.ifft(data_up, axis=0)
-#     ifzdn = np.fft.ifft(data_dn, axis=0)
-#     return ifzdp, ifzdn
-
 ###############################################################################
 # Get the data from the snapshot files
 t, z, kz, psi = get_h5_data(tasks, h5_files)
@@ -229,7 +210,7 @@ def Complex_Demodulate(t_then_z, t, z, kz, data, dt, omega):
         dn_field = dn_f.real * np.exp(np.real(1j * dn_f.imag))
     return up_field, dn_field
 
-t_then_z = False
+t_then_z = True
 up_field, dn_field = Complex_Demodulate(t_then_z, t, z, kz, psi, dt, omega)
 
 ###############################################################################
@@ -260,3 +241,12 @@ if sbp.plot_amplitude:
 if sbp.plot_up_dn:
     hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, title_str=run_name, filename='f_1D_up_field.png')
     hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, title_str=run_name, filename='f_1D_dn_field.png')
+
+plot_CD_checks = False
+if plot_CD_checks:
+    # Add up and down fields to see if they reproduce the original psi field
+    up_plus_dn = up_field.real + dn_field.real
+    hf.plot_z_vs_t(z, t, T, up_plus_dn, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, title_str=run_name, filename='f_1D_up_plus_dn.png')
+    # Plot the difference, which ideally should be zero everywhere
+    CD_diff = psi.real - up_plus_dn
+    hf.plot_z_vs_t(z, t, T, CD_diff, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, title_str=run_name, filename='f_1D_CD_diff.png')
