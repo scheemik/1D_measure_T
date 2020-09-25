@@ -115,7 +115,7 @@ def apply_band_pass(ftd, freq, omega, bp_wid=1):
 # fourier transform in time, band pass around omega, inverse fourier transform
 def FT_in_time(t, z, data, dt, omega):
     # Should we apply the window?
-    apply_window = True
+    apply_window = False
     if apply_window:
         nz = len(z)
         # apply window to data
@@ -219,27 +219,27 @@ if profile_it == True:
 ###############################################################################
 # Measuring the transmission coefficient
 
-big_T = hf.measure_T(dn_field, z, z_I, z_T, T_skip=T_skip, T=T, t=t)
+big_T = hf.measure_T(dn_field, z, z_I, z_T, T_skip=None, T=T, t=t)
 print("Transmission coefficient is:", big_T)
 
 ###############################################################################
 # More plotting for up and down waves
 
 if sbp.plot_amplitude:
-    hf.plot_A_of_I_T(z, t, T, dn_field, z_I, z_T, dz, mL, theta, omega, nT=0, title_str=run_name, filename='ss_1D_A_of_I_T.png')
+    hf.plot_A_of_I_T(z, t, T, dn_field, z_I, z_T, dz, mL, theta, omega, title_str=run_name, filename='ss_1D_A_of_I_T.png')
 
 if sbp.plot_amplitude:
-    hf.plot_AA_for_z(BP_array, dn_field, z, mL, theta, omega, T_skip=0, T=T, t=t, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, title_str=run_name, filename='ss_1D_AA_for_z.png')
+    hf.plot_AA_for_z(BP_array, dn_field, z, mL, theta, omega, T_skip=None, T=T, t=t, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, title_str=run_name, filename='ss_1D_AA_for_z.png')
 
 if sbp.plot_up_dn:
-    hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=False, nT=0, title_str=run_name, filename='ss_1D_up_field.png')
-    hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=False, nT=0, title_str=run_name, filename='ss_1D_dn_field.png')
+    hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=False, nT=None, title_str=run_name, filename='ss_1D_up_field.png')
+    hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=False, nT=None, title_str=run_name, filename='ss_1D_dn_field.png')
 
 plot_CD_checks = False
 if plot_CD_checks:
     # Add up and down fields to see if they reproduce the original psi field
     up_plus_dn = up_field.real + dn_field.real
-    hf.plot_z_vs_t(z, t, T, up_plus_dn, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=False, nT=0, title_str=run_name, filename='ss_1D_up_plus_dn.png')
+    hf.plot_z_vs_t(z, t, T, up_plus_dn, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=False, nT=None, title_str=run_name, filename='ss_1D_up_plus_dn.png')
     # Plot the difference, which ideally should be zero everywhere
     CD_diff = psi.real - up_plus_dn
-    hf.plot_z_vs_t(z, t, T, CD_diff, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=False, nT=0, title_str=run_name, filename='ss_1D_CD_diff.png')
+    hf.plot_z_vs_t(z, t, T, CD_diff, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=False, nT=None, title_str=run_name, filename='ss_1D_CD_diff.png')
