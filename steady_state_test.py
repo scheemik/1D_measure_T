@@ -41,7 +41,6 @@ omega       = sbp.omega         # [rad s^-1]    Wave frequency
 T           = sbp.T             # [s]           Wave period
 
 # Parameters
-tasks = ['psi']
 nz          = sbp.nz
 z0_dis      = sbp.z0_dis
 zf_dis      = sbp.zf_dis
@@ -52,28 +51,37 @@ dz          = abs(z0_dis - zf_dis)/nz
 z_I         = sbp.z_I
 z_T         = sbp.z_T
 
-A           = 1.0
-B           = 1.0
-
 ###############################################################################
 # Create ideal, steady-state, periodic boundary simulation data
+
+# Set amplitude coefficients for up and down wave components
+A           = 1.0
+B           = 1.0
 
 # Find space and time axes (z, t)
 z = np.linspace(zf_dis, z0_dis, nz) # careful about the order of endpoints
 stop_sim_time, nt  = hf.extended_stop_time(sbp.sim_time_stop, dt)
 t = np.linspace(0.0, stop_sim_time, nt)
-
 # Find wavenumbers
 kz = np.fft.fftfreq(len(z), dz)
-
 # Make a space time meshgrid
 tm, zm = np.meshgrid(t, z)
 
-# Manually separate up and down analytically for confirmation that CD is working
-up  = A*np.cos(omega * tm - m*zm)
-dn  = B*np.cos(omega * tm + m*zm)
+# Form of wave field following Mercier et al 2008 eq 5
+#   Up and down terms separated for ease of access later
+up  = A*np.cos(omega*tm - m*zm)
+dn  = B*np.cos(omega*tm + m*zm)
 # Program psi field directly
 psi = up + dn
+
+# Form complex-valued version of wave field following Mercier et al 2008 eq 7
+#   Equivalent to taking FT in time of psi, masking the negative frequencies,
+#    and multiplying the rest by 2 to maintain the same amplitude, then iFT
+#   The real part of these should equal the corresponding fields above
+#   Again, up and down separated for ease of access later
+up_c = A*np.exp(1j*(omega*tm - m*zm))
+dn_c = B*np.exp(1j*(omega*tm + m*zm))
+psi_hat = up_c + dn_c
 
 ###############################################################################
 # Additional post-processing helper functions
@@ -128,14 +136,14 @@ def FT_in_time(t, z, data, dt, omega):
     use_bp = False
     if use_bp:
         # Apply band pass
-        ftd = apply_band_pass(ftd, freq, omega, bp_wid=63)
+        ftd = apply_band_pass(ftd, freq, omega, bp_wid=1)
     else:
         # Filter out just the negative frequencies
         ftd = filter_neg_freqs(ftd, freq)
     # inverse fourier transform in time of the data
     iftd = np.fft.ifft(ftd, axis=1)
     #   a complex valued signal where iftd.real == data, or close enough
-    return iftd
+    return iftd, ftd, freq
 
 # fourier transform in spatial dimension (z)
 #   similar to FT in time, but switch dimensions around
@@ -164,21 +172,7 @@ def FT_in_space(t, k_zs, data):
 # z = np.flip(z)
 # psi = np.flipud(psi)
 
-BP_array = hf.BP_n_steps(sbp.n_steps, sbp.z, sbp.z0_str, sbp.zf_str)
-
-###############################################################################
-# Sanity check plots
-
-if sbp.plot_spacetime:
-    hf.plot_z_vs_t(z, t, T, psi.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=False, nT=0, title_str=run_name, filename='ss_1D_wave.png')
-
-# if sbp.plot_wavespace:
-#     hf.plot_k_vs_t(z, t, T, psi.real, psi.imag, k, m, omega, title_str='psi', filename='f_1D_psi_r_i.png')
-#
-# if sbp.plot_wavespace:
-#     hf.plot_k_vs_t(hf.sort_k_coeffs(kz,1024), t, T, psi_c.real, psi_c.imag, k, m, omega, title_str='psi_c', filename='f_1D_psic_r_i.png')
-
-# raise SystemExit(0)
+BP_array = hf.BP_n_steps(0, sbp.z, sbp.z0_str, sbp.zf_str)
 
 ###############################################################################
 # Complex demodulation
@@ -186,7 +180,7 @@ if sbp.plot_spacetime:
 def Complex_Demodulate(t_then_z, t, z, kz, data, dt, omega):
     if t_then_z == True:
         ## Step 1
-        ift_t_y = FT_in_time(t, z, data, dt, omega)
+        ift_t_y = FT_in_time(t, z, data, dt, omega)[0]
         ## Step 2
         ift_z_y_p, ift_z_y_n = FT_in_space(t, kz, ift_t_y)
         # Get up and down fields as F = |mag_f| * exp(i*phi_f)
@@ -196,8 +190,8 @@ def Complex_Demodulate(t_then_z, t, z, kz, data, dt, omega):
         ## Step 1
         ift_z_y_p, ift_z_y_n = FT_in_space(t, kz, data)
         ## Step 2
-        up_f = FT_in_time(t, z, ift_z_y_p, dt, omega)
-        dn_f = FT_in_time(t, z, ift_z_y_n, dt, omega)
+        up_f = FT_in_time(t, z, ift_z_y_p, dt, omega)[0]
+        dn_f = FT_in_time(t, z, ift_z_y_n, dt, omega)[0]
         # Get up and down fields as F = |mag_f| * exp(i*phi_f)
         up_field = up_f.real * np.exp(np.real(1j * up_f.imag))
         dn_field = dn_f.real * np.exp(np.real(1j * dn_f.imag))
@@ -219,21 +213,38 @@ if profile_it == True:
 ###############################################################################
 # Measuring the transmission coefficient
 
-big_T = hf.measure_T(dn_field, z, z_I, z_T, T_skip=None, T=T, t=t)
+big_T = hf.measure_T(dn_c, z, z_I, z_T, T_skip=None, T=T, t=t)
 print("Transmission coefficient is:", big_T)
 
 ###############################################################################
-# More plotting for up and down waves
+# What to plot
+
+plot_up     = up_field #up_field
+plot_dn     = dn_field #dn_field
+plot_psi    = (psi) - psi_hat.real # psi.real
+
+###############################################################################
+# Plotting and stuff
+
+if sbp.plot_spacetime:
+    hf.plot_z_vs_t(z, t, T, plot_psi.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=False, nT=0, title_str=run_name, filename='ss_1D_wave.png')
+
+if sbp.plot_freqspace:
+    foobar, psi_FT_t, freqs = FT_in_time(t, z, psi, dt, omega)
+    # fig, axes = plt.subplots(nrows=1, ncols=1)
+    # axes.plot(freqs, psi_FT_t[200])
+    # plt.show()
+    hf.plot_freq_space(z, freqs, psi_FT_t.real, psi_FT_t.imag, mL, theta, omega, plot_full_domain=False, title_str=run_name, filename='ss_1D_freq_spectra.png')
 
 if sbp.plot_amplitude:
-    hf.plot_A_of_I_T(z, t, T, dn_field, z_I, z_T, dz, mL, theta, omega, title_str=run_name, filename='ss_1D_A_of_I_T.png')
+    hf.plot_A_of_I_T(z, t, T, plot_dn, z_I, z_T, dz, mL, theta, omega, title_str=run_name, filename='ss_1D_A_of_I_T.png')
 
 if sbp.plot_amplitude:
-    hf.plot_AA_for_z(BP_array, dn_field, z, mL, theta, omega, T_skip=None, T=T, t=t, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, title_str=run_name, filename='ss_1D_AA_for_z.png')
+    hf.plot_AA_for_z(BP_array, plot_dn, z, mL, theta, omega, T_skip=None, T=T, t=t, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, title_str=run_name, filename='ss_1D_AA_for_z.png')
 
 if sbp.plot_up_dn:
-    hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=False, nT=None, title_str=run_name, filename='ss_1D_up_field.png')
-    hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=False, nT=None, title_str=run_name, filename='ss_1D_dn_field.png')
+    hf.plot_z_vs_t(z, t, T, plot_up.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=False, nT=None, title_str=run_name+' up', filename='ss_1D_up_field.png')
+    hf.plot_z_vs_t(z, t, T, plot_dn.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=False, nT=None, title_str=run_name+' dn', filename='ss_1D_dn_field.png')
 
 plot_CD_checks = False
 if plot_CD_checks:

@@ -357,6 +357,8 @@ def plot_AA_for_z(BP_array, dn_array, z, mL, theta, omega, T_skip=None, T=None, 
     BP_array    array of background profile in N_0
     dn_array    downward psi wavefield, complex valued
     z           array of z values
+    mL          Non-dimensional number relating wavelength and layer thickness
+    theta       Angle at which wave is incident on stratification structure
     omega       frequency of wave
     z0_dis      top of vertical structure extent
     zf_dis      bottom of vertical structure extent
@@ -438,41 +440,67 @@ def sort_k_coeffs(arr, nz):
             arr[i][:] = sort_k_coeffs(arr[i][:], nz)
         return arr
 
-# Depricated as of 2020-09-15
-def plot_k_vs_t(ks, t_array, T, real_array, imag_array, k, m, omega, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave_spectra.png'):
+def plot_freq_space(z_array, f_array, r_array, i_array, mL, theta, omega, z0_dis=None, zf_dis=None, z_I=None, z_T=None, plot_full_domain=True, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave_spectra.png'):
+    """
+    z_array     array of z values
+    f_array     array of frequency values
+    r_array     real part of data
+    i_array     imaginary part of data
+    mL          Non-dimensional number relating wavelength and layer thickness
+    theta       Angle at which wave is incident on stratification structure
+    omega       frequency of wave
+    z0_dis      top of vertical structure extent
+    zf_dis      bottom of vertical structure extent
+    """
     # Set aspect ratio of overall figure
     w, h = mpl.figure.figaspect(0.5)
     # This dictionary makes each subplot have the desired ratios
     # The length of heights will be nrows and likewise len(widths)=ncols
-    plot_ratios = {'height_ratios': [1,1],
-                   'width_ratios': [1]}
+    plot_ratios = {'height_ratios': [1],
+                   'width_ratios': [1,1]}
     # Set ratios by passing dictionary as 'gridspec_kw', and share y axis
-    fig, axes = plt.subplots(figsize=(w,h), nrows=2, ncols=1, gridspec_kw=plot_ratios, sharey=True)
-    #
-    xmesh, ymesh = quad_mesh(x=t_array/T, y=ks)
-    im_r = axes[0].pcolormesh(xmesh, ymesh, real_array, cmap=c_map)
-    im_i = axes[1].pcolormesh(xmesh, ymesh, imag_array, cmap=c_map)
-    # # Find max of absolute value for colorbar for limits symmetric around zero
-    # cmax = max(abs(data_array.flatten()))
-    # if cmax==0.0:
-    #     cmax = 0.001 # to avoid the weird jump with the first frame
-    # # Set upper and lower limits on colorbar
-    # im.set_clim(-cmax, cmax)
-    # Add colorbar to im
-    cbar_r = plt.colorbar(im_r, ax=axes[0])#, format=ticker.FuncFormatter(latex_exp))
-    cbar_r.ax.ticklabel_format(style='sci', scilimits=(-2,2), useMathText=True)
-    cbar_i = plt.colorbar(im_i, ax=axes[1])#, format=ticker.FuncFormatter(latex_exp))
-    cbar_i.ax.ticklabel_format(style='sci', scilimits=(-2,2), useMathText=True)
-    axes[1].set_xlabel(r'$t/T$')
-    axes[0].set_ylabel(r'$k$ (m$^{-1}$)')
-    axes[1].set_ylabel(r'$k$ (m$^{-1}$)')
+    fig, axes = plt.subplots(figsize=(w,h), nrows=1, ncols=2, gridspec_kw=plot_ratios, sharey=True)
+    # Plot heat map, or just one slice of z?
+    plot_just_a_slice = True
+    if plot_just_a_slice:
+        if z_I == None:
+            z_I = (z_array[0] - z_array[-1])/2
+        # Find the indicies of the z's closest to z_I and z_T
+        idx_I = find_nearest_index(z_array, z_I)
+        axes[0].plot(f_array, r_array[idx_I])
+        axes[1].plot(f_array, i_array[idx_I])
+        axes[0].set_ylabel(r'Amplitude')
+    else:
+        xmesh, ymesh = quad_mesh(x=f_array, y=z_array)
+        im_r = axes[0].pcolormesh(xmesh, ymesh, r_array, cmap=c_map)
+        im_i = axes[1].pcolormesh(xmesh, ymesh, i_array, cmap=c_map)
+        # Add colorbar to im
+        cbar_r = plt.colorbar(im_r, ax=axes[0])#, format=ticker.FuncFormatter(latex_exp))
+        cbar_r.ax.ticklabel_format(style='sci', scilimits=(-2,2), useMathText=True)
+        cbar_i = plt.colorbar(im_i, ax=axes[1])#, format=ticker.FuncFormatter(latex_exp))
+        cbar_i.ax.ticklabel_format(style='sci', scilimits=(-2,2), useMathText=True)
+        axes[0].set_ylabel(r'$z$ (m)')
+    # Add horizontal lines
+    if plot_full_domain and z0_dis != None and zf_dis != None:
+        add_dis_bounds(axes[0], z0_dis, zf_dis)
+        add_dis_bounds(axes[1], z0_dis, zf_dis)
+    else:
+        axes[0].set_ylim([z0_dis,zf_dis])
+        axes[1].set_ylim([z0_dis,zf_dis])
+    if z_I != None and z_T != None:
+        add_measure_lines(axes[1], z_I, z_T)
+        add_measure_lines(axes[0], z_I, z_T)
+    # Add labels
+    axes[0].set_xlabel(r'$f$ (s$^{-1}$)')
+    axes[1].set_xlabel(r'$f$ (s$^{-1}$)')
     axes[0].set_title(r'real')
     axes[1].set_title(r'imag')
-    wiggle_room = 3
-    #axes[0].set_ylim([wiggle_room*k, -wiggle_room*k])
-    #axes[1].set_ylim([wiggle_room*k, -wiggle_room*k])
-    param_formated_str = latex_exp(k)+', '+latex_exp(m)+', '+latex_exp(omega)
-    fig.suptitle(r'%s, $(k,m,\omega)$=(%s)' %(title_str, param_formated_str))
+    # wiggle_room = 3
+    # axes[0].set_ylim([wiggle_room*k, -wiggle_room*k])
+    # axes[1].set_ylim([wiggle_room*k, -wiggle_room*k])
+    param_formated_str = latex_exp(mL)+', '+rad_to_degs(theta)+', '+latex_exp(omega)
+    fig.suptitle(r'%s, $(mL,\theta,\omega)$=(%s)' %(title_str, param_formated_str))
+    #plt.show()
     plt.savefig(filename)
 
 ###############################################################################
