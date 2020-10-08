@@ -62,9 +62,9 @@ def max_amp_at_z(data, T_skip=None, T=None, t=None):
         # find index of time after skip interval
         idt   = find_nearest_index(t, T_skip*T)
         arr_A = data[idt:]
-        max_amp = max(arr_A)
+        max_amp = max(arr_A.real)
     else:
-        max_amp = max(data)
+        max_amp = max(data.real)
     # Multiply element wise by the complex conjugate, find maximum
     return max_amp
 
@@ -335,8 +335,8 @@ def plot_A_of_I_T(z_array, t_array, T, dn_array, z_I, z_T, tol, mL, theta, omega
     arr_I = dn_array[idx_I]
     arr_T = dn_array[idx_T]
     # Take complex conjugate
-    arr_I = arr_I * np.conj(arr_I)
-    arr_T = arr_T * np.conj(arr_T)
+    arr_I = AAcc(arr_I)
+    arr_T = AAcc(arr_T)
     #
     axes[0].plot(t_array/T, arr_I, color=my_clrs['b'], label=r'$I$')
     axes[1].plot(t_array/T, arr_T, color=my_clrs['b'], label=r'$T$')
