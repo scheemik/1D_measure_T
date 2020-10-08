@@ -182,19 +182,13 @@ def Complex_Demodulate(t_then_z, t, z, kz, data, dt, omega):
         ## Step 1
         ift_t_y = FT_in_time(t, z, data, dt, omega)[0]
         ## Step 2
-        ift_z_y_p, ift_z_y_n = FT_in_space(t, kz, ift_t_y)
-        # Get up and down fields as F = |mag_f| * exp(i*phi_f)
-        up_field = ift_z_y_p.real * np.exp(np.real(1j * ift_z_y_p.imag))
-        dn_field = ift_z_y_n.real * np.exp(np.real(1j * ift_z_y_n.imag))
+        up_field, dn_field = FT_in_space(t, kz, ift_t_y)
     else:
         ## Step 1
         ift_z_y_p, ift_z_y_n = FT_in_space(t, kz, data)
         ## Step 2
-        up_f = FT_in_time(t, z, ift_z_y_p, dt, omega)[0]
-        dn_f = FT_in_time(t, z, ift_z_y_n, dt, omega)[0]
-        # Get up and down fields as F = |mag_f| * exp(i*phi_f)
-        up_field = up_f.real * np.exp(np.real(1j * up_f.imag))
-        dn_field = dn_f.real * np.exp(np.real(1j * dn_f.imag))
+        up_field = FT_in_time(t, z, ift_z_y_p, dt, omega)[0]
+        dn_field = FT_in_time(t, z, ift_z_y_n, dt, omega)[0]
     return up_field, dn_field
 
 t_then_z = True
@@ -221,7 +215,7 @@ print("Transmission coefficient is:", big_T)
 
 plot_up     = up_field #up_field
 plot_dn     = dn_field #dn_field
-plot_psi    = (psi) - psi_hat.real # psi.real
+plot_psi    = (psi) #- psi_hat.real # psi.real
 
 ###############################################################################
 # Plotting and stuff
@@ -240,7 +234,7 @@ if sbp.plot_amplitude:
     hf.plot_A_of_I_T(z, t, T, plot_dn, z_I, z_T, dz, mL, theta, omega, title_str=run_name, filename='ss_1D_A_of_I_T.png')
 
 if sbp.plot_amplitude:
-    hf.plot_AA_for_z(BP_array, plot_dn, z, mL, theta, omega, T_skip=None, T=T, t=t, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, title_str=run_name, filename='ss_1D_AA_for_z.png')
+    hf.plot_AA_for_z(BP_array, hf.AAcc(plot_dn), z, mL, theta, omega, T_skip=None, T=T, t=t, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, title_str=run_name, filename='ss_1D_AA_for_z.png')
 
 if sbp.plot_up_dn:
     hf.plot_z_vs_t(z, t, T, plot_up.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=False, nT=None, title_str=run_name+' up', filename='ss_1D_up_field.png')

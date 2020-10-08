@@ -45,9 +45,15 @@ def find_nearest_index(array, value):
     else:
         return idx-1
 
+def AAcc(data):
+    """
+    Returns the data multiplied by the complex conjugate of the data
+    """
+    return data * np.conj(data)
+
 def max_amp_at_z(data, T_skip=None, T=None, t=None):
     """
-    data        1D array of wave field for certain z, complex valued
+    data        1D array of wave field for certain z, AAcc
     T_skip      oscillation periods to skip before measuring
     T           oscillation period in seconds
     t           array of time values
@@ -56,9 +62,9 @@ def max_amp_at_z(data, T_skip=None, T=None, t=None):
         # find index of time after skip interval
         idt   = find_nearest_index(t, T_skip*T)
         arr_A = data[idt:]
-        max_amp = max(arr_A * np.conj(arr_A))
+        max_amp = max(arr_A)
     else:
-        max_amp = max(data * np.conj(data))
+        max_amp = max(data)
     # Multiply element wise by the complex conjugate, find maximum
     return max_amp
 
@@ -355,7 +361,7 @@ def plot_AA_for_z(BP_array, dn_array, z, mL, theta, omega, T_skip=None, T=None, 
     Plots the max of the wave field times its complex conjugate for all depths
 
     BP_array    array of background profile in N_0
-    dn_array    downward psi wavefield, complex valued
+    dn_array    downward psi wavefield, AAcc
     z           array of z values
     mL          Non-dimensional number relating wavelength and layer thickness
     theta       Angle at which wave is incident on stratification structure
