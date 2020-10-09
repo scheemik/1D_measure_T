@@ -61,6 +61,7 @@ B           = 1.0
 # Find space and time axes (z, t)
 z = np.linspace(zf_dis, z0_dis, nz) # careful about the order of endpoints
 stop_sim_time, nt  = hf.extended_stop_time(sbp.sim_time_stop, dt)
+print("nt=",nt)
 t = np.linspace(0.0, stop_sim_time, nt)
 # Find wavenumbers
 kz = np.fft.fftfreq(len(z), dz)
@@ -172,7 +173,7 @@ def FT_in_space(t, k_zs, data):
 # z = np.flip(z)
 # psi = np.flipud(psi)
 
-BP_array = hf.BP_n_steps(0, sbp.z, sbp.z0_str, sbp.zf_str)
+BP_array = hf.BP_n_layers(0, sbp.z, sbp.z0_str, sbp.zf_str)
 
 ###############################################################################
 # Complex demodulation

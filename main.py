@@ -92,7 +92,7 @@ problem.substitutions['f_psi'] = "A*sin(m*z - omega*t)"
 ###############################################################################
 # Background Profile for N_0
 BP = domain.new_field(name = 'BP')
-BP_array = hf.BP_n_steps(sbp.n_steps, z, sbp.z0_str, sbp.zf_str)
+BP_array = hf.BP_n_layers(sbp.n_layers, z, sbp.z0_str, sbp.zf_str)
 BP['g'] = BP_array
 problem.parameters['BP'] = BP
 

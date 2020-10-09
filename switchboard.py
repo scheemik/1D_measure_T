@@ -17,6 +17,18 @@ from dedalus import public as de
 mL      = 1                     # [] vertical wave number times step length
 theta   = None                  # [] angle between wave's propagation and horizontal (or vertical?)
 
+# Time parameters
+p_n_steps   = 10                # [] power of the number of timesteps for the simulation
+p_o_steps   = 6                 # [] power of the number of timesteps per oscillation period
+#
+n_steps     = int(2**p_n_steps) # [] number of timesteps for the simulation
+o_steps     = int(2**p_o_steps) # [] number of timesteps per oscillation period
+p_n_T       =p_n_steps-p_o_steps# [] power of the number of oscillation periods
+if p_n_T <= 0:
+    print("Total timesteps must be greater than timesteps per oscillation")
+    raise SystemExit(0)
+n_T         = int(2**p_n_T)     # [] number of oscillation periods
+
 # Run parameters
 nz              = 1024          # [] number of grid points in the z direction
 stop_n_periods  = 28            # [] oscillation periods (28, 57)
@@ -97,9 +109,9 @@ plot_full_domain = True
 
 ###############################################################################
 # Background profile in N_0
-n_steps = 1
-step_th = mL/m
-L       = step_th
+n_layers = 1
+layer_th = mL/m
+L       = layer_th
 
 ###############################################################################
 # Buffers and important depths
@@ -172,12 +184,12 @@ T_skip          = 15            # []  number of oscillation periods to skip befo
 
 ###############################################################################
 # Run parameters
-dt              = 0.125         # [s] initial time step size
+dt              = T/o_steps     # [s] initial time step size (should be around 0.125)
 snap_dt         = 32*dt         # [s] time step size for snapshots
 snap_max_writes = 100           # [] max number of writes per snapshot file
 fh_mode         = 'overwrite'   # file handling mode, either 'overwrite' or 'append'
 # Stopping conditions for the simulation
-sim_time_stop  =T*stop_n_periods# [s] number of simulated seconds until the sim stops
+sim_time_stop  = T * n_T        # [s] number of simulated seconds until the sim stops
 stop_wall_time = 180 * 60.0     # [s] length in minutes * 60 = length in seconds, sim stops if exceeded
 stop_iteration = np.inf         # [] number of iterations before the simulation stops
 

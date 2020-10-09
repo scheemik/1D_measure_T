@@ -156,16 +156,16 @@ def extended_stop_time(sim_time_stop, dt):
 ###############################################################################
 
 # Background profile in N_0
-def BP_n_steps(n, z, z0_str, zf_str):
+def BP_n_layers(n, z, z0_str, zf_str):
     """
-    n           number of steps
+    n           number of layers
     z           array of z values
     z0_str      top of vertical structure extent
     zf_str      bottom of vertical structure extent
     """
     # create blank array the same size as z
     BP_array = z*0+1
-    # divide the vertical structure extent for n steps
+    # divide the vertical structure extent for n layers (steps)
     Lz_str = abs(zf_str - z0_str)
     # find step separation
     step_sep = Lz_str / (n+1)

@@ -57,8 +57,8 @@ dz          = sbp.dz
 
 plot_f_d    = sbp.plot_full_domain
 T_skip      = sbp.T_skip
-n_steps     = sbp.n_steps
-step_th     = sbp.step_th
+n_layers    = sbp.n_layers
+layer_th    = sbp.layer_th
 
 z_I         = sbp.z_I
 z_T         = sbp.z_T
@@ -177,7 +177,7 @@ t, z, kz, psi = get_h5_data(tasks, h5_files)
 z = np.flip(z)
 psi = np.flipud(psi)
 
-BP_array = hf.BP_n_steps(sbp.n_steps, sbp.z, sbp.z0_str, sbp.zf_str)
+BP_array = hf.BP_n_layers(n_layers, sbp.z, sbp.z0_str, sbp.zf_str)
 
 ###############################################################################
 # Sanity check plots
