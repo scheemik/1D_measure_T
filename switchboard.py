@@ -126,7 +126,8 @@ z0_str  = z0_dis - dis_buff     # [m] top of vertical structure
 z_I     = z0_str + IT_buff      # [m] depth at which to measure Incident wave
 zf_str  = z0_str - L            # [m] bottom of vertical structure
 z_T     = zf_str - IT_buff      # [m] depth at which to measure Transmitted wave
-zf_dis  = zf_str - dis_buff     # [m] bottom of display domain
+zf_buff = dis_buff+(lam_z-L)    # [m] extra buffer to make sure dis domain is integer number of lam_z
+zf_dis  = zf_str - zf_buff      # [m] bottom of display domain
 
 ###############################################################################
 # Boundary forcing window parameters
