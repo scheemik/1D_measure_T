@@ -68,6 +68,19 @@ def max_amp_at_z(data, T_skip=None, T=None, t=None):
     # Multiply element wise by the complex conjugate, find maximum
     return max_amp
 
+def pull_depth_data(depth, data, z):
+    """
+    Returns a 1D array of the data at a specified depth
+
+    depth       specified depth in meters
+    data        2D array of wavefield data (t,z)
+    z           array of z values
+    """
+    # Find the index of the z's closest to specified depth
+    idx_depth = find_nearest_index(z, depth)
+    # Pull relevant depths from the data, take absolute value
+    data_at_depth = data[:][idx_depth]
+    return data_at_depth
 
 def measure_T(data, z, z_I, z_T, T_skip=None, T=None, t=None):
     """
@@ -83,11 +96,11 @@ def measure_T(data, z, z_I, z_T, T_skip=None, T=None, t=None):
     t           array of time values
     """
     # Find the indicies of the z's closest to z_I and z_T
-    idx_I = find_nearest_index(z, z_I)
-    idx_T = find_nearest_index(z, z_T)
+    # idx_I = find_nearest_index(z, z_I)
+    # idx_T = find_nearest_index(z, z_T)
     # Pull relevant depths from the data, take absolute value
-    arr_I = data[:][idx_I]
-    arr_T = data[:][idx_T]
+    arr_I = pull_depth_data(z_I, data, z)#data[:][idx_I]
+    arr_T = pull_depth_data(z_T, data, z)#data[:][idx_T]
     # # Multiply element wise by the complex conjugate, find maximum
     I_ = max_amp_at_z(arr_I, T_skip, T, t)
     T_ = max_amp_at_z(arr_T, T_skip, T, t)
