@@ -58,15 +58,32 @@ def max_amp_at_z(data, T_skip=None, T=None, t=None):
     T           oscillation period in seconds
     t           array of time values
     """
-    if T_skip != None:
+    if T_skip != None and T_skip != 0.0:
         # find index of time after skip interval
         idt   = find_nearest_index(t, T_skip*T)
         arr_A = data[idt:]
-        max_amp = max(arr_A.real)
+        max_amp = max(arr_A)
     else:
-        max_amp = max(data.real)
+        max_amp = max(data)
     # Multiply element wise by the complex conjugate, find maximum
     return max_amp
+
+def avg_within_bounds(data, x_array=None, l_bound=None, r_bound=None):
+    """
+    Returns average value of an array between left and right bounds, if provided
+    data        1D array of data, assumed to be real valued
+    x_array     axis array for data
+    l_bound     left bound, in x (not an index)
+    r_bound     right bound, in x (not an index)
+    """
+    if x_array != None:
+        # find index of left and right bounds
+        idx_l    = find_nearest_index(x_array, l_bound)
+        idx_r    = find_nearest_index(x_array, r_bound)
+        data_avg = np.mean(data[idx_l:idx_r])
+    else:
+        data_avg = np.mean(data)
+    return data_avg
 
 def pull_depth_data(depth, data, z):
     """
@@ -82,7 +99,7 @@ def pull_depth_data(depth, data, z):
     data_at_depth = data[:][idx_depth]
     return data_at_depth
 
-def measure_T(data, z, z_I, z_T, T_skip=None, T=None, t=None):
+def measure_T(data, z, z_I, z_T, T_skip=0.0, T=None, t=None):
     """
     Measures the transmission coefficient for a filtered wave field
     Expects the data to be only one direction of propagation
@@ -95,17 +112,22 @@ def measure_T(data, z, z_I, z_T, T_skip=None, T=None, t=None):
     T           oscillation period in seconds
     t           array of time values
     """
-    # Find the indicies of the z's closest to z_I and z_T
-    # idx_I = find_nearest_index(z, z_I)
-    # idx_T = find_nearest_index(z, z_T)
-    # Pull relevant depths from the data, take absolute value
-    arr_I = pull_depth_data(z_I, data, z)#data[:][idx_I]
-    arr_T = pull_depth_data(z_T, data, z)#data[:][idx_T]
-    # # Multiply element wise by the complex conjugate, find maximum
-    I_ = max_amp_at_z(arr_I, T_skip, T, t)
-    T_ = max_amp_at_z(arr_T, T_skip, T, t)
-    # Return the ratio, the Transmission Coefficient
-    return T_ / I_
+    # Pull relevant depths from the data
+    arr_I = pull_depth_data(z_I, data, z)
+    arr_T = pull_depth_data(z_T, data, z)
+    # Multiply element wise by the complex conjugate, assume imaginary parts go to 0
+    AAcc_I = AAcc(arr_I).real
+    AAcc_T = AAcc(arr_T).real
+    # Find amplitude values for incident and transmitted waves
+    use_max = False
+    if use_max:
+        I_ = max_amp_at_z(AAcc_I, T_skip, T, t)
+        T_ = max_amp_at_z(AAcc_T, T_skip, T, t)
+    else:
+        I_ = avg_within_bounds(AAcc_I)
+        T_ = avg_within_bounds(AAcc_T)
+    # The ratio of T_/I_ is the Transmission Coefficient
+    return I_, T_, AAcc_I, AAcc_T
 
 
 ###############################################################################
@@ -341,18 +363,23 @@ def plot_A_of_I_T(z_array, t_array, T, dn_array, z_I, z_T, tol, mL, theta, omega
     # Set ratios by passing dictionary as 'gridspec_kw', and share y axis
     fig, axes = plt.subplots(figsize=(w,h), nrows=2, ncols=1, gridspec_kw=plot_ratios, sharex=True)
     #
+    I_, T_, AAcc_I, AAcc_T = measure_T(dn_array, z_array, z_I, z_T, T_skip=nT, T=T, t=t_array)
     # Find the indicies of the z's closest to z_I and z_T
-    idx_I = find_nearest_index(z_array, z_I)
-    idx_T = find_nearest_index(z_array, z_T)
-    # Create arrays for I and T
-    arr_I = dn_array[idx_I]
-    arr_T = dn_array[idx_T]
-    # Take complex conjugate
-    arr_I = AAcc(arr_I)
-    arr_T = AAcc(arr_T)
-    #
-    axes[0].plot(t_array/T, arr_I, color=my_clrs['b'], label=r'$I$')
-    axes[1].plot(t_array/T, arr_T, color=my_clrs['b'], label=r'$T$')
+    # idx_I = find_nearest_index(z_array, z_I)
+    # idx_T = find_nearest_index(z_array, z_T)
+    # # Create arrays for I and T
+    # arr_I = dn_array[idx_I]
+    # arr_T = dn_array[idx_T]
+    # # Take complex conjugate
+    # arr_I = AAcc(arr_I)
+    # arr_T = AAcc(arr_T)
+    # Plot lines of AAcc for incident and transmission depths
+    axes[0].plot(t_array/T, AAcc_I, color=my_clrs['b'], label=r'$I$')
+    axes[1].plot(t_array/T, AAcc_T, color=my_clrs['b'], label=r'$T$')
+    # Add horizontal lines to show the overall value of each depth
+    axes[0].axhline(y=I_, color=my_clrs['incident'], linestyle='--')
+    axes[1].axhline(y=T_, color=my_clrs['transmission'], linestyle='--')
+    # Add vertical lines to show where the transient ends
     axes[0].axvline(x=nT, color=my_clrs['black'], linestyle='--')
     axes[1].axvline(x=nT, color=my_clrs['black'], linestyle='--')
     #

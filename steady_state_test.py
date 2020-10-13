@@ -212,7 +212,8 @@ if profile_it == True:
 ###############################################################################
 # Measuring the transmission coefficient
 
-big_T = hf.measure_T(dn_c, z, z_I, z_T, T_skip=None, T=T, t=t)
+I_, T_, AAcc_I, AAcc_T = hf.measure_T(dn_field, z, z_I, z_T, T_skip=None, T=T, t=t)
+big_T = T_/I_
 print("Transmission coefficient is:", big_T)
 
 ###############################################################################
