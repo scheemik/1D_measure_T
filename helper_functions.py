@@ -420,7 +420,7 @@ def plot_AA_for_z(BP_array, dn_array, z, mL, theta, omega, T_skip=None, T=None, 
     # Find maximum value of the field times its complex conjugate for each z
     I_and_T_for_z = z*0.0
     for i in range(len(z)):
-        I_and_T_for_z[i] = max_amp_at_z(dn_array[i], T_skip, T, t)
+        I_and_T_for_z[i] = avg_within_bounds(dn_array[i]) #max_amp_at_z(dn_array[i], T_skip, T, t) 
     # Plot boudnary forcing and sponge layer windows
     axes[1].plot(I_and_T_for_z, z, color=my_clrs['incident'], label='Amp')
     # Add horizontal lines
