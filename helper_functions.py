@@ -407,8 +407,6 @@ def plot_z_vs_t(z_array, t_array, T, data, BP_array, mL, theta, omega, z_I=None,
     axes[1].set_xlabel(r'$t/T$')
     axes[1].set_title(r'$\Psi$ (m$^2$/s)')
     add_plot_title(fig, title_str, mL, theta, omega)
-    # param_formated_str = latex_exp(mL)+', '+rad_to_degs(theta)+', '+latex_exp(omega)
-    # fig.suptitle(r'%s, $(mL,\theta,\omega)$=(%s)' %(title_str, param_formated_str))
     #plt.show()
     plt.savefig(filename)
 
@@ -454,36 +452,38 @@ def plot_A_of_I_T(z_array, t_array, T, dn_array, mL, theta, omega, z_I, z_T, plo
     axes[0].set_title(r'$z_I=%s$' %(z_I))
     axes[1].set_title(r'$z_T=%s$' %(z_T))
     add_plot_title(fig, title_str, mL, theta, omega)
-    # param_formated_str = latex_exp(mL)+', '+rad_to_degs(theta)+', '+latex_exp(omega)
-    # fig.suptitle(r'%s, $(mL,\theta,\omega)$=(%s)' %(title_str, param_formated_str))
     #plt.show()
     plt.savefig(filename)
 
 ###############################################################################
 
-def plot_AA_for_z(BP_array, dn_array, z, mL, theta, omega, T_skip=None, T=None, t=None, z0_dis=None, zf_dis=None, z_I=None, z_T=None, title_str='Forced 1D Wave', filename='f_1D_AA_for_z.png'):
+def plot_AA_for_z(z_array, BP_array, dn_array, mL, theta, omega, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_domain=True, title_str='Forced 1D Wave', filename='f_1D_AA_for_z.png'):
     """
-    Plots the max of the wave field times its complex conjugate for all depths
+    Plots the average of the downward-propagating wave's AA^* for all depths
 
-    BP_array    array of background profile in N_0
-    dn_array    downward psi wavefield, AAcc
-    z           array of z values
+    z_array     array of z values
+    dn_array    wavefield data for downward propagating wave (AA^*, complex parts ~0)
+    BP_array    array of the background profile values in z
     mL          Non-dimensional number relating wavelength and layer thickness
     theta       Angle at which wave is incident on stratification structure
     omega       frequency of wave
+    z_I         depth to measure incident wave
+    z_T         depth to meausre transmitted wave
     z0_dis      top of vertical structure extent
     zf_dis      bottom of vertical structure extent
+    plot_full...True or False, determines if depths outside display domain are plotted
     """
     # Set figure and axes for plot
     fig, axes = set_fig_axes([1], [1,4], 0.75)
     # Plot the background profile of N_0
-    plot_BP(axes[0], BP_array, z, omega)
+    plot_BP(axes[0], BP_array, z_array, omega)
     # Find maximum value of the field times its complex conjugate for each z
-    I_and_T_for_z = z*0.0
-    for i in range(len(z)):
-        I_and_T_for_z[i] = avg_within_bounds(dn_array[i]) #max_amp_at_z(dn_array[i], T_skip, T, t)
+    I_and_T_for_z = z_array*0.0
+    for i in range(len(z_array)):
+        # avg_within_bounds assumes real valued input
+        I_and_T_for_z[i] = avg_within_bounds(dn_array[i].real)
     # Plot boudnary forcing and sponge layer windows
-    axes[1].plot(I_and_T_for_z, z, color=my_clrs['incident'], label='Amp')
+    axes[1].plot(I_and_T_for_z, z_array, color=my_clrs['incident'], label='Amp')
     # Add horizontal lines
     if z0_dis != None and zf_dis != None:
         add_dis_bounds(axes[0], z0_dis, zf_dis)
@@ -496,38 +496,10 @@ def plot_AA_for_z(BP_array, dn_array, z, mL, theta, omega, T_skip=None, T=None, 
     #axes[1].set_ylabel(r'$z$')
     axes[1].set_title(r'Windows')
     axes[1].legend()
-    #
-    param_formated_str = latex_exp(mL)+', '+rad_to_degs(theta)+', '+latex_exp(omega)
-    fig.suptitle(r'%s, $(mL,\theta,\omega)$=(%s)' %(title_str, param_formated_str))
+    add_plot_title(fig, title_str, mL, theta, omega)
     plt.savefig(filename)
 
 ###############################################################################
-# Depricated function
-def plot_A_vs_t(t_array, T, data_array, A, mL, theta, omega, nT=0.0, title_str='Forced 1D Wave', filename='f_1D_A_vs_t.png'):
-    # Set figure and axes for plot
-    fig, axes = set_fig_axes([1,1], [1])
-    #
-    max_amps = t_array * 0.0
-    data_T = np.transpose(data_array)
-    # print('shape of max_amps:',max_amps.shape)
-    # print('shape of data_T:',data_T.shape)
-    for i in range(len(max_amps)):
-        max_amps[i] = max(data_T[i])
-    ramp_array = A*(1/2)*(np.tanh(4*t_array/(nT*T) - 2) + 1)
-    #
-    axes[0].plot(t_array/T, max_amps, color=my_clrs['b'], label=r'$A$')
-    axes[1].plot(t_array/T, ramp_array, color=my_clrs['b'], label=r'$ramp$')
-    axes[1].axvline(x=nT, color=my_clrs['black'], linestyle='--')
-    #
-    axes[0].set_xlim(t_array[0]/T, t_array[-1]/T)
-    axes[1].set_xlabel(r'$t/T$')
-    axes[0].set_ylabel(r'Amplitude')
-    axes[1].set_ylabel(r'Ramp')
-    param_formated_str = latex_exp(A)+', '+latex_exp(mL)+', '+rad_to_degs(theta)+', '+latex_exp(omega)
-    fig.suptitle(r'%s, $(A,mL,\theta,\omega)$=(%s)' %(title_str, param_formated_str))
-    #plt.show()
-    plt.savefig(filename)
-
 ###############################################################################
 
 def sort_k_coeffs(arr, nz):

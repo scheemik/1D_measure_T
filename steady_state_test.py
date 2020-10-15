@@ -125,18 +125,23 @@ def apply_band_pass(ftd, freq, omega, bp_wid=1):
     ftd[:,idx_om-bp_wid:idx_om+bp_wid] = ftd[:,idx_om-bp_wid:idx_om+bp_wid] * 2.0
     return ftd
 
+def is_power_of_2(x):
+    n = np.log2(x)
+    return (np.floor(n) == np.ceil(n))
+
 # fourier transform in time, band pass around omega, inverse fourier transform
 def FT_in_time(t, z, data, dt, omega):
-    # Should we apply the window?
-    apply_window = False
-    if apply_window:
-        nz = len(z)
-        # apply window to data
-        data = data * np.hanning(nz)
+    # Check to make sure the time dimension matches
+    nt = len(t)
+    nt_data = data.shape[1]
+    if nt != nt_data:
+        print('MISMATCH IN nt!')
+    if is_power_of_2(nt) == False:
+        print('nt is not a power of 2')
     # FT in time of the data (axis 1 is time)
     ftd = np.fft.fft(data, axis=1)
     # find relevant frequencies
-    freq = np.fft.fftfreq(len(t), dt)
+    freq = np.fft.fftfreq(nt, dt)
     # Apply filtering on frequencies
     use_bp = False
     if use_bp:
@@ -240,7 +245,7 @@ if sbp.plot_amplitude:
     hf.plot_A_of_I_T(z, t, T, plot_dn, mL, theta, omega, z_I, z_T, title_str=run_name, filename='ss_1D_A_of_I_T.png')
 
 if sbp.plot_amplitude:
-    hf.plot_AA_for_z(BP_array, hf.AAcc(plot_dn), z, mL, theta, omega, T_skip=None, T=T, t=t, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, title_str=run_name, filename='ss_1D_AA_for_z.png')
+    hf.plot_AA_for_z(z, BP_array, hf.AAcc(plot_dn), mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, title_str=run_name, filename='ss_1D_AA_for_z.png')
 
 if sbp.plot_up_dn:
     hf.plot_z_vs_t(z, t, T, plot_up.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' up', filename='ss_1D_up_field.png')
