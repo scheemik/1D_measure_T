@@ -14,12 +14,14 @@ from dedalus import public as de
 # Main parameters, the ones I'll change a lot. Many more below
 
 # Relevant parameters
+nz              = 1024          # [] number of grid points in the z direction
 mL      = 1                     # [] vertical wave number times step length
 theta   = None                  # [] angle between wave's propagation and horizontal (or vertical?)
 
 # Time parameters
 p_n_steps   = 10                # [] power of the number of timesteps for the simulation
 p_o_steps   = 6                 # [] power of the number of timesteps per oscillation period
+ss_cutoff   = 3                 # [] number of oscillations to cut from beginning to leave just steady state
 #
 n_steps     = int(2**p_n_steps) # [] number of timesteps for the simulation
 o_steps     = int(2**p_o_steps) # [] number of timesteps per oscillation period
@@ -29,8 +31,7 @@ if p_n_T <= 0:
     raise SystemExit(0)
 n_T         = int(2**p_n_T)     # [] number of oscillation periods
 
-# Run parameters
-nz              = 1024          # [] number of grid points in the z direction
+# Run parameters (to be deleted)
 stop_n_periods  = 28            # [] oscillation periods (28, 57)
 extend_to_pwr_2 = True          # [] Extend simulation time so nt is a power of 2
 

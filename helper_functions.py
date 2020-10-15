@@ -307,24 +307,62 @@ def plot_v_profiles(BP_array, bf_array, sp_array, z, omega=None, z0_dis=None, zf
     fig.suptitle(r'%s' %(title_str))
     plt.savefig(filename)
 
-###############################################################################
+def set_fig_axes(heights, widths, fig_ratio=0.5):
+    """
+    Creates fig and axes objects based on desired heights and widths of subplots
+    Ex: if widths=[1,5], there will be 2 columns, the 1st 1/5 the width of the 2nd
 
-def plot_z_vs_t(z, t_array, T, w_array, BP_array, mL, theta, omega, z0_dis=None, zf_dis=None, z_I=None, z_T=None, plot_full_domain=True, nT=0.0, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave.png'):
+    heights     array of integers for subplot height ratios, len=rows
+    widths      array of integers for subplot width  ratios, len=cols
+    fig_ratio   ratio of height to width of overall figure
+    """
     # Set aspect ratio of overall figure
-    w, h = mpl.figure.figaspect(0.5)
+    w, h = mpl.figure.figaspect(fig_ratio)
+    # Find rows and columns of subplots
+    rows = len(heights)
+    cols = len(widths)
     # This dictionary makes each subplot have the desired ratios
     # The length of heights will be nrows and likewise len(widths)=ncols
-    plot_ratios = {'height_ratios': [1],
-                   'width_ratios': [1,5]}
+    plot_ratios = {'height_ratios': heights,
+                   'width_ratios': widths}
+    # Determine whether to share x or y axes
+    if rows == 1 and cols != 1: # if only one row, share y axis
+        share_x_axis = False
+        share_y_axis = True
+    elif rows != 1 and cols == 1: # if only one column, share x axis
+        share_x_axis = True
+        share_y_axis = False
+    else:                       # otherwise, forget about it
+        share_x_axis = False
+        share_y_axis = False
     # Set ratios by passing dictionary as 'gridspec_kw', and share y axis
-    fig, axes = plt.subplots(figsize=(w,h), nrows=1, ncols=2, gridspec_kw=plot_ratios, sharey=True)
+    return plt.subplots(figsize=(w,h), nrows=rows, ncols=cols, gridspec_kw=plot_ratios, sharex=share_x_axis, sharey=share_y_axis)
+
+###############################################################################
+
+def plot_z_vs_t(z_array, t_array, T, data, BP_array, mL, theta, omega, z0_dis=None, zf_dis=None, z_I=None, z_T=None, plot_full_domain=True, nT=0.0, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave.png'):
+    """
+    Plots the data as a colormap on z vs t with the vertical profile included to the left
+
+    z_array     array of z values
+    t_array     array of time values (in seconds)
+    T           oscillation period (in seconds)
+    data        data to be plotted on colormap (assmued real valued)
+    mL          Non-dimensional number relating wavelength and layer thickness
+    theta       Angle at which wave is incident on stratification structure
+    omega       frequency of wave
+    z0_dis      top of vertical structure extent
+    zf_dis      bottom of vertical structure extent
+    """
+    # Set figure and axes for plot
+    fig, axes = set_fig_axes([1], [1,5])
     #
-    plot_BP(axes[0], BP_array, z, omega)
+    plot_BP(axes[0], BP_array, z_array, omega)
     #
-    xmesh, ymesh = quad_mesh(x=t_array/T, y=z)
-    im = axes[1].pcolormesh(xmesh, ymesh, w_array, cmap=c_map)
+    xmesh, ymesh = quad_mesh(x=t_array/T, y=z_array)
+    im = axes[1].pcolormesh(xmesh, ymesh, data, cmap=c_map)
     # Find max of absolute value for colorbar for limits symmetric around zero
-    cmax = max(abs(w_array.flatten()))
+    cmax = max(abs(data.flatten()))
     if cmax==0.0:
         cmax = 0.001 # to avoid the weird jump with the first frame
     # Set upper and lower limits on colorbar
@@ -354,25 +392,10 @@ def plot_z_vs_t(z, t_array, T, w_array, BP_array, mL, theta, omega, z0_dis=None,
 ###############################################################################
 
 def plot_A_of_I_T(z_array, t_array, T, dn_array, z_I, z_T, tol, mL, theta, omega, nT=0.0, title_str='Forced 1D Wave', filename='f_1D_A_of_I_T.png'):
-    # Set aspect ratio of overall figure
-    w, h = mpl.figure.figaspect(0.5)
-    # This dictionary makes each subplot have the desired ratios
-    # The length of heights will be nrows and likewise len(widths)=ncols
-    plot_ratios = {'height_ratios': [1,1],
-                   'width_ratios': [1]}
-    # Set ratios by passing dictionary as 'gridspec_kw', and share y axis
-    fig, axes = plt.subplots(figsize=(w,h), nrows=2, ncols=1, gridspec_kw=plot_ratios, sharex=True)
+    # Set figure and axes for plot
+    fig, axes = set_fig_axes([1,1], [1])
     #
     I_, T_, AAcc_I, AAcc_T = measure_T(dn_array, z_array, z_I, z_T, T_skip=nT, T=T, t=t_array)
-    # Find the indicies of the z's closest to z_I and z_T
-    # idx_I = find_nearest_index(z_array, z_I)
-    # idx_T = find_nearest_index(z_array, z_T)
-    # # Create arrays for I and T
-    # arr_I = dn_array[idx_I]
-    # arr_T = dn_array[idx_T]
-    # # Take complex conjugate
-    # arr_I = AAcc(arr_I)
-    # arr_T = AAcc(arr_T)
     # Plot lines of AAcc for incident and transmission depths
     axes[0].plot(t_array/T, AAcc_I, color=my_clrs['b'], label=r'$I$')
     axes[1].plot(t_array/T, AAcc_T, color=my_clrs['b'], label=r'$T$')
@@ -409,18 +432,14 @@ def plot_AA_for_z(BP_array, dn_array, z, mL, theta, omega, T_skip=None, T=None, 
     z0_dis      top of vertical structure extent
     zf_dis      bottom of vertical structure extent
     """
-    # This dictionary makes each subplot have the desired ratios
-    # The length of heights will be nrows and likewise len(widths)=ncols
-    plot_ratios = {'height_ratios': [1],
-                   'width_ratios': [1,4]}
-    # Set ratios by passing dictionary as 'gridspec_kw', and share y axis
-    fig, axes = plt.subplots(nrows=1, ncols=2, gridspec_kw=plot_ratios, sharey=True)
+    # Set figure and axes for plot
+    fig, axes = set_fig_axes([1], [1,4], 0.75)
     # Plot the background profile of N_0
     plot_BP(axes[0], BP_array, z, omega)
     # Find maximum value of the field times its complex conjugate for each z
     I_and_T_for_z = z*0.0
     for i in range(len(z)):
-        I_and_T_for_z[i] = avg_within_bounds(dn_array[i]) #max_amp_at_z(dn_array[i], T_skip, T, t) 
+        I_and_T_for_z[i] = avg_within_bounds(dn_array[i]) #max_amp_at_z(dn_array[i], T_skip, T, t)
     # Plot boudnary forcing and sponge layer windows
     axes[1].plot(I_and_T_for_z, z, color=my_clrs['incident'], label='Amp')
     # Add horizontal lines
@@ -443,14 +462,8 @@ def plot_AA_for_z(BP_array, dn_array, z, mL, theta, omega, T_skip=None, T=None, 
 ###############################################################################
 # Depricated function
 def plot_A_vs_t(t_array, T, data_array, A, mL, theta, omega, nT=0.0, title_str='Forced 1D Wave', filename='f_1D_A_vs_t.png'):
-    # Set aspect ratio of overall figure
-    w, h = mpl.figure.figaspect(0.5)
-    # This dictionary makes each subplot have the desired ratios
-    # The length of heights will be nrows and likewise len(widths)=ncols
-    plot_ratios = {'height_ratios': [1,1],
-                   'width_ratios': [1]}
-    # Set ratios by passing dictionary as 'gridspec_kw', and share y axis
-    fig, axes = plt.subplots(figsize=(w,h), nrows=2, ncols=1, gridspec_kw=plot_ratios, sharex=True)
+    # Set figure and axes for plot
+    fig, axes = set_fig_axes([1,1], [1])
     #
     max_amps = t_array * 0.0
     data_T = np.transpose(data_array)
@@ -498,14 +511,8 @@ def plot_freq_space(z_array, f_array, r_array, i_array, mL, theta, omega, z0_dis
     z0_dis      top of vertical structure extent
     zf_dis      bottom of vertical structure extent
     """
-    # Set aspect ratio of overall figure
-    w, h = mpl.figure.figaspect(0.5)
-    # This dictionary makes each subplot have the desired ratios
-    # The length of heights will be nrows and likewise len(widths)=ncols
-    plot_ratios = {'height_ratios': [1],
-                   'width_ratios': [1,1]}
-    # Set ratios by passing dictionary as 'gridspec_kw', and share y axis
-    fig, axes = plt.subplots(figsize=(w,h), nrows=1, ncols=2, gridspec_kw=plot_ratios, sharey=True)
+    # Set figure and axes for plot
+    fig, axes = set_fig_axes([1], [1,1])
     # Plot heat map, or just one slice of z?
     plot_just_a_slice = True
     if plot_just_a_slice:
