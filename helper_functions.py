@@ -51,6 +51,7 @@ def AAcc(data):
     """
     return data * np.conj(data)
 
+# depricated function
 def max_amp_at_z(data, T_skip=None, T=None, t=None):
     """
     data        1D array of wave field for certain z, AAcc
@@ -245,6 +246,12 @@ def set_colorbar(data, im, plt, axis):
 
 # A standard title for most of my plots
 def add_plot_title(fig, title_str, mL, theta, omega):
+    """
+    Adds overall title (suptitle) to given figure
+    fig         figure object on which to add the title
+    title_str   string of title
+    others      values of parameters to include in title
+    """
     param_formated_str = latex_exp(mL)+', '+rad_to_degs(theta)+', '+latex_exp(omega)
     fig.suptitle(r'%s, $(mL,\theta,\omega)$=(%s)' %(title_str, param_formated_str))
 
@@ -311,6 +318,29 @@ def add_measure_lines(ax, z_I=None, z_T=None):
         ax.axhline(y=z_I, color=my_clrs['incident'], linestyle='--')
         ax.axhline(y=z_T, color=my_clrs['transmission'], linestyle='--')
 
+def add_lines_to_ax(ax, z_I=None, z_T=None, z0_dis=None, zf_dis=None, T_cutoff=None):
+    """
+    ax          axis for plot
+    z_I         depth at which to measure Incident wave
+    z_T         depth at which to measure Transmitted wave
+    z0_dis      top of vertical structure extent
+    zf_dis      bottom of vertical structure extent
+    T_cutoff    integer, oscillations to cut off of beginning of simulation
+    """
+    # Horizontal lines for incident and transmission depths
+    if z_I != None and z_T != None:
+        ax.axhline(y=z_I, color=my_clrs['incident'], linestyle='--')
+        ax.axhline(y=z_T, color=my_clrs['transmission'], linestyle='--')
+    # Horizontal lines for display depths
+    if z0_dis != None and zf_dis != None:
+        line_color = my_clrs['black']
+        ax.axhline(y=z0_dis, color=line_color, linestyle='--')
+        ax.axhline(y=zf_dis, color=line_color, linestyle='--')
+    # Vertical line for transient cutoff
+    if T_cutoff != None:
+        line_color = my_clrs['black']
+        ax.axvline(x=T_cutoff, color=line_color, linestyle='--')
+
 # Plot background profile
 def plot_BP(ax, BP, z, omega=None):
     """
@@ -349,12 +379,13 @@ def plot_v_profiles(BP_array, bf_array, sp_array, z, omega=None, z0_dis=None, zf
     if z0_dis != None and zf_dis != None:
         add_dis_bounds(axes[0], z0_dis, zf_dis)
         add_dis_bounds(axes[1], z0_dis, zf_dis)
-    if z_I != None and z_T != None:
-        add_measure_lines(axes[1], z_I, z_T)
-        add_measure_lines(axes[0], z_I, z_T)
+    add_lines_to_ax(axes[0], z_I=z_I, z_T=z_T)
+    add_lines_to_ax(axes[1], z_I=z_I, z_T=z_T)
+    # if z_I != None and z_T != None:
+    #     add_measure_lines(axes[1], z_I, z_T)
+    #     add_measure_lines(axes[0], z_I, z_T)
     # Add labels
     axes[1].set_xlabel('Amplitude')
-    #axes[1].set_ylabel(r'$z$')
     axes[1].set_title(r'Windows')
     axes[1].legend()
     #
@@ -392,17 +423,14 @@ def plot_z_vs_t(z_array, t_array, T, data, BP_array, mL, theta, omega, z_I=None,
     im = axes[1].pcolormesh(xmesh, ymesh, data, cmap=c_map)
     # Set colorbar
     set_colorbar(data, im, plt, axes[1])
-    # Add horizontal lines
-    if plot_full_domain:
-        add_dis_bounds(axes[0], z0_dis, zf_dis)
-        add_dis_bounds(axes[1], z0_dis, zf_dis)
-    else:
+    # Add straight lines to profile plot
+    add_lines_to_ax(axes[0], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis)
+    # Add straight lines to wavefield plot
+    add_lines_to_ax(axes[1], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, T_cutoff=T_cutoff)
+    if plot_full_domain == False:
         axes[0].set_ylim([z0_dis,zf_dis])
         axes[1].set_ylim([z0_dis,zf_dis])
         axes[1].set_xlim([T_cutoff,t_array[-1]/T])
-    if z_I != None and z_T != None:
-        add_measure_lines(axes[1], z_I, z_T)
-        add_measure_lines(axes[0], z_I, z_T)
     # Add titles and labels
     axes[1].set_xlabel(r'$t/T$')
     axes[1].set_title(r'$\Psi$ (m$^2$/s)')
@@ -442,8 +470,10 @@ def plot_A_of_I_T(z_array, t_array, T, dn_array, mL, theta, omega, z_I, z_T, plo
     axes[0].axhline(y=I_, color=my_clrs['incident'], linestyle='--')
     axes[1].axhline(y=T_, color=my_clrs['transmission'], linestyle='--')
     # Add vertical lines to show where the transient ends
-    axes[0].axvline(x=T_cutoff, color=my_clrs['black'], linestyle='--')
-    axes[1].axvline(x=T_cutoff, color=my_clrs['black'], linestyle='--')
+    add_lines_to_ax(axes[0], z_I=I_, T_cutoff=T_cutoff)
+    add_lines_to_ax(axes[1], z_T=T_, T_cutoff=T_cutoff)
+    # axes[0].axvline(x=T_cutoff, color=my_clrs['black'], linestyle='--')
+    # axes[1].axvline(x=T_cutoff, color=my_clrs['black'], linestyle='--')
     # Add labels and titles
     axes[0].set_xlim(t_array[0]/T, t_array[-1]/T)
     axes[1].set_xlabel(r'$t/T$')
@@ -485,12 +515,8 @@ def plot_AA_for_z(z_array, BP_array, dn_array, mL, theta, omega, z_I=None, z_T=N
     # Plot boudnary forcing and sponge layer windows
     axes[1].plot(I_and_T_for_z, z_array, color=my_clrs['incident'], label='Amp')
     # Add horizontal lines
-    if z0_dis != None and zf_dis != None:
-        add_dis_bounds(axes[0], z0_dis, zf_dis)
-        add_dis_bounds(axes[1], z0_dis, zf_dis)
-    if z_I != None and z_T != None:
-        add_measure_lines(axes[1], z_I, z_T)
-        add_measure_lines(axes[0], z_I, z_T)
+    add_lines_to_ax(axes[0], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis)
+    add_lines_to_ax(axes[1], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis)
     # Add labels
     axes[1].set_xlabel('Amplitude')
     #axes[1].set_ylabel(r'$z$')

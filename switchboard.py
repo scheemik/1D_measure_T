@@ -179,19 +179,13 @@ else:
     win_sp_array = z * 0.0      # No sponge
 
 ###############################################################################
-# Measuring the Transmission Coefficient
-
-# Parameters
-T_skip          = 15            # []  number of oscillation periods to skip before measuring
-
-###############################################################################
 # Run parameters
 dt              = T/o_steps     # [s] initial time step size (should be around 0.125)
 snap_dt         = 32*dt         # [s] time step size for snapshots
 snap_max_writes = 100           # [] max number of writes per snapshot file
 fh_mode         = 'overwrite'   # file handling mode, either 'overwrite' or 'append'
 # Stopping conditions for the simulation
-sim_time_stop  = T * n_T        # [s] number of simulated seconds until the sim stops
+sim_time_stop = T*(T_cutoff+n_T)# [s] number of simulated seconds until the sim stops
 stop_wall_time = 180 * 60.0     # [s] length in minutes * 60 = length in seconds, sim stops if exceeded
 stop_iteration = np.inf         # [] number of iterations before the simulation stops
 

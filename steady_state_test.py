@@ -54,6 +54,7 @@ z_I         = sbp.z_I
 z_T         = sbp.z_T
 
 plt_fd      = sbp.plot_full_domain
+T_cutoff    = sbp.T_cutoff
 
 ###############################################################################
 # Create ideal, steady-state, periodic boundary simulation data
@@ -64,9 +65,11 @@ B           = 1.0
 
 # Find space and time axes (z, t)
 z = np.linspace(zf_dis, z0_dis, nz) # careful about the order of endpoints
-stop_sim_time, nt  = hf.extended_stop_time(sbp.sim_time_stop, dt)
+#stop_sim_time, nt  = hf.extended_stop_time(sbp.sim_time_stop, dt)
+stop_sim_time = sbp.sim_time_stop
+nt = stop_sim_time / dt
 print("nt=",nt)
-t = np.linspace(0.0, stop_sim_time, nt)
+t = np.linspace(0.0, stop_sim_time, int(nt))
 # Find wavenumbers
 kz = np.fft.fftfreq(len(z), dz)
 # Make a space time meshgrid
@@ -232,7 +235,7 @@ plot_psi    = (psi) #- psi_hat.real # psi.real
 # Plotting and stuff
 
 if sbp.plot_spacetime:
-    hf.plot_z_vs_t(z, t, T, plot_psi.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, T_cutoff=0, title_str=run_name, filename='ss_1D_wave.png')
+    hf.plot_z_vs_t(z, t, T, plot_psi.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, T_cutoff=T_cutoff, title_str=run_name, filename='ss_1D_wave.png')
 
 if sbp.plot_freqspace:
     foobar, psi_FT_t, freqs = FT_in_time(t, z, psi, dt, omega)
@@ -242,7 +245,7 @@ if sbp.plot_freqspace:
     hf.plot_freq_space(z, freqs, psi_FT_t.real, psi_FT_t.imag, mL, theta, omega, plot_full_domain=plt_fd, title_str=run_name, filename='ss_1D_freq_spectra.png')
 
 if sbp.plot_amplitude:
-    hf.plot_A_of_I_T(z, t, T, plot_dn, mL, theta, omega, z_I, z_T, title_str=run_name, filename='ss_1D_A_of_I_T.png')
+    hf.plot_A_of_I_T(z, t, T, plot_dn, mL, theta, omega, z_I, z_T, T_cutoff=T_cutoff, title_str=run_name, filename='ss_1D_A_of_I_T.png')
 
 if sbp.plot_amplitude:
     hf.plot_AA_for_z(z, BP_array, hf.AAcc(plot_dn), mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, title_str=run_name, filename='ss_1D_AA_for_z.png')
