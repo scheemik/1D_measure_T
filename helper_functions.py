@@ -190,6 +190,59 @@ def extended_stop_time(sim_time_stop, dt):
 
 ###############################################################################
 
+def set_fig_axes(heights, widths, fig_ratio=0.5):
+    """
+    Creates fig and axes objects based on desired heights and widths of subplots
+    Ex: if widths=[1,5], there will be 2 columns, the 1st 1/5 the width of the 2nd
+
+    heights     array of integers for subplot height ratios, len=rows
+    widths      array of integers for subplot width  ratios, len=cols
+    fig_ratio   ratio of height to width of overall figure
+    """
+    # Set aspect ratio of overall figure
+    w, h = mpl.figure.figaspect(fig_ratio)
+    # Find rows and columns of subplots
+    rows = len(heights)
+    cols = len(widths)
+    # This dictionary makes each subplot have the desired ratios
+    # The length of heights will be nrows and likewise len(widths)=ncols
+    plot_ratios = {'height_ratios': heights,
+                   'width_ratios': widths}
+    # Determine whether to share x or y axes
+    if rows == 1 and cols != 1: # if only one row, share y axis
+        share_x_axis = False
+        share_y_axis = True
+    elif rows != 1 and cols == 1: # if only one column, share x axis
+        share_x_axis = True
+        share_y_axis = False
+    else:                       # otherwise, forget about it
+        share_x_axis = False
+        share_y_axis = False
+    # Set ratios by passing dictionary as 'gridspec_kw', and share y axis
+    return plt.subplots(figsize=(w,h), nrows=rows, ncols=cols, gridspec_kw=plot_ratios, sharex=share_x_axis, sharey=share_y_axis)
+
+# Create and format a colorbar
+def set_colorbar(data, im, plt, axis):
+    """
+    Creates formats a colorbar for the provided axis
+    Ideally, it would format the ticks with my Latex function, but I
+        haven't figured that out yet
+
+    data        data array which is put into the colormap
+    im          image object of colormap
+    plt         plot object
+    axis        axis of plot object on which the colorbar will be placed
+    """
+    # Find max of absolute value for colorbar for limits symmetric around zero
+    cmax = max(abs(data.flatten()))
+    if cmax==0.0:
+        cmax = 0.001 # to avoid the weird jump with the first frame
+    # Set upper and lower limits on colorbar
+    im.set_clim(-cmax, cmax)
+    # Add colorbar to im
+    cbar = plt.colorbar(im, ax=axis)#, format=ticker.FuncFormatter(latex_exp))
+    cbar.ax.ticklabel_format(style='sci', scilimits=(-2,2), useMathText=True)
+
 # Background profile in N_0
 def BP_n_layers(n, z, z0_str, zf_str):
     """
@@ -280,12 +333,8 @@ def plot_v_profiles(BP_array, bf_array, sp_array, z, omega=None, z0_dis=None, zf
     z0_dis      top of vertical structure extent
     zf_dis      bottom of vertical structure extent
     """
-    # This dictionary makes each subplot have the desired ratios
-    # The length of heights will be nrows and likewise len(widths)=ncols
-    plot_ratios = {'height_ratios': [1],
-                   'width_ratios': [1,4]}
-    # Set ratios by passing dictionary as 'gridspec_kw', and share y axis
-    fig, axes = plt.subplots(nrows=1, ncols=2, gridspec_kw=plot_ratios, sharey=True)
+    # Set figure and axes for plot
+    fig, axes = set_fig_axes([1], [1,4], 0.75)
     # Plot the background profile of N_0
     plot_BP(axes[0], BP_array, z, omega)
     # Plot boudnary forcing and sponge layer windows
@@ -307,37 +356,6 @@ def plot_v_profiles(BP_array, bf_array, sp_array, z, omega=None, z0_dis=None, zf
     fig.suptitle(r'%s' %(title_str))
     plt.savefig(filename)
 
-def set_fig_axes(heights, widths, fig_ratio=0.5):
-    """
-    Creates fig and axes objects based on desired heights and widths of subplots
-    Ex: if widths=[1,5], there will be 2 columns, the 1st 1/5 the width of the 2nd
-
-    heights     array of integers for subplot height ratios, len=rows
-    widths      array of integers for subplot width  ratios, len=cols
-    fig_ratio   ratio of height to width of overall figure
-    """
-    # Set aspect ratio of overall figure
-    w, h = mpl.figure.figaspect(fig_ratio)
-    # Find rows and columns of subplots
-    rows = len(heights)
-    cols = len(widths)
-    # This dictionary makes each subplot have the desired ratios
-    # The length of heights will be nrows and likewise len(widths)=ncols
-    plot_ratios = {'height_ratios': heights,
-                   'width_ratios': widths}
-    # Determine whether to share x or y axes
-    if rows == 1 and cols != 1: # if only one row, share y axis
-        share_x_axis = False
-        share_y_axis = True
-    elif rows != 1 and cols == 1: # if only one column, share x axis
-        share_x_axis = True
-        share_y_axis = False
-    else:                       # otherwise, forget about it
-        share_x_axis = False
-        share_y_axis = False
-    # Set ratios by passing dictionary as 'gridspec_kw', and share y axis
-    return plt.subplots(figsize=(w,h), nrows=rows, ncols=cols, gridspec_kw=plot_ratios, sharex=share_x_axis, sharey=share_y_axis)
-
 ###############################################################################
 
 def plot_z_vs_t(z_array, t_array, T, data, BP_array, mL, theta, omega, z0_dis=None, zf_dis=None, z_I=None, z_T=None, plot_full_domain=True, nT=0.0, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave.png'):
@@ -356,20 +374,13 @@ def plot_z_vs_t(z_array, t_array, T, data, BP_array, mL, theta, omega, z0_dis=No
     """
     # Set figure and axes for plot
     fig, axes = set_fig_axes([1], [1,5])
-    #
+    # Plot background profiles
     plot_BP(axes[0], BP_array, z_array, omega)
-    #
+    # Create meshes and image of colormap
     xmesh, ymesh = quad_mesh(x=t_array/T, y=z_array)
     im = axes[1].pcolormesh(xmesh, ymesh, data, cmap=c_map)
-    # Find max of absolute value for colorbar for limits symmetric around zero
-    cmax = max(abs(data.flatten()))
-    if cmax==0.0:
-        cmax = 0.001 # to avoid the weird jump with the first frame
-    # Set upper and lower limits on colorbar
-    im.set_clim(-cmax, cmax)
-    # Add colorbar to im
-    cbar = plt.colorbar(im)#, format=ticker.FuncFormatter(latex_exp))
-    cbar.ax.ticklabel_format(style='sci', scilimits=(-2,2), useMathText=True)
+    # Set colorbar
+    set_colorbar(data, im, plt, axes[1])
     # Add horizontal lines
     if plot_full_domain:
         add_dis_bounds(axes[0], z0_dis, zf_dis)
