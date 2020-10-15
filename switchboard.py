@@ -21,7 +21,7 @@ theta   = None                  # [] angle between wave's propagation and horizo
 # Time parameters
 p_n_steps   = 10                # [] power of the number of timesteps for the simulation
 p_o_steps   = 6                 # [] power of the number of timesteps per oscillation period
-ss_cutoff   = 3                 # [] number of oscillations to cut from beginning to leave just steady state
+T_cutoff    = 3                 # [] number of oscillations to cut from beginning to leave just steady state
 #
 n_steps     = int(2**p_n_steps) # [] number of timesteps for the simulation
 o_steps     = int(2**p_o_steps) # [] number of timesteps per oscillation period

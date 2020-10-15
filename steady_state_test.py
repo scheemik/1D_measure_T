@@ -227,7 +227,7 @@ plot_psi    = (psi) #- psi_hat.real # psi.real
 # Plotting and stuff
 
 if sbp.plot_spacetime:
-    hf.plot_z_vs_t(z, t, T, plot_psi.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, nT=0, title_str=run_name, filename='ss_1D_wave.png')
+    hf.plot_z_vs_t(z, t, T, plot_psi.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, T_cutoff=0, title_str=run_name, filename='ss_1D_wave.png')
 
 if sbp.plot_freqspace:
     foobar, psi_FT_t, freqs = FT_in_time(t, z, psi, dt, omega)
@@ -237,14 +237,14 @@ if sbp.plot_freqspace:
     hf.plot_freq_space(z, freqs, psi_FT_t.real, psi_FT_t.imag, mL, theta, omega, plot_full_domain=plt_fd, title_str=run_name, filename='ss_1D_freq_spectra.png')
 
 if sbp.plot_amplitude:
-    hf.plot_A_of_I_T(z, t, T, plot_dn, z_I, z_T, dz, mL, theta, omega, title_str=run_name, filename='ss_1D_A_of_I_T.png')
+    hf.plot_A_of_I_T(z, t, T, plot_dn, mL, theta, omega, z_I, z_T, title_str=run_name, filename='ss_1D_A_of_I_T.png')
 
 if sbp.plot_amplitude:
     hf.plot_AA_for_z(BP_array, hf.AAcc(plot_dn), z, mL, theta, omega, T_skip=None, T=T, t=t, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, title_str=run_name, filename='ss_1D_AA_for_z.png')
 
 if sbp.plot_up_dn:
-    hf.plot_z_vs_t(z, t, T, plot_up.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=plt_fd, nT=None, title_str=run_name+' up', filename='ss_1D_up_field.png')
-    hf.plot_z_vs_t(z, t, T, plot_dn.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, nT=None, title_str=run_name+' dn', filename='ss_1D_dn_field.png')
+    hf.plot_z_vs_t(z, t, T, plot_up.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' up', filename='ss_1D_up_field.png')
+    hf.plot_z_vs_t(z, t, T, plot_dn.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' dn', filename='ss_1D_dn_field.png')
 
 plot_CD_checks = False
 if plot_CD_checks:

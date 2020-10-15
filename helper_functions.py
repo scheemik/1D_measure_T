@@ -243,6 +243,11 @@ def set_colorbar(data, im, plt, axis):
     cbar = plt.colorbar(im, ax=axis)#, format=ticker.FuncFormatter(latex_exp))
     cbar.ax.ticklabel_format(style='sci', scilimits=(-2,2), useMathText=True)
 
+# A standard title for most of my plots
+def add_plot_title(fig, title_str, mL, theta, omega):
+    param_formated_str = latex_exp(mL)+', '+rad_to_degs(theta)+', '+latex_exp(omega)
+    fig.suptitle(r'%s, $(mL,\theta,\omega)$=(%s)' %(title_str, param_formated_str))
+
 # Background profile in N_0
 def BP_n_layers(n, z, z0_str, zf_str):
     """
@@ -357,8 +362,10 @@ def plot_v_profiles(BP_array, bf_array, sp_array, z, omega=None, z0_dis=None, zf
     plt.savefig(filename)
 
 ###############################################################################
+# Main plotting functions
+###############################################################################
 
-def plot_z_vs_t(z_array, t_array, T, data, BP_array, mL, theta, omega, z0_dis=None, zf_dis=None, z_I=None, z_T=None, plot_full_domain=True, nT=0.0, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave.png'):
+def plot_z_vs_t(z_array, t_array, T, data, BP_array, mL, theta, omega, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_domain=True, T_cutoff=0.0, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave.png'):
     """
     Plots the data as a colormap on z vs t with the vertical profile included to the left
 
@@ -369,8 +376,12 @@ def plot_z_vs_t(z_array, t_array, T, data, BP_array, mL, theta, omega, z0_dis=No
     mL          Non-dimensional number relating wavelength and layer thickness
     theta       Angle at which wave is incident on stratification structure
     omega       frequency of wave
+    z_I         depth to measure incident wave
+    z_T         depth to meausre transmitted wave
     z0_dis      top of vertical structure extent
     zf_dis      bottom of vertical structure extent
+    plot_full...True or False, determines if depths outside display domain are plotted
+    T_cutoff    integer, oscillations to cut off of beginning of simulation
     """
     # Set figure and axes for plot
     fig, axes = set_fig_axes([1], [1,5])
@@ -388,25 +399,44 @@ def plot_z_vs_t(z_array, t_array, T, data, BP_array, mL, theta, omega, z0_dis=No
     else:
         axes[0].set_ylim([z0_dis,zf_dis])
         axes[1].set_ylim([z0_dis,zf_dis])
-        axes[1].set_xlim([nT,t_array[-1]/T])
+        axes[1].set_xlim([T_cutoff,t_array[-1]/T])
     if z_I != None and z_T != None:
         add_measure_lines(axes[1], z_I, z_T)
         add_measure_lines(axes[0], z_I, z_T)
-    #
+    # Add titles and labels
     axes[1].set_xlabel(r'$t/T$')
     axes[1].set_title(r'$\Psi$ (m$^2$/s)')
-    param_formated_str = latex_exp(mL)+', '+rad_to_degs(theta)+', '+latex_exp(omega)
-    fig.suptitle(r'%s, $(mL,\theta,\omega)$=(%s)' %(title_str, param_formated_str))
+    add_plot_title(fig, title_str, mL, theta, omega)
+    # param_formated_str = latex_exp(mL)+', '+rad_to_degs(theta)+', '+latex_exp(omega)
+    # fig.suptitle(r'%s, $(mL,\theta,\omega)$=(%s)' %(title_str, param_formated_str))
     #plt.show()
     plt.savefig(filename)
 
 ###############################################################################
 
-def plot_A_of_I_T(z_array, t_array, T, dn_array, z_I, z_T, tol, mL, theta, omega, nT=0.0, title_str='Forced 1D Wave', filename='f_1D_A_of_I_T.png'):
+def plot_A_of_I_T(z_array, t_array, T, dn_array, mL, theta, omega, z_I, z_T, plot_full_domain=True, T_cutoff=0.0, title_str='Forced 1D Wave', filename='f_1D_A_of_I_T.png'):
+    """
+    Plots the amplitude of the downward propagating wave as a function of time
+        for both the incident and transmission depths
+
+    z_array     array of z values
+    t_array     array of time values (in seconds)
+    T           oscillation period (in seconds)
+    dn_array    wavefield data for downward propagating wave (complex valued)
+    z_I         depth to measure incident wave
+    z_T         depth to meausre transmitted wave
+    mL          Non-dimensional number relating wavelength and layer thickness
+    theta       Angle at which wave is incident on stratification structure
+    omega       frequency of wave
+    z_I         depth to measure incident wave
+    z_T         depth to meausre transmitted wave
+    plot_full...True or False, determines if depths outside display domain are plotted
+    T_cutoff    integer, oscillations to cut off of beginning of simulation
+    """
     # Set figure and axes for plot
     fig, axes = set_fig_axes([1,1], [1])
-    #
-    I_, T_, AAcc_I, AAcc_T = measure_T(dn_array, z_array, z_I, z_T, T_skip=nT, T=T, t=t_array)
+    # Find the AA^* for incident and transmitted wave depths
+    I_, T_, AAcc_I, AAcc_T = measure_T(dn_array, z_array, z_I, z_T, T_skip=T_cutoff, T=T, t=t_array)
     # Plot lines of AAcc for incident and transmission depths
     axes[0].plot(t_array/T, AAcc_I, color=my_clrs['b'], label=r'$I$')
     axes[1].plot(t_array/T, AAcc_T, color=my_clrs['b'], label=r'$T$')
@@ -414,17 +444,18 @@ def plot_A_of_I_T(z_array, t_array, T, dn_array, z_I, z_T, tol, mL, theta, omega
     axes[0].axhline(y=I_, color=my_clrs['incident'], linestyle='--')
     axes[1].axhline(y=T_, color=my_clrs['transmission'], linestyle='--')
     # Add vertical lines to show where the transient ends
-    axes[0].axvline(x=nT, color=my_clrs['black'], linestyle='--')
-    axes[1].axvline(x=nT, color=my_clrs['black'], linestyle='--')
-    #
+    axes[0].axvline(x=T_cutoff, color=my_clrs['black'], linestyle='--')
+    axes[1].axvline(x=T_cutoff, color=my_clrs['black'], linestyle='--')
+    # Add labels and titles
     axes[0].set_xlim(t_array[0]/T, t_array[-1]/T)
     axes[1].set_xlabel(r'$t/T$')
     axes[0].set_ylabel(r'Amplitude')
     axes[1].set_ylabel(r'Amplitude')
     axes[0].set_title(r'$z_I=%s$' %(z_I))
     axes[1].set_title(r'$z_T=%s$' %(z_T))
-    param_formated_str = latex_exp(mL)+', '+rad_to_degs(theta)+', '+latex_exp(omega)
-    fig.suptitle(r'%s, $(mL,\theta,\omega)$=(%s)' %(title_str, param_formated_str))
+    add_plot_title(fig, title_str, mL, theta, omega)
+    # param_formated_str = latex_exp(mL)+', '+rad_to_degs(theta)+', '+latex_exp(omega)
+    # fig.suptitle(r'%s, $(mL,\theta,\omega)$=(%s)' %(title_str, param_formated_str))
     #plt.show()
     plt.savefig(filename)
 
