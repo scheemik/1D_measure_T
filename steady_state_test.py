@@ -234,6 +234,9 @@ plot_psi    = (psi) #- psi_hat.real # psi.real
 ###############################################################################
 # Plotting and stuff
 
+if sbp.plot_windows:
+    hf.plot_v_profiles(z, BP_array, sbp.win_bf_array, sbp.win_sp_array, mL=mL, theta=theta, omega=omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, title_str=run_name, filename='ss_1D_windows.png')
+
 if sbp.plot_spacetime:
     hf.plot_z_vs_t(z, t, T, plot_psi.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, T_cutoff=T_cutoff, title_str=run_name, filename='ss_1D_wave.png')
 

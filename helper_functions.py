@@ -328,8 +328,9 @@ def add_lines_to_ax(ax, z_I=None, z_T=None, z0_dis=None, zf_dis=None, T_cutoff=N
     T_cutoff    integer, oscillations to cut off of beginning of simulation
     """
     # Horizontal lines for incident and transmission depths
-    if z_I != None and z_T != None:
+    if z_I != None: # separated to allow for plotting of I_ and T_ separately
         ax.axhline(y=z_I, color=my_clrs['incident'], linestyle='--')
+    if z_T != None:
         ax.axhline(y=z_T, color=my_clrs['transmission'], linestyle='--')
     # Horizontal lines for display depths
     if z0_dis != None and zf_dis != None:
@@ -358,32 +359,33 @@ def plot_BP(ax, BP, z, omega=None):
         ax.axvline(x=omega, color=my_clrs['omega'], linestyle='--', label=r'$\omega$')
         ax.legend()
 
-def plot_v_profiles(BP_array, bf_array, sp_array, z, omega=None, z0_dis=None, zf_dis=None, z_I=None, z_T=None, title_str='Forced 1D Wave', filename='f_1D_windows.png'):
+def plot_v_profiles(z_array, BP_array, bf_array, sp_array, mL=None, theta=None, omega=None, z_I=None, z_T=None, z0_dis=None, zf_dis=None, title_str='Forced 1D Wave', filename='f_1D_windows.png'):
     """
-    BP_array    array of background profile in N_0
+    Plots the vertical profiles: stratification, boundary forcing, sponge layer
+
+    z_array     array of z values
+    BP_array    array of the background profile values in z
     bf_array    array of boundary forcing window
     sp_array    array of sponge layer window
-    z           array of z values
+    mL          Non-dimensional number relating wavelength and layer thickness
+    theta       Angle at which wave is incident on stratification structure
     omega       frequency of wave
+    z_I         depth to measure incident wave
+    z_T         depth to meausre transmitted wave
     z0_dis      top of vertical structure extent
     zf_dis      bottom of vertical structure extent
+    plot_full...True or False, determines if depths outside display domain are plotted
     """
     # Set figure and axes for plot
     fig, axes = set_fig_axes([1], [1,4], 0.75)
     # Plot the background profile of N_0
-    plot_BP(axes[0], BP_array, z, omega)
+    plot_BP(axes[0], BP_array, z_array, omega)
     # Plot boudnary forcing and sponge layer windows
-    axes[1].plot(bf_array, z, color=my_clrs['F_bf'], label='Boundary forcing')
-    axes[1].plot(sp_array, z, color=my_clrs['F_sp'], label='Sponge layer')
+    axes[1].plot(bf_array, z_array, color=my_clrs['F_bf'], label='Boundary forcing')
+    axes[1].plot(sp_array, z_array, color=my_clrs['F_sp'], label='Sponge layer')
     # Add horizontal lines
-    if z0_dis != None and zf_dis != None:
-        add_dis_bounds(axes[0], z0_dis, zf_dis)
-        add_dis_bounds(axes[1], z0_dis, zf_dis)
-    add_lines_to_ax(axes[0], z_I=z_I, z_T=z_T)
-    add_lines_to_ax(axes[1], z_I=z_I, z_T=z_T)
-    # if z_I != None and z_T != None:
-    #     add_measure_lines(axes[1], z_I, z_T)
-    #     add_measure_lines(axes[0], z_I, z_T)
+    add_lines_to_ax(axes[0], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis)
+    add_lines_to_ax(axes[1], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis)
     # Add labels
     axes[1].set_xlabel('Amplitude')
     axes[1].set_title(r'Windows')
@@ -404,6 +406,7 @@ def plot_z_vs_t(z_array, t_array, T, data, BP_array, mL, theta, omega, z_I=None,
     t_array     array of time values (in seconds)
     T           oscillation period (in seconds)
     data        data to be plotted on colormap (assmued real valued)
+    BP_array    array of the background profile values in z
     mL          Non-dimensional number relating wavelength and layer thickness
     theta       Angle at which wave is incident on stratification structure
     omega       frequency of wave
@@ -467,13 +470,9 @@ def plot_A_of_I_T(z_array, t_array, T, dn_array, mL, theta, omega, z_I, z_T, plo
     axes[0].plot(t_array/T, AAcc_I, color=my_clrs['b'], label=r'$I$')
     axes[1].plot(t_array/T, AAcc_T, color=my_clrs['b'], label=r'$T$')
     # Add horizontal lines to show the overall value of each depth
-    axes[0].axhline(y=I_, color=my_clrs['incident'], linestyle='--')
-    axes[1].axhline(y=T_, color=my_clrs['transmission'], linestyle='--')
-    # Add vertical lines to show where the transient ends
+    #   Add vertical lines to show where the transient ends
     add_lines_to_ax(axes[0], z_I=I_, T_cutoff=T_cutoff)
     add_lines_to_ax(axes[1], z_T=T_, T_cutoff=T_cutoff)
-    # axes[0].axvline(x=T_cutoff, color=my_clrs['black'], linestyle='--')
-    # axes[1].axvline(x=T_cutoff, color=my_clrs['black'], linestyle='--')
     # Add labels and titles
     axes[0].set_xlim(t_array[0]/T, t_array[-1]/T)
     axes[1].set_xlabel(r'$t/T$')
@@ -526,6 +525,7 @@ def plot_AA_for_z(z_array, BP_array, dn_array, mL, theta, omega, z_I=None, z_T=N
     plt.savefig(filename)
 
 ###############################################################################
+
 ###############################################################################
 
 def sort_k_coeffs(arr, nz):
