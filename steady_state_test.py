@@ -68,7 +68,6 @@ z = np.linspace(zf_dis, z0_dis, nz) # careful about the order of endpoints
 #stop_sim_time, nt  = hf.extended_stop_time(sbp.sim_time_stop, dt)
 stop_sim_time = sbp.sim_time_stop
 nt = stop_sim_time / dt
-print("nt=",nt)
 t = np.linspace(0.0, stop_sim_time, int(nt))
 # Find wavenumbers
 kz = np.fft.fftfreq(len(z), dz)
@@ -136,6 +135,7 @@ def is_power_of_2(x):
 def FT_in_time(t, z, data, dt, omega):
     # Check to make sure the time dimension matches
     nt = len(t)
+    print("nt=",nt)
     nt_data = data.shape[1]
     if nt != nt_data:
         print('MISMATCH IN nt!')
@@ -204,8 +204,12 @@ def Complex_Demodulate(t_then_z, t, z, kz, data, dt, omega):
         dn_field = FT_in_time(t, z, ift_z_y_n, dt, omega)[0]
     return up_field, dn_field
 
+# Trimming the data
+tr_z, tr_t, tr_psi = hf.trim_data(z, t, psi, z0_dis=None, zf_dis=None, T_cutoff=T_cutoff, T=T)
+
 t_then_z = True
 up_field, dn_field = Complex_Demodulate(t_then_z, t, z, kz, psi, dt, omega)
+tr_up_field, tr_dn_field = Complex_Demodulate(t_then_z, tr_t, tr_z, kz, tr_psi, dt, omega)
 
 ###############################################################################
 # Profiling the code
@@ -218,6 +222,7 @@ if profile_it == True:
     p = pstats.Stats('restats')
     p.sort_stats(SortKey.CUMULATIVE).print_stats(10)
 ###############################################################################
+
 # Measuring the transmission coefficient
 
 I_, T_, AAcc_I, AAcc_T = hf.measure_T(dn_field, z, z_I, z_T, T_skip=None, T=T, t=t)
@@ -226,19 +231,28 @@ print("Transmission coefficient is:", big_T)
 
 ###############################################################################
 # What to plot
-
-plot_up     = up_field #up_field
-plot_dn     = dn_field #dn_field
-plot_psi    = (psi) #- psi_hat.real # psi.real
+show_trimmed = True
+if show_trimmed:
+    plot_up = tr_up_field
+    plot_dn = tr_dn_field
+    plot_psi = tr_psi
+    plot_z = tr_z
+    plot_t = tr_t
+else:
+    plot_up     = up_field
+    plot_dn     = dn_field
+    plot_psi    = psi
+    plot_z = z
+    plot_t = t
 
 ###############################################################################
 # Plotting and stuff
 
 if sbp.plot_windows:
-    hf.plot_v_profiles(z, BP_array, sbp.win_bf_array, sbp.win_sp_array, mL=mL, theta=theta, omega=omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, title_str=run_name, filename='ss_1D_windows.png')
+    hf.plot_v_profiles(plot_z, BP_array, sbp.win_bf_array, sbp.win_sp_array, mL=mL, theta=theta, omega=omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, title_str=run_name, filename='ss_1D_windows.png')
 
 if sbp.plot_spacetime:
-    hf.plot_z_vs_t(z, t, T, plot_psi.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, T_cutoff=T_cutoff, title_str=run_name, filename='ss_1D_wave.png')
+    hf.plot_z_vs_t(plot_z, plot_t, T, plot_psi.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, T_cutoff=T_cutoff, title_str=run_name, filename='ss_1D_wave.png')
 
 if sbp.plot_freqspace:
     foobar, psi_FT_t, freqs = FT_in_time(t, z, psi, dt, omega)
@@ -248,19 +262,19 @@ if sbp.plot_freqspace:
     hf.plot_freq_space(z, freqs, psi_FT_t.real, psi_FT_t.imag, mL, theta, omega, plot_full_domain=plt_fd, title_str=run_name, filename='ss_1D_freq_spectra.png')
 
 if sbp.plot_amplitude:
-    hf.plot_A_of_I_T(z, t, T, plot_dn, mL, theta, omega, z_I, z_T, T_cutoff=T_cutoff, title_str=run_name, filename='ss_1D_A_of_I_T.png')
+    hf.plot_A_of_I_T(plot_z, plot_t, T, plot_dn, mL, theta, omega, z_I, z_T, T_cutoff=T_cutoff, title_str=run_name, filename='ss_1D_A_of_I_T.png')
 
 if sbp.plot_amplitude:
-    hf.plot_AA_for_z(z, BP_array, hf.AAcc(plot_dn), mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, title_str=run_name, filename='ss_1D_AA_for_z.png')
+    hf.plot_AA_for_z(plot_z, BP_array, hf.AAcc(plot_dn), mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, title_str=run_name, filename='ss_1D_AA_for_z.png')
 
 if sbp.plot_up_dn:
-    hf.plot_z_vs_t(z, t, T, plot_up.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' up', filename='ss_1D_up_field.png')
-    hf.plot_z_vs_t(z, t, T, plot_dn.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' dn', filename='ss_1D_dn_field.png')
+    hf.plot_z_vs_t(plot_z, plot_t, T, plot_up.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' up', filename='ss_1D_up_field.png')
+    hf.plot_z_vs_t(plot_z, plot_t, T, plot_dn.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' dn', filename='ss_1D_dn_field.png')
 
 plot_CD_checks = False
 if plot_CD_checks:
     # Add up and down fields to see if they reproduce the original psi field
-    up_plus_dn = up_field.real + dn_field.real
+    up_plus_dn = plot_up.real + plot_dn.real
     hf.plot_z_vs_t(z, t, T, up_plus_dn, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, nT=None, title_str=run_name, filename='ss_1D_up_plus_dn.png')
     # Plot the difference, which ideally should be zero everywhere
     CD_diff = psi.real - up_plus_dn
