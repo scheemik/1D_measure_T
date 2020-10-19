@@ -2,6 +2,22 @@
 Runs an idealized steady state test of various functions.
 Run with $ python3 steady_state_test.py
 
+Overview of post-processing operations:
+* Import simulation data
+    * Plot full wavefield
+* Trim data in space (restrict depths)
+* Trim data in time (remove transients at beginning)
+    * Plot trimmed wavefield
+* Perform complex demodulation
+    * Plot data in spectral form
+* Isolate both directions of the wave
+    * Plot down and upward waves (real parts)
+* Find amplitude by multiplying by complex conjugate
+    * Plot amplitude vs depth
+* Calculate incident and transmitted wave amplitudes
+* Calculate transmission coefficient
+    * Compare to analytical value
+
 """
 
 import h5py
@@ -58,7 +74,7 @@ dz          = sbp.dz#abs(z0_dis - zf_dis)/nz
 z_I         = sbp.z_I
 z_T         = sbp.z_T
 
-plt_fd      = True#sbp.plot_full_domain
+plt_fd      = sbp.plot_full_domain
 T_cutoff    = sbp.T_cutoff
 
 ###############################################################################
@@ -101,6 +117,34 @@ psi = up + dn
 up_c = A*np.exp(1j*(omega*tm - m*zm))
 dn_c = B*np.exp(1j*(omega*tm + m*zm))
 psi_hat = up_c + dn_c
+
+###############################################################################
+# Creating stratification background profile
+BP_array = hf.BP_n_layers(0, z, sbp.z0_str, sbp.zf_str)
+
+###############################################################################
+# Plot vertical profiles and full wavefield
+
+if sbp.plot_windows:
+    hf.plot_v_profiles(z, BP_array, sbp.win_bf_array, sbp.win_sp_array, mL=mL, theta=theta, omega=omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, title_str=run_name, filename='ss_1D_windows.png')
+
+if sbp.plot_spacetime:
+    hf.plot_z_vs_t(z, t, T, psi, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=True, T_cutoff=T_cutoff, title_str=run_name, filename='ss_1D_wave.png')
+
+
+###############################################################################
+# Trim data
+
+# Trim in space
+z_tr, psi_tr = hf.trim_data_z(z, psi, z0_dis, zf_dis)
+BP_tr        = hf.BP_n_layers(0, z_tr, sbp.z0_str, sbp.zf_str)
+
+# Trim in time
+t_tr, psi_tr = hf.trim_data_t(t, psi_tr, T_cutoff, T)
+
+# Plot trimmed wavefield
+if sbp.plot_spacetime:
+    hf.plot_z_vs_t(z_tr, t_tr, T, psi_tr, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=True, T_cutoff=T_cutoff, title_str=run_name, filename='ss_1D_wave_tr.png')
 
 ###############################################################################
 # Additional post-processing helper functions
@@ -210,14 +254,15 @@ def Complex_Demodulate(t_then_z, t, z, kz, data, dt, omega):
 
 # Trimming the data
 tr_z, tr_t, tr_psi = hf.trim_data(z, t, psi, z0_dis=z0_dis, zf_dis=zf_dis, T_cutoff=T_cutoff, T=T)
-print('tr_z.shape=',tr_z.shape)
-print('tr_t.shape=',tr_t.shape)
-print('tr_psi.shape=',tr_psi.shape)
+# print('tr_z.shape=',tr_z.shape)
+# print('tr_t.shape=',tr_t.shape)
+# print('tr_psi.shape=',tr_psi.shape)
 
 t_then_z = True
 up_field, dn_field = Complex_Demodulate(t_then_z, t, z, kz_sim, psi, dt, omega)
-tr_up_field, tr_dn_field = Complex_Demodulate(t_then_z, tr_t, tr_z, kz_dis, tr_psi, dt, omega)
+tr_up_field, tr_dn_field = Complex_Demodulate(t_then_z, t_tr, z_tr, kz_dis, psi_tr, dt, omega)
 
+raise SystemExit(0)
 ###############################################################################
 # Measuring the transmission coefficient
 
@@ -261,12 +306,6 @@ print('len(plot_BP_)=',len(plot_BP_))
 
 ###############################################################################
 # Plotting and stuff
-
-if sbp.plot_windows:
-    hf.plot_v_profiles(z, BP_array, sbp.win_bf_array, sbp.win_sp_array, mL=mL, theta=theta, omega=omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, title_str=run_name, filename='ss_1D_windows.png')
-
-if sbp.plot_spacetime:
-    hf.plot_z_vs_t(plot_z, plot_t, T, plot_psi.real, plot_BP_, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, T_cutoff=T_cutoff, title_str=run_name, filename='ss_1D_wave.png')
 
 if sbp.plot_amplitude:
     hf.plot_A_of_I_T(plot_z, plot_t, T, plot_dn, mL, theta, omega, z_I, z_T, plot_full_domain=plt_fd, T_cutoff=T_cutoff, title_str=run_name, filename='ss_1D_A_of_I_T.png')

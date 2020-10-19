@@ -196,8 +196,6 @@ def trim_data(z_array, t_array, data, z0_dis=None, zf_dis=None, T_cutoff=None, T
     z_array     array of z values
     t_array     array of time values (in seconds)
     data        data to be trimmed (z, t)
-    z_I         depth at which to measure Incident wave
-    z_T         depth at which to measure Transmitted wave
     z0_dis      top of vertical structure extent
     zf_dis      bottom of vertical structure extent
     T_cutoff    integer, oscillations to cut off of beginning of simulation
@@ -227,6 +225,43 @@ def trim_data(z_array, t_array, data, z0_dis=None, zf_dis=None, T_cutoff=None, T
         trimmed_data = t_data
         trimmed_z_array = z_array
     return trimmed_z_array, trimmed_t_array, trimmed_data
+
+def trim_data_z(z_array, data, z0_dis, zf_dis):
+    """
+    Trims data, removes space outside display domain
+
+    z_array     1D array of z values
+    data        2D data to be trimmed (z, t)
+    z0_dis      top of vertical structure extent
+    zf_dis      bottom of vertical structure extent
+    """
+    ## Trim space to only encompass display bounds
+    #   Find indices of display bounds
+    idx_z0 = find_nearest_index(z_array, z0_dis)
+    idx_zf = find_nearest_index(z_array, zf_dis)
+    # Trim space ### careful of the order, zf is bottom, so should have lower index?
+    trimmed_data    = data[idx_zf:idx_z0,:]
+    trimmed_z_array = z_array[idx_zf:idx_z0]
+    return trimmed_z_array, trimmed_data
+
+def trim_data_t(t_array, data, T_cutoff, T):
+    """
+    Trims data, removes time before T_cutoff
+
+    t_array     1D array of time values (in seconds)
+    data        2D data to be trimmed (z, t)
+    T_cutoff    integer, oscillations to cut off of beginning of simulation
+    T           oscillation period (in seconds)
+    """
+    ## Trim time before T_cutoff
+    #   Find time in seconds of cutoff
+    cutoff_time = T_cutoff * T
+    # Find index of cutoff time
+    idx_cutoff = find_nearest_index(t_array, cutoff_time)
+    # Trim time
+    trimmed_data    = data[:,idx_cutoff:]
+    trimmed_t_array = t_array[idx_cutoff:]
+    return trimmed_t_array, trimmed_data
 
 ###############################################################################
 
