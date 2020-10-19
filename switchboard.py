@@ -94,7 +94,7 @@ boundary_forcing_region = True  # If False, waves will be forced over entire dom
 # Plotting parameters
 plot_spacetime = True
 plot_wavespace = True
-plot_freqspace = False
+plot_spectra   = True
 plot_amplitude = True
 plot_windows   = True
 plot_up_dn     = True

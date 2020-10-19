@@ -119,3 +119,20 @@ def Complex_Demodulate(t_then_z, t, z, kz, data, dt, omega):
         up_field = FT_in_time(t, z, ift_z_y_p, dt, omega)[0]
         dn_field = FT_in_time(t, z, ift_z_y_n, dt, omega)[0]
     return up_field, dn_field
+
+###############################################################################
+# Get data in spectral form
+
+def z_t_to_k_omega(t, z, data, dt, dz):
+    """
+    Takes in data (z,t) and returns spectral form (k, omega)
+    """
+    # FT in time of the data (axis 1 is time)
+    ft_t      = np.fft.fft(data, axis=1)
+    # find relevant frequencies
+    freqs     = np.fft.fftfreq(len(t), dt)
+    # FT in space (z) of the data (axis 0 is z)
+    spec_data = np.fft.fft(ft_t, axis=0)
+    # find relevant wavenumbers (k)
+    ks        = np.fft.fftfreq(len(z), dz)
+    return freqs, ks, spec_data

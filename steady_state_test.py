@@ -148,6 +148,15 @@ if sbp.plot_spacetime:
     hf.plot_z_vs_t(z_tr, t_tr, T, psi_tr, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=True, T_cutoff=T_cutoff, title_str=run_name, filename='ss_1D_wave_tr.png')
 
 ###############################################################################
+# Plot spectral form of data
+
+freqs, ks, spec_data = hfCD.z_t_to_k_omega(t_tr, z_tr, psi_tr, dt, dz)
+
+if sbp.plot_spectra:
+    hf.plot_spectral(ks, freqs, spec_data.real, spec_data.imag, mL, theta, omega, c_map='viridis', title_str=run_name, filename='ss_1D_spectra.png')
+
+raise SystemExit(0)
+###############################################################################
 # Perform complex demodulation
 
 # Trimming the data
@@ -214,13 +223,6 @@ if sbp.plot_amplitude:
 if sbp.plot_up_dn:
     hf.plot_z_vs_t(plot_z, plot_t, T, plot_up.real, plot_BP_, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' up', filename='ss_1D_up_field.png')
     hf.plot_z_vs_t(plot_z, plot_t, T, plot_dn.real, plot_BP_, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' dn', filename='ss_1D_dn_field.png')
-
-if sbp.plot_freqspace:
-    foobar, psi_FT_t, freqs = FT_in_time(t, z, psi, dt, omega)
-    # fig, axes = plt.subplots(nrows=1, ncols=1)
-    # axes.plot(freqs, psi_FT_t[200])
-    # plt.show()
-    hf.plot_freq_space(z, freqs, psi_FT_t.real, psi_FT_t.imag, mL, theta, omega, plot_full_domain=plt_fd, title_str=run_name, filename='ss_1D_freq_spectra.png')
 
 plot_CD_checks = False
 if plot_CD_checks:
