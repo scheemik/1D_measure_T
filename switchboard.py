@@ -14,7 +14,7 @@ from dedalus import public as de
 # Main parameters, the ones I'll change a lot. Many more below
 
 # Relevant parameters
-nz              = 1024          # [] number of grid points in the z direction
+nz      = 1024                  # [] number of grid points in the z direction in display domain
 mL      = 1                     # [] vertical wave number times step length
 theta   = None                  # [] angle between wave's propagation and horizontal (or vertical?)
 
@@ -78,8 +78,6 @@ T       = 2*np.pi / omega       # [s]           Wave period
 
 # Determine whether adaptive time stepping is on or off
 adapt_dt                = False
-if extend_to_pwr_2 == True:
-    adapt_dt = False
 
 # Terms in equations of motion
 viscous_term            = True
@@ -148,11 +146,13 @@ tau_sp  = 1.0e-0                # [s] time constant for sponge layer
 z0     = z0_dis + a_bf          # [m] top of simulated domain
 zf     = zf_dis - a_sp          # [m] bottom of simulated domain
 Lz     = abs(zf - z0)           # [m] length of simulated domain
-dz     = Lz / nz                # [m] spacing between each grid point
+Lz_dis = abs(zf_dis - z0_dis)   # [m] length of display domain
+dz     = Lz_dis / nz            # [m] spacing between each grid point
+nz_sim = int(Lz/dz)             # [] number of points in the simulated domain
 dealias= 3/2                    # [] dealiasing factor
 
 # Bases and domain
-z_basis = de.Fourier('z', nz, interval=(z0, zf), dealias=dealias)
+z_basis = de.Fourier('z', nz_sim, interval=(z0, zf), dealias=dealias)
 domain = de.Domain([z_basis], grid_dtype=np.complex128)#float64)
 # Z grid
 z_da = domain.grid(0, scales=domain.dealias)

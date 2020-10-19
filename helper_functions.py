@@ -428,9 +428,12 @@ def plot_BP(ax, BP, z, omega=None):
         ax.axvline(x=omega, color=my_clrs['omega'], linestyle='--', label=r'$\omega$')
         ax.legend()
 
-def plot_v_profiles(z_array, BP_array, bf_array, sp_array, mL=None, theta=None, omega=None, z_I=None, z_T=None, z0_dis=None, zf_dis=None, title_str='Forced 1D Wave', filename='f_1D_windows.png'):
+###############################################################################
+
+def plot_v_profiles(z_array, BP_array, bf_array, sp_array, mL=None, theta=None, omega=None, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_domain=True, title_str='Forced 1D Wave', filename='f_1D_windows.png'):
     """
     Plots the vertical profiles: stratification, boundary forcing, sponge layer
+        Note: all arrays must be imput as full-domain, no trimmed versions
 
     z_array     array of z values
     BP_array    array of the background profile values in z
@@ -455,6 +458,9 @@ def plot_v_profiles(z_array, BP_array, bf_array, sp_array, mL=None, theta=None, 
     # Add horizontal lines
     add_lines_to_ax(axes[0], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis)
     add_lines_to_ax(axes[1], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis)
+    # Set plot bounds to include full domain or not
+    set_plot_bounds(axes[0], plot_full_domain, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis)
+    set_plot_bounds(axes[1], plot_full_domain, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis)
     # Add labels
     axes[1].set_xlabel('Amplitude')
     axes[1].set_title(r'Windows')
