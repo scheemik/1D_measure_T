@@ -93,7 +93,6 @@ z = sbp.z
 z = np.flip(z)
 # psi = np.flipud(psi)
 
-print('len(z)=',len(z))
 stop_sim_time = sbp.sim_time_stop
 nt = stop_sim_time / dt
 t = np.linspace(0.0, stop_sim_time, int(nt))
@@ -177,55 +176,35 @@ if sbp.plot_up_dn:
     hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=True, T_cutoff=None, title_str=run_name+' dn', filename='ss_1D_dn_field.png')
 
 ###############################################################################
+# Multiply the downward wavefield by it's complex-conjugate to get AA^*
+#   Plot this amplitude across time at two specific depths:
+if sbp.plot_amplitude:
+    hf.plot_A_of_I_T(z_tr, t_tr, T, tr_dn_field, mL, theta, omega, z_I, z_T, plot_full_domain=plt_fd, T_cutoff=T_cutoff, title_str=run_name, filename='ss_1D_A_of_I_T.png')
+# Plot this amplitude (averaged across time) as a function of depth
+if sbp.plot_amplitude:
+    hf.plot_AA_for_z(z_tr, BP_tr, hf.AAcc(tr_dn_field), mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, title_str=run_name, filename='ss_1D_AA_for_z.png')
+
+###############################################################################
 # Measuring the transmission coefficient
 
 I_, T_, AAcc_I, AAcc_T = hf.measure_T(tr_dn_field, z_tr, z_I, z_T, T_skip=None, T=T, t=t_tr)
 big_T = T_/I_
 print("Transmission coefficient is:", big_T)
 
-raise SystemExit(0)
+# raise SystemExit(0)
 ###############################################################################
 # Profiling the code
-profile_it = False
-if profile_it == True:
-    import cProfile
-    cProfile.run('Complex_Demodulate(t_then_z, t, z, kz, psi, dt)', 'restats')
-    import pstats
-    from pstats import SortKey
-    p = pstats.Stats('restats')
-    p.sort_stats(SortKey.CUMULATIVE).print_stats(10)
+# profile_it = False
+# if profile_it == True:
+#     import cProfile
+#     cProfile.run('Complex_Demodulate(t_then_z, t, z, kz, psi, dt)', 'restats')
+#     import pstats
+#     from pstats import SortKey
+#     p = pstats.Stats('restats')
+#     p.sort_stats(SortKey.CUMULATIVE).print_stats(10)
 
 ###############################################################################
-# What to plot
-show_trimmed = False
-if show_trimmed:
-    plot_up = tr_up_field
-    plot_dn = tr_dn_field
-    plot_psi = tr_psi
-    plot_z = tr_z
-    plot_t = tr_t
-else:
-    plot_up     = up_field
-    plot_dn     = dn_field
-    plot_psi    = psi
-    plot_z = z
-    plot_t = t
-
-###############################################################################
-# Creating stratification background profile
-BP_array = hf.BP_n_layers(0, z, sbp.z0_str, sbp.zf_str)
-plot_BP_ = hf.BP_n_layers(0, plot_z, sbp.z0_str, sbp.zf_str)
-print('len(BP_array)=',len(BP_array))
-print('len(plot_BP_)=',len(plot_BP_))
-
-###############################################################################
-# Plotting and stuff
-
-if sbp.plot_amplitude:
-    hf.plot_A_of_I_T(plot_z, plot_t, T, plot_dn, mL, theta, omega, z_I, z_T, plot_full_domain=plt_fd, T_cutoff=T_cutoff, title_str=run_name, filename='ss_1D_A_of_I_T.png')
-
-if sbp.plot_amplitude:
-    hf.plot_AA_for_z(plot_z, plot_BP_, hf.AAcc(plot_dn), mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, title_str=run_name, filename='ss_1D_AA_for_z.png')
+# Extra plots
 
 plot_CD_checks = False
 if plot_CD_checks:

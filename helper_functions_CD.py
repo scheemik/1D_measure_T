@@ -59,7 +59,6 @@ def is_power_of_2(x):
 def FT_in_time(t, z, data, dt, omega):
     # Check to make sure the time dimension matches
     nt = len(t)
-    print("nt=",nt)
     nt_data = data.shape[1]
     if nt != nt_data:
         print('MISMATCH IN nt!')
