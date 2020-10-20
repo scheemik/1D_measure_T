@@ -440,7 +440,7 @@ def set_plot_bounds(ax, plot_full_domain, z_array=None, z0_dis=None, zf_dis=None
             ax.set_xlim([0,t_array[-1]/T])
     else:
         if z0_dis != None and zf_dis != None:
-            ax.set_ylim([z0_dis,zf_dis])
+            ax.set_ylim([zf_dis, z0_dis]) # Careful of this order, zf is less than z0
         if isinstance(t_array, np.ndarray) and T != None and T_cutoff != None:
             ax.set_xlim([T_cutoff,t_array[-1]/T])
 

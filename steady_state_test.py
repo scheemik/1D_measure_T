@@ -145,7 +145,7 @@ t_tr, psi_tr = hf.trim_data_t(t, psi_tr, T_cutoff, T)
 
 # Plot trimmed wavefield
 if sbp.plot_spacetime:
-    hf.plot_z_vs_t(z_tr, t_tr, T, psi_tr, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=True, T_cutoff=T_cutoff, title_str=run_name, filename='ss_1D_wave_tr.png')
+    hf.plot_z_vs_t(z_tr, t_tr, T, psi_tr, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=False, T_cutoff=T_cutoff, title_str=run_name, filename='ss_1D_wave_tr.png')
 
 ###############################################################################
 # Plot spectral form of data
@@ -155,12 +155,12 @@ freqs, ks, spec_data = hfCD.z_t_to_k_omega(t_tr, z_tr, psi_tr, dt, dz)
 if sbp.plot_spectra:
     hf.plot_spectral(ks, freqs, spec_data.real, spec_data.imag, mL, theta, omega, c_map='viridis', title_str=run_name, filename='ss_1D_spectra.png')
 
-raise SystemExit(0)
+# raise SystemExit(0)
 ###############################################################################
 # Perform complex demodulation
 
 # Trimming the data
-tr_z, tr_t, tr_psi = hf.trim_data(z, t, psi, z0_dis=z0_dis, zf_dis=zf_dis, T_cutoff=T_cutoff, T=T)
+# tr_z, tr_t, tr_psi = hf.trim_data(z, t, psi, z0_dis=z0_dis, zf_dis=zf_dis, T_cutoff=T_cutoff, T=T)
 # print('tr_z.shape=',tr_z.shape)
 # print('tr_t.shape=',tr_t.shape)
 # print('tr_psi.shape=',tr_psi.shape)
@@ -169,14 +169,22 @@ t_then_z = True
 up_field, dn_field = hfCD.Complex_Demodulate(t_then_z, t, z, kz_sim, psi, dt, omega)
 tr_up_field, tr_dn_field = hfCD.Complex_Demodulate(t_then_z, t_tr, z_tr, kz_dis, psi_tr, dt, omega)
 
-raise SystemExit(0)
+###############################################################################
+# Plotting up and downward propagating waves
+
+if sbp.plot_up_dn:
+    hf.plot_z_vs_t(z_tr, t_tr, T, tr_up_field.real, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=True, T_cutoff=None, title_str=run_name+' up', filename='ss_1D_up_field.png')
+    hf.plot_z_vs_t(z_tr, t_tr, T, tr_dn_field.real, BP_tr, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=True, T_cutoff=None, title_str=run_name+' dn', filename='ss_1D_dn_field.png')
+
+# hf.plot_z_vs_t(z_tr, t_tr, T, psi_tr, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=True, T_cutoff=T_cutoff, title_str=run_name, filename='ss_1D_wave_tr.png')
 ###############################################################################
 # Measuring the transmission coefficient
 
-I_, T_, AAcc_I, AAcc_T = hf.measure_T(tr_dn_field, tr_z, z_I, z_T, T_skip=None, T=T, t=tr_t)
+I_, T_, AAcc_I, AAcc_T = hf.measure_T(tr_dn_field, z_tr, z_I, z_T, T_skip=None, T=T, t=t_tr)
 big_T = T_/I_
 print("Transmission coefficient is:", big_T)
 
+raise SystemExit(0)
 ###############################################################################
 # Profiling the code
 profile_it = False
@@ -219,10 +227,6 @@ if sbp.plot_amplitude:
 
 if sbp.plot_amplitude:
     hf.plot_AA_for_z(plot_z, plot_BP_, hf.AAcc(plot_dn), mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, title_str=run_name, filename='ss_1D_AA_for_z.png')
-
-if sbp.plot_up_dn:
-    hf.plot_z_vs_t(plot_z, plot_t, T, plot_up.real, plot_BP_, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' up', filename='ss_1D_up_field.png')
-    hf.plot_z_vs_t(plot_z, plot_t, T, plot_dn.real, plot_BP_, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' dn', filename='ss_1D_dn_field.png')
 
 plot_CD_checks = False
 if plot_CD_checks:
