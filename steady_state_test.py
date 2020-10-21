@@ -106,6 +106,14 @@ tm, zm = np.meshgrid(t, z)
 #   Up and down terms separated for ease of access later
 up  = A*np.cos(omega*tm - m*zm)
 dn  = B*np.cos(omega*tm + m*zm)
+add_noise = False
+if add_noise:
+    noise_amp = A * 1E-3
+    # np.random.normal(mean, std-dev, shape)
+    up_noise = noise_amp * np.random.normal(0,1,up.shape)
+    dn_noise = noise_amp * np.random.normal(0,1,dn.shape)
+    up = up + up_noise
+    dn = dn + dn_noise
 # Program psi field directly
 psi = up + dn
 
@@ -205,6 +213,11 @@ print("Transmission coefficient is:", big_T)
 
 ###############################################################################
 # Extra plots
+
+# plot spectra lines
+k_data = np.fft.fft(psi_tr, axis=0)
+f_data = np.fft.fft(psi_tr, axis=1)
+hf.plot_k_f_spectra(z_tr, dz, t_tr, dt, T, ks, freqs, k_data, f_data, mL, theta, omega, z_I, z_T, plot_full_domain=True, T_cutoff=T_cutoff+1, title_str=run_name, filename='ss_1D_k_and_f.png')
 
 plot_CD_checks = False
 if plot_CD_checks:

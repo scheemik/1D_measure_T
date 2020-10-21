@@ -687,6 +687,62 @@ def plot_spectral(k_array, f_array, r_array, i_array, mL, theta, omega, c_map='R
     #plt.show()
     plt.savefig(filename)
 
+def plot_k_f_spectra(z_array, dz, t_array, dt, T, k_array, f_array, k_data, f_data, mL, theta, omega, z_I, z_T, plot_full_domain=True, T_cutoff=0.0, title_str='Forced 1D Wave', filename='f_1D_k_and_f.png'):
+    """
+    Plots the spectral content of the data in wavenumber and frequency space for
+        the T_cutoff time and z_I depth, respectively
+
+    z_array     1D array of z values
+    dz
+    t_array     1D array of time values (in seconds)
+    dt
+    T           oscillation period (in seconds)
+    k_array     1D array of wavenumber values
+    f_array     1D array of frequency values
+    k_data      2D data in wavenumber space (k, t)
+    f_data      2D data in frequency  space (z, f)
+    z_I         depth to measure incident wave
+    z_T         depth to meausre transmitted wave
+    mL          Non-dimensional number relating wavelength and layer thickness
+    theta       Angle at which wave is incident on stratification structure
+    omega       frequency of wave
+    z_I         depth to measure incident wave
+    z_T         depth to meausre transmitted wave
+    plot_full...True or False, include depths outside display and transient period?
+    T_cutoff    integer, oscillations to cut off of beginning of simulation
+    """
+    # Set figure and axes for plot
+    fig, axes = set_fig_axes([1], [1,1])
+    # Take just a slice of the wavenumber data at T_cutoff time
+    idx_t = find_nearest_index(t_array, T_cutoff*T)
+    plot_k = np.fft.fftshift(k_data[:,idx_t])
+    k_array = np.fft.fftshift(np.fft.fftfreq(len(z_array), dz))
+    # Plot lines of wavenumber spectrum, real and imaginary
+    axes[0].plot(k_array, plot_k.real, color=my_clrs['b'], label=r'real')
+    axes[0].plot(k_array, plot_k.imag, color=my_clrs['w'], label=r'imag')
+    # Take just a slice of the frequency data at z_I depth
+    idx_z = find_nearest_index(z_array, z_I)
+    plot_f = np.fft.fftshift(f_data[idx_z,:])
+    f_array = np.fft.fftshift(np.fft.fftfreq(len(t_array), dt))
+    # Plot lines of frequency spectrum, real and imaginary
+    axes[1].plot(f_array, plot_f.real, color=my_clrs['b'], label=r'real')
+    axes[1].plot(f_array, plot_f.imag, color=my_clrs['w'], label=r'imag')
+    # Set log scale on vertical axes
+    # axes[0].set_yscale('log')
+    # axes[1].set_yscale('log')
+    # Add labels and titles
+    axes[0].legend()
+    axes[1].legend()
+    axes[0].set_xlabel(r'$k$')
+    axes[0].set_ylabel(r'Amplitude')
+    axes[1].set_xlabel(r'$f$')
+    # axes[1].set_ylabel(r'Amplitude')
+    axes[0].set_title(r'$t_{1}=%s T$' %(T_cutoff))
+    axes[1].set_title(r'$z_I=%s$' %(z_I))
+    add_plot_title(fig, title_str, mL, theta, omega)
+    #plt.show()
+    plt.savefig(filename)
+
 ###############################################################################
 
 # Make a plot for one time slice
