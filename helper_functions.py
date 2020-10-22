@@ -265,7 +265,7 @@ def trim_data_t(t_array, data, T_cutoff, T):
 
 ###############################################################################
 
-def set_fig_axes(heights, widths, fig_ratio=0.5):
+def set_fig_axes(heights, widths, fig_ratio=0.5, share_x_axis=None, share_y_axis=None):
     """
     Creates fig and axes objects based on desired heights and widths of subplots
     Ex: if widths=[1,5], there will be 2 columns, the 1st 1/5 the width of the 2nd
@@ -273,6 +273,8 @@ def set_fig_axes(heights, widths, fig_ratio=0.5):
     heights     array of integers for subplot height ratios, len=rows
     widths      array of integers for subplot width  ratios, len=cols
     fig_ratio   ratio of height to width of overall figure
+    share_x_axis bool whether the subplots should share their x axes
+    share_y_axis bool whether the subplots should share their y axes
     """
     # Set aspect ratio of overall figure
     w, h = mpl.figure.figaspect(fig_ratio)
@@ -284,15 +286,16 @@ def set_fig_axes(heights, widths, fig_ratio=0.5):
     plot_ratios = {'height_ratios': heights,
                    'width_ratios': widths}
     # Determine whether to share x or y axes
-    if rows == 1 and cols != 1: # if only one row, share y axis
-        share_x_axis = False
-        share_y_axis = True
-    elif rows != 1 and cols == 1: # if only one column, share x axis
-        share_x_axis = True
-        share_y_axis = False
-    else:                       # otherwise, forget about it
-        share_x_axis = False
-        share_y_axis = False
+    if share_x_axis == None and share_y_axis == None:
+        if rows == 1 and cols != 1: # if only one row, share y axis
+            share_x_axis = False
+            share_y_axis = True
+        elif rows != 1 and cols == 1: # if only one column, share x axis
+            share_x_axis = True
+            share_y_axis = False
+        else:                       # otherwise, forget about it
+            share_x_axis = False
+            share_y_axis = False
     # Set ratios by passing dictionary as 'gridspec_kw', and share y axis
     return plt.subplots(figsize=(w,h), nrows=rows, ncols=cols, gridspec_kw=plot_ratios, sharex=share_x_axis, sharey=share_y_axis)
 
@@ -371,28 +374,28 @@ def make_DD_mask(z, z0_dis, zf_dis):
     return DD_array
 
 # To be depricated (using in freqspace plot)
-def add_dis_bounds(ax, z0_dis=None, zf_dis=None):
-    """
-    ax          axis for plot
-    z0_dis      top of vertical structure extent
-    zf_dis      bottom of vertical structure extent
-    """
-    line_color = my_clrs['black']
-    if z0_dis != None and zf_dis != None:
-        ax.axhline(y=z0_dis, color=line_color, linestyle='--')
-        ax.axhline(y=zf_dis, color=line_color, linestyle='--')
-
-# To be depricated (using in freqspace plot)
-def add_measure_lines(ax, z_I=None, z_T=None):
-    """
-    ax          axis for plot
-    z_I         depth at which to measure Incident wave
-    z_T         depth at which to measure Transmitted wave
-    """
-    line_color = my_clrs['w']
-    if z_I != None and z_T != None:
-        ax.axhline(y=z_I, color=my_clrs['incident'], linestyle='--')
-        ax.axhline(y=z_T, color=my_clrs['transmission'], linestyle='--')
+# def add_dis_bounds(ax, z0_dis=None, zf_dis=None):
+#     """
+#     ax          axis for plot
+#     z0_dis      top of vertical structure extent
+#     zf_dis      bottom of vertical structure extent
+#     """
+#     line_color = my_clrs['black']
+#     if z0_dis != None and zf_dis != None:
+#         ax.axhline(y=z0_dis, color=line_color, linestyle='--')
+#         ax.axhline(y=zf_dis, color=line_color, linestyle='--')
+#
+# # To be depricated (using in freqspace plot)
+# def add_measure_lines(ax, z_I=None, z_T=None):
+#     """
+#     ax          axis for plot
+#     z_I         depth at which to measure Incident wave
+#     z_T         depth at which to measure Transmitted wave
+#     """
+#     line_color = my_clrs['w']
+#     if z_I != None and z_T != None:
+#         ax.axhline(y=z_I, color=my_clrs['incident'], linestyle='--')
+#         ax.axhline(y=z_T, color=my_clrs['transmission'], linestyle='--')
 
 def add_lines_to_ax(ax, z_I=None, z_T=None, z0_dis=None, zf_dis=None, T_cutoff=None):
     """
@@ -653,7 +656,7 @@ def sort_k_coeffs(arr, nz):
             arr[i][:] = sort_k_coeffs(arr[i][:], nz)
         return arr
 
-def plot_spectral(k_array, f_array, r_array, i_array, mL, theta, omega, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave_spectra.png'):
+def plot_spectral(k_array, f_array, r_array, i_array, mL, theta, omega, c_map='viridis', title_str='Forced 1D Wave', filename='f_1D_wave_spectra.png'):
     """
     k_array     1D array of wavenumber values
     f_array     1D array of frequency values
@@ -711,34 +714,69 @@ def plot_k_f_spectra(z_array, dz, t_array, dt, T, k_array, f_array, k_data, f_da
     plot_full...True or False, include depths outside display and transient period?
     T_cutoff    integer, oscillations to cut off of beginning of simulation
     """
-    # Set figure and axes for plot
-    fig, axes = set_fig_axes([1], [1,1])
-    # Take just a slice of the wavenumber data at T_cutoff time
-    idx_t = find_nearest_index(t_array, T_cutoff*T)
-    plot_k = np.fft.fftshift(k_data[:,idx_t])
+    # Set figure and axes for plot (fig_ratio determines visibility of some lines, be careful)
+    fig, axes = set_fig_axes([1], [1,1], fig_ratio=0.33, share_x_axis=False, share_y_axis=False)
+    # 1D or 2D?
+    plot_1D = False
+    # Find wavenumber axis
     k_array = np.fft.fftshift(np.fft.fftfreq(len(z_array), dz))
-    # Plot lines of wavenumber spectrum, real and imaginary
-    axes[0].plot(k_array, plot_k.real, color=my_clrs['b'], label=r'real')
-    axes[0].plot(k_array, plot_k.imag, color=my_clrs['w'], label=r'imag')
-    # Take just a slice of the frequency data at z_I depth
-    idx_z = find_nearest_index(z_array, z_I)
-    plot_f = np.fft.fftshift(f_data[idx_z,:])
+    if plot_1D:
+        # Take just a slice of the wavenumber data at T_cutoff time
+        idx_t = find_nearest_index(t_array, T_cutoff*T)
+        # Normalize by number of points squared to get power spectrum
+        plot_k = np.fft.fftshift(k_data[:,idx_t]) / (len(k_array)**2) # allows comparison across datasets
+        # Plot lines of wavenumber spectrum, real and imaginary
+        axes[0].plot(k_array, plot_k.real, color=my_clrs['b'], label=r'real')
+        axes[0].plot(k_array, plot_k.imag, color=my_clrs['w'], label=r'imag')
+    else:
+        c_map='viridis'
+        # Make the mesh grid to be (t, k)
+        xmesh, ymesh = quad_mesh(x=t_array, y=k_array)
+        # Normalize by number of points squared to get power spectrum
+        plot_k = (np.fft.fftshift(k_data) / (len(k_array)**2)).real
+        # Create colormap of spectral data
+        im_k = axes[0].pcolormesh(xmesh, ymesh, plot_k, cmap=c_map)
+        set_colorbar(plot_k, im_k, plt, axes[0])
+        k_dis_bound = 100
+        axes[0].set_ylim([-k_dis_bound,k_dis_bound])
+    #
+    # Find frequency axis
     f_array = np.fft.fftshift(np.fft.fftfreq(len(t_array), dt))
-    # Plot lines of frequency spectrum, real and imaginary
-    axes[1].plot(f_array, plot_f.real, color=my_clrs['b'], label=r'real')
-    axes[1].plot(f_array, plot_f.imag, color=my_clrs['w'], label=r'imag')
-    # Set log scale on vertical axes
-    # axes[0].set_yscale('log')
-    # axes[1].set_yscale('log')
+    if plot_1D:
+        # Take just a slice of the frequency data at z_I depth
+        idx_z = find_nearest_index(z_array, z_I)
+        # Normalize by number of points squared to get power spectrum
+        plot_f = np.fft.fftshift(f_data[idx_z,:]) / (len(f_array)**2) # allows comparison across datasets
+        # Plot lines of frequency spectrum, real and imaginary
+        axes[1].plot(f_array, plot_f.real, color=my_clrs['b'], label=r'real')
+        axes[1].plot(f_array, plot_f.imag, color=my_clrs['w'], label=r'imag')
+    else:
+        c_map='viridis'
+        # Make the mesh grid to be (f, z)
+        xmesh, ymesh = quad_mesh(x=f_array, y=z_array)
+        # Normalize by number of points squared to get power spectrum
+        plot_f = np.fft.fftshift(f_data) / (len(f_array)**2)
+        # Create colormap of spectral data
+        im_f = axes[1].pcolormesh(xmesh, ymesh, plot_f.real, cmap=c_map)
+        set_colorbar(plot_f, im_f, plt, axes[1])
+    #
     # Add labels and titles
-    axes[0].legend()
-    axes[1].legend()
-    axes[0].set_xlabel(r'$k$')
-    axes[0].set_ylabel(r'Amplitude')
-    axes[1].set_xlabel(r'$f$')
-    # axes[1].set_ylabel(r'Amplitude')
-    axes[0].set_title(r'$t_{1}=%s T$' %(T_cutoff))
-    axes[1].set_title(r'$z_I=%s$' %(z_I))
+    if plot_1D:
+        axes[0].legend()
+        axes[1].legend()
+        axes[0].set_xlabel(r'$k$')
+        axes[0].set_ylabel(r'Amplitude')
+        axes[1].set_xlabel(r'$f$')
+        # axes[1].set_ylabel(r'Amplitude')
+        axes[0].set_title(r'$t_{1}=%s T$' %(T_cutoff))
+        axes[1].set_title(r'$z_I=%s$' %(z_I))
+    else:
+        axes[0].set_xlabel(r'$t$')
+        axes[0].set_ylabel(r'$k$')
+        axes[1].set_xlabel(r'$f$')
+        axes[1].set_ylabel(r'$z$')
+        axes[0].set_title(r'Wavenumber spectrum')
+        axes[1].set_title(r'Frequency spectrum')
     add_plot_title(fig, title_str, mL, theta, omega)
     #plt.show()
     plt.savefig(filename)
