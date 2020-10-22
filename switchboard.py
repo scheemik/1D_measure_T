@@ -32,8 +32,8 @@ if p_n_T <= 0:
 n_T         = int(2**p_n_T)     # [] number of oscillation periods
 
 # Run parameters (to be deleted)
-stop_n_periods  = 28            # [] oscillation periods (28, 57)
-extend_to_pwr_2 = True          # [] Extend simulation time so nt is a power of 2
+# stop_n_periods  = 28            # [] oscillation periods (28, 57)
+# extend_to_pwr_2 = True          # [] Extend simulation time so nt is a power of 2
 
 # Displayed domain parameters
 z0_dis = 0.0                    # [m] the top of the displayed z domain
@@ -92,12 +92,12 @@ use_rayleigh_friction   = False
 boundary_forcing_region = True  # If False, waves will be forced over entire domain
 
 # Plotting parameters
-plot_spacetime = False
-plot_wavespace = False
+plot_spacetime = True
+plot_wavespace = True
 plot_spectra   = True
-plot_amplitude = False
-plot_windows   = False
-plot_up_dn     = False
+plot_amplitude = True
+plot_windows   = True
+plot_up_dn     = True
 # If true, plot will include full simulated domain, if false, just the display domain
 plot_full_domain = False
 
