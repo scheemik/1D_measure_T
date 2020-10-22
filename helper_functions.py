@@ -231,7 +231,7 @@ def trim_data_z(z_array, data, z0_dis, zf_dis):
     Trims data, removes space outside display domain
 
     z_array     1D array of z values
-    data        2D data to be trimmed (z, t)
+    data        1D or 2D data to be trimmed (z, t)
     z0_dis      top of vertical structure extent
     zf_dis      bottom of vertical structure extent
     """
@@ -239,8 +239,14 @@ def trim_data_z(z_array, data, z0_dis, zf_dis):
     #   Find indices of display bounds
     idx_z0 = find_nearest_index(z_array, z0_dis)
     idx_zf = find_nearest_index(z_array, zf_dis)
-    # Trim space ### careful of the order, zf is bottom, so should have lower index?
-    trimmed_data    = data[idx_zf:idx_z0,:]
+    # Trim space ### careful of the order, zf is bottom, so should have lower index
+    #   Check whether data is 1D or 2D
+    if len(data.shape) == 2:
+        trimmed_data = data[idx_zf:idx_z0,:]
+    elif len(data.shape) == 1:
+        trimmed_data = data[idx_zf:idx_z0]
+    else:
+        print("trim_data_z only accepts 1D or 2D arrays")
     trimmed_z_array = z_array[idx_zf:idx_z0]
     return trimmed_z_array, trimmed_data
 
@@ -452,9 +458,9 @@ def plot_BP(ax, BP, z, omega=None):
     """
     Plots the background profile as a function of z
 
-    ax          axis for plot
-    BP          array of background profile in N_0
-    z           array of z values
+    ax          axis object for plot
+    BP          1D array of background profile in N_0
+    z           1D array of z values
     omega       frequency of wave
     """
     ax.plot(BP, z, color=my_clrs['N_0'], label=r'$N_0$')
@@ -473,10 +479,10 @@ def plot_v_profiles(z_array, BP_array, bf_array, sp_array, mL=None, theta=None, 
     Plots the vertical profiles: stratification, boundary forcing, sponge layer
         Note: all arrays must be imput as full-domain, no trimmed versions
 
-    z_array     array of z values
-    BP_array    array of the background profile values in z
-    bf_array    array of boundary forcing window
-    sp_array    array of sponge layer window
+    z_array     1D array of z values
+    BP_array    1D array of the background profile values in z
+    bf_array    1D array of boundary forcing window
+    sp_array    1D array of sponge layer window
     mL          Non-dimensional number relating wavelength and layer thickness
     theta       Angle at which wave is incident on stratification structure
     omega       frequency of wave

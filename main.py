@@ -52,6 +52,7 @@ lam_x       = sbp.lam_x         # [m]           Horizontal wavelength
 lam_z       = sbp.lam_z         # [m]           Vertical wavelength
 k           = sbp.k             # [m^-1]        Horizontal wavenumber
 m           = sbp.m             # [m^-1]        Vertical wavenumber
+mL          = sbp.mL
 k_total     = sbp.k_total       # [m^-1]        Total wavenumber
 theta       = sbp.theta         # [rad]         Propagation angle from vertical
 omega       = sbp.omega         # [rad s^-1]    Wave frequency
@@ -121,8 +122,7 @@ problem.substitutions['S_term_psi'] = "win_sp * nabla2dt_psi / tau_sp"
 ###############################################################################
 # Plotting windows
 if sbp.plot_windows:
-    hf.plot_v_profiles(BP_array, sbp.win_bf_array, sbp.win_sp_array, z, omega, sbp.z0_dis, sbp.zf_dis, sbp.z_I, sbp.z_T, title_str=run_name)
-
+    hf.plot_v_profiles(z, BP_array, sbp.win_bf_array, sbp.win_sp_array, mL, theta, omega, sbp.z_I, sbp.z_T, sbp.z0_dis, sbp.zf_dis, plot_full_domain=True, title_str=run_name)
 # raise SystemExit(0)
 
 ###############################################################################
@@ -138,10 +138,7 @@ problem.add_equation("foo - dt(psi) = 0")
 # Build solver
 solver = problem.build_solver(de.timesteppers.SBDF2)
 logger.info('Solver built')
-if sbp.extend_to_pwr_2 == True:
-    solver.stop_sim_time, nt  = hf.extended_stop_time(sbp.sim_time_stop, sbp.dt)
-else:
-    solver.stop_sim_time  = sbp.sim_time_stop
+solver.stop_sim_time  = sbp.sim_time_stop
 solver.stop_wall_time = sbp.stop_wall_time
 solver.stop_iteration = sbp.stop_iteration
 

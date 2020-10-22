@@ -36,7 +36,7 @@ n_T         = int(2**p_n_T)     # [] number of oscillation periods
 # extend_to_pwr_2 = True          # [] Extend simulation time so nt is a power of 2
 
 # Displayed domain parameters
-z0_dis = 0.0                    # [m] the top of the displayed z domain
+z0_dis = 0.0                    # [m] Top of the displayed z domain
 
 # Problem parameters
 A       = 2.0e-4                # []            Amplitude of boundary forcing

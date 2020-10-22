@@ -8,8 +8,26 @@ Options:
     NAME        # name of the experiment run from -n
     <files>         # h5 snapshot files
 
-"""
+Overview of post-processing operations:
+* Import simulation data
+    * Plot full wavefield
+* Trim data in space (restrict depths)
+* Trim data in time (remove transients at beginning)
+    * Plot trimmed wavefield
+* Perform complex demodulation
+    * Plot data in spectral form
+* Isolate both directions of the wave
+    * Plot down and upward waves (real parts)
+* Find amplitude by multiplying by complex conjugate
+    * Plot amplitude vs depth
+* Calculate incident and transmitted wave amplitudes
+* Calculate transmission coefficient
+    * Compare to analytical value
 
+"""
+###############################################################################
+###############################################################################
+# Import standard(ish) libraries and functions
 import h5py
 import numpy as np
 import matplotlib
@@ -27,9 +45,15 @@ run_name = args['NAME']
 h5_files = args['<files>']
 
 ###############################################################################
-# Import SwitchBoard Parameters (sbp)
-#   This import assumes the switchboard is in the same directory as the core code
-import switchboard as sbp
+# Import auxiliary files
+#   This import assumes the files are in the same directory as the core code
+import switchboard as sbp       # SwitchBoard Parameters (sbp)
+import helper_functions as hf
+import helper_functions_CD as hfCD
+
+###############################################################################
+# Importing parameters from auxiliary files
+
 # Physical parameters
 nu          = sbp.nu            # [m^2/s]       Viscosity (momentum diffusivity)
 f_0         = sbp.f_0           # [s^-1]        Reference Coriolis parameter
@@ -49,24 +73,23 @@ T           = sbp.T             # [s]           Wave period
 # Parameters
 tasks = ['psi']
 nz          = sbp.nz
-z0_dis      = sbp.z0_dis
-zf_dis      = sbp.zf_dis
 
+# Relevant depths
+z0_dis      = sbp.z0_dis        # [m]           Top of the displayed z domain
+zf_dis      = sbp.zf_dis        # [m]           Bottom of the displayed z domain
+z_I         = sbp.z_I           # [m]           depth at which to measure Incident wave
+z_T         = sbp.z_T           # [m]           depth at which to measure Transmitted wave
+
+# Grid spacing
 dt          = sbp.dt
 dz          = sbp.dz
 
-plot_f_d    = sbp.plot_full_domain
-T_skip      = sbp.T_skip
+plt_fd      = sbp.plot_full_domain
+T_cutoff    = sbp.T_cutoff
 n_layers    = sbp.n_layers
 layer_th    = sbp.layer_th
 
-z_I         = sbp.z_I
-z_T         = sbp.z_T
 
-###############################################################################
-# Helper functions
-#   This import assumes the helper functions are in the same directory as the core code
-import helper_functions as hf
 
 ###############################################################################
 # Additional post-processing helper functions
@@ -89,86 +112,8 @@ def get_h5_data(tasks, h5_files):
                 kz = np.array(f['scales']['kz'])
     return t, z, kz, psi_array#, psi_c_array
 
-def filter_neg_freqs(ftd, freq):
-    # Find number of frequencies
-    nf = len(freq)
-    # Filter out negative frequencies
-    for j in range(nf):
-        if freq[j] < 0.0:
-            # Gets rid of negative freq's
-            ftd[:,j] = 0.0
-        else:
-            # Corrects for lost amplitude
-            ftd[:,j] = ftd[:,j] * 2.0
-    return ftd
 
-def apply_band_pass(ftd, freq, omega, bp_wid=1):
-    """
-    Applies rectangular band pass to data already FT'd in time. Fragile function
-
-    ftd         data as output by np.fft.fft
-    freq        array of frequencies as output by np.fft.fftfreq
-    omega       frequency of forced waves
-    bp_wid      number extra indices to include on either side of idx_om
-    """
-    # Find number of frequencies
-    nf = len(freq)
-    # Find index for band pass, only consider indices of positive freqs
-    idx_om = hf.find_nearest_index(freq[0:nf//2], omega)
-    # Filter out frequencies left of band pass
-    ftd[:,0:idx_om-1-bp_wid]  = 0.0
-    # Filter out frequencies left of omega
-    ftd[:,idx_om+1+bp_wid:-1] = 0.0
-    # Correct for lost amplitude
-    ftd[:,idx_om-bp_wid:idx_om+bp_wid] = ftd[:,idx_om-bp_wid:idx_om+bp_wid] * 2.0
-    return ftd
-
-# fourier transform in time, band pass around omega, inverse fourier transform
-def FT_in_time(t, z, data, dt, omega):
-    # Should we apply the window?
-    apply_window = False
-    if apply_window:
-        nz = len(z)
-        # apply window to data
-        data = data * np.hanning(nz)
-    # FT in time of the data (axis 1 is time)
-    ftd = np.fft.fft(data, axis=1)
-    # find relevant frequencies
-    freq = np.fft.fftfreq(len(t), dt)
-    # Apply filtering on frequencies
-    use_bp = False
-    if use_bp:
-        # Apply band pass
-        ftd = apply_band_pass(ftd, freq, omega, bp_wid=63)
-    else:
-        # Filter out just the negative frequencies
-        ftd = filter_neg_freqs(ftd, freq)
-    # inverse fourier transform in time of the data
-    iftd = np.fft.ifft(ftd, axis=1)
-    #   a complex valued signal where iftd.real == data, or close enough
-    return iftd
-
-# fourier transform in spatial dimension (z)
-#   similar to FT in time, but switch dimensions around
-def FT_in_space(t, k_zs, data):
-    # FT in space (z) of the data (axis 0 is z) for positive wave numbers
-    fzdp = np.fft.fft(data, axis=0)
-    # make a copy for the negative wave numbers
-    fzdn = fzdp.copy()
-    # Filter out one half of wavenumbers to separate up and down
-    #   Looping only over wavenumbers because their positions don't change with t
-    for i in range(len(k_zs)):#k_grid.shape[0]):
-        if k_zs[i] > 0.0:
-            # for up, remove values for positive wave numbers
-            fzdp[i,:] = 0.0
-        else:
-            # for down, remove values for negative wave numbers
-            fzdn[i,:] = 0.0
-    # inverse fourier transform in space (z)
-    ifzdp = np.fft.ifft(fzdp, axis=0)
-    ifzdn = np.fft.ifft(fzdn, axis=0)
-    return ifzdp, ifzdn
-
+###############################################################################
 ###############################################################################
 # Get the data from the snapshot files
 t, z, kz, psi = get_h5_data(tasks, h5_files)
@@ -177,47 +122,83 @@ t, z, kz, psi = get_h5_data(tasks, h5_files)
 z = np.flip(z)
 psi = np.flipud(psi)
 
-BP_array = hf.BP_n_layers(n_layers, sbp.z, sbp.z0_str, sbp.zf_str)
+BP_array = hf.BP_n_layers(n_layers, z, sbp.z0_str, sbp.zf_str)
 
 ###############################################################################
 # Sanity check plots
 
+# Plotting windows
+if sbp.plot_windows:
+    hf.plot_v_profiles(z, BP_array, sbp.win_bf_array, sbp.win_sp_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=True, title_str=run_name)
+
 if sbp.plot_spacetime:
-    hf.plot_z_vs_t(z, t, T, psi.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=sbp.plot_full_domain, nT=T_skip, title_str=run_name)
-
-# if sbp.plot_wavespace:
-#     hf.plot_k_vs_t(z, t, T, psi.real, psi.imag, k, m, omega, title_str='psi', filename='f_1D_psi_r_i.png')
-#
-# if sbp.plot_wavespace:
-#     hf.plot_k_vs_t(hf.sort_k_coeffs(kz,1024), t, T, psi_c.real, psi_c.imag, k, m, omega, title_str='psi_c', filename='f_1D_psic_r_i.png')
-
-# raise SystemExit(0)
+    hf.plot_z_vs_t(z, t, T, psi.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=True, T_cutoff=T_cutoff, title_str=run_name)
 
 ###############################################################################
-# Complex demodulation
+# Trim data
 
-def Complex_Demodulate(t_then_z, t, z, kz, data, dt, omega):
-    if t_then_z == True:
-        ## Step 1
-        ift_t_y = FT_in_time(t, z, data, dt, omega)
-        ## Step 2
-        ift_z_y_p, ift_z_y_n = FT_in_space(t, kz, ift_t_y)
-        # Get up and down fields as F = |mag_f| * exp(i*phi_f)
-        up_field = ift_z_y_p.real * np.exp(np.real(1j * ift_z_y_p.imag))
-        dn_field = ift_z_y_n.real * np.exp(np.real(1j * ift_z_y_n.imag))
-    else:
-        ## Step 1
-        ift_z_y_p, ift_z_y_n = FT_in_space(t, kz, data)
-        ## Step 2
-        up_f = FT_in_time(t, z, ift_z_y_p, dt, omega)
-        dn_f = FT_in_time(t, z, ift_z_y_n, dt, omega)
-        # Get up and down fields as F = |mag_f| * exp(i*phi_f)
-        up_field = up_f.real * np.exp(np.real(1j * up_f.imag))
-        dn_field = dn_f.real * np.exp(np.real(1j * dn_f.imag))
-    return up_field, dn_field
+# Trim in space
+z_tr, psi_tr = hf.trim_data_z(z, psi, z0_dis, zf_dis)
+foo, BP_tr   = hf.trim_data_z(z, BP_array, z0_dis, zf_dis)
+
+# Trim in time
+t_tr, psi_tr = hf.trim_data_t(t, psi_tr, T_cutoff, T)
+
+# Plot trimmed wavefield
+if sbp.plot_spacetime:
+    hf.plot_z_vs_t(z_tr, t_tr, T, psi_tr.real, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=False, T_cutoff=T_cutoff, title_str=run_name, filename='f_1D_wave_tr.png')
+
+###############################################################################
+# Plot spectral form of data
+
+freqs, ks, spec_data = hfCD.z_t_to_k_omega(t_tr, z_tr, psi_tr, dt, dz)
+
+if sbp.plot_spectra:
+    hf.plot_spectral(ks, freqs, spec_data.real, spec_data.imag, mL, theta, omega, c_map='viridis', title_str=run_name)
+    # plot spectra lines
+    k_data = np.fft.fft(psi_tr, axis=0)
+    f_data = np.fft.fft(psi_tr, axis=1)
+    hf.plot_k_f_spectra(z_tr, dz, t_tr, dt, T, ks, freqs, k_data, f_data, mL, theta, omega, z_I, z_T, plot_full_domain=True, T_cutoff=T_cutoff+1, title_str=run_name)
+
+###############################################################################
+# Perform complex demodulation
 
 t_then_z = True
-up_field, dn_field = Complex_Demodulate(t_then_z, t, z, kz, psi, dt, omega)
+up_field, dn_field = hfCD.Complex_Demodulate(t_then_z, t, z, kz, psi, dt, omega)
+# I don't know why, but the up and down fields switch when I trim the data
+tr_dn_field, tr_up_field = hfCD.Complex_Demodulate(t_then_z, t_tr, z_tr, ks, psi_tr, dt, omega)
+
+###############################################################################
+# Plotting up and downward propagating waves
+
+# Trimmed case
+if sbp.plot_up_dn:
+    hf.plot_z_vs_t(z_tr, t_tr, T, tr_up_field.real, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' up', filename='f_1D_up_field_tr.png')
+    hf.plot_z_vs_t(z_tr, t_tr, T, tr_dn_field.real, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' dn', filename='f_1D_dn_field_tr.png')
+
+# Full domain
+if sbp.plot_up_dn:
+    hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=True, T_cutoff=None, title_str=run_name+' up', filename='f_1D_up_field.png')
+    hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=True, T_cutoff=None, title_str=run_name+' dn', filename='f_1D_dn_field.png')
+
+###############################################################################
+# Multiply the downward wavefield by it's complex-conjugate to get AA^*
+#   Plot this amplitude across time at two specific depths:
+if sbp.plot_amplitude:
+    hf.plot_A_of_I_T(z_tr, t_tr, T, tr_dn_field, mL, theta, omega, z_I, z_T, plot_full_domain=plt_fd, T_cutoff=T_cutoff, title_str=run_name, filename='f_1D_A_of_I_T.png')
+# Plot this amplitude (averaged across time) as a function of depth
+if sbp.plot_amplitude:
+    hf.plot_AA_for_z(z_tr, BP_tr, hf.AAcc(tr_dn_field), mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, title_str=run_name, filename='f_1D_AA_for_z.png')
+
+###############################################################################
+# Measuring the transmission coefficient
+
+I_, T_, AAcc_I, AAcc_T = hf.measure_T(tr_dn_field, z_tr, z_I, z_T, T_skip=None, T=T, t=t_tr)
+big_T = T_/I_
+print("Transmission coefficient is:", big_T)
+
+raise SystemExit(0)
+
 
 ###############################################################################
 # Profiling the code
@@ -230,29 +211,12 @@ if profile_it == True:
     p = pstats.Stats('restats')
     p.sort_stats(SortKey.CUMULATIVE).print_stats(10)
 ###############################################################################
-# Measuring the transmission coefficient
-
-big_T = hf.measure_T(dn_field, z, z_I, z_T, T_skip=T_skip, T=T, t=t)
-print("Transmission coefficient is:", big_T)
-
-###############################################################################
-# More plotting for up and down waves
-
-if sbp.plot_amplitude:
-    hf.plot_A_of_I_T(z, t, T, dn_field, z_I, z_T, dz, mL, theta, omega, nT=T_skip, title_str=run_name)
-
-if sbp.plot_amplitude:
-    hf.plot_AA_for_z(BP_array, dn_field, z, mL, theta, omega, T_skip=T_skip, T=T, t=t, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, title_str=run_name, filename='f_1D_AA_for_z.png')
-
-if sbp.plot_up_dn:
-    hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, title_str=run_name, filename='f_1D_up_field.png')
-    hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, title_str=run_name, filename='f_1D_dn_field.png')
 
 plot_CD_checks = False
 if plot_CD_checks:
     # Add up and down fields to see if they reproduce the original psi field
     up_plus_dn = up_field.real + dn_field.real
-    hf.plot_z_vs_t(z, t, T, up_plus_dn, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, title_str=run_name, filename='f_1D_up_plus_dn.png')
+    hf.plot_z_vs_t(z, t, T, up_plus_dn, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_cutoff, title_str=run_name, filename='f_1D_up_plus_dn.png')
     # Plot the difference, which ideally should be zero everywhere
     CD_diff = psi.real - up_plus_dn
-    hf.plot_z_vs_t(z, t, T, CD_diff, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_skip, title_str=run_name, filename='f_1D_CD_diff.png')
+    hf.plot_z_vs_t(z, t, T, CD_diff, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_cutoff, title_str=run_name, filename='f_1D_CD_diff.png')
