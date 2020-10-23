@@ -198,7 +198,8 @@ if sbp.plot_amplitude:
 
 I_, T_, AAcc_I, AAcc_T = hf.measure_T(tr_dn_field, z_tr, z_I, z_T, T_skip=None, T=T, t=t_tr)
 big_T = T_/I_
-print("Transmission coefficient is:", big_T)
+print("Measured transmission coefficient is:", big_T)
+print("T from SY eq 2.4 (mL=",mL,", theta=",theta,") = ", hf.SY_eq2_4(theta, mL))
 
 raise SystemExit(0)
 

@@ -14,6 +14,12 @@ from matplotlib import ticker
 from dedalus.extras.plot_tools import quad_mesh, pad_limits
 
 ###############################################################################
+# The analytical solution to the tranmission coefficient in the linear,
+#   non-rotating, non-viscous case. From Sutherland and Yewchuk 2004, equation 2.4
+def SY_eq2_4(theta, mL):
+    return 1 / (1 + (np.sinh(mL)/np.sin(2*theta))**2 )
+
+###############################################################################
 # Measuring the Transmission Coefficient
 
 def find_nearest_index(array, value):
