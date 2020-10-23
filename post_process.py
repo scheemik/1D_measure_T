@@ -173,13 +173,13 @@ tr_dn_field, tr_up_field = hfCD.Complex_Demodulate(t_then_z, t_tr, z_tr, ks, psi
 
 # Trimmed case
 if sbp.plot_up_dn:
-    hf.plot_z_vs_t(z_tr, t_tr, T, tr_up_field.real, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' up', filename='f_1D_up_field_tr.png')
-    hf.plot_z_vs_t(z_tr, t_tr, T, tr_dn_field.real, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' dn', filename='f_1D_dn_field_tr.png')
+    hf.plot_z_vs_t(z_tr, t_tr, T, tr_up_field.real, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' up', filename='f_1D_up_tr.png')
+    hf.plot_z_vs_t(z_tr, t_tr, T, tr_dn_field.real, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' dn', filename='f_1D_dn_tr.png')
 
 # Full domain
 if sbp.plot_up_dn:
-    hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=True, T_cutoff=None, title_str=run_name+' up', filename='f_1D_up_field.png')
-    hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=True, T_cutoff=None, title_str=run_name+' dn', filename='f_1D_dn_field.png')
+    hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=True, T_cutoff=T_cutoff, title_str=run_name+' up', filename='f_1D_up.png')
+    hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=True, T_cutoff=T_cutoff, title_str=run_name+' dn', filename='f_1D_dn.png')
 
 ###############################################################################
 # Multiply the downward wavefield by it's complex-conjugate to get AA^*
@@ -188,7 +188,10 @@ if sbp.plot_amplitude:
     hf.plot_A_of_I_T(z_tr, t_tr, T, tr_dn_field, mL, theta, omega, z_I, z_T, plot_full_domain=plt_fd, T_cutoff=T_cutoff, title_str=run_name, filename='f_1D_A_of_I_T.png')
 # Plot this amplitude (averaged across time) as a function of depth
 if sbp.plot_amplitude:
-    hf.plot_AA_for_z(z_tr, BP_tr, hf.AAcc(tr_dn_field), mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, title_str=run_name, filename='f_1D_AA_for_z.png')
+    hf.plot_AA_for_z(z_tr, BP_tr, hf.AAcc(tr_dn_field).real, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, title_str=run_name, filename='f_1D_AA_for_z.png')
+
+if sbp.plot_amplitude:
+    hf.plot_z_vs_t(z_tr, t_tr, T, hf.AAcc(tr_dn_field).real, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' AA', filename='f_1D_AA.png')
 
 ###############################################################################
 # Measuring the transmission coefficient
