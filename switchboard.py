@@ -15,7 +15,7 @@ from dedalus import public as de
 
 # Relevant parameters
 nz      = 1024                  # [] number of grid points in the z direction in display domain
-mL      = 1                     # [] vertical wave number times step length
+mL      = 5                     # [] vertical wave number times step length
 theta   = None                  # [] angle between wave's propagation and horizontal (or vertical?)
 
 # Time parameters
