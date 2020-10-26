@@ -43,7 +43,7 @@ import helper_functions as hf
 #   This import assumes the switchboard is in the same directory as the core code
 import switchboard as sbp
 # Physical parameters
-nu          = sbp.nu            # [m^2/s]       Viscosity (momentum diffusivity)
+nu          = 0#sbp.nu            # [m^2/s]       Viscosity (momentum diffusivity)
 f_0         = sbp.f_0           # [s^-1]        Reference Coriolis parameter
 g           = sbp.g             # [m/s^2]       Acceleration due to gravity
 # Problem parameters
