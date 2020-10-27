@@ -78,8 +78,7 @@ python_command="python3"
 # Name of the main code file
 code_file='main.py'
 # Name of switchboard file
-switchboard="switchboard"
-switch_file="${switchboard}.py"
+switch_file="switchboard"
 # Path to snapshot files
 snapshot_path="snapshots"
 # Name of merging file
@@ -98,32 +97,8 @@ frames_path='frames'
 gif_cre_file="create_gif.py"
 
 ###############################################################################
-echo ''
-echo '--Checking experiment directory--'
-echo ''
-# Check if experiments folder exists
-if [ -e _experiments ]
-then
-	echo 'Experiment folder exists'
-else
-	echo 'Experiment folder not found. Aborting script'
-	exit 1
-fi
-# Check if this experiment has been created
-if [ -e _experiments/$NAME ]
-then
-	echo "Experiment for $NAME exists"
-else
-	echo "Creating experiment for $NAME."
-	mkdir _experiments/$NAME
-	echo 'Copying code files to experiment directory'
-	cp helper_functions_CD.py helper_functions.py $code_file $switch_file $merge_file $post_process $plot_file $gif_cre_file _experiments/${NAME}
-fi
+# check for experiments folder
 
-echo ''
-echo '--Navigating to experiment directory--'
-cd _experiments/${NAME}
-###############################################################################
 ###############################################################################
 # run simulation
 if [ "$RUN" = true ]
@@ -139,10 +114,10 @@ then
   echo "Running Dedalus script for local pc"
 	if [ $CORES -eq 1 ]
 	then
-		${python_command} $code_file $NAME $switchboard
+		${python_command} $code_file $NAME $switch_file
 	else
 	  # mpiexec uses -n flag for number of processes to use
-	  ${mpiexec_command} -n $CORES ${python_command} $code_file $NAME $switchboard
+	  ${mpiexec_command} -n $CORES ${python_command} $code_file $NAME $switch_file
 	fi
     echo ""
 	echo 'Done running script'
@@ -223,7 +198,7 @@ then
 		rm -rf frames
 	fi
 	echo "Plotting 2d slices"
-	${mpiexec_command} -n $CORES ${python_command} $plot_file $NAME $switchboard $snapshot_path/*.h5
+	${mpiexec_command} -n $CORES ${python_command} $plot_file $NAME $switch_file $snapshot_path/*.h5
 	echo 'Done plotting frames'
 fi
 
