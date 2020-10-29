@@ -109,12 +109,35 @@ else
 	echo 'Experiment folder not found. Aborting script'
 	exit 1
 fi
+MAKE_NEW_DIR=true
 # Check if this experiment has been created
 if [ -e _experiments/$NAME ]
 then
 	echo "Experiment for $NAME exists"
-else
-	echo "Creating experiment for $NAME."
+	# Begin loop waiting for user to confirm
+	while true
+	do
+		read -r -p "Clear old $NAME [y]? Continue with old $NAME?[n] Or cancel? [Ctrl+c] " input
+		case $input in
+			[yY][eE][sS]|[yY])
+		echo "Yes"
+		rm -rf _experiments/$NAME
+		break
+		;;
+			[nN][oO]|[nN])
+		echo "No"
+		MAKE_NEW_DIR=false
+		break
+				;;
+			*)
+		echo "Invalid input"
+		;;
+		esac
+	done
+fi
+if [ $MAKE_NEW_DIR = true ]
+then
+	echo "Creating experiment for $NAME"
 	mkdir _experiments/$NAME
 	echo 'Copying code files to experiment directory'
 	cp helper_functions_CD.py helper_functions.py $code_file $switch_file $merge_file $post_process $plot_file $gif_cre_file _experiments/${NAME}
