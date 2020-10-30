@@ -177,17 +177,10 @@ echo ''
 # Check if simulation folder exists
 if [ -d $NAME ]
 then
-	echo 'Simulation folder exists, overwriting'
-	rm -rf $NAME
-fi
-echo "Creating simulation for $NAME"
-mkdir "$NAME"
-if [ -d $NAME ]
-then
-	echo "Found $NAME"
+	echo "Simulation for $NAME exists"
 else
-	echo 'Something went wrong'
-	exit 1
+	echo "Creating simulation for $NAME"
+	mkdir "$NAME"
 fi
 ###############################################################################
 ###############################################################################
