@@ -44,7 +44,6 @@ from docopt import docopt
 args = docopt(__doc__)
 run_name    = args['NAME']
 plot_checks = args['PLOT_CHECKS'].lower() == 'true'
-print('plot_checks =',plot_checks)
 h5_files    = args['<files>']
 
 ###############################################################################
@@ -57,25 +56,16 @@ import helper_functions_CD as hfCD
 ###############################################################################
 # Importing parameters from auxiliary files
 
-# Physical parameters
-# nu          = sbp.nu            # [m^2/s]       Viscosity (momentum diffusivity)
-# f_0         = sbp.f_0           # [s^-1]        Reference Coriolis parameter
-# g           = sbp.g             # [m/s^2]       Acceleration due to gravity
 # Problem parameters
 mL          = sbp.mL            # []            Ratio of vertical wavelength to stratification length
-# N_0         = sbp.N_0           # [rad/s]       Reference stratification
-# lam_x       = sbp.lam_x         # [m]           Horizontal wavelength
-# lam_z       = sbp.lam_z         # [m]           Vertical wavelength
 k           = sbp.k             # [m^-1]        Horizontal wavenumber
 m           = sbp.m             # [m^-1]        Vertical wavenumber
-# k_total     = sbp.k_total       # [m^-1]        Total wavenumber
 theta       = sbp.theta         # [rad]         Propagation angle from vertical
 omega       = sbp.omega         # [rad s^-1]    Wave frequency
 T           = sbp.T             # [s]           Wave period
 
 # Parameters
 tasks = ['psi']
-# nz          = sbp.nz
 
 # Relevant depths
 z0_dis      = sbp.z0_dis        # [m]           Top of the displayed z domain
@@ -91,8 +81,6 @@ plt_fd      = sbp.plot_full_domain
 T_cutoff    = sbp.T_cutoff
 n_layers    = sbp.n_layers
 layer_th    = sbp.layer_th
-
-
 
 ###############################################################################
 # Additional post-processing helper functions
@@ -148,8 +136,9 @@ tr_dn_field, tr_up_field = hfCD.Complex_Demodulate(t_then_z, t_tr, z_tr, kz_tr, 
 
 I_, T_, AAcc_I, AAcc_T = hf.measure_T(tr_dn_field, z_tr, z_I, z_T, T_skip=None, T=T, t=t_tr)
 big_T = T_/I_
-print("Measured transmission coefficient is:", big_T)
-print("T from SY eq 2.4 (mL=",mL,", theta=",theta,") = ", hf.SY_eq2_4(theta, mL))
+print("(n_layers =",n_layers,"(mL =",mL,", theta =",theta,")")
+print("Simulated transmission coefficient is:", big_T)
+print("AnaEq 2.4 transmission coefficient is:", hf.SY_eq2_4(theta, mL))
 
 
 ###############################################################################
