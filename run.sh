@@ -10,12 +10,13 @@
 #							-p <plot simulation>            Default: False
 #             -g <create gif>                 Default: False
 #             -v <create video, mp4>          Default: False
+#             -x <sim ID>          						Default: 0
 
 # Current datetime
 DATETIME=`date +"%Y-%m-%d_%Hh%M"`
 
 # Having a ":" after a flag means an option is required to invoke that flag
-while getopts e:n:c:rmopgv option
+while getopts e:n:c:rmopgvx: option
 do
 	case "${option}"
 		in
@@ -28,6 +29,7 @@ do
     p) PLT=true;;
     g) GIF=true;;
     v) VID=true;;
+		x) P1=${OPTARG};;
 	esac
 done
 
@@ -77,6 +79,13 @@ if [ "$VID" = true ]
 then
 	echo "-v, Create video (mp4) of the simulation"
 fi
+if [ -z "$P1" ]
+then
+	P1=0
+	echo "-x, Parameter 1 not set, using $P1"
+else
+  echo "-x, Parameter 1 set, using $P1"
+fi
 
 ###############################################################################
 
@@ -94,6 +103,8 @@ frames_path='frames'
 # Clean up the snapshots after merging
 cleanup_snapshots="True"
 
+# Name of the script to write the parameters
+params_script='write_params.sh'
 # Name of the main code file
 code_file='main.py'
 # Name of switchboard file
@@ -111,7 +122,7 @@ plot_file="plot_slices.py"
 # Name of gif creation file
 gif_cre_file="create_gif.py"
 # Group all the code files for ease of calling
-CODE_FILES="$helper_funcs $helper_funcs_CD $code_file $switch_file $merge_file $post_process $plot_file $gif_cre_file"
+CODE_FILES="$params_script $code_file $switch_file $merge_file $helper_funcs $helper_funcs_CD $post_process $plot_file $gif_cre_file"
 
 ###############################################################################
 echo ''
@@ -171,6 +182,17 @@ echo '--Navigating to experiment directory--'
 cd _experiments/${EXP}
 pwd
 ###############################################################################
+echo ''
+echo '--Writing parameters file--'
+echo ''
+# Check if simulation folder exists
+if [ -e $params_script ]
+then
+	bash $params_script -x $P1
+else
+	echo "Cannot find $params_script, aborting execution"
+	exit 1
+fi
 echo ''
 echo '--Checking simulation directory--'
 echo ''
