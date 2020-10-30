@@ -1,7 +1,8 @@
 #!/bin/bash
 # A bash script to run the Dedalus python code
 # Takes in optional arguments:
-#	$ sh run.sh -n <name of experiment>         Default: current datetime
+#	$ sh run.sh -e <name of experiment> 				Default: test_exp
+#							-n <name of simulation>         Default: current datetime
 #							-c <cores>                      Default: 1
 #							-r <run simulation>             Default: False
 #             -m <merge h5 files>             Default: False
@@ -14,10 +15,11 @@
 DATETIME=`date +"%Y-%m-%d_%Hh%M"`
 
 # Having a ":" after a flag means an option is required to invoke that flag
-while getopts n:c:rmopgv option
+while getopts e:n:c:rmopgv option
 do
 	case "${option}"
 		in
+		e) EXP=${OPTARG};;
 		n) NAME=${OPTARG};;
 		c) CORES=${OPTARG};;
 		r) RUN=true;;
@@ -30,12 +32,19 @@ do
 done
 
 # check to see what arguments were passed
+if [ -z "$EXP" ]
+then
+	EXP="test_exp"
+	echo "-e, No name specified, using EXP=$EXP"
+else
+  echo "-e, Name specified, using EXP=$EXP"
+fi
 if [ -z "$NAME" ]
 then
 	NAME=$DATETIME
-	echo "-n, No name specified, using NAME=$NAME"
+	echo "-n, No simulation name specified, using NAME=$NAME"
 else
-  echo "-n, Name specified, using NAME=$NAME"
+  echo "-n, Simulation name specified, using NAME=$NAME"
 fi
 if [ -z "$CORES" ]
 then
@@ -75,28 +84,30 @@ fi
 mpiexec_command="mpiexec"
 # The version of python to use
 python_command="python3"
-# Name of the main code file
-code_file='main.py'
-# Helper code files
-helper_funcs="helper_functions.py"
-helper_funcs_CD="helper_functions_CD.py"
-# Name of switchboard file
-switchboard="switchboard"
-switch_file="${switchboard}.py"
 # Path to snapshot files
-snapshot_path="snapshots"
-# Name of merging file
-merge_file="merge.py"
-# Clean up the snapshots after merging
-cleanup_snapshots="True"
-# Name of post processing file
-post_process="post_process.py"
-# Name of slice plotting file
-plot_file="plot_slices.py"
+snapshot_name="snapshots"
+snapshot_path="${NAME}/${snapshot_name}"
 # Name of output directory
 output_dir="outputs"
 # Path to frames
 frames_path='frames'
+# Clean up the snapshots after merging
+cleanup_snapshots="True"
+
+# Name of the main code file
+code_file='main.py'
+# Name of switchboard file
+switchboard="switchboard"
+switch_file="${switchboard}.py"
+# Name of merging file
+merge_file="merge.py"
+# Helper code files
+helper_funcs="helper_functions.py"
+helper_funcs_CD="helper_functions_CD.py"
+# Name of post processing file
+post_process="post_process.py"
+# Name of slice plotting file
+plot_file="plot_slices.py"
 # Name of gif creation file
 gif_cre_file="create_gif.py"
 # Group all the code files for ease of calling
@@ -116,18 +127,18 @@ else
 fi
 OVERWRITE_CODE_FILES=true
 # Check if this experiment has been created
-if [ -e _experiments/$NAME ]
+if [ -e _experiments/$EXP ]
 then
-	echo "Experiment for $NAME exists"
+	echo "Experiment for $EXP exists"
 	# Begin loop waiting for user to confirm
 	while true
 	do
-		read -r -p "Overwrite old code files in $NAME [y/n]? Or cancel? [Ctrl+c] " input
+		read -r -p "Overwrite old code files in $EXP [y/n]? Or cancel? [Ctrl+c] " input
 		case $input in
 			[yY][eE][sS]|[yY])
 		echo "Yes"
 		# Go in to directory, remove code files, come back out to main directory
-		cd _experiments/$NAME
+		cd _experiments/$EXP
 		rm -rf $CODE_FILES
 		cd ..
 		cd ..
@@ -144,20 +155,40 @@ then
 		esac
 	done
 else
-	echo "Creating experiment for $NAME"
-	mkdir _experiments/$NAME
+	echo "Creating experiment for $EXP"
+	mkdir "_experiments/$EXP"
 	echo 'Copying code files to experiment directory'
-	cp $CODE_FILES _experiments/${NAME}
+	cp $CODE_FILES _experiments/${EXP}
 fi
 if [ $OVERWRITE_CODE_FILES = true ]
 then
 	echo 'Copying code files to experiment directory'
-	cp $CODE_FILES _experiments/${NAME}
+	cp $CODE_FILES _experiments/${EXP}
 fi
 
 echo ''
 echo '--Navigating to experiment directory--'
-cd _experiments/${NAME}
+cd _experiments/${EXP}
+pwd
+###############################################################################
+echo ''
+echo '--Checking simulation directory--'
+echo ''
+# Check if simulation folder exists
+if [ -d $NAME ]
+then
+	echo 'Simulation folder exists, overwriting'
+	rm -rf $NAME
+fi
+echo "Creating simulation for $NAME"
+mkdir "$NAME"
+if [ -d $NAME ]
+then
+	echo "Found $NAME"
+else
+	echo 'Something went wrong'
+	exit 1
+fi
 ###############################################################################
 ###############################################################################
 # run simulation
@@ -169,7 +200,7 @@ then
 	if [ -e $snapshot_path ]
 	then
 		echo "Removing old snapshots"
-		rm -rf $snapshot_path
+		rm -rf "${snapshot_path}"		# Careful, easy to accidentally remove $NAME dir
 	fi
   echo "Running Dedalus script for local pc"
 	if [ $CORES -eq 1 ]

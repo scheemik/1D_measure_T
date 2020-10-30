@@ -2,10 +2,11 @@
 Performs post-processing actions. Run with $ python3 post_process.py snapshots/*.h5
 
 Usage:
-    post_process.py NAME <files>... [--output=<dir>]
+    post_process.py NAME PLOT_CHECKS <files>... [--output=<dir>]
 
 Options:
-    NAME        # name of the experiment run from -n
+    NAME            # name of the experiment run from -n
+    PLOT_CHECKS     # True or False whether to make the plots or not
     <files>         # h5 snapshot files
 
 Overview of post-processing operations:
@@ -41,8 +42,9 @@ from dedalus.extras.plot_tools import quad_mesh
 # Parse input parameters
 from docopt import docopt
 args = docopt(__doc__)
-run_name = args['NAME']
-h5_files = args['<files>']
+run_name    = args['NAME']
+plot_checks = args['PLOT_CHECKS'].lower() == 'true'
+h5_files    = args['<files>']
 
 ###############################################################################
 # Import auxiliary files
@@ -54,25 +56,16 @@ import helper_functions_CD as hfCD
 ###############################################################################
 # Importing parameters from auxiliary files
 
-# Physical parameters
-nu          = sbp.nu            # [m^2/s]       Viscosity (momentum diffusivity)
-f_0         = sbp.f_0           # [s^-1]        Reference Coriolis parameter
-g           = sbp.g             # [m/s^2]       Acceleration due to gravity
 # Problem parameters
 mL          = sbp.mL            # []            Ratio of vertical wavelength to stratification length
-N_0         = sbp.N_0           # [rad/s]       Reference stratification
-lam_x       = sbp.lam_x         # [m]           Horizontal wavelength
-lam_z       = sbp.lam_z         # [m]           Vertical wavelength
 k           = sbp.k             # [m^-1]        Horizontal wavenumber
 m           = sbp.m             # [m^-1]        Vertical wavenumber
-k_total     = sbp.k_total       # [m^-1]        Total wavenumber
 theta       = sbp.theta         # [rad]         Propagation angle from vertical
 omega       = sbp.omega         # [rad s^-1]    Wave frequency
 T           = sbp.T             # [s]           Wave period
 
 # Parameters
 tasks = ['psi']
-nz          = sbp.nz
 
 # Relevant depths
 z0_dis      = sbp.z0_dis        # [m]           Top of the displayed z domain
@@ -88,8 +81,6 @@ plt_fd      = sbp.plot_full_domain
 T_cutoff    = sbp.T_cutoff
 n_layers    = sbp.n_layers
 layer_th    = sbp.layer_th
-
-
 
 ###############################################################################
 # Additional post-processing helper functions
@@ -122,10 +113,44 @@ t, z, kz, psi = get_h5_data(tasks, h5_files)
 z = np.flip(z)
 psi = np.flipud(psi)
 
-BP_array = hf.BP_n_layers(n_layers, z, sbp.z0_str, sbp.zf_str)
+###############################################################################
+# Trim data
+
+# Trim in space
+z_tr, psi_tr = hf.trim_data_z(z, psi, z0_dis, zf_dis)
+
+# Trim in time
+t_tr, psi_tr = hf.trim_data_t(t, psi_tr, T_cutoff, T)
 
 ###############################################################################
-# Sanity check plots
+# Perform complex demodulation
+
+t_then_z = True
+# find relevant wavenumbers (k) for the trimmed z range
+kz_tr = np.fft.fftfreq(len(z_tr), dz)
+# I don't know why, but the up and down fields switch when I trim the data
+tr_dn_field, tr_up_field = hfCD.Complex_Demodulate(t_then_z, t_tr, z_tr, kz_tr, psi_tr, dt, omega)
+
+###############################################################################
+# Measuring the transmission coefficient
+
+I_, T_, AAcc_I, AAcc_T = hf.measure_T(tr_dn_field, z_tr, z_I, z_T, T_skip=None, T=T, t=t_tr)
+big_T = T_/I_
+print("(n_layers =",n_layers,"(mL =",mL,", theta =",theta,")")
+print("Simulated transmission coefficient is:", big_T)
+print("AnaEq 2.4 transmission coefficient is:", hf.SY_eq2_4(theta, mL))
+
+
+###############################################################################
+###############################################################################
+###############################################################################
+# Plotting checks
+
+if plot_checks == False:
+    raise SystemExit(0)
+
+BP_array = hf.BP_n_layers(n_layers, z, sbp.z0_str, sbp.zf_str)
+foo, BP_tr   = hf.trim_data_z(z, BP_array, z0_dis, zf_dis)
 
 # Plotting windows
 if sbp.plot_windows:
@@ -133,16 +158,6 @@ if sbp.plot_windows:
 
 if sbp.plot_spacetime:
     hf.plot_z_vs_t(z, t, T, psi.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=True, T_cutoff=T_cutoff, title_str=run_name)
-
-###############################################################################
-# Trim data
-
-# Trim in space
-z_tr, psi_tr = hf.trim_data_z(z, psi, z0_dis, zf_dis)
-foo, BP_tr   = hf.trim_data_z(z, BP_array, z0_dis, zf_dis)
-
-# Trim in time
-t_tr, psi_tr = hf.trim_data_t(t, psi_tr, T_cutoff, T)
 
 # Plot trimmed wavefield
 if sbp.plot_spacetime:
@@ -161,14 +176,6 @@ if sbp.plot_spectra:
     hf.plot_k_f_spectra(z_tr, dz, t_tr, dt, T, ks, freqs, k_data, f_data, mL, theta, omega, z_I, z_T, plot_full_domain=True, T_cutoff=T_cutoff+1, title_str=run_name)
 
 ###############################################################################
-# Perform complex demodulation
-
-t_then_z = True
-up_field, dn_field = hfCD.Complex_Demodulate(t_then_z, t, z, kz, psi, dt, omega)
-# I don't know why, but the up and down fields switch when I trim the data
-tr_dn_field, tr_up_field = hfCD.Complex_Demodulate(t_then_z, t_tr, z_tr, ks, psi_tr, dt, omega)
-
-###############################################################################
 # Plotting up and downward propagating waves
 
 # Trimmed case
@@ -176,6 +183,7 @@ if sbp.plot_up_dn:
     hf.plot_z_vs_t(z_tr, t_tr, T, tr_up_field.real, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' up', filename='f_1D_up_tr.png')
     hf.plot_z_vs_t(z_tr, t_tr, T, tr_dn_field.real, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' dn', filename='f_1D_dn_tr.png')
 
+up_field, dn_field = hfCD.Complex_Demodulate(t_then_z, t, z, kz, psi, dt, omega)
 # Full domain
 if sbp.plot_up_dn:
     hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=True, T_cutoff=T_cutoff, title_str=run_name+' up', filename='f_1D_up.png')
@@ -193,16 +201,7 @@ if sbp.plot_amplitude:
 if sbp.plot_amplitude:
     hf.plot_z_vs_t(z_tr, t_tr, T, hf.AAcc(tr_dn_field).real, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' AA', filename='f_1D_AA.png')
 
-###############################################################################
-# Measuring the transmission coefficient
-
-I_, T_, AAcc_I, AAcc_T = hf.measure_T(tr_dn_field, z_tr, z_I, z_T, T_skip=None, T=T, t=t_tr)
-big_T = T_/I_
-print("Measured transmission coefficient is:", big_T)
-print("T from SY eq 2.4 (mL=",mL,", theta=",theta,") = ", hf.SY_eq2_4(theta, mL))
-
 raise SystemExit(0)
-
 
 ###############################################################################
 # Profiling the code
