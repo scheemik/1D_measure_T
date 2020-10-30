@@ -77,6 +77,9 @@ mpiexec_command="mpiexec"
 python_command="python3"
 # Name of the main code file
 code_file='main.py'
+# Helper code files
+helper_funcs="helper_functions.py"
+helper_funcs_CD="helper_functions_CD.py"
 # Name of switchboard file
 switchboard="switchboard"
 switch_file="${switchboard}.py"
@@ -96,6 +99,8 @@ output_dir="outputs"
 frames_path='frames'
 # Name of gif creation file
 gif_cre_file="create_gif.py"
+# Group all the code files for ease of calling
+CODE_FILES="$helper_funcs $helper_funcs_CD $code_file $switch_file $merge_file $post_process $plot_file $gif_cre_file"
 
 ###############################################################################
 echo ''
@@ -109,7 +114,7 @@ else
 	echo 'Experiment folder not found. Aborting script'
 	exit 1
 fi
-MAKE_NEW_DIR=true
+OVERWRITE_CODE_FILES=true
 # Check if this experiment has been created
 if [ -e _experiments/$NAME ]
 then
@@ -117,16 +122,20 @@ then
 	# Begin loop waiting for user to confirm
 	while true
 	do
-		read -r -p "Clear old $NAME [y]? Continue with old $NAME?[n] Or cancel? [Ctrl+c] " input
+		read -r -p "Overwrite old code files in $NAME [y/n]? Or cancel? [Ctrl+c] " input
 		case $input in
 			[yY][eE][sS]|[yY])
 		echo "Yes"
-		rm -rf _experiments/$NAME
+		# Go in to directory, remove code files, come back out to main directory
+		cd _experiments/$NAME
+		rm -rf $CODE_FILES
+		cd ..
+		cd ..
 		break
 		;;
 			[nN][oO]|[nN])
 		echo "No"
-		MAKE_NEW_DIR=false
+		OVERWRITE_CODE_FILES=false
 		break
 				;;
 			*)
@@ -134,13 +143,16 @@ then
 		;;
 		esac
 	done
-fi
-if [ $MAKE_NEW_DIR = true ]
-then
+else
 	echo "Creating experiment for $NAME"
 	mkdir _experiments/$NAME
 	echo 'Copying code files to experiment directory'
-	cp helper_functions_CD.py helper_functions.py $code_file $switch_file $merge_file $post_process $plot_file $gif_cre_file _experiments/${NAME}
+	cp $CODE_FILES _experiments/${NAME}
+fi
+if [ $OVERWRITE_CODE_FILES = true ]
+then
+	echo 'Copying code files to experiment directory'
+	cp $CODE_FILES _experiments/${NAME}
 fi
 
 echo ''
@@ -215,8 +227,8 @@ then
 fi
 
 ###############################################################################
-# post-process data
-if [ "$PRO" = true ]
+# post-process data, make plots if requested
+if [ "$PRO" = true ] #| [ "$PLT" = true ]
 then
 	echo ''
 	echo '--Post processing--'
@@ -229,26 +241,35 @@ then
 		echo "Cannot find snapshots. Aborting script"
 		exit 1
 	fi
+	# Check whether to make plots
+	if [ "$PLT" = true ]
+	then
+		plot_checks="true"
+		echo 'Plotting checks'
+	else
+		plot_checks="false"
+		echo 'Not plotting extra checks'
+	fi
 	echo 'Running post processing script'
-	${python_command} $post_process $NAME $snapshot_path/*.h5
+	${python_command} $post_process $NAME $plot_checks $snapshot_path/*.h5
 	echo 'Done post processing'
 fi
 
 ###############################################################################
 # plot simulation
-if [ "$PLT" = true ]
-then
-	echo ''
-	echo '--Plotting frames--'
-	if [ -e frames ]
-	then
-		echo "Removing old frames"
-		rm -rf frames
-	fi
-	echo "Plotting 2d slices"
-	${mpiexec_command} -n $CORES ${python_command} $plot_file $NAME $switchboard $snapshot_path/*.h5
-	echo 'Done plotting frames'
-fi
+# if [ "$PLT" = true ]
+# then
+# 	echo ''
+# 	echo '--Plotting frames--'
+# 	if [ -e frames ]
+# 	then
+# 		echo "Removing old frames"
+# 		rm -rf frames
+# 	fi
+# 	echo "Plotting 2d slices"
+# 	${mpiexec_command} -n $CORES ${python_command} $plot_file $NAME $switchboard $snapshot_path/*.h5
+# 	echo 'Done plotting frames'
+# fi
 
 ###############################################################################
 # create gif

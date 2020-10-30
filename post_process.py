@@ -2,10 +2,11 @@
 Performs post-processing actions. Run with $ python3 post_process.py snapshots/*.h5
 
 Usage:
-    post_process.py NAME <files>... [--output=<dir>]
+    post_process.py NAME PLOT_CHECKS <files>... [--output=<dir>]
 
 Options:
-    NAME        # name of the experiment run from -n
+    NAME            # name of the experiment run from -n
+    PLOT_CHECKS     # True or False whether to make the plots or not
     <files>         # h5 snapshot files
 
 Overview of post-processing operations:
@@ -41,9 +42,10 @@ from dedalus.extras.plot_tools import quad_mesh
 # Parse input parameters
 from docopt import docopt
 args = docopt(__doc__)
-run_name = args['NAME']
-h5_files = args['<files>']
-plot_checks = True
+run_name    = args['NAME']
+plot_checks = args['PLOT_CHECKS'].lower() == 'true'
+print('plot_checks =',plot_checks)
+h5_files    = args['<files>']
 
 ###############################################################################
 # Import auxiliary files
