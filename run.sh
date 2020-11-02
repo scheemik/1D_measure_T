@@ -4,7 +4,8 @@
 #	$ sh run.sh -e <name of experiment> 				Default: test_exp
 #             -i <sim ID>          						Default: 0
 #							-n <name of simulation>         Default: ID + current datetime
-#							-c <cores>                      Default: 1
+#							-s <number of simulations>      Default: 1
+#							-c <number of cores>            Default: 1
 #							-r <run simulation>             Default: False
 #             -m <merge h5 files>             Default: False
 #							-o <post-process data>          Default: False
@@ -16,13 +17,14 @@
 DATETIME=`date +"%Y-%m-%d_%Hh%M"`
 
 # Having a ":" after a flag means an option is required to invoke that flag
-while getopts e:i:n:c:rmopgv option
+while getopts e:i:n:s:c:rmopgv option
 do
 	case "${option}"
 		in
 		e) EXP=${OPTARG};;
 		i) ID=${OPTARG};;
 		n) NAME=${OPTARG};;
+		s) SIMS=${OPTARG};;
 		c) CORES=${OPTARG};;
 		r) RUN=true;;
     m) MER=true;;
@@ -56,6 +58,13 @@ then
 	echo "-n, No simulation name specified, using NAME=$NAME"
 else
   echo "-n, Simulation name specified, using NAME=$NAME"
+fi
+if [ -z "$SIMS" ]
+then
+	SIMS=1
+	echo "-s, No number of simulations specified, using SIMS=$SIMS"
+else
+  echo "-s, Number of simulations specified, using SIMS=$SIMS"
 fi
 if [ -z "$CORES" ]
 then
@@ -211,7 +220,7 @@ echo ''
 # Check if simulation folder exists
 if [ -e $params_script ]
 then
-	${python_command} $params_script $NAME $ID 11
+	${python_command} $params_script $NAME $ID $SIMS
 else
 	echo "Cannot find $params_script, aborting execution"
 	exit 1

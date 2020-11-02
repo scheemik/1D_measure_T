@@ -1,5 +1,5 @@
 """
-Writes parameters for one simulation. Run with $ python3 post_process.py NAME PLOT_CHECKS snapshots/*.h5
+Writes parameters for one simulation. 
 
 Usage:
     write_params.py NAME ID N_SIMS
