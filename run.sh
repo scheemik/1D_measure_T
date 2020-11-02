@@ -106,7 +106,8 @@ frames_path='frames'
 cleanup_snapshots="True"
 
 # Name of the script to write the parameters
-params_file='parameters.py'
+params_script='write_params.py'
+params_file='params.py'
 # Name of the main code file
 code_file='main.py'
 # Name of switchboard file
@@ -124,7 +125,7 @@ plot_file="plot_slices.py"
 # Name of gif creation file
 gif_cre_file="create_gif.py"
 # Group all the code files for ease of calling
-CODE_FILES="$params_file $code_file $switch_file $merge_file $helper_funcs $helper_funcs_CD $post_process $plot_file $gif_cre_file"
+CODE_FILES="$params_script $code_file $switch_file $merge_file $helper_funcs $helper_funcs_CD $post_process $plot_file $gif_cre_file"
 
 ###############################################################################
 echo ''
@@ -184,17 +185,17 @@ echo '--Navigating to experiment directory--'
 cd _experiments/${EXP}
 pwd
 ###############################################################################
-# echo ''
-# echo '--Writing parameters file--'
-# echo ''
-# # Check if simulation folder exists
-# if [ -e $params_script ]
-# then
-# 	bash $params_script -x $P1
-# else
-# 	echo "Cannot find $params_script, aborting execution"
-# 	exit 1
-# fi
+echo ''
+echo '--Writing parameters file--'
+echo ''
+# Check if simulation folder exists
+if [ -e $params_script ]
+then
+	${python_command} $params_script $NAME $ID 11
+else
+	echo "Cannot find $params_script, aborting execution"
+	exit 1
+fi
 echo ''
 echo '--Checking simulation directory--'
 echo ''

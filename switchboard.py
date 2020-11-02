@@ -8,7 +8,7 @@ import numpy as np
 from dedalus import public as de
 # import sys
 # sys.path.append("../") # Adds higher directory to python modules path
-# import helper_functions as hf
+import helper_functions as hf
 
 ###############################################################################
 # Main parameters, the ones I'll change a lot. Many more below

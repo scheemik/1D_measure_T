@@ -370,44 +370,21 @@ def BP_n_layers(n, z, z0_str, zf_str):
                 BP_array[j] = 0
     return BP_array
 
-# Mask to just keep display domain
-def make_DD_mask(z, z0_dis, zf_dis):
-    """
-    z           array of z values
-    z0_dis      bottom of display domain
-    zf_dis      top of display domain
-    """
-    # create blank array the same size as z
-    DD_array = z*0
-    # Set display domain range to have value 1
-    for i in range(len(DD_array)):
-        if z[i] < zf_dis and z[i] > z0_dis:
-            DD_array[i] = 1
-    return DD_array
+# # Mask to just keep display domain
+# def make_DD_mask(z, z0_dis, zf_dis):
+#     """
+#     z           array of z values
+#     z0_dis      bottom of display domain
+#     zf_dis      top of display domain
+#     """
+#     # create blank array the same size as z
+#     DD_array = z*0
+#     # Set display domain range to have value 1
+#     for i in range(len(DD_array)):
+#         if z[i] < zf_dis and z[i] > z0_dis:
+#             DD_array[i] = 1
+#     return DD_array
 
-# To be depricated (using in freqspace plot)
-# def add_dis_bounds(ax, z0_dis=None, zf_dis=None):
-#     """
-#     ax          axis for plot
-#     z0_dis      top of vertical structure extent
-#     zf_dis      bottom of vertical structure extent
-#     """
-#     line_color = my_clrs['black']
-#     if z0_dis != None and zf_dis != None:
-#         ax.axhline(y=z0_dis, color=line_color, linestyle='--')
-#         ax.axhline(y=zf_dis, color=line_color, linestyle='--')
-#
-# # To be depricated (using in freqspace plot)
-# def add_measure_lines(ax, z_I=None, z_T=None):
-#     """
-#     ax          axis for plot
-#     z_I         depth at which to measure Incident wave
-#     z_T         depth at which to measure Transmitted wave
-#     """
-#     line_color = my_clrs['w']
-#     if z_I != None and z_T != None:
-#         ax.axhline(y=z_I, color=my_clrs['incident'], linestyle='--')
-#         ax.axhline(y=z_T, color=my_clrs['transmission'], linestyle='--')
 
 def add_lines_to_ax(ax, z_I=None, z_T=None, z0_dis=None, zf_dis=None, T_cutoff=None):
     """
