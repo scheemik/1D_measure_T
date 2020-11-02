@@ -2,9 +2,9 @@
 # A bash script to run the Dedalus python code
 # Takes in optional arguments:
 #	$ sh run.sh -e <name of experiment> 				Default: test_exp
-#							-n <name of simulation>         Default: current datetime
-#							-c <cores>                      Default: 1
 #             -i <sim ID>          						Default: 0
+#							-n <name of simulation>         Default: ID + current datetime
+#							-c <cores>                      Default: 1
 #							-r <run simulation>             Default: False
 #             -m <merge h5 files>             Default: False
 #							-o <post-process data>          Default: False
@@ -16,14 +16,14 @@
 DATETIME=`date +"%Y-%m-%d_%Hh%M"`
 
 # Having a ":" after a flag means an option is required to invoke that flag
-while getopts e:n:c:i:rmopgv option
+while getopts e:i:n:c:rmopgv option
 do
 	case "${option}"
 		in
 		e) EXP=${OPTARG};;
+		i) ID=${OPTARG};;
 		n) NAME=${OPTARG};;
 		c) CORES=${OPTARG};;
-		i) ID=${OPTARG};;
 		r) RUN=true;;
     m) MER=true;;
     o) PRO=true;;
@@ -41,9 +41,18 @@ then
 else
   echo "-e, Name specified, using EXP=$EXP"
 fi
+if [ -z "$ID" ]
+then
+	ID=0
+	echo "-i, No simulation ID specified, using ID=$ID"
+else
+  echo "-i, Simulation ID specified, using ID=$ID"
+fi
 if [ -z "$NAME" ]
 then
-	NAME=$DATETIME
+	# Pad ID with zeros
+	printf -v NID "%03d" $ID
+	NAME="${NID}_${DATETIME}"
 	echo "-n, No simulation name specified, using NAME=$NAME"
 else
   echo "-n, Simulation name specified, using NAME=$NAME"
@@ -54,13 +63,6 @@ then
 	echo "-c, No number of cores specified, using CORES=$CORES"
 else
   echo "-c, Number of cores specified, using CORES=$CORES"
-fi
-if [ -z "$ID" ]
-then
-	ID=0
-	echo "-i, No simulation ID specified, using ID=$ID"
-else
-  echo "-i, Simulation ID specified, using ID=$ID"
 fi
 if [ "$RUN" = true ]
 then
