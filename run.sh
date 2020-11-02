@@ -113,6 +113,7 @@ code_file='main.py'
 # Name of switchboard file
 switchboard="switchboard"
 switch_file="${switchboard}.py"
+sim_switch="${NAME}/${NAME}_${switch_file}"
 # Name of merging file
 merge_file="merge.py"
 # Helper code files
@@ -186,17 +187,6 @@ cd _experiments/${EXP}
 pwd
 ###############################################################################
 echo ''
-echo '--Writing parameters file--'
-echo ''
-# Check if simulation folder exists
-if [ -e $params_script ]
-then
-	${python_command} $params_script $NAME $ID 11
-else
-	echo "Cannot find $params_script, aborting execution"
-	exit 1
-fi
-echo ''
 echo '--Checking simulation directory--'
 echo ''
 # Check if simulation folder exists
@@ -206,6 +196,23 @@ then
 else
 	echo "Creating simulation for $NAME"
 	mkdir "$NAME"
+	#touch "$NAME/__init__.py"
+fi
+if [ $OVERWRITE_CODE_FILES = true ]
+then
+	echo 'Overwriting simulation switchboard'
+	cp $switch_file $sim_switch
+fi
+echo ''
+echo '--Writing parameters file--'
+echo ''
+# Check if simulation folder exists
+if [ -e $params_script ]
+then
+	${python_command} $params_script $NAME $ID 11
+else
+	echo "Cannot find $params_script, aborting execution"
+	exit 1
 fi
 ###############################################################################
 ###############################################################################
@@ -291,7 +298,7 @@ then
 		exit 1
 	fi
 	echo 'Running post processing script'
-	${python_command} $post_process $NAME $PLT $snapshot_path/*.h5
+	${python_command} $post_process $NAME $switchboard $PLT $snapshot_path/*.h5
 	echo 'Done post processing'
 fi
 

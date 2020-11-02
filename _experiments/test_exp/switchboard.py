@@ -8,14 +8,14 @@ import numpy as np
 from dedalus import public as de
 # import sys
 # sys.path.append("../") # Adds higher directory to python modules path
-import helper_functions as hf
+from . import params
 
 ###############################################################################
 # Main parameters, the ones I'll change a lot. Many more below
 
 # Relevant parameters
 nz      = 1024                  # [] number of grid points in the z direction in display domain
-mL      = 1                     # [] vertical wave number times step length
+mL      = params.mL             # [] vertical wave number times step length
 theta   = None                  # [] angle between wave's propagation and horizontal (or vertical?)
 
 # Time parameters

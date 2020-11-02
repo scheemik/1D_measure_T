@@ -34,7 +34,7 @@ mL_arr = np.linspace(mL_start, mL_stop, n_sims)
 # Write out parameters based on sim ID
 
 filename = run_name + "/params.py"
-params_file = open(filename, "w")
+params_file = open(filename, "w+")
 
 params_file.write("mL = " + str(mL_arr[sim_id]))
 params_file.write("\ntheta = 0.7")

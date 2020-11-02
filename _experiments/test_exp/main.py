@@ -26,6 +26,7 @@ This script should be ran serially (because it is 1D).
 import numpy as np
 import matplotlib.pyplot as plt
 import time
+import importlib
 
 from dedalus import public as de
 from dedalus.extras import flow_tools
@@ -49,8 +50,8 @@ from docopt import docopt
 args = docopt(__doc__)
 run_name    = args['NAME']          # Simulation name, used to route filepaths of plots
 sim_id      = int(args['ID'])       # Simulation ID number
-print('simulation id=',sim_id)
 switchboard = args['SWITCHBOARD']   # Switchboard file
+print('switchboard=',switchboard)
 plot_checks = args['PLOT_CHECKS'].lower() == 'true'
 
 # Add functions in helper file
@@ -58,8 +59,8 @@ import helper_functions as hf
 
 ###############################################################################
 # Import SwitchBoard Parameters (sbp)
-#   This import assumes the switchboard is in the same directory as the core code
-import switchboard as sbp
+switchboard_module = run_name + "." + run_name + "_" + switchboard
+sbp = importlib.import_module(switchboard_module)
 # Physical parameters
 nu          = 0#sbp.nu            # [m^2/s]       Viscosity (momentum diffusivity)
 f_0         = sbp.f_0           # [s^-1]        Reference Coriolis parameter
@@ -71,6 +72,7 @@ lam_z       = sbp.lam_z         # [m]           Vertical wavelength
 k           = sbp.k             # [m^-1]        Horizontal wavenumber
 m           = sbp.m             # [m^-1]        Vertical wavenumber
 mL          = sbp.mL
+print('mL=',mL)
 k_total     = sbp.k_total       # [m^-1]        Total wavenumber
 theta       = sbp.theta         # [rad]         Propagation angle from vertical
 omega       = sbp.omega         # [rad s^-1]    Wave frequency
