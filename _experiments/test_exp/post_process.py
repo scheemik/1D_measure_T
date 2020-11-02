@@ -1,5 +1,5 @@
 """
-Performs post-processing actions. Run with $ python3 post_process.py snapshots/*.h5
+Performs post-processing actions. Run with $ python3 post_process.py NAME PLOT_CHECKS snapshots/*.h5
 
 Usage:
     post_process.py NAME PLOT_CHECKS <files>... [--output=<dir>]

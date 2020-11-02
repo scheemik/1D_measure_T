@@ -1,4 +1,13 @@
 """
+Usage:
+    main.py NAME ID SWITCHBOARD PLOT_CHECKS
+
+Options:
+    NAME            # name of the experiment run from -n
+    ID              # Simulation ID number
+    SWITCHBOARD     # name of the switchboard file
+    PLOT_CHECKS     # True or False whether to make the plots or not
+
 Author: Mikhail Schee
 Email: mschee@physics.utoronto.ca
 Affiliation: University of Toronto Department of Physics
@@ -30,10 +39,19 @@ logger = logging.getLogger(__name__)
 # Checking command line arguments
 import sys
 # Arguments must be passed in the correct order
-arg_array = sys.argv
-# argv[0] is the name of this file
-run_name = str(arg_array[1])
-switchboard = str(arg_array[2])
+# arg_array = sys.argv
+# # argv[0] is the name of this file
+# run_name = str(arg_array[1])
+# switchboard = str(arg_array[2])
+
+# Parse input parameters
+from docopt import docopt
+args = docopt(__doc__)
+run_name    = args['NAME']          # Simulation name, used to route filepaths of plots
+sim_id      = int(args['ID'])       # Simulation ID number
+print('simulation id=',sim_id)
+switchboard = args['SWITCHBOARD']   # Switchboard file
+plot_checks = args['PLOT_CHECKS'].lower() == 'true'
 
 # Add functions in helper file
 import helper_functions as hf
@@ -121,7 +139,7 @@ problem.substitutions['S_term_psi'] = "win_sp * nabla2dt_psi / tau_sp"
 
 ###############################################################################
 # Plotting windows
-if sbp.plot_windows:
+if plot_checks and sbp.plot_windows:
     hf.plot_v_profiles(z, BP_array, sbp.win_bf_array, sbp.win_sp_array, mL, theta, omega, sbp.z_I, sbp.z_T, sbp.z0_dis, sbp.zf_dis, plot_full_domain=True, title_str=run_name)
 # raise SystemExit(0)
 

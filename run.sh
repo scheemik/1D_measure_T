@@ -4,32 +4,32 @@
 #	$ sh run.sh -e <name of experiment> 				Default: test_exp
 #							-n <name of simulation>         Default: current datetime
 #							-c <cores>                      Default: 1
+#             -i <sim ID>          						Default: 0
 #							-r <run simulation>             Default: False
 #             -m <merge h5 files>             Default: False
 #							-o <post-process data>          Default: False
 #							-p <plot simulation>            Default: False
 #             -g <create gif>                 Default: False
 #             -v <create video, mp4>          Default: False
-#             -x <sim ID>          						Default: 0
 
 # Current datetime
 DATETIME=`date +"%Y-%m-%d_%Hh%M"`
 
 # Having a ":" after a flag means an option is required to invoke that flag
-while getopts e:n:c:rmopgvx: option
+while getopts e:n:c:i:rmopgv option
 do
 	case "${option}"
 		in
 		e) EXP=${OPTARG};;
 		n) NAME=${OPTARG};;
 		c) CORES=${OPTARG};;
+		i) ID=${OPTARG};;
 		r) RUN=true;;
     m) MER=true;;
     o) PRO=true;;
     p) PLT=true;;
     g) GIF=true;;
     v) VID=true;;
-		x) P1=${OPTARG};;
 	esac
 done
 
@@ -55,6 +55,13 @@ then
 else
   echo "-c, Number of cores specified, using CORES=$CORES"
 fi
+if [ -z "$ID" ]
+then
+	ID=0
+	echo "-i, No simulation ID specified, using ID=$ID"
+else
+  echo "-i, Simulation ID specified, using ID=$ID"
+fi
 if [ "$RUN" = true ]
 then
 	echo "-r, Run the simulation"
@@ -70,6 +77,8 @@ fi
 if [ "$PLT" = true ]
 then
 	echo "-p, Plot the simulation"
+else
+	PLT=false
 fi
 if [ "$GIF" = true ]
 then
@@ -78,13 +87,6 @@ fi
 if [ "$VID" = true ]
 then
 	echo "-v, Create video (mp4) of the simulation"
-fi
-if [ -z "$P1" ]
-then
-	P1=0
-	echo "-x, Parameter 1 not set, using $P1"
-else
-  echo "-x, Parameter 1 set, using $P1"
 fi
 
 ###############################################################################
@@ -104,7 +106,7 @@ frames_path='frames'
 cleanup_snapshots="True"
 
 # Name of the script to write the parameters
-params_script='write_params.sh'
+params_file='parameters.py'
 # Name of the main code file
 code_file='main.py'
 # Name of switchboard file
@@ -122,7 +124,7 @@ plot_file="plot_slices.py"
 # Name of gif creation file
 gif_cre_file="create_gif.py"
 # Group all the code files for ease of calling
-CODE_FILES="$params_script $code_file $switch_file $merge_file $helper_funcs $helper_funcs_CD $post_process $plot_file $gif_cre_file"
+CODE_FILES="$params_file $code_file $switch_file $merge_file $helper_funcs $helper_funcs_CD $post_process $plot_file $gif_cre_file"
 
 ###############################################################################
 echo ''
@@ -182,17 +184,17 @@ echo '--Navigating to experiment directory--'
 cd _experiments/${EXP}
 pwd
 ###############################################################################
-echo ''
-echo '--Writing parameters file--'
-echo ''
-# Check if simulation folder exists
-if [ -e $params_script ]
-then
-	bash $params_script -x $P1
-else
-	echo "Cannot find $params_script, aborting execution"
-	exit 1
-fi
+# echo ''
+# echo '--Writing parameters file--'
+# echo ''
+# # Check if simulation folder exists
+# if [ -e $params_script ]
+# then
+# 	bash $params_script -x $P1
+# else
+# 	echo "Cannot find $params_script, aborting execution"
+# 	exit 1
+# fi
 echo ''
 echo '--Checking simulation directory--'
 echo ''
@@ -220,10 +222,10 @@ then
   echo "Running Dedalus script for local pc"
 	if [ $CORES -eq 1 ]
 	then
-		${python_command} $code_file $NAME $switchboard
+		${python_command} $code_file $NAME $ID $switchboard $PLT
 	else
 	  # mpiexec uses -n flag for number of processes to use
-	  ${mpiexec_command} -n $CORES ${python_command} $code_file $NAME $switchboard
+	  ${mpiexec_command} -n $CORES ${python_command} $code_file $NAME $ID $switchboard $PLT
 	fi
     echo ""
 	echo 'Done running script'
@@ -274,7 +276,7 @@ fi
 
 ###############################################################################
 # post-process data, make plots if requested
-if [ "$PRO" = true ] #| [ "$PLT" = true ]
+if [ "$PRO" = true ]
 then
 	echo ''
 	echo '--Post processing--'
@@ -287,17 +289,8 @@ then
 		echo "Cannot find snapshots. Aborting script"
 		exit 1
 	fi
-	# Check whether to make plots
-	if [ "$PLT" = true ]
-	then
-		plot_checks="true"
-		echo 'Plotting checks'
-	else
-		plot_checks="false"
-		echo 'Not plotting extra checks'
-	fi
 	echo 'Running post processing script'
-	${python_command} $post_process $NAME $plot_checks $snapshot_path/*.h5
+	${python_command} $post_process $NAME $PLT $snapshot_path/*.h5
 	echo 'Done post processing'
 fi
 
