@@ -1,33 +1,27 @@
 #!/bin/bash
-# A bash script to run the Dedalus python code
+# A bash script to run many simulations in an experiment
 # Takes in optional arguments:
-#	$ sh run.sh -e <name of experiment> 				Default: test_exp
-#             -i <sim ID>          						Default: 0
-#							-n <name of simulation>         Default: ID + current datetime
-#							-s <number of simulations>      Default: 1
-#							-c <number of cores>            Default: 1
-#							-a <ask before deleting>				Default: False
-#							-r <run simulation>             Default: False
-#             -m <merge h5 files>             Default: False
-#							-o <post-process data>          Default: False
-#							-p <plot simulation>            Default: False
-#             -g <create gif>                 Default: False
-#             -v <create video, mp4>          Default: False
+#	$ sh exp_run.sh -e <name of experiment> 				Default: current datetime
+#								  -s <number of simulations>      Default: 1
+#								  -c <number of cores>            Default: 1
+#								  -r <run simulation>             Default: False
+#             	  -m <merge h5 files>             Default: False
+#								  -o <post-process data>          Default: False
+#								  -p <plot simulation>            Default: False
+#             	  -g <create gif>                 Default: False
+#             	  -v <create video, mp4>          Default: False
 
 # Current datetime
 DATETIME=`date +"%Y-%m-%d_%Hh%M"`
 
 # Having a ":" after a flag means an option is required to invoke that flag
-while getopts e:i:n:s:c:armopgv option
+while getopts e:s:c:rmopgv option
 do
 	case "${option}"
 		in
 		e) EXP=${OPTARG};;
-		i) ID=${OPTARG};;
-		n) NAME=${OPTARG};;
 		s) SIMS=${OPTARG};;
 		c) CORES=${OPTARG};;
-		a) ASK=true;;
 		r) RUN=true;;
     m) MER=true;;
     o) PRO=true;;
@@ -45,22 +39,6 @@ then
 else
   echo "-e, Name specified, using EXP=$EXP"
 fi
-if [ -z "$ID" ]
-then
-	ID=0
-	echo "-i, No simulation ID specified, using ID=$ID"
-else
-  echo "-i, Simulation ID specified, using ID=$ID"
-fi
-if [ -z "$NAME" ]
-then
-	# Pad ID with zeros
-	printf -v NID "%03d" $ID
-	NAME="${NID}_${DATETIME}"
-	echo "-n, No simulation name specified, using NAME=$NAME"
-else
-  echo "-n, Simulation name specified, using NAME=$NAME"
-fi
 if [ -z "$SIMS" ]
 then
 	SIMS=1
@@ -74,13 +52,6 @@ then
 	echo "-c, No number of cores specified, using CORES=$CORES"
 else
   echo "-c, Number of cores specified, using CORES=$CORES"
-fi
-if [ "$ASK" = true ]
-then
-	echo "-a, Will ask before overwriting files"
-else
-	ASK=false
-	echo "-a, Will not ask before overwriting files"
 fi
 if [ "$RUN" = true ]
 then
