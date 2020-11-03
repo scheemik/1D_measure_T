@@ -56,7 +56,7 @@ if [ -z "$NAME" ]
 then
 	# Pad ID with zeros
 	printf -v NID "%03d" $ID
-	NAME="${NID}_${DATETIME}"
+	NAME="${NID}_${EXP}"
 	echo "-n, No simulation name specified, using NAME=$NAME"
 else
   echo "-n, Simulation name specified, using NAME=$NAME"
@@ -141,12 +141,14 @@ helper_funcs="helper_functions.py"
 helper_funcs_CD="helper_functions_CD.py"
 # Name of post processing file
 post_process="post_process.py"
+# Name of experiment plotting file
+plot_exp="plot_exp_data.py"
 # Name of slice plotting file
 plot_file="plot_slices.py"
 # Name of gif creation file
 gif_cre_file="create_gif.py"
 # Group all the code files for ease of calling
-CODE_FILES="$params_script $code_file $switch_file $merge_file $helper_funcs $helper_funcs_CD $post_process $plot_file $gif_cre_file"
+CODE_FILES="$params_script $code_file $switch_file $merge_file $helper_funcs $helper_funcs_CD $post_process $plot_exp $plot_file $gif_cre_file"
 
 ###############################################################################
 echo ''
@@ -165,37 +167,47 @@ OVERWRITE_CODE_FILES=true
 if [ -e _experiments/$EXP ]
 then
 	echo "Experiment for $EXP exists"
-	# Begin loop waiting for user to confirm
-	while true
-	do
-		read -r -p "Overwrite old code files in $EXP [y/n]? Or cancel? [Ctrl+c] " input
-		case $input in
-			[yY][eE][sS]|[yY])
-		echo "Yes"
+	if [ "$ASK" = false ]
+	then
+		echo "Overwriting code files"
 		# Go in to directory, remove code files, come back out to main directory
 		cd _experiments/$EXP
 		rm -rf $CODE_FILES
 		cd ..
 		cd ..
-		break
-		;;
-			[nN][oO]|[nN])
-		echo "No"
-		OVERWRITE_CODE_FILES=false
-		break
-				;;
-			*)
-		echo "Invalid input"
-		;;
-		esac
-	done
+	else
+		# Begin loop waiting for user to confirm
+		while true
+		do
+			read -r -p "Overwrite old code files in $EXP [y/n]? Or cancel? [Ctrl+c] " input
+			case $input in
+				[yY][eE][sS]|[yY])
+			echo "Yes"
+			# Go in to directory, remove code files, come back out to main directory
+			cd _experiments/$EXP
+			rm -rf $CODE_FILES
+			cd ..
+			cd ..
+			break
+			;;
+				[nN][oO]|[nN])
+			echo "No"
+			OVERWRITE_CODE_FILES=false
+			break
+					;;
+				*)
+			echo "Invalid input"
+			;;
+			esac
+		done
+	fi
 else
 	echo "Creating experiment for $EXP"
 	mkdir "_experiments/$EXP"
 	echo 'Copying code files to experiment directory'
 	cp $CODE_FILES _experiments/${EXP}
 fi
-if [ $OVERWRITE_CODE_FILES = true ]
+if [ $OVERWRITE_CODE_FILES = true ] || [ "$ASK" = false ]
 then
 	echo 'Copying code files to experiment directory'
 	cp $CODE_FILES _experiments/${EXP}
@@ -369,5 +381,5 @@ then
 fi
 
 echo ''
-echo 'Done running experiment'
+echo 'Done running simulation'
 echo ''
