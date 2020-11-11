@@ -10,22 +10,6 @@ Options:
     PLOT_CHECKS     # True or False whether to make the plots or not
     <files>         # h5 snapshot files
 
-Overview of post-processing operations:
-* Import simulation data
-    * Plot full wavefield
-* Trim data in space (restrict depths)
-* Trim data in time (remove transients at beginning)
-    * Plot trimmed wavefield
-* Perform complex demodulation
-    * Plot data in spectral form
-* Isolate both directions of the wave
-    * Plot down and upward waves (real parts)
-* Find amplitude by multiplying by complex conjugate
-    * Plot amplitude vs depth
-* Calculate incident and transmitted wave amplitudes
-* Calculate transmission coefficient
-    * Compare to analytical value
-
 """
 ###############################################################################
 ###############################################################################
@@ -167,10 +151,11 @@ foo, BP_tr   = hf.trim_data_z(z, BP_array, z0_dis, zf_dis)
 
 filename_prefix = run_name + '/' + run_name
 
-# Plotting windows
+# Plot windows
 if sbp.plot_windows:
     hf.plot_v_profiles(z, BP_array, sbp.win_bf_array, sbp.win_sp_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=True, title_str=run_name, filename=filename_prefix+'_windows.png')
 
+# Plot wavefield
 if sbp.plot_spacetime:
     hf.plot_z_vs_t(z, t, T, psi.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=True, T_cutoff=T_cutoff, title_str=run_name, filename=filename_prefix+'_wave.png')
 
