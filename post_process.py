@@ -187,8 +187,8 @@ if sbp.plot_up_dn:
 up_field, dn_field = hfCD.Complex_Demodulate(t_then_z, t, z, kz, psi, dt, omega)
 # Full domain
 if sbp.plot_up_dn:
-    hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_x=True, plot_full_y=True, T_cutoff=T_cutoff, title_str=run_name+' up', filename=filename_prefix+'_up.png')
-    hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=True, plot_full_y=True, T_cutoff=T_cutoff, title_str=run_name+' dn', filename=filename_prefix+'_dn.png')
+    hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, title_str=run_name+' up', filename=filename_prefix+'_up.png')
+    hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, title_str=run_name+' dn', filename=filename_prefix+'_dn.png')
 
 ###############################################################################
 # Multiply the downward wavefield by it's complex-conjugate to get AA^*

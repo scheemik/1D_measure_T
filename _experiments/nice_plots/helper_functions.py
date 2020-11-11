@@ -399,9 +399,9 @@ def add_lines_to_ax(ax, z_I=None, z_T=None, z0_dis=None, zf_dis=None, T_cutoff=N
     """
     # Horizontal lines for incident and transmission depths
     if z_I != None: # separated to allow for plotting of I_ and T_ separately
-        ax.axhline(y=z_I, color=my_clrs['incident'], linestyle='--')
+        ax.axhline(y=z_I, color=my_clrs['incident'], linestyle='--', label=r'$z_I$')
     if z_T != None:
-        ax.axhline(y=z_T, color=my_clrs['transmission'], linestyle='--')
+        ax.axhline(y=z_T, color=my_clrs['transmission'], linestyle='--', label=r'$z_T$')
     # Horizontal lines for display depths
     if z0_dis != None and zf_dis != None:
         line_color = my_clrs['black']
@@ -428,7 +428,7 @@ def set_plot_bounds(ax, plot_full_x, plot_full_y, z_array=None, z0_dis=None, zf_
     """
     if plot_full_x:
         if isinstance(t_array, np.ndarray) and T != None:
-            ax.set_xlim([t_array[0]/T,t_array[-1]/T])
+            ax.set_xlim([t_array[0]/T,t_array[-1]/T-8])
     else:
         if isinstance(t_array, np.ndarray) and T != None and T_cutoff != None:
             ax.set_xlim([T_cutoff,t_array[-1]/T])
@@ -536,6 +536,8 @@ def plot_z_vs_t(z_array, t_array, T, data, BP_array, mL, theta, omega, z_I=None,
     add_lines_to_ax(axes[0], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis)
     # Add straight lines to wavefield plot
     add_lines_to_ax(axes[1], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, T_cutoff=T_cutoff)
+    # Add legend for horizontal lines
+    axes[1].legend(loc='lower left')
     # Set plot bounds to include full domain or not
     set_plot_bounds(axes[0], plot_full_x, plot_full_y, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis)
     set_plot_bounds(axes[1], plot_full_x, plot_full_y, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis, t_array=t_array, T=T, T_cutoff=T_cutoff)

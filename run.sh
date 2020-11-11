@@ -230,7 +230,7 @@ else
 	mkdir "$NAME"
 	#touch "$NAME/__init__.py"
 fi
-if [ $OVERWRITE_CODE_FILES = true ]
+if [ $OVERWRITE_CODE_FILES = true ] || [ ! -e $sim_switch ]
 then
 	echo 'Overwriting simulation switchboard'
 	cp $switch_file $sim_switch

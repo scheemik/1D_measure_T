@@ -15,7 +15,7 @@ from . import params
 
 # Relevant parameters
 nz      = 1024                  # [] number of grid points in the z direction in display domain
-mL      = params.mL             # [] vertical wave number times step length
+mL      = 1.5#params.mL             # [] vertical wave number times step length
 theta   = None                  # [] angle between wave's propagation and horizontal (or vertical?)
 
 # Time parameters
@@ -89,11 +89,11 @@ boundary_forcing_region = True  # If False, waves will be forced over entire dom
 
 # Plotting parameters
 plot_spacetime = True
-plot_wavespace = True
-plot_spectra   = True
-plot_amplitude = True
-plot_windows   = True
-plot_up_dn     = True
+plot_wavespace = False
+plot_spectra   = False
+plot_amplitude = False
+plot_windows   = False
+plot_up_dn     = False
 # If true, plot will include full simulated domain, if false, just the display domain
 plot_full_x = True
 plot_full_y = False
