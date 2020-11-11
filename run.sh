@@ -315,7 +315,7 @@ then
 fi
 
 ###############################################################################
-# post-process data, make plots if requested
+# post-process data, make plots if requested through PLT
 if [ "$PRO" = true ]
 then
 	echo ''
@@ -333,22 +333,6 @@ then
 	${python_command} $post_process $NAME $switchboard $PLT $snapshot_path/*.h5
 	echo 'Done post processing'
 fi
-
-###############################################################################
-# plot simulation
-# if [ "$PLT" = true ]
-# then
-# 	echo ''
-# 	echo '--Plotting frames--'
-# 	if [ -e frames ]
-# 	then
-# 		echo "Removing old frames"
-# 		rm -rf frames
-# 	fi
-# 	echo "Plotting 2d slices"
-# 	${mpiexec_command} -n $CORES ${python_command} $plot_file $NAME $switchboard $snapshot_path/*.h5
-# 	echo 'Done plotting frames'
-# fi
 
 ###############################################################################
 # create gif
