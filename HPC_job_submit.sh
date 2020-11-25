@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Run this script to submit a job to Niagara
+# Run this script to submit a job to Graham
 # Takes in optional arguments:
 #	$ sh HPC_job_submit.sh -e <name of experiment> 				Default: current datetime
 #								  			-s <number of simulations>      Default: 1
