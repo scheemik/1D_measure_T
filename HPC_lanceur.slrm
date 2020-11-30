@@ -57,9 +57,9 @@ fi
 if [ -z "$CORES" ]
 then
 	CORES=32
-#	echo "-c, No number of cores specified, using CORES=$CORES"
-#else
-#  echo "-c, Number of cores specified, using CORES=$CORES"
+	echo "-c, No number of cores specified, using CORES=$CORES"
+else
+ echo "-c, Number of cores specified, using CORES=$CORES"
 fi
 if [ "$RUN" = r ]
 then
