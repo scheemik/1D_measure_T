@@ -2,16 +2,16 @@
 #SBATCH --account=def-ngrisoua
 #SBATCH --mail-user=mschee@physics.utoronto.ca
 #SBATCH --mail-type=ALL
-#SBATCH --output=_job_outputs/%x_%j.out						# %x = job_name, %j = job_number
+#SBATCH --output=_experiments/%x/%x_%j.out						# %x = job_name, %j = job_number
 #SBATCH --ntasks-per-node=32
 #SBATCH --nodes=1
-#SBATCH --time=0-00:20  # d-HH:MM
+#SBATCH --time=0-00:10  # d-HH:MM
 
 # Submit this script to a HPC with `sbatch`
 # Takes in optional arguments:
 #	$ sh HPC_lanceur.slrm -e <name of experiment> 				Default: current datetime
-#								  			-s <number of simulations>      Default: 1
-#								  			-c <number of cores>            Default: 1
+#								  			-s <number of simulations>      Default: 5
+#								  			-c <number of cores>            Default: 32
 #								  			-r <run simulation>             Default: False
 #             	  			-m <merge h5 files>             Default: False
 #								  			-o <post-process data>          Default: False

@@ -3,8 +3,8 @@
 # Run this script to submit a job to Graham
 # Takes in optional arguments:
 #	$ sh HPC_job_submit.sh -e <name of experiment> 				Default: current datetime
-#								  			-s <number of simulations>      Default: 1
-#								  			-c <number of cores>            Default: 1
+#								  			-s <number of simulations>      Default: 5
+#								  			-c <number of cores>            Default: 32
 #								  			-r <run simulation>             Default: False
 #             	  			-m <merge h5 files>             Default: False
 #								  			-o <post-process data>          Default: False

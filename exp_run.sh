@@ -97,7 +97,6 @@ fi
 ###############################################################################
 echo ''
 echo '--Checking experiment directory--'
-echo ''
 # Check if experiments folder exists
 if [ -e _experiments ]
 then
@@ -106,13 +105,14 @@ else
 	echo 'Experiment folder not found. Aborting script'
 	exit 1
 fi
+echo ''
 
 ###############################################################################
 ###############################################################################
 # run simulations
 for (( id=0; id<$SIMS; id++ ))
 do
-	echo "Running simulation $id"
+	echo "--Running simulation $id--"
 	if [ "$ARGS" = true ]
 	then
 		bash run.sh -e $EXP -i $id -s $SIMS -c $CORES -$ASK$RUN$MER$PRO$PLT$GIF$VID
@@ -132,8 +132,8 @@ plot_data_file="plot_exp_data.py"
 # Name of switchboard file
 switchboard="switchboard"
 ###############################################################################
-# post-process data, make plots if requested
-if [ true = true ]
+# Plot experiments' transmission coefficients if simulations were run
+if [ "$RUN" = r ]
 then
 	cd _experiments/${EXP}
 	echo ''
@@ -147,7 +147,7 @@ then
 		echo "Cannot find data. Aborting script"
 		exit 1
 	fi
-	echo 'Plotting data'
+	echo 'Plotting experiment data'
 	${python_command} $plot_data_file $EXP $switchboard
 	echo 'Done plotting'
 fi
