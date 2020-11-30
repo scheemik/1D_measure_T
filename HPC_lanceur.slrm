@@ -97,7 +97,7 @@ fi
 # module loading sets values of environment variables
 #   so have these commands before the `export` lines
 # module purge		# problem purging modules, might need to use module --force purge
-module load python/3.7 scipy-stack fftw-mpi mpi4py
+module load python/3.7.0 scipy-stack fftw-mpi mpi4py
 
 export FFTW_PATH=$EBROOTFFTW
 export MPI_PATH=$EBROOTOPENMPI
@@ -107,6 +107,8 @@ export OMPI_MCA_mpi_warn_on_fork=0
 
 # Activate the Dedalus virtual environment
 source ${HOME}/Dedalus_Projects/venv/bin/activate
+
+echo python3 --version
 
 ###############################################################################
 # Start the experiment script
