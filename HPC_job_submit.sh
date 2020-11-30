@@ -92,6 +92,9 @@ LANCEUR="HPC_lanceur.slrm"
 # Pull the most recent changes from git
 git pull
 
+# Make directory for experiment
+mkdir _experiments/${JOBNAME}
+
 # Submit job to queue
 if [ "$ARGS" = true ]
 then
