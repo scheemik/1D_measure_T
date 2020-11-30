@@ -2,15 +2,15 @@
 
 # Run this script to submit a job to Graham
 # Takes in optional arguments:
-#	$ sh HPC_job_submit.sh -e <name of experiment> 				Default: current datetime
-#								  			-s <number of simulations>      Default: 5
-#								  			-c <number of cores>            Default: 32
-#								  			-r <run simulation>             Default: False
-#             	  			-m <merge h5 files>             Default: False
-#								  			-o <post-process data>          Default: False
-#								  			-p <plot simulation>            Default: False
-#             	  			-g <create gif>                 Default: False
-#             	  			-v <create video, mp4>          Default: False
+#	$ sh HPC_job_submit.sh -e <name of experiment> 				 Default: current datetime
+#								  			 -s <number of simulations>      Default: 5
+#								  			 -c <number of cores>            Default: 32
+#								  			 -r <run simulation>             Default: False
+#             	  			 -m <merge h5 files>             Default: False
+#								  			 -o <post-process data>          Default: False
+#								  			 -p <plot simulation>            Default: False
+#             	  			 -g <create gif>                 Default: False
+#             	  			 -v <create video, mp4>          Default: False
 
 # Current datetime
 DATETIME=`date +"%Y-%m-%d_%Hh%M"`
@@ -33,7 +33,7 @@ do
 done
 
 # check to see if arguments were passed
-if [ -z "$NAME" ]
+if [ -z "$EXP" ]
 then
 	EXP=$DATETIME
 	echo "-e, No name specified, using EXP=$EXP"
