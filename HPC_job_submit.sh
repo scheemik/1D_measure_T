@@ -93,9 +93,8 @@ LANCEUR="HPC_lanceur.slrm"
 git pull
 
 # Check if directory for experiment exists
-if [ -d $NAME ]
-	echo ""
-else
+if [ ! -d _experiments/${JOBNAME} ]
+then
 	mkdir _experiments/${JOBNAME}
 fi
 
