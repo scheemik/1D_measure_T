@@ -112,7 +112,7 @@ source ${HOME}/Dedalus_Projects/venv/bin/activate
 # Start the experiment script
 if [ "$ARGS" = true ]
 then
-	echo "bash ./exp_run.sh -e $EXP -s $SIMS -c $CORES -$RUN$MER$PRO$PLT$GIF$VID"
+	bash ./exp_run.sh -e $EXP -s $SIMS -c $CORES -$RUN$MER$PRO$PLT$GIF$VID
 else
-	echo "bash ./exp_run.sh -e $EXP -s $SIMS -c $CORES"
+	bash ./exp_run.sh -e $EXP -s $SIMS -c $CORES
 fi

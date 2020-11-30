@@ -89,10 +89,13 @@ fi
 JOBNAME=$EXP
 LANCEUR="HPC_lanceur.slrm"
 ###############################################################################
+# Pull the most recent changes from git
+git pull
+
 # Submit job to queue
 if [ "$ARGS" = true ]
 then
-	echo "sbatch --job-name=$JOBNAME $LANCEUR -e $EXP -s $SIMS -c $CORES -$RUN$MER$PRO$PLT$GIF$VID"
+	sbatch --job-name=$JOBNAME $LANCEUR -e $EXP -s $SIMS -c $CORES -$RUN$MER$PRO$PLT$GIF$VID
 else
-	echo "sbatch --job-name=$JOBNAME $LANCEUR -e $EXP -s $SIMS -c $CORES"
+	sbatch --job-name=$JOBNAME $LANCEUR -e $EXP -s $SIMS -c $CORES
 fi
