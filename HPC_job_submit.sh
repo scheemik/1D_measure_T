@@ -92,8 +92,12 @@ LANCEUR="HPC_lanceur.slrm"
 # Pull the most recent changes from git
 git pull
 
-# Make directory for experiment
-mkdir _experiments/${JOBNAME}
+# Check if directory for experiment exists
+if [ -d $NAME ]
+	echo ""
+else
+	mkdir _experiments/${JOBNAME}
+fi
 
 # Submit job to queue
 if [ "$ARGS" = true ]

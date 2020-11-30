@@ -40,7 +40,7 @@ do
 done
 
 # check to see if arguments were passed
-if [ -z "$NAME" ]
+if [ -z "$EXP" ]
 then
 	EXP=$DATETIME
 #	echo "-e, No name specified, using EXP=$EXP"
