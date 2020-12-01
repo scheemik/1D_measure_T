@@ -95,7 +95,8 @@ plot_amplitude = True
 plot_windows   = True
 plot_up_dn     = True
 # If true, plot will include full simulated domain, if false, just the display domain
-plot_full_domain = False
+plot_full_x = True
+plot_full_y = False
 
 # # Measurements
 # take_ef_comp  = False # Energy flux terms recorded separately

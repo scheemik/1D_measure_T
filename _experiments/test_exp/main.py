@@ -60,6 +60,7 @@ import helper_functions as hf
 ###############################################################################
 # Import SwitchBoard Parameters (sbp)
 switchboard_module = run_name + "." + run_name + "_" + switchboard
+importlib.invalidate_caches() # force python to search the directories again
 sbp = importlib.import_module(switchboard_module)
 # Physical parameters
 nu          = 0#sbp.nu            # [m^2/s]       Viscosity (momentum diffusivity)
@@ -142,7 +143,7 @@ problem.substitutions['S_term_psi'] = "win_sp * nabla2dt_psi / tau_sp"
 ###############################################################################
 # Plotting windows
 if plot_checks and sbp.plot_windows:
-    hf.plot_v_profiles(z, BP_array, sbp.win_bf_array, sbp.win_sp_array, mL, theta, omega, sbp.z_I, sbp.z_T, sbp.z0_dis, sbp.zf_dis, plot_full_domain=True, title_str=run_name)
+    hf.plot_v_profiles(z, BP_array, sbp.win_bf_array, sbp.win_sp_array, mL, theta, omega, sbp.z_I, sbp.z_T, sbp.z0_dis, sbp.zf_dis, plot_full_x=True, plot_full_y=True, title_str=run_name)
 # raise SystemExit(0)
 
 ###############################################################################

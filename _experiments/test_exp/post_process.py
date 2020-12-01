@@ -10,22 +10,6 @@ Options:
     PLOT_CHECKS     # True or False whether to make the plots or not
     <files>         # h5 snapshot files
 
-Overview of post-processing operations:
-* Import simulation data
-    * Plot full wavefield
-* Trim data in space (restrict depths)
-* Trim data in time (remove transients at beginning)
-    * Plot trimmed wavefield
-* Perform complex demodulation
-    * Plot data in spectral form
-* Isolate both directions of the wave
-    * Plot down and upward waves (real parts)
-* Find amplitude by multiplying by complex conjugate
-    * Plot amplitude vs depth
-* Calculate incident and transmitted wave amplitudes
-* Calculate transmission coefficient
-    * Compare to analytical value
-
 """
 ###############################################################################
 ###############################################################################
@@ -83,7 +67,8 @@ z_T         = sbp.z_T           # [m]           depth at which to measure Transm
 dt          = sbp.dt
 dz          = sbp.dz
 
-plt_fd      = sbp.plot_full_domain
+plt_f_x     = sbp.plot_full_x
+plt_f_y     = sbp.plot_full_y
 T_cutoff    = sbp.T_cutoff
 n_layers    = sbp.n_layers
 layer_th    = sbp.layer_th
@@ -167,16 +152,17 @@ foo, BP_tr   = hf.trim_data_z(z, BP_array, z0_dis, zf_dis)
 
 filename_prefix = run_name + '/' + run_name
 
-# Plotting windows
+# Plot windows
 if sbp.plot_windows:
-    hf.plot_v_profiles(z, BP_array, sbp.win_bf_array, sbp.win_sp_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=True, title_str=run_name, filename=filename_prefix+'_windows.png')
+    hf.plot_v_profiles(z, BP_array, sbp.win_bf_array, sbp.win_sp_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=True, plot_full_y=True, title_str=run_name, filename=filename_prefix+'_windows.png')
 
+# Plot wavefield
 if sbp.plot_spacetime:
-    hf.plot_z_vs_t(z, t, T, psi.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=True, T_cutoff=T_cutoff, title_str=run_name, filename=filename_prefix+'_wave.png')
+    hf.plot_z_vs_t(z, t, T, psi.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, title_str=run_name, filename=filename_prefix+'_wave.png')
 
 # Plot trimmed wavefield
 if sbp.plot_spacetime:
-    hf.plot_z_vs_t(z_tr, t_tr, T, psi_tr.real, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=False, T_cutoff=T_cutoff, title_str=run_name, filename=filename_prefix+'_wave_tr.png')
+    hf.plot_z_vs_t(z_tr, t_tr, T, psi_tr.real, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=True, plot_full_y=False, T_cutoff=T_cutoff, title_str=run_name, filename=filename_prefix+'_wave_tr.png')
 
 ###############################################################################
 # Plot spectral form of data
@@ -188,33 +174,33 @@ if sbp.plot_spectra:
     # plot spectra lines
     k_data = np.fft.fft(psi_tr, axis=0)
     f_data = np.fft.fft(psi_tr, axis=1)
-    hf.plot_k_f_spectra(z_tr, dz, t_tr, dt, T, ks, freqs, k_data, f_data, mL, theta, omega, z_I, z_T, plot_full_domain=True, T_cutoff=T_cutoff+1, title_str=run_name, filename=filename_prefix+'_k_and_f.png')
+    hf.plot_k_f_spectra(z_tr, dz, t_tr, dt, T, ks, freqs, k_data, f_data, mL, theta, omega, z_I, z_T, plot_full_x=True, plot_full_y=True, T_cutoff=T_cutoff+1, title_str=run_name, filename=filename_prefix+'_k_and_f.png')
 
 ###############################################################################
 # Plotting up and downward propagating waves
 
 # Trimmed case
 if sbp.plot_up_dn:
-    hf.plot_z_vs_t(z_tr, t_tr, T, tr_up_field.real, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' up', filename=filename_prefix+'_up_tr.png')
-    hf.plot_z_vs_t(z_tr, t_tr, T, tr_dn_field.real, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' dn', filename=filename_prefix+'_dn_tr.png')
+    hf.plot_z_vs_t(z_tr, t_tr, T, tr_up_field.real, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=None, title_str=run_name+' up', filename=filename_prefix+'_up_tr.png')
+    hf.plot_z_vs_t(z_tr, t_tr, T, tr_dn_field.real, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=None, title_str=run_name+' dn', filename=filename_prefix+'_dn_tr.png')
 
 up_field, dn_field = hfCD.Complex_Demodulate(t_then_z, t, z, kz, psi, dt, omega)
 # Full domain
 if sbp.plot_up_dn:
-    hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_domain=True, T_cutoff=T_cutoff, title_str=run_name+' up', filename=filename_prefix+'_up.png')
-    hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=True, T_cutoff=T_cutoff, title_str=run_name+' dn', filename=filename_prefix+'_dn.png')
+    hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, title_str=run_name+' up', filename=filename_prefix+'_up.png')
+    hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, title_str=run_name+' dn', filename=filename_prefix+'_dn.png')
 
 ###############################################################################
 # Multiply the downward wavefield by it's complex-conjugate to get AA^*
 #   Plot this amplitude across time at two specific depths:
 if sbp.plot_amplitude:
-    hf.plot_A_of_I_T(z_tr, t_tr, T, tr_dn_field, mL, theta, omega, z_I, z_T, plot_full_domain=plt_fd, T_cutoff=T_cutoff, title_str=run_name, filename=filename_prefix+'_A_of_I_T.png')
+    hf.plot_A_of_I_T(z_tr, t_tr, T, tr_dn_field, mL, theta, omega, z_I, z_T, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, title_str=run_name, filename=filename_prefix+'_A_of_I_T.png')
 # Plot this amplitude (averaged across time) as a function of depth
 if sbp.plot_amplitude:
-    hf.plot_AA_for_z(z_tr, BP_tr, hf.AAcc(tr_dn_field).real, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, title_str=run_name, filename=filename_prefix+'_AA_for_z.png')
+    hf.plot_AA_for_z(z_tr, BP_tr, hf.AAcc(tr_dn_field).real, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, title_str=run_name, filename=filename_prefix+'_AA_for_z.png')
 
 if sbp.plot_amplitude:
-    hf.plot_z_vs_t(z_tr, t_tr, T, hf.AAcc(tr_dn_field).real, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_domain=plt_fd, T_cutoff=None, title_str=run_name+' AA', filename=filename_prefix+'_1D_AA.png')
+    hf.plot_z_vs_t(z_tr, t_tr, T, hf.AAcc(tr_dn_field).real, BP_tr, mL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=None, title_str=run_name+' AA', filename=filename_prefix+'_1D_AA.png')
 
 raise SystemExit(0)
 
@@ -234,7 +220,7 @@ plot_CD_checks = False
 if plot_CD_checks:
     # Add up and down fields to see if they reproduce the original psi field
     up_plus_dn = up_field.real + dn_field.real
-    hf.plot_z_vs_t(z, t, T, up_plus_dn, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_cutoff, title_str=run_name, filename=filename_prefix+'_up_plus_dn.png')
+    hf.plot_z_vs_t(z, t, T, up_plus_dn, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_x=plt_f_x, plot_full_y=plt_f_y, nT=T_cutoff, title_str=run_name, filename=filename_prefix+'_up_plus_dn.png')
     # Plot the difference, which ideally should be zero everywhere
     CD_diff = psi.real - up_plus_dn
-    hf.plot_z_vs_t(z, t, T, CD_diff, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_domain=plot_f_d, nT=T_cutoff, title_str=run_name, filename=filename_prefix+'_CD_diff.png')
+    hf.plot_z_vs_t(z, t, T, CD_diff, BP_array, mL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_x=plt_f_x, plot_full_y=plt_f_y, nT=T_cutoff, title_str=run_name, filename=filename_prefix+'_CD_diff.png')

@@ -412,12 +412,13 @@ def add_lines_to_ax(ax, z_I=None, z_T=None, z0_dis=None, zf_dis=None, T_cutoff=N
         line_color = my_clrs['black']
         ax.axvline(x=T_cutoff, color=line_color, linestyle='--')
 
-def set_plot_bounds(ax, plot_full_domain, z_array=None, z0_dis=None, zf_dis=None, t_array=None, T=None, T_cutoff=None):
+def set_plot_bounds(ax, plot_full_x, plot_full_y, z_array=None, z0_dis=None, zf_dis=None, t_array=None, T=None, T_cutoff=None):
     """
     Sets plot bounds, transient oscillations cutoff and display domain
 
     ax          axis for plot
-    plot_full...True or False, include depths outside display and transient period?
+    plot_full_x True or False, include and transient period?
+    plot_full_y True or False, include depths outside display domain?
     z_array     array of z values
     t_array     array of time values (in seconds)
     T           oscillation period (in seconds)
@@ -425,16 +426,19 @@ def set_plot_bounds(ax, plot_full_domain, z_array=None, z0_dis=None, zf_dis=None
     zf_dis      bottom of vertical structure extent
     T_cutoff    integer, oscillations to cut off of beginning of simulation
     """
-    if plot_full_domain:
+    if plot_full_x:
+        if isinstance(t_array, np.ndarray) and T != None:
+            ax.set_xlim([t_array[0]/T,t_array[-1]/T])
+    else:
+        if isinstance(t_array, np.ndarray) and T != None and T_cutoff != None:
+            ax.set_xlim([T_cutoff,t_array[-1]/T])
+    if plot_full_y:
         if isinstance(z_array, np.ndarray):
             ax.set_ylim([z_array[0],z_array[-1]])
-        if isinstance(t_array, np.ndarray) and T != None:
-            ax.set_xlim([0,t_array[-1]/T])
     else:
         if z0_dis != None and zf_dis != None:
             ax.set_ylim([zf_dis, z0_dis]) # Careful of this order, zf is less than z0
-        if isinstance(t_array, np.ndarray) and T != None and T_cutoff != None:
-            ax.set_xlim([T_cutoff,t_array[-1]/T])
+
 
 # Plot background profile
 def plot_BP(ax, BP, z, omega=None):
@@ -457,7 +461,7 @@ def plot_BP(ax, BP, z, omega=None):
 
 ###############################################################################
 
-def plot_v_profiles(z_array, BP_array, bf_array, sp_array, mL=None, theta=None, omega=None, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_domain=True, title_str='Forced 1D Wave', filename='f_1D_windows.png'):
+def plot_v_profiles(z_array, BP_array, bf_array, sp_array, mL=None, theta=None, omega=None, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_x=True, plot_full_y=True, title_str='Forced 1D Wave', filename='f_1D_windows.png'):
     """
     Plots the vertical profiles: stratification, boundary forcing, sponge layer
         Note: all arrays must be imput as full-domain, no trimmed versions
@@ -486,8 +490,8 @@ def plot_v_profiles(z_array, BP_array, bf_array, sp_array, mL=None, theta=None, 
     add_lines_to_ax(axes[0], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis)
     add_lines_to_ax(axes[1], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis)
     # Set plot bounds to include full domain or not
-    set_plot_bounds(axes[0], plot_full_domain, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis)
-    set_plot_bounds(axes[1], plot_full_domain, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis)
+    set_plot_bounds(axes[0], plot_full_x, plot_full_y, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis)
+    set_plot_bounds(axes[1], plot_full_x, plot_full_y, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis)
     # Add labels
     axes[1].set_xlabel('Amplitude')
     axes[1].set_title(r'Windows')
@@ -500,7 +504,7 @@ def plot_v_profiles(z_array, BP_array, bf_array, sp_array, mL=None, theta=None, 
 # Main plotting functions
 ###############################################################################
 
-def plot_z_vs_t(z_array, t_array, T, data, BP_array, mL, theta, omega, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_domain=True, T_cutoff=0.0, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave.png'):
+def plot_z_vs_t(z_array, t_array, T, data, BP_array, mL, theta, omega, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_x=True, plot_full_y=True, T_cutoff=0.0, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave.png'):
     """
     Plots the data as a colormap on z vs t with the vertical profile included to the left
 
@@ -533,8 +537,8 @@ def plot_z_vs_t(z_array, t_array, T, data, BP_array, mL, theta, omega, z_I=None,
     # Add straight lines to wavefield plot
     add_lines_to_ax(axes[1], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, T_cutoff=T_cutoff)
     # Set plot bounds to include full domain or not
-    set_plot_bounds(axes[0], plot_full_domain, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis)
-    set_plot_bounds(axes[1], plot_full_domain, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis, t_array=t_array, T=T, T_cutoff=T_cutoff)
+    set_plot_bounds(axes[0], plot_full_x, plot_full_y, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis)
+    set_plot_bounds(axes[1], plot_full_x, plot_full_y, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis, t_array=t_array, T=T, T_cutoff=T_cutoff)
     # Add titles and labels
     axes[1].set_xlabel(r'$t/T$')
     axes[1].set_title(r'$\Psi$ (m$^2$/s)')
@@ -544,7 +548,7 @@ def plot_z_vs_t(z_array, t_array, T, data, BP_array, mL, theta, omega, z_I=None,
 
 ###############################################################################
 
-def plot_A_of_I_T(z_array, t_array, T, dn_array, mL, theta, omega, z_I, z_T, plot_full_domain=True, T_cutoff=0.0, title_str='Forced 1D Wave', filename='f_1D_A_of_I_T.png'):
+def plot_A_of_I_T(z_array, t_array, T, dn_array, mL, theta, omega, z_I, z_T, plot_full_x=True, plot_full_y=True, T_cutoff=0.0, title_str='Forced 1D Wave', filename='f_1D_A_of_I_T.png'):
     """
     Plots the amplitude of the downward propagating wave as a function of time
         for both the incident and transmission depths
@@ -575,8 +579,8 @@ def plot_A_of_I_T(z_array, t_array, T, dn_array, mL, theta, omega, z_I, z_T, plo
     add_lines_to_ax(axes[0], z_I=I_, T_cutoff=T_cutoff)
     add_lines_to_ax(axes[1], z_T=T_, T_cutoff=T_cutoff)
     # Set plot bounds to include full domain or not
-    set_plot_bounds(axes[0], plot_full_domain, t_array=t_array, T=T, T_cutoff=T_cutoff)
-    set_plot_bounds(axes[1], plot_full_domain, t_array=t_array, T=T, T_cutoff=T_cutoff)
+    set_plot_bounds(axes[0], plot_full_x, plot_full_y, t_array=t_array, T=T, T_cutoff=T_cutoff)
+    set_plot_bounds(axes[1], plot_full_x, plot_full_y, t_array=t_array, T=T, T_cutoff=T_cutoff)
     # Add labels and titles
     axes[1].set_xlabel(r'$t/T$')
     axes[0].set_ylabel(r'Amplitude')
@@ -589,7 +593,7 @@ def plot_A_of_I_T(z_array, t_array, T, dn_array, mL, theta, omega, z_I, z_T, plo
 
 ###############################################################################
 
-def plot_AA_for_z(z_array, BP_array, dn_array, mL, theta, omega, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_domain=True, title_str='Forced 1D Wave', filename='f_1D_AA_for_z.png'):
+def plot_AA_for_z(z_array, BP_array, dn_array, mL, theta, omega, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_x=True, plot_full_y=True, title_str='Forced 1D Wave', filename='f_1D_AA_for_z.png'):
     """
     Plots the average of the downward-propagating wave's AA^* for all depths
 
@@ -620,8 +624,8 @@ def plot_AA_for_z(z_array, BP_array, dn_array, mL, theta, omega, z_I=None, z_T=N
     add_lines_to_ax(axes[0], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis)
     add_lines_to_ax(axes[1], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis)
     # Set plot bounds to include full domain or not
-    set_plot_bounds(axes[0], plot_full_domain, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis)
-    set_plot_bounds(axes[1], plot_full_domain, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis)
+    set_plot_bounds(axes[0], plot_full_x, plot_full_y, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis)
+    set_plot_bounds(axes[1], plot_full_x, plot_full_y, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis)
     # Add labels
     axes[1].set_xlabel('Amplitude')
     #axes[1].set_ylabel(r'$z$')
@@ -679,7 +683,7 @@ def plot_spectral(k_array, f_array, r_array, i_array, mL, theta, omega, c_map='v
     #plt.show()
     plt.savefig(filename)
 
-def plot_k_f_spectra(z_array, dz, t_array, dt, T, k_array, f_array, k_data, f_data, mL, theta, omega, z_I, z_T, plot_full_domain=True, T_cutoff=0.0, title_str='Forced 1D Wave', filename='f_1D_k_and_f.png'):
+def plot_k_f_spectra(z_array, dz, t_array, dt, T, k_array, f_array, k_data, f_data, mL, theta, omega, z_I, z_T, plot_full_x=True, plot_full_y=True, T_cutoff=0.0, title_str='Forced 1D Wave', filename='f_1D_k_and_f.png'):
     """
     Plots the spectral content of the data in wavenumber and frequency space for
         the T_cutoff time and z_I depth, respectively
