@@ -21,6 +21,7 @@
 
 # Current datetime
 DATETIME=`date +"%Y-%m-%d_%Hh%M"`
+echo $DATETIME
 
 # Having a ":" after a flag means an option is required to invoke that flag
 while getopts e:s:c:rmopgv option
@@ -57,9 +58,9 @@ fi
 if [ -z "$CORES" ]
 then
 	CORES=32
-	echo "-c, No number of cores specified, using CORES=$CORES"
-else
- echo "-c, Number of cores specified, using CORES=$CORES"
+# 	echo "-c, No number of cores specified, using CORES=$CORES"
+# else
+#  echo "-c, Number of cores specified, using CORES=$CORES"
 fi
 if [ "$RUN" = r ]
 then
@@ -108,7 +109,8 @@ export OMPI_MCA_mpi_warn_on_fork=0
 # Activate the Dedalus virtual environment
 source ${HOME}/Dedalus_Projects/venv/bin/activate
 
-echo python3 --version
+# Check which version of python is installed
+# echo python3 --version
 
 ###############################################################################
 # Start the experiment script
