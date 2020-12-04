@@ -95,7 +95,7 @@ plot_amplitude = False
 plot_windows   = False
 plot_up_dn     = False
 # If true, plot will include full simulated domain, if false, just the display domain
-plot_full_x = True
+plot_full_x = False
 plot_full_y = False
 
 # # Measurements
