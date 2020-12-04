@@ -133,7 +133,7 @@ plot_data_file="plot_exp_data.py"
 switchboard="switchboard"
 ###############################################################################
 # Plot experiments' transmission coefficients if simulations were run
-if [ "$RUN" = r ]
+if [ "$PRO" = o ]
 then
 	cd _experiments/${EXP}
 	echo ''
