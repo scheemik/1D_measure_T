@@ -1,0 +1,316 @@
+2020-12-04_13h00
+
+Inactive Modules:
+  1) python/3.7.4
+
+Due to MODULEPATH changes, the following have been reloaded:
+  1) mpi4py/3.0.3
+
+The following have been reloaded with a version change:
+  1) StdEnv/2016.4 => StdEnv/2020           4) intel/2016.4 => intel/2020.1.217
+  2) gcccore/.5.4.0 => gcccore/.9.3.0       5) openmpi/2.1.1 => openmpi/4.0.3
+  3) imkl/11.3.4.258 => imkl/2020.1.217
+
+
+Activating Modules:
+  1) python/3.7.7
+
+-e, Name specified, using EXP=hpc_test
+-s, Number of simulations specified, using SIMS=5
+-c, Number of cores specified, using CORES=1
+-a, Will not ask before overwriting files
+-r, Run the simulation
+
+--Checking experiment directory--
+Experiment folder exists
+
+--Running simulation 0--
+-e, Name specified, using EXP=hpc_test
+-i, Simulation ID specified, using ID=0
+-n, No simulation name specified, using NAME=000_hpc_test
+-s, Number of simulations specified, using SIMS=5
+-c, Number of cores specified, using CORES=1
+-a, Will not ask before overwriting files
+-r, Run the simulation
+
+-Checking experiment directory-
+Experiment folder exists
+Experiment for hpc_test exists
+Overwriting code files
+Copying code files to experiment directory
+
+-Navigating to experiment directory-
+/home/mschee/projects/def-ngrisoua/mschee/Dedalus_repos/1D_measure_T/_experiments/hpc_test
+
+-Checking simulation directory-
+Simulation for 000_hpc_test exists
+Overwriting simulation switchboard
+
+-Writing parameters file-
+
+-Running script-
+Removing old snapshots
+Running Dedalus script for local pc
+Matplotlib is building the font cache; this may take a moment.
+switchboard= switchboard
+mL= 0.0
+2020-12-04 13:01:21,308 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.0e+00/s
+2020-12-04 13:01:21,310 __main__ 0/1 INFO :: Solver built
+2020-12-04 13:01:21,315 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-04 13:01:21,316 __main__ 0/1 INFO :: Starting loop
+2020-12-04 13:01:23,097 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2020-12-04 13:01:24,131 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2020-12-04 13:01:25,310 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2020-12-04 13:01:26,328 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2020-12-04 13:01:27,451 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2020-12-04 13:01:28,486 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2020-12-04 13:01:29,731 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2020-12-04 13:01:30,749 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2020-12-04 13:01:31,798 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2020-12-04 13:01:32,816 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2020-12-04 13:01:33,882 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2020-12-04 13:01:34,924 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2020-12-04 13:01:35,940 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2020-12-04 13:01:37,016 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2020-12-04 13:01:37,829 solvers 0/1 INFO :: Simulation stop time reached.
+2020-12-04 13:01:37,829 __main__ 0/1 INFO :: Iterations: 1472
+2020-12-04 13:01:37,829 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-04 13:01:37,829 __main__ 0/1 INFO :: Run time: 16.51 sec
+2020-12-04 13:01:37,829 __main__ 0/1 INFO :: Run time: 0.004587 cpu-hr
+
+Done running script
+
+Done running simulation
+
+--Running simulation 1--
+-e, Name specified, using EXP=hpc_test
+-i, Simulation ID specified, using ID=1
+-n, No simulation name specified, using NAME=001_hpc_test
+-s, Number of simulations specified, using SIMS=5
+-c, Number of cores specified, using CORES=1
+-a, Will not ask before overwriting files
+-r, Run the simulation
+
+-Checking experiment directory-
+Experiment folder exists
+Experiment for hpc_test exists
+Overwriting code files
+Copying code files to experiment directory
+
+-Navigating to experiment directory-
+/home/mschee/projects/def-ngrisoua/mschee/Dedalus_repos/1D_measure_T/_experiments/hpc_test
+
+-Checking simulation directory-
+Simulation for 001_hpc_test exists
+Overwriting simulation switchboard
+
+-Writing parameters file-
+
+-Running script-
+Removing old snapshots
+Running Dedalus script for local pc
+switchboard= switchboard
+mL= 1.25
+2020-12-04 13:01:57,397 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.4e+00/s
+2020-12-04 13:01:57,398 __main__ 0/1 INFO :: Solver built
+2020-12-04 13:01:57,402 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-04 13:01:57,402 __main__ 0/1 INFO :: Starting loop
+2020-12-04 13:01:58,946 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2020-12-04 13:01:59,947 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2020-12-04 13:02:01,143 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2020-12-04 13:02:02,241 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2020-12-04 13:02:03,359 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2020-12-04 13:02:04,432 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2020-12-04 13:02:05,587 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2020-12-04 13:02:06,622 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2020-12-04 13:02:07,746 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2020-12-04 13:02:08,926 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2020-12-04 13:02:09,966 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2020-12-04 13:02:10,996 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2020-12-04 13:02:11,993 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2020-12-04 13:02:13,022 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2020-12-04 13:02:13,748 solvers 0/1 INFO :: Simulation stop time reached.
+2020-12-04 13:02:13,748 __main__ 0/1 INFO :: Iterations: 1472
+2020-12-04 13:02:13,748 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-04 13:02:13,748 __main__ 0/1 INFO :: Run time: 16.35 sec
+2020-12-04 13:02:13,748 __main__ 0/1 INFO :: Run time: 0.004541 cpu-hr
+
+Done running script
+
+Done running simulation
+
+--Running simulation 2--
+-e, Name specified, using EXP=hpc_test
+-i, Simulation ID specified, using ID=2
+-n, No simulation name specified, using NAME=002_hpc_test
+-s, Number of simulations specified, using SIMS=5
+-c, Number of cores specified, using CORES=1
+-a, Will not ask before overwriting files
+-r, Run the simulation
+
+-Checking experiment directory-
+Experiment folder exists
+Experiment for hpc_test exists
+Overwriting code files
+Copying code files to experiment directory
+
+-Navigating to experiment directory-
+/home/mschee/projects/def-ngrisoua/mschee/Dedalus_repos/1D_measure_T/_experiments/hpc_test
+
+-Checking simulation directory-
+Simulation for 002_hpc_test exists
+Overwriting simulation switchboard
+
+-Writing parameters file-
+
+-Running script-
+Removing old snapshots
+Running Dedalus script for local pc
+switchboard= switchboard
+mL= 2.5
+2020-12-04 13:02:30,514 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.4e+00/s
+2020-12-04 13:02:30,515 __main__ 0/1 INFO :: Solver built
+2020-12-04 13:02:30,518 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-04 13:02:30,518 __main__ 0/1 INFO :: Starting loop
+2020-12-04 13:02:32,104 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2020-12-04 13:02:33,100 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2020-12-04 13:02:34,132 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2020-12-04 13:02:35,144 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2020-12-04 13:02:36,183 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2020-12-04 13:02:37,177 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2020-12-04 13:02:38,178 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2020-12-04 13:02:39,187 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2020-12-04 13:02:40,284 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2020-12-04 13:02:41,338 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2020-12-04 13:02:42,338 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2020-12-04 13:02:43,346 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2020-12-04 13:02:44,407 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2020-12-04 13:02:45,443 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2020-12-04 13:02:46,151 solvers 0/1 INFO :: Simulation stop time reached.
+2020-12-04 13:02:46,151 __main__ 0/1 INFO :: Iterations: 1472
+2020-12-04 13:02:46,151 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-04 13:02:46,151 __main__ 0/1 INFO :: Run time: 15.63 sec
+2020-12-04 13:02:46,151 __main__ 0/1 INFO :: Run time: 0.004342 cpu-hr
+
+Done running script
+
+Done running simulation
+
+--Running simulation 3--
+-e, Name specified, using EXP=hpc_test
+-i, Simulation ID specified, using ID=3
+-n, No simulation name specified, using NAME=003_hpc_test
+-s, Number of simulations specified, using SIMS=5
+-c, Number of cores specified, using CORES=1
+-a, Will not ask before overwriting files
+-r, Run the simulation
+
+-Checking experiment directory-
+Experiment folder exists
+Experiment for hpc_test exists
+Overwriting code files
+Copying code files to experiment directory
+
+-Navigating to experiment directory-
+/home/mschee/projects/def-ngrisoua/mschee/Dedalus_repos/1D_measure_T/_experiments/hpc_test
+
+-Checking simulation directory-
+Simulation for 003_hpc_test exists
+Overwriting simulation switchboard
+
+-Writing parameters file-
+
+-Running script-
+Removing old snapshots
+Running Dedalus script for local pc
+switchboard= switchboard
+mL= 3.75
+2020-12-04 13:03:05,757 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 1s, Remaining: 0s, Rate: 2.0e+00/s
+2020-12-04 13:03:05,759 __main__ 0/1 INFO :: Solver built
+2020-12-04 13:03:05,776 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-04 13:03:05,776 __main__ 0/1 INFO :: Starting loop
+2020-12-04 13:03:08,547 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2020-12-04 13:03:09,545 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2020-12-04 13:03:10,639 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2020-12-04 13:03:11,631 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2020-12-04 13:03:12,645 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2020-12-04 13:03:13,677 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2020-12-04 13:03:15,448 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2020-12-04 13:03:16,517 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2020-12-04 13:03:17,536 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2020-12-04 13:03:18,659 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2020-12-04 13:03:19,766 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2020-12-04 13:03:34,306 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2020-12-04 13:03:35,302 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2020-12-04 13:03:36,331 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2020-12-04 13:03:37,051 solvers 0/1 INFO :: Simulation stop time reached.
+2020-12-04 13:03:37,051 __main__ 0/1 INFO :: Iterations: 1472
+2020-12-04 13:03:37,052 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-04 13:03:37,052 __main__ 0/1 INFO :: Run time: 31.27 sec
+2020-12-04 13:03:37,052 __main__ 0/1 INFO :: Run time: 0.008687 cpu-hr
+
+Done running script
+
+Done running simulation
+
+--Running simulation 4--
+-e, Name specified, using EXP=hpc_test
+-i, Simulation ID specified, using ID=4
+-n, No simulation name specified, using NAME=004_hpc_test
+-s, Number of simulations specified, using SIMS=5
+-c, Number of cores specified, using CORES=1
+-a, Will not ask before overwriting files
+-r, Run the simulation
+
+-Checking experiment directory-
+Experiment folder exists
+Experiment for hpc_test exists
+Overwriting code files
+Copying code files to experiment directory
+
+-Navigating to experiment directory-
+/home/mschee/projects/def-ngrisoua/mschee/Dedalus_repos/1D_measure_T/_experiments/hpc_test
+
+-Checking simulation directory-
+Simulation for 004_hpc_test exists
+Overwriting simulation switchboard
+
+-Writing parameters file-
+
+-Running script-
+Removing old snapshots
+Running Dedalus script for local pc
+switchboard= switchboard
+mL= 5.0
+2020-12-04 13:03:54,089 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.2e+00/s
+2020-12-04 13:03:54,091 __main__ 0/1 INFO :: Solver built
+2020-12-04 13:03:54,096 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-04 13:03:54,096 __main__ 0/1 INFO :: Starting loop
+2020-12-04 13:03:55,566 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2020-12-04 13:03:56,621 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2020-12-04 13:03:57,675 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2020-12-04 13:03:58,685 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2020-12-04 13:03:59,727 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2020-12-04 13:04:00,710 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2020-12-04 13:04:01,741 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2020-12-04 13:04:02,778 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2020-12-04 13:04:03,766 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2020-12-04 13:04:04,772 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2020-12-04 13:04:05,769 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2020-12-04 13:04:06,766 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2020-12-04 13:04:07,757 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2020-12-04 13:04:08,818 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2020-12-04 13:04:09,520 solvers 0/1 INFO :: Simulation stop time reached.
+2020-12-04 13:04:09,521 __main__ 0/1 INFO :: Iterations: 1472
+2020-12-04 13:04:09,521 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-04 13:04:09,521 __main__ 0/1 INFO :: Run time: 15.42 sec
+2020-12-04 13:04:09,521 __main__ 0/1 INFO :: Run time: 0.004285 cpu-hr
+
+Done running script
+
+Done running simulation
+
+
+--Plotting transmission coefficients--
+Checking for csv data file
+Cannot find data. Aborting script
