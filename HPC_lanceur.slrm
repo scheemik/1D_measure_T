@@ -3,7 +3,7 @@
 #SBATCH --mail-user=mschee@physics.utoronto.ca
 #SBATCH --mail-type=ALL
 #SBATCH --output=_experiments/%x/_%x_%j.out						# %x = job_name, %j = job_number
-#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks-per-node=2
 #SBATCH --nodes=1
 #SBATCH --time=0-00:10  # d-HH:MM
 
@@ -21,7 +21,7 @@
 
 # Current datetime
 DATETIME=`date +"%Y-%m-%d_%Hh%M"`
-echo $DATETIME
+echo "Launched script: $DATETIME"
 
 # Having a ":" after a flag means an option is required to invoke that flag
 while getopts e:s:c:rmopgv option
