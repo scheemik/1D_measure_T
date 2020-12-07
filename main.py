@@ -51,7 +51,7 @@ args = docopt(__doc__)
 run_name    = args['NAME']          # Simulation name, used to route filepaths of plots
 sim_id      = int(args['ID'])       # Simulation ID number
 switchboard = args['SWITCHBOARD']   # Switchboard file
-print('switchboard=',switchboard)
+# print('switchboard=',switchboard)
 plot_checks = args['PLOT_CHECKS'].lower() == 'true'
 
 # Add functions in helper file

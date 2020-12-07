@@ -256,15 +256,9 @@ then
 		echo "Removing old snapshots"
 		rm -rf "${snapshot_path}"		# Careful, easy to accidentally remove $NAME dir
 	fi
-  echo "Running Dedalus script for local pc"
-	if [ $CORES -eq 1 ]
-	then
-		${python_command} $code_file $NAME $ID $switchboard $PLT
-	else
-	  # mpiexec uses -n flag for number of processes to use
-	  ${mpiexec_command} -n $CORES ${python_command} $code_file $NAME $ID $switchboard $PLT
-	fi
-    echo ""
+	echo "Running Dedalus script"
+	${python_command} $code_file $NAME $ID $switchboard $PLT
+  echo ""
 	echo 'Done running script'
 fi
 
