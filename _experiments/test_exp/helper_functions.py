@@ -268,6 +268,7 @@ def trim_data_t(t_array, data, T_cutoff, T):
     ## Trim time before T_cutoff
     #   Find time in seconds of cutoff
     cutoff_time = T_cutoff * T
+    # print("cutoff_time = ",cutoff_time)
     # Find index of cutoff time
     idx_cutoff = find_nearest_index(t_array, cutoff_time)
     # Trim time

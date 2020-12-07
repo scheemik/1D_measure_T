@@ -23,7 +23,7 @@ do
 		e) EXP=${OPTARG};;
 		s) SIMS=${OPTARG};;
 		c) CORES=${OPTARG};;
-		a) ASK=a;;
+		a) ASK=true;;
 		r) RUN=r;;
     m) MER=m;;
     o) PRO=o;;
@@ -151,7 +151,7 @@ OVERWRITE_CODE_FILES=true
 if [ -e _experiments/$EXP ]
 then
 	echo "Experiment for $EXP exists"
-	if [ "$ASK" = false ]
+	if [ "$ASK" != a ]
 	then
 		echo "Overwriting code files"
 		# Go in to directory, remove code files, come back out to main directory

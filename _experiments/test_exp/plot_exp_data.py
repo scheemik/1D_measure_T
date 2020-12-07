@@ -69,7 +69,7 @@ def plot_T_vs_mL(mL_array, sim_data, theta, omega, title_str='Transmission Coeff
     # Plot line for analytical solution
     axes.plot(mL_ana, ana_data, color='black', label=r'$\mathbb{T}_{ana}$')
     # Plot points from measurements in simulations
-    axes.plot(mL_array, sim_data, color='red', marker='o', label=r'$\mathbb{T}_{sim}$')
+    axes.scatter(mL_array, sim_data, color='red', marker='o', label=r'$\mathbb{T}_{sim}$')
     axes.legend()
     # Add labels and titles
     axes.set_xlabel(r'$mL$')

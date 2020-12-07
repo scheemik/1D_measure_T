@@ -161,55 +161,6 @@ else
 	echo 'Experiment folder not found. Aborting script'
 	exit 1
 fi
-# OVERWRITE_CODE_FILES=true
-# # Check if this experiment has been created
-# if [ -e _experiments/$EXP ]
-# then
-# 	echo "Experiment for $EXP exists"
-# 	if [ "$ASK" = false ]
-# 	then
-# 		echo "Overwriting code files"
-# 		# Go in to directory, remove code files, come back out to main directory
-# 		cd _experiments/$EXP
-# 		rm -rf $CODE_FILES
-# 		cd ..
-# 		cd ..
-# 	else
-# 		# Begin loop waiting for user to confirm
-# 		while true
-# 		do
-# 			read -r -p "Overwrite old code files in $EXP [y/n]? Or cancel? [Ctrl+c] " input
-# 			case $input in
-# 				[yY][eE][sS]|[yY])
-# 			echo "Yes"
-# 			# Go in to directory, remove code files, come back out to main directory
-# 			cd _experiments/$EXP
-# 			rm -rf $CODE_FILES
-# 			cd ..
-# 			cd ..
-# 			break
-# 			;;
-# 				[nN][oO]|[nN])
-# 			echo "No"
-# 			OVERWRITE_CODE_FILES=false
-# 			break
-# 					;;
-# 				*)
-# 			echo "Invalid input"
-# 			;;
-# 			esac
-# 		done
-# 	fi
-# else
-# 	echo "Creating experiment for $EXP"
-# 	mkdir "_experiments/$EXP"
-# fi
-# if [ $OVERWRITE_CODE_FILES = true ] || [ "$ASK" = false ]
-# then
-# 	echo 'Copying code files to experiment directory'
-# 	cp $CODE_FILES _experiments/${EXP}
-# fi
-
 echo ''
 echo "${ID}-Navigating to experiment directory-"
 cd _experiments/${EXP}
@@ -224,12 +175,15 @@ then
 else
 	echo "Creating simulation for $NAME"
 	mkdir "$NAME"
-	#touch "$NAME/__init__.py"
 fi
-if [ $OVERWRITE_CODE_FILES = true ] || [ ! -e $sim_switch ]
+echo 'Overwriting simulation switchboard'
+# Check if simulation folder exists
+if [ -e $switch_file ]
 then
-	echo 'Overwriting simulation switchboard'
 	cp $switch_file $sim_switch
+else
+	echo "Cannot find $switch_file, aborting execution"
+	exit 1
 fi
 echo ''
 echo "${ID}-Writing parameters file-"
