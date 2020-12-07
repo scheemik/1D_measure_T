@@ -113,6 +113,7 @@ echo ''
 for (( id=0; id<$SIMS; id++ ))
 do
 	echo "--Running simulation $id--"
+	# Check whether any switch arguments were activated
 	if [ "$ARGS" = true ]
 	then
 		bash run.sh -e $EXP -i $id -s $SIMS -c $CORES -$ASK$RUN$MER$PRO$PLT$GIF$VID
