@@ -151,8 +151,8 @@ gif_cre_file="create_gif.py"
 CODE_FILES="$params_script $code_file $switch_file $merge_file $helper_funcs $helper_funcs_CD $post_process $plot_exp $plot_file $gif_cre_file"
 
 ###############################################################################
-echo ''
-echo '-Checking experiment directory-'
+echo ""
+echo "${ID}-Checking experiment directory-"
 # Check if experiments folder exists
 if [ -e _experiments ]
 then
@@ -213,12 +213,12 @@ then
 fi
 
 echo ''
-echo '-Navigating to experiment directory-'
+echo "${ID}-Navigating to experiment directory-"
 cd _experiments/${EXP}
 pwd
 ###############################################################################
 echo ''
-echo '-Checking simulation directory-'
+echo "${ID}-Checking simulation directory-"
 # Check if simulation folder exists
 if [ -d $NAME ]
 then
@@ -234,7 +234,7 @@ then
 	cp $switch_file $sim_switch
 fi
 echo ''
-echo '-Writing parameters file-'
+echo "${ID}-Writing parameters file-"
 # Check if simulation folder exists
 if [ -e $params_script ]
 then
@@ -249,7 +249,7 @@ fi
 if [ "$RUN" = true ]
 then
 	echo ''
-	echo '-Running script-'
+	echo "${ID}-Running script-"
 	# Check if snapshots already exist. If so, remove them
 	if [ -e $snapshot_path ]
 	then
@@ -267,7 +267,7 @@ fi
 if [ "$MER" = true ]
 then
 	echo ''
-	echo '-Merging snapshots-'
+	echo "${ID}-Merging snapshots-"
 	# Check to make sure snapshots folder exists
 	echo "Checking for snapshots in directory: $snapshot_path"
 	if [ -e $snapshot_path ]
@@ -310,7 +310,7 @@ fi
 if [ "$PRO" = true ]
 then
 	echo ''
-	echo '-Post processing-'
+	echo "${ID}-Post processing-"
 	# Check to make sure snapshots exists
 	echo "Checking for snapshots in directory: $snapshot_path"
 	if [ -e $snapshot_path/consolidated_analysis.h5 ] || [ -e $snapshot_path/snapshots_s1.h5 ] || [ -e $snapshot_path/snapshots_s01.h5 ]
@@ -330,7 +330,7 @@ fi
 if [ "$GIF" = true ]
 then
 	echo ''
-	echo '-Creating gif-'
+	echo "${ID}-Creating gif-"
 	gif_name="${DATETIME}.gif"
 	# Check if output directory exists
 	if [ ! -e $output_dir ]
@@ -356,5 +356,5 @@ then
 fi
 
 echo ''
-echo 'Done running simulation'
+echo "${ID}-Done running simulation"
 echo ''
