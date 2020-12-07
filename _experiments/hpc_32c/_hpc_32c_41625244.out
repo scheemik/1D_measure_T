@@ -1,0 +1,452 @@
+Launched script: 2020-12-07_14h45
+
+Inactive Modules:
+  1) python/3.7.4
+
+Due to MODULEPATH changes, the following have been reloaded:
+  1) mpi4py/3.0.3
+
+The following have been reloaded with a version change:
+  1) StdEnv/2016.4 => StdEnv/2020           4) intel/2016.4 => intel/2020.1.217
+  2) gcccore/.5.4.0 => gcccore/.9.3.0       5) openmpi/2.1.1 => openmpi/4.0.3
+  3) imkl/11.3.4.258 => imkl/2020.1.217
+
+
+Activating Modules:
+  1) python/3.7.7
+
+-e, Name specified, using EXP=hpc_32c
+-s, Number of simulations specified, using SIMS=5
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+--Checking experiment directory--
+Experiment folder exists
+
+--Running simulation 0--
+-e, Name specified, using EXP=hpc_32c
+-i, Simulation ID specified, using ID=0
+-n, No simulation name specified, using NAME=000_hpc_32c
+-s, Number of simulations specified, using SIMS=5
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+-Checking experiment directory-
+Experiment folder exists
+Experiment for hpc_32c exists
+Overwriting code files
+Copying code files to experiment directory
+
+-Navigating to experiment directory-
+/home/mschee/projects/def-ngrisoua/mschee/Dedalus_repos/1D_measure_T/_experiments/hpc_32c
+
+-Checking simulation directory-
+Creating simulation for 000_hpc_32c
+Overwriting simulation switchboard
+
+-Writing parameters file-
+
+-Running script-
+Running Dedalus script
+mL= 0.0
+2020-12-07 14:45:34,197 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.5e+00/s
+2020-12-07 14:45:34,198 __main__ 0/1 INFO :: Solver built
+2020-12-07 14:45:34,200 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-07 14:45:34,200 __main__ 0/1 INFO :: Starting loop
+2020-12-07 14:45:35,673 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2020-12-07 14:45:36,545 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2020-12-07 14:45:37,520 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2020-12-07 14:45:38,464 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2020-12-07 14:45:39,351 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2020-12-07 14:45:40,256 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2020-12-07 14:45:41,182 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2020-12-07 14:45:42,128 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2020-12-07 14:45:43,069 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2020-12-07 14:45:43,961 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2020-12-07 14:45:44,881 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2020-12-07 14:45:45,875 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2020-12-07 14:45:46,864 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2020-12-07 14:45:47,810 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2020-12-07 14:45:48,420 solvers 0/1 INFO :: Simulation stop time reached.
+2020-12-07 14:45:48,420 __main__ 0/1 INFO :: Iterations: 1472
+2020-12-07 14:45:48,420 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-07 14:45:48,421 __main__ 0/1 INFO :: Run time: 14.22 sec
+2020-12-07 14:45:48,421 __main__ 0/1 INFO :: Run time: 0.003950 cpu-hr
+
+Done running script
+
+-Merging snapshots-
+Checking for snapshots in directory: 000_hpc_32c/snapshots
+Found snapshots
+Merging snapshots
+2020-12-07 14:45:54,544 post 0/32 INFO :: Merging files from 000_hpc_32c/snapshots
+2020-12-07 14:45:56,201 post 0/32 INFO :: Creating joint file 000_hpc_32c/snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+-Post processing-
+Checking for snapshots in directory: 000_hpc_32c/snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 284
+(n_layers = 1 (mL = 0.0 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 1.013354132848333
+AnaEq 2.4 transmission coefficient is: 1.0
+Done post processing
+
+Done running simulation
+
+--Running simulation 1--
+-e, Name specified, using EXP=hpc_32c
+-i, Simulation ID specified, using ID=1
+-n, No simulation name specified, using NAME=001_hpc_32c
+-s, Number of simulations specified, using SIMS=5
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+-Checking experiment directory-
+Experiment folder exists
+Experiment for hpc_32c exists
+Overwriting code files
+Copying code files to experiment directory
+
+-Navigating to experiment directory-
+/home/mschee/projects/def-ngrisoua/mschee/Dedalus_repos/1D_measure_T/_experiments/hpc_32c
+
+-Checking simulation directory-
+Creating simulation for 001_hpc_32c
+Overwriting simulation switchboard
+
+-Writing parameters file-
+
+-Running script-
+Running Dedalus script
+mL= 1.25
+2020-12-07 14:46:15,585 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.0e+00/s
+2020-12-07 14:46:15,585 __main__ 0/1 INFO :: Solver built
+2020-12-07 14:46:15,587 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-07 14:46:15,588 __main__ 0/1 INFO :: Starting loop
+2020-12-07 14:46:16,954 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2020-12-07 14:46:17,949 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2020-12-07 14:46:19,002 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2020-12-07 14:46:19,935 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2020-12-07 14:46:20,852 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2020-12-07 14:46:21,759 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2020-12-07 14:46:22,808 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2020-12-07 14:46:23,695 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2020-12-07 14:46:24,781 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2020-12-07 14:46:25,986 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2020-12-07 14:46:26,891 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2020-12-07 14:46:27,790 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2020-12-07 14:46:28,660 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2020-12-07 14:46:29,726 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2020-12-07 14:46:30,357 solvers 0/1 INFO :: Simulation stop time reached.
+2020-12-07 14:46:30,358 __main__ 0/1 INFO :: Iterations: 1472
+2020-12-07 14:46:30,358 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-07 14:46:30,358 __main__ 0/1 INFO :: Run time: 14.77 sec
+2020-12-07 14:46:30,358 __main__ 0/1 INFO :: Run time: 0.004103 cpu-hr
+
+Done running script
+
+-Merging snapshots-
+Checking for snapshots in directory: 001_hpc_32c/snapshots
+Found snapshots
+Merging snapshots
+2020-12-07 14:46:36,602 post 0/32 INFO :: Merging files from 001_hpc_32c/snapshots
+2020-12-07 14:46:37,973 post 0/32 INFO :: Creating joint file 001_hpc_32c/snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+-Post processing-
+Checking for snapshots in directory: 001_hpc_32c/snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 284
+(n_layers = 1 (mL = 1.25 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 0.32952243261109004
+AnaEq 2.4 transmission coefficient is: 0.28041486618043265
+Done post processing
+
+Done running simulation
+
+--Running simulation 2--
+-e, Name specified, using EXP=hpc_32c
+-i, Simulation ID specified, using ID=2
+-n, No simulation name specified, using NAME=002_hpc_32c
+-s, Number of simulations specified, using SIMS=5
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+-Checking experiment directory-
+Experiment folder exists
+Experiment for hpc_32c exists
+Overwriting code files
+Copying code files to experiment directory
+
+-Navigating to experiment directory-
+/home/mschee/projects/def-ngrisoua/mschee/Dedalus_repos/1D_measure_T/_experiments/hpc_32c
+
+-Checking simulation directory-
+Creating simulation for 002_hpc_32c
+Overwriting simulation switchboard
+
+-Writing parameters file-
+
+-Running script-
+Running Dedalus script
+mL= 2.5
+2020-12-07 14:46:56,642 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 1s, Remaining: 0s, Rate: 2.0e+00/s
+2020-12-07 14:46:56,643 __main__ 0/1 INFO :: Solver built
+2020-12-07 14:46:56,645 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-07 14:46:56,646 __main__ 0/1 INFO :: Starting loop
+2020-12-07 14:46:57,956 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2020-12-07 14:46:58,842 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2020-12-07 14:46:59,727 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2020-12-07 14:47:00,603 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2020-12-07 14:47:01,513 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2020-12-07 14:47:02,391 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2020-12-07 14:47:03,291 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2020-12-07 14:47:04,177 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2020-12-07 14:47:05,133 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2020-12-07 14:47:06,023 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2020-12-07 14:47:06,916 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2020-12-07 14:47:07,815 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2020-12-07 14:47:08,699 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2020-12-07 14:47:09,695 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2020-12-07 14:47:10,322 solvers 0/1 INFO :: Simulation stop time reached.
+2020-12-07 14:47:10,322 __main__ 0/1 INFO :: Iterations: 1472
+2020-12-07 14:47:10,322 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-07 14:47:10,322 __main__ 0/1 INFO :: Run time: 13.68 sec
+2020-12-07 14:47:10,322 __main__ 0/1 INFO :: Run time: 0.003799 cpu-hr
+
+Done running script
+
+-Merging snapshots-
+Checking for snapshots in directory: 002_hpc_32c/snapshots
+Found snapshots
+Merging snapshots
+2020-12-07 14:47:15,275 post 0/32 INFO :: Merging files from 002_hpc_32c/snapshots
+2020-12-07 14:47:17,012 post 0/32 INFO :: Creating joint file 002_hpc_32c/snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+-Post processing-
+Checking for snapshots in directory: 002_hpc_32c/snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 284
+(n_layers = 1 (mL = 2.5 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 0.04836993257563153
+AnaEq 2.4 transmission coefficient is: 0.02659222668316062
+Done post processing
+
+Done running simulation
+
+--Running simulation 3--
+-e, Name specified, using EXP=hpc_32c
+-i, Simulation ID specified, using ID=3
+-n, No simulation name specified, using NAME=003_hpc_32c
+-s, Number of simulations specified, using SIMS=5
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+-Checking experiment directory-
+Experiment folder exists
+Experiment for hpc_32c exists
+Overwriting code files
+Copying code files to experiment directory
+
+-Navigating to experiment directory-
+/home/mschee/projects/def-ngrisoua/mschee/Dedalus_repos/1D_measure_T/_experiments/hpc_32c
+
+-Checking simulation directory-
+Creating simulation for 003_hpc_32c
+Overwriting simulation switchboard
+
+-Writing parameters file-
+
+-Running script-
+Running Dedalus script
+mL= 3.75
+2020-12-07 14:47:29,325 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.0e+00/s
+2020-12-07 14:47:29,327 __main__ 0/1 INFO :: Solver built
+2020-12-07 14:47:29,330 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-07 14:47:29,330 __main__ 0/1 INFO :: Starting loop
+2020-12-07 14:47:30,842 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2020-12-07 14:47:31,738 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2020-12-07 14:47:32,735 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2020-12-07 14:47:33,617 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2020-12-07 14:47:34,522 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2020-12-07 14:47:35,416 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2020-12-07 14:47:36,313 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2020-12-07 14:47:37,256 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2020-12-07 14:47:38,362 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2020-12-07 14:47:39,396 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2020-12-07 14:47:40,283 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2020-12-07 14:47:41,170 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2020-12-07 14:47:42,059 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2020-12-07 14:47:42,975 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2020-12-07 14:47:43,676 solvers 0/1 INFO :: Simulation stop time reached.
+2020-12-07 14:47:43,676 __main__ 0/1 INFO :: Iterations: 1472
+2020-12-07 14:47:43,676 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-07 14:47:43,676 __main__ 0/1 INFO :: Run time: 14.35 sec
+2020-12-07 14:47:43,676 __main__ 0/1 INFO :: Run time: 0.003985 cpu-hr
+
+Done running script
+
+-Merging snapshots-
+Checking for snapshots in directory: 003_hpc_32c/snapshots
+Found snapshots
+Merging snapshots
+2020-12-07 14:47:49,472 post 0/32 INFO :: Merging files from 003_hpc_32c/snapshots
+Traceback (most recent call last):
+  File "merge.py", line 28, in <module>
+    post.merge_sets(base_path+'/consolidated_analysis.h5', set_paths, cleanup=clean_up)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/tools/post.py", line 289, in merge_sets
+    with h5py.File(str(set_path), mode='r') as file:
+  File "/home/mschee/.local/lib/python3.7/site-packages/h5py/_hl/files.py", line 408, in __init__
+    swmr=swmr)
+  File "/home/mschee/.local/lib/python3.7/site-packages/h5py/_hl/files.py", line 173, in make_fid
+    fid = h5f.open(name, flags, fapl=fapl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5f.pyx", line 88, in h5py.h5f.open
+OSError: Unable to open file (unable to lock file, errno = 11, error message = 'Resource temporarily unavailable')
+--------------------------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpiexec detected that one or more processes exited with non-zero status, thus causing
+the job to be terminated. The first process to do so was:
+
+  Process name: [[7368,1],0]
+  Exit code:    1
+--------------------------------------------------------------------------
+Done merging snapshots
+Reformatting snapshot file names
+Reformatting: 003_hpc_32c/snapshots/snapshots_s1.h5
+Reformatting: 003_hpc_32c/snapshots/snapshots_s2.h5
+Reformatting: 003_hpc_32c/snapshots/snapshots_s3.h5
+Reformatting: 003_hpc_32c/snapshots/snapshots_s4.h5
+Reformatting: 003_hpc_32c/snapshots/snapshots_s5.h5
+Reformatting: 003_hpc_32c/snapshots/snapshots_s6.h5
+Reformatting: 003_hpc_32c/snapshots/snapshots_s7.h5
+Reformatting: 003_hpc_32c/snapshots/snapshots_s8.h5
+Reformatting: 003_hpc_32c/snapshots/snapshots_s9.h5
+
+-Post processing-
+Checking for snapshots in directory: 003_hpc_32c/snapshots
+Snapshots found
+Running post processing script
+Traceback (most recent call last):
+  File "post_process.py", line 116, in <module>
+    t_tr, psi_tr = hf.trim_data_t(t, psi_tr, T_cutoff, T)
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/hpc_32c/helper_functions.py", line 273, in trim_data_t
+    idx_cutoff = find_nearest_index(t_array, cutoff_time)
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/hpc_32c/helper_functions.py", line 42, in find_nearest_index
+    raise Error("Value to the left of index range")
+helper_functions.Error: Value to the left of index range
+Done post processing
+
+Done running simulation
+
+--Running simulation 4--
+-e, Name specified, using EXP=hpc_32c
+-i, Simulation ID specified, using ID=4
+-n, No simulation name specified, using NAME=004_hpc_32c
+-s, Number of simulations specified, using SIMS=5
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+-Checking experiment directory-
+Experiment folder exists
+Experiment for hpc_32c exists
+Overwriting code files
+Copying code files to experiment directory
+
+-Navigating to experiment directory-
+/home/mschee/projects/def-ngrisoua/mschee/Dedalus_repos/1D_measure_T/_experiments/hpc_32c
+
+-Checking simulation directory-
+Creating simulation for 004_hpc_32c
+Overwriting simulation switchboard
+
+-Writing parameters file-
+
+-Running script-
+Running Dedalus script
+mL= 5.0
+2020-12-07 14:48:01,451 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 1s, Remaining: 0s, Rate: 2.0e+00/s
+2020-12-07 14:48:01,453 __main__ 0/1 INFO :: Solver built
+2020-12-07 14:48:01,457 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-07 14:48:01,457 __main__ 0/1 INFO :: Starting loop
+2020-12-07 14:48:02,782 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2020-12-07 14:48:03,678 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2020-12-07 14:48:04,702 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2020-12-07 14:48:05,596 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2020-12-07 14:48:06,508 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2020-12-07 14:48:07,380 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2020-12-07 14:48:08,260 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2020-12-07 14:48:09,130 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2020-12-07 14:48:10,082 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2020-12-07 14:48:10,963 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2020-12-07 14:48:11,819 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2020-12-07 14:48:12,738 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2020-12-07 14:48:13,611 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2020-12-07 14:48:14,598 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2020-12-07 14:48:15,206 solvers 0/1 INFO :: Simulation stop time reached.
+2020-12-07 14:48:15,206 __main__ 0/1 INFO :: Iterations: 1472
+2020-12-07 14:48:15,206 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-07 14:48:15,206 __main__ 0/1 INFO :: Run time: 13.75 sec
+2020-12-07 14:48:15,207 __main__ 0/1 INFO :: Run time: 0.003819 cpu-hr
+
+Done running script
+
+-Merging snapshots-
+Checking for snapshots in directory: 004_hpc_32c/snapshots
+Found snapshots
+Merging snapshots
+2020-12-07 14:48:19,720 post 0/32 INFO :: Merging files from 004_hpc_32c/snapshots
+2020-12-07 14:48:19,947 post 0/32 INFO :: Creating joint file 004_hpc_32c/snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+-Post processing-
+Checking for snapshots in directory: 004_hpc_32c/snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 284
+(n_layers = 1 (mL = 5.0 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 0.004327033554745298
+AnaEq 2.4 transmission coefficient is: 0.00018158323094380672
+Done post processing
+
+Done running simulation
+
+
+--Plotting transmission coefficients--
+Checking for csv data file
+Data found
+Plotting experiment data
+2020-12-07 14:48:31,734 matplotlib.mathtext 0/1 INFO :: Substituting symbol T from STIXNonUnicode
+2020-12-07 14:48:31,749 matplotlib.mathtext 0/1 INFO :: Substituting symbol T from STIXNonUnicode
+2020-12-07 14:48:31,769 matplotlib.mathtext 0/1 INFO :: Substituting symbol T from STIXNonUnicode
+Done plotting
+
+Done running experiment
+
