@@ -113,14 +113,33 @@ echo ''
 for (( id=0; id<$SIMS; id++ ))
 do
 	echo "--Running simulation $id--"
-	# Check whether any switch arguments were activated
-	#		The `&` will mean all simulations will start at around the same time
-	if [ "$ARGS" = true ]
+	# If -c is more than 1, it will run the simulations in parallel
+	if [ $CORES -eq 1 ] # run serially
 	then
-		bash run.sh -e $EXP -i $id -s $SIMS -c $CORES -$ASK$RUN$MER$PRO$PLT$GIF$VID &
-	else
-		bash run.sh -e $EXP -i $id -s $SIMS -c $CORES &
+		# Check whether any switch arguments were activated
+		if [ "$ARGS" = true ]
+		then
+			bash run.sh -e $EXP -i $id -s $SIMS -c $CORES -$ASK$RUN$MER$PRO$PLT$GIF$VID
+		else
+			bash run.sh -e $EXP -i $id -s $SIMS -c $CORES
+		fi
+	else # run in parallel
+		# Check whether any switch arguments were activated
+		#		The `&` will mean all simulations will start at around the same time
+		if [ "$ARGS" = true ]
+		then
+			bash run.sh -e $EXP -i $id -s $SIMS -c $CORES -$ASK$RUN$MER$PRO$PLT$GIF$VID &
+		else
+			bash run.sh -e $EXP -i $id -s $SIMS -c $CORES &
+		fi
+	# Record pid of last command run
+	pids[${id}]=$!
 	fi
+done
+
+# Wait for all pids to complete before continuing
+for pid in ${pids[*]}; do
+    wait $pid
 done
 
 # exit 0
