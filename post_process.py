@@ -111,6 +111,8 @@ psi = np.flipud(psi)
 z_tr, psi_tr = hf.trim_data_z(z, psi, z0_dis, zf_dis)
 
 # Trim in time
+print("T_cutoff = ", T_cutoff)
+print("t = ", t)
 t_tr, psi_tr = hf.trim_data_t(t, psi_tr, T_cutoff, T)
 
 ###############################################################################
