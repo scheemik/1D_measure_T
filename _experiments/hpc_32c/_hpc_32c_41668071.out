@@ -1,0 +1,319 @@
+Launched script: 2020-12-08_13h35
+
+Inactive Modules:
+  1) python/3.7.4
+
+Due to MODULEPATH changes, the following have been reloaded:
+  1) mpi4py/3.0.3
+
+The following have been reloaded with a version change:
+  1) StdEnv/2016.4 => StdEnv/2020           4) intel/2016.4 => intel/2020.1.217
+  2) gcccore/.5.4.0 => gcccore/.9.3.0       5) openmpi/2.1.1 => openmpi/4.0.3
+  3) imkl/11.3.4.258 => imkl/2020.1.217
+
+
+Activating Modules:
+  1) python/3.7.7
+
+-e, Name specified, using EXP=hpc_32c
+-s, Number of simulations specified, using SIMS=5
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+--Checking experiment directory--
+Experiment folder exists
+
+Experiment for hpc_32c exists
+Overwriting code files
+Copying code files to experiment directory
+
+--Running simulation 0--
+--Running simulation 1--
+--Running simulation 2--
+--Running simulation 3--
+--Running simulation 4--
+-e, Name specified, using EXP=hpc_32c
+-i, Simulation ID specified, using ID=3
+-n, No simulation name specified, using NAME=003_hpc_32c
+-s, Number of simulations specified, using SIMS=5
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+3-Checking experiment directory-
+Experiment folder exists
+
+3-Navigating to experiment directory-
+/home/mschee/projects/def-ngrisoua/mschee/Dedalus_repos/1D_measure_T/_experiments/hpc_32c
+
+-e, Name specified, using EXP=hpc_32c
+-i, Simulation ID specified, using ID=1
+-n, No simulation name specified, using NAME=001_hpc_32c
+-s, Number of simulations specified, using SIMS=5
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+3-Checking simulation directory-
+-m, Merge the data
+-o, Post-process data
+
+1-Checking experiment directory-
+Experiment folder exists
+
+1-Navigating to experiment directory-
+/home/mschee/projects/def-ngrisoua/mschee/Dedalus_repos/1D_measure_T/_experiments/hpc_32c
+
+1-Checking simulation directory-
+Simulation for 001_hpc_32c exists
+Overwriting simulation switchboard
+Simulation for 003_hpc_32c exists
+Overwriting simulation switchboard
+-e, Name specified, using EXP=hpc_32c
+-i, Simulation ID specified, using ID=2
+-n, No simulation name specified, using NAME=002_hpc_32c
+-s, Number of simulations specified, using SIMS=5
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+2-Checking experiment directory-
+Experiment folder exists
+
+2-Navigating to experiment directory-
+/home/mschee/projects/def-ngrisoua/mschee/Dedalus_repos/1D_measure_T/_experiments/hpc_32c
+
+2-Checking simulation directory-
+Simulation for 002_hpc_32c exists
+Overwriting simulation switchboard
+-e, Name specified, using EXP=hpc_32c
+-i, Simulation ID specified, using ID=0
+-n, No simulation name specified, using NAME=000_hpc_32c
+-s, Number of simulations specified, using SIMS=5
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+0-Checking experiment directory-
+Experiment folder exists
+
+0-Navigating to experiment directory-
+/home/mschee/projects/def-ngrisoua/mschee/Dedalus_repos/1D_measure_T/_experiments/hpc_32c
+
+0-Checking simulation directory-
+Simulation for 000_hpc_32c exists
+Overwriting simulation switchboard
+-e, Name specified, using EXP=hpc_32c
+-i, Simulation ID specified, using ID=4
+-n, No simulation name specified, using NAME=004_hpc_32c
+-s, Number of simulations specified, using SIMS=5
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+4-Checking experiment directory-
+Experiment folder exists
+
+4-Navigating to experiment directory-
+/home/mschee/projects/def-ngrisoua/mschee/Dedalus_repos/1D_measure_T/_experiments/hpc_32c
+
+4-Checking simulation directory-
+Simulation for 004_hpc_32c exists
+Overwriting simulation switchboard
+
+2-Writing parameters file-
+
+1-Writing parameters file-
+
+3-Writing parameters file-
+
+4-Writing parameters file-
+
+0-Writing parameters file-
+
+3-Running script-
+Removing old snapshots
+
+2-Running script-
+Removing old snapshots
+Running Dedalus script
+
+1-Running script-
+Removing old snapshots
+Running Dedalus script
+
+0-Running script-
+Removing old snapshots
+
+4-Running script-
+Removing old snapshots
+Running Dedalus script
+Running Dedalus script
+Running Dedalus script
+[1607452581.844175] [gra716:21883:0]          ib_md.c:325  UCX  ERROR ibv_reg_mr(address=0x2ab424400000, length=39845888, access=0xf) failed: Cannot allocate memory
+
+Done running script
+[1607452591.256403] [gra716:21876:0]          ib_md.c:325  UCX  ERROR ibv_reg_mr(address=0x2ab180200000, length=20971520, access=0xf) failed: Cannot allocate memory
+[1607452591.259362] [gra716:21883:0]          mpool.c:191  UCX  ERROR Failed to allocate memory pool (name=rc_recv_desc) chunk: Input/output error
+
+0-Merging snapshots-
+Checking for snapshots in directory: 000_hpc_32c/snapshots
+Cannot find snapshots. Aborting script
+[1607452591.559199] [gra716:21876:0]          mpool.c:191  UCX  ERROR Failed to allocate memory pool (name=ud_recv_skb) chunk: Input/output error
+
+Done running script
+
+3-Merging snapshots-
+Checking for snapshots in directory: 003_hpc_32c/snapshots
+Cannot find snapshots. Aborting script
+
+Done running script
+
+2-Merging snapshots-
+Checking for snapshots in directory: 002_hpc_32c/snapshots
+Cannot find snapshots. Aborting script
+mL= 5.0
+2020-12-08 13:36:51,114 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 1s, Remaining: 0s, Rate: 1.8e+00/s
+2020-12-08 13:36:51,115 __main__ 0/1 INFO :: Solver built
+mL= 1.25
+2020-12-08 13:36:51,115 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 1s, Remaining: 0s, Rate: 1.8e+00/s
+2020-12-08 13:36:51,116 __main__ 0/1 INFO :: Solver built
+2020-12-08 13:36:51,118 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-08 13:36:51,118 __main__ 0/1 INFO :: Starting loop
+2020-12-08 13:36:51,119 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-08 13:36:51,119 __main__ 0/1 INFO :: Starting loop
+2020-12-08 13:36:52,841 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2020-12-08 13:36:52,845 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2020-12-08 13:36:53,900 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2020-12-08 13:36:53,909 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2020-12-08 13:36:54,981 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2020-12-08 13:36:55,012 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2020-12-08 13:36:56,027 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2020-12-08 13:36:56,051 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2020-12-08 13:36:57,091 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2020-12-08 13:36:57,140 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2020-12-08 13:36:58,134 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2020-12-08 13:36:58,199 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2020-12-08 13:36:59,153 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2020-12-08 13:36:59,234 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2020-12-08 13:37:00,214 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2020-12-08 13:37:00,310 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2020-12-08 13:37:01,214 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2020-12-08 13:37:01,327 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2020-12-08 13:37:02,271 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2020-12-08 13:37:02,403 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2020-12-08 13:37:03,340 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2020-12-08 13:37:03,463 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2020-12-08 13:37:04,389 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2020-12-08 13:37:04,547 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2020-12-08 13:37:05,447 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2020-12-08 13:37:05,612 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2020-12-08 13:37:06,543 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2020-12-08 13:37:06,703 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2020-12-08 13:37:07,270 solvers 0/1 INFO :: Simulation stop time reached.
+2020-12-08 13:37:07,271 __main__ 0/1 INFO :: Iterations: 1472
+2020-12-08 13:37:07,271 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-08 13:37:07,271 __main__ 0/1 INFO :: Run time: 16.15 sec
+2020-12-08 13:37:07,271 __main__ 0/1 INFO :: Run time: 0.004487 cpu-hr
+2020-12-08 13:37:07,495 solvers 0/1 INFO :: Simulation stop time reached.
+2020-12-08 13:37:07,495 __main__ 0/1 INFO :: Iterations: 1472
+2020-12-08 13:37:07,495 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-08 13:37:07,495 __main__ 0/1 INFO :: Run time: 16.38 sec
+2020-12-08 13:37:07,495 __main__ 0/1 INFO :: Run time: 0.004549 cpu-hr
+
+Done running script
+
+Done running script
+
+
+4-Merging snapshots-
+1-Merging snapshots-
+Checking for snapshots in directory: 004_hpc_32c/snapshots
+Checking for snapshots in directory: 001_hpc_32c/snapshots
+Found snapshots
+Found snapshots
+Merging snapshots
+Merging snapshots
+--------------------------------------------------------------------------
+There are not enough slots available in the system to satisfy the 32
+slots that were requested by the application:
+
+  python3
+
+Either request fewer slots for your application, or make more slots
+available for use.
+
+A "slot" is the Open MPI term for an allocatable unit where we can
+launch a process.  The number of slots available are defined by the
+environment in which Open MPI processes are run:
+
+  1. Hostfile, via "slots=N" clauses (N defaults to number of
+     processor cores if not provided)
+  2. The --host command line parameter, via a ":N" suffix on the
+     hostname (N defaults to 1 if not provided)
+  3. Resource manager (e.g., SLURM, PBS/Torque, LSF, etc.)
+  4. If none of a hostfile, the --host command line parameter, or an
+     RM is present, Open MPI defaults to the number of processor cores
+
+In all the above cases, if you want Open MPI to default to the number
+of hardware threads instead of the number of processor cores, use the
+--use-hwthread-cpus option.
+
+Alternatively, you can use the --oversubscribe option to ignore the
+number of available slots when deciding the number of processes to
+launch.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+There are not enough slots available in the system to satisfy the 32
+slots that were requested by the application:
+
+  python3
+
+Either request fewer slots for your application, or make more slots
+available for use.
+
+A "slot" is the Open MPI term for an allocatable unit where we can
+launch a process.  The number of slots available are defined by the
+environment in which Open MPI processes are run:
+
+  1. Hostfile, via "slots=N" clauses (N defaults to number of
+     processor cores if not provided)
+  2. The --host command line parameter, via a ":N" suffix on the
+     hostname (N defaults to 1 if not provided)
+  3. Resource manager (e.g., SLURM, PBS/Torque, LSF, etc.)
+  4. If none of a hostfile, the --host command line parameter, or an
+     RM is present, Open MPI defaults to the number of processor cores
+
+In all the above cases, if you want Open MPI to default to the number
+of hardware threads instead of the number of processor cores, use the
+--use-hwthread-cpus option.
+
+Alternatively, you can use the --oversubscribe option to ignore the
+number of available slots when deciding the number of processes to
+launch.
+--------------------------------------------------------------------------
+Done merging snapshots
+
+4-Post processing-
+Checking for snapshots in directory: 004_hpc_32c/snapshots
+Cannot find snapshots. Aborting script
+Done merging snapshots
+
+1-Post processing-
+Checking for snapshots in directory: 001_hpc_32c/snapshots
+Cannot find snapshots. Aborting script
+
+--Plotting transmission coefficients--
+Checking for csv data file
+Cannot find data. Aborting script
+slurmstepd: error: Detected 330 oom-kill event(s) in step 41668071.batch cgroup. Some of your processes may have been killed by the cgroup out-of-memory handler.
