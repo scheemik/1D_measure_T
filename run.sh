@@ -308,5 +308,5 @@ then
 fi
 
 echo ''
-echo "${ID}-Done running simulation"
+echo "${ID}-Done running simulation-"
 echo ''
