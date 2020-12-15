@@ -47,61 +47,24 @@ then
 else
   echo "-s, Number of simulations specified, using SIMS=$SIMS"
 fi
-if [ -z "$CORES" ]
-then
-	CORES=1
-	echo "-c, No number of cores specified, using CORES=$CORES"
-else
-  echo "-c, Number of cores specified, using CORES=$CORES"
-fi
-if [ "$RUN" = r ]
-then
-	ARGS=true
-	echo "-r, Run the simulation"
-fi
-if [ "$MER" = m ]
-then
-	ARGS=true
-	echo "-m, Merge the data"
-fi
-if [ "$PRO" = o ]
-then
-	ARGS=true
-	echo "-o, Post-process data"
-fi
-if [ "$PLT" = p ]
-then
-	ARGS=true
-	echo "-p, Plot the simulation"
-fi
-if [ "$GIF" = g ]
-then
-	ARGS=true
-	echo "-g, Create gif of simulation"
-fi
-if [ "$VID" = v ]
-then
-	ARGS=true
-	echo "-v, Create video (mp4) of the simulation"
-fi
 
 ###############################################################################
+# Miscellaneous variables
+
+# Name of the job to submit
 JOBNAME=$EXP
-LANCEUR="HPC_lanceur.slrm"
-###############################################################################
+
 # Pull the most recent changes from git
 git pull
 
-# Check if directory for experiment exists
-if [ ! -d _experiments/${JOBNAME} ]
-then
-	mkdir _experiments/${JOBNAME}
-fi
+# Prepare experiment directory
+bash prepare_exp.sh -e $EXP -s $SIMS
 
+###############################################################################
 # Submit job to queue
-if [ "$ARGS" = true ]
-then
-	sbatch --job-name=$JOBNAME $LANCEUR -e $EXP -s $SIMS -c $CORES -$RUN$MER$PRO$PLT$GIF$VID
-else
-	sbatch --job-name=$JOBNAME $LANCEUR -e $EXP -s $SIMS -c $CORES
-fi
+# if [ "$ARGS" = true ]
+# then
+# 	sbatch --job-name=$JOBNAME $LANCEUR -e $EXP -s $SIMS -c $CORES -$RUN$MER$PRO$PLT$GIF$VID
+# else
+# 	sbatch --job-name=$JOBNAME $LANCEUR -e $EXP -s $SIMS -c $CORES
+# fi
