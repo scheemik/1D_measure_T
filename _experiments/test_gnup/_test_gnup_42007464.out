@@ -1,4 +1,4 @@
-Launched script: 2020-12-16_10h45
+Launched script: 2020-12-16_10h58
 
 Inactive Modules:
   1) python/3.7.4
@@ -15,4 +15,4 @@ The following have been reloaded with a version change:
 Activating Modules:
   1) python/3.7.7
 
-/cvmfs/soft.computecanada.ca/gentoo/2020/bin/bash: line 0: cd: _experiments/test_gnup/{001..008}_test_gnup: No such file or directory
+/cvmfs/soft.computecanada.ca/gentoo/2020/bin/bash: line 0: cd: _experiments/test_gnup/{0..8}_test_gnup: No such file or directory
