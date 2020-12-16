@@ -1,0 +1,384 @@
+Launched script: 2020-12-16_13h32
+
+Inactive Modules:
+  1) python/3.7.4
+
+Due to MODULEPATH changes, the following have been reloaded:
+  1) mpi4py/3.0.3
+
+The following have been reloaded with a version change:
+  1) StdEnv/2016.4 => StdEnv/2020           4) intel/2016.4 => intel/2020.1.217
+  2) gcccore/.5.4.0 => gcccore/.9.3.0       5) openmpi/2.1.1 => openmpi/4.0.3
+  3) imkl/11.3.4.258 => imkl/2020.1.217
+
+
+Activating Modules:
+  1) python/3.7.7
+
+-e, Name specified, using EXP=test_gnup
+-i, Simulation ID specified, using ID=000
+-n, No simulation name specified, using NAME=000_test_gnup
+-s, Number of simulations specified, using SIMS=8
+-c, Number of cores specified, using CORES=2
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+000-Writing parameters file-
+
+000-Running script-
+Running Dedalus script
+mL= 0.0
+2020-12-16 13:32:18,488 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 1s, Remaining: 0s, Rate: 1.8e+00/s
+2020-12-16 13:32:18,490 __main__ 0/1 INFO :: Solver built
+2020-12-16 13:32:18,495 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-16 13:32:18,495 __main__ 0/1 INFO :: Starting loop
+2020-12-16 13:32:19,956 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2020-12-16 13:32:20,900 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2020-12-16 13:32:21,953 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2020-12-16 13:32:22,978 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2020-12-16 13:32:24,031 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2020-12-16 13:32:25,149 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2020-12-16 13:32:26,228 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2020-12-16 13:32:27,241 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2020-12-16 13:32:28,221 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2020-12-16 13:32:29,138 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2020-12-16 13:32:30,040 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2020-12-16 13:32:30,998 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2020-12-16 13:32:31,933 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2020-12-16 13:32:32,908 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2020-12-16 13:32:33,551 solvers 0/1 INFO :: Simulation stop time reached.
+2020-12-16 13:32:33,552 __main__ 0/1 INFO :: Iterations: 1472
+2020-12-16 13:32:33,552 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-16 13:32:33,552 __main__ 0/1 INFO :: Run time: 15.06 sec
+2020-12-16 13:32:33,552 __main__ 0/1 INFO :: Run time: 0.004182 cpu-hr
+
+Done running script
+
+000-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Found snapshots
+Merging snapshots
+2020-12-16 13:32:37,007 post 0/1 INFO :: Merging files from snapshots
+2020-12-16 13:32:38,657 post 0/1 INFO :: Creating joint file snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+000-Post processing-
+Checking for snapshots in directory: snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 284
+(n_layers = 1 (mL = 0.0 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 1.013354132848333
+AnaEq 2.4 transmission coefficient is: 1.0
+Done post processing
+
+000-Done running simulation-
+
+-e, Name specified, using EXP=test_gnup
+-i, Simulation ID specified, using ID=001
+-n, No simulation name specified, using NAME=001_test_gnup
+-s, Number of simulations specified, using SIMS=8
+-c, Number of cores specified, using CORES=2
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+001-Writing parameters file-
+
+001-Running script-
+Running Dedalus script
+mL= 0.7142857142857143
+2020-12-16 13:32:18,490 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 1s, Remaining: 0s, Rate: 1.8e+00/s
+2020-12-16 13:32:18,491 __main__ 0/1 INFO :: Solver built
+2020-12-16 13:32:18,494 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-16 13:32:18,494 __main__ 0/1 INFO :: Starting loop
+2020-12-16 13:32:19,933 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2020-12-16 13:32:20,889 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2020-12-16 13:32:21,924 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2020-12-16 13:32:22,891 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2020-12-16 13:32:23,915 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2020-12-16 13:32:25,014 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2020-12-16 13:32:26,070 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2020-12-16 13:32:27,088 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2020-12-16 13:32:28,103 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2020-12-16 13:32:29,021 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2020-12-16 13:32:29,953 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2020-12-16 13:32:30,876 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2020-12-16 13:32:31,794 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2020-12-16 13:32:32,763 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2020-12-16 13:32:33,409 solvers 0/1 INFO :: Simulation stop time reached.
+2020-12-16 13:32:33,409 __main__ 0/1 INFO :: Iterations: 1472
+2020-12-16 13:32:33,409 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-16 13:32:33,409 __main__ 0/1 INFO :: Run time: 14.91 sec
+2020-12-16 13:32:33,409 __main__ 0/1 INFO :: Run time: 0.004143 cpu-hr
+
+Done running script
+
+001-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Found snapshots
+Merging snapshots
+2020-12-16 13:32:37,007 post 0/1 INFO :: Merging files from snapshots
+2020-12-16 13:32:38,584 post 0/1 INFO :: Creating joint file snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+001-Post processing-
+Checking for snapshots in directory: snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 284
+(n_layers = 1 (mL = 0.7142857142857143 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 0.6749471061784219
+AnaEq 2.4 transmission coefficient is: 0.6237928711202707
+Done post processing
+
+001-Done running simulation-
+
+-e, Name specified, using EXP=test_gnup
+-i, Simulation ID specified, using ID=002
+-n, No simulation name specified, using NAME=002_test_gnup
+-s, Number of simulations specified, using SIMS=8
+-c, Number of cores specified, using CORES=2
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+002-Writing parameters file-
+
+002-Running script-
+Running Dedalus script
+mL= 1.4285714285714286
+2020-12-16 13:32:58,267 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.4e+00/s
+2020-12-16 13:32:58,268 __main__ 0/1 INFO :: Solver built
+2020-12-16 13:32:58,270 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-16 13:32:58,270 __main__ 0/1 INFO :: Starting loop
+2020-12-16 13:32:59,706 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:00,750 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:01,796 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:02,816 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:03,809 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:04,710 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:05,647 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:06,563 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:07,469 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:08,393 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:09,310 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:10,213 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:11,146 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:12,072 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:12,724 solvers 0/1 INFO :: Simulation stop time reached.
+2020-12-16 13:33:12,724 __main__ 0/1 INFO :: Iterations: 1472
+2020-12-16 13:33:12,724 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-16 13:33:12,724 __main__ 0/1 INFO :: Run time: 14.45 sec
+2020-12-16 13:33:12,724 __main__ 0/1 INFO :: Run time: 0.004015 cpu-hr
+
+Done running script
+
+002-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Found snapshots
+Merging snapshots
+2020-12-16 13:33:16,866 post 0/1 INFO :: Merging files from snapshots
+2020-12-16 13:33:18,461 post 0/1 INFO :: Creating joint file snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+002-Post processing-
+Checking for snapshots in directory: snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 284
+(n_layers = 1 (mL = 1.4285714285714286 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 0.25033587260728485
+AnaEq 2.4 transmission coefficient is: 0.2054533410185823
+Done post processing
+
+002-Done running simulation-
+
+-e, Name specified, using EXP=test_gnup
+-i, Simulation ID specified, using ID=003
+-n, No simulation name specified, using NAME=003_test_gnup
+-s, Number of simulations specified, using SIMS=8
+-c, Number of cores specified, using CORES=2
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+003-Writing parameters file-
+
+003-Running script-
+Running Dedalus script
+mL= 2.142857142857143
+2020-12-16 13:32:58,247 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.5e+00/s
+2020-12-16 13:32:58,248 __main__ 0/1 INFO :: Solver built
+2020-12-16 13:32:58,250 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-16 13:32:58,250 __main__ 0/1 INFO :: Starting loop
+2020-12-16 13:32:59,706 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:00,723 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:01,742 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:02,741 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:03,719 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:04,593 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:05,498 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:06,429 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:07,323 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:08,229 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:09,117 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:09,995 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:10,902 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:11,796 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:12,428 solvers 0/1 INFO :: Simulation stop time reached.
+2020-12-16 13:33:12,428 __main__ 0/1 INFO :: Iterations: 1472
+2020-12-16 13:33:12,428 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-16 13:33:12,428 __main__ 0/1 INFO :: Run time: 14.18 sec
+2020-12-16 13:33:12,428 __main__ 0/1 INFO :: Run time: 0.003938 cpu-hr
+
+Done running script
+
+003-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Found snapshots
+Merging snapshots
+2020-12-16 13:33:16,866 post 0/1 INFO :: Merging files from snapshots
+2020-12-16 13:33:18,477 post 0/1 INFO :: Creating joint file snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+003-Post processing-
+Checking for snapshots in directory: snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 284
+(n_layers = 1 (mL = 2.142857142857143 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 0.08380255428554063
+AnaEq 2.4 transmission coefficient is: 0.053570337080188137
+Done post processing
+
+003-Done running simulation-
+
+-e, Name specified, using EXP=test_gnup
+-i, Simulation ID specified, using ID=004
+-n, No simulation name specified, using NAME=004_test_gnup
+-s, Number of simulations specified, using SIMS=8
+-c, Number of cores specified, using CORES=2
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+004-Writing parameters file-
+
+004-Running script-
+Running Dedalus script
+mL= 2.857142857142857
+2020-12-16 13:33:35,061 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.5e+00/s
+2020-12-16 13:33:35,062 __main__ 0/1 INFO :: Solver built
+2020-12-16 13:33:35,063 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-16 13:33:35,063 __main__ 0/1 INFO :: Starting loop
+2020-12-16 13:33:36,396 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:37,338 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:38,262 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:39,227 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:40,252 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:41,267 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:42,294 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:43,222 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:44,129 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:45,113 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:46,055 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:46,981 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:47,910 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:48,826 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:49,519 solvers 0/1 INFO :: Simulation stop time reached.
+2020-12-16 13:33:49,519 __main__ 0/1 INFO :: Iterations: 1472
+2020-12-16 13:33:49,520 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-16 13:33:49,520 __main__ 0/1 INFO :: Run time: 14.46 sec
+2020-12-16 13:33:49,520 __main__ 0/1 INFO :: Run time: 0.004016 cpu-hr
+
+Done running script
+
+004-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Found snapshots
+Merging snapshots
+2020-12-16 13:33:54,168 post 0/1 INFO :: Merging files from snapshots
+2020-12-16 13:33:55,613 post 0/1 INFO :: Creating joint file snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+004-Post processing-
+Checking for snapshots in directory: snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 284
+(n_layers = 1 (mL = 2.857142857142857 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 0.030444193490700874
+AnaEq 2.4 transmission coefficient is: 0.013107410674181794
+Done post processing
+
+004-Done running simulation-
+
+-e, Name specified, using EXP=test_gnup
+-i, Simulation ID specified, using ID=005
+-n, No simulation name specified, using NAME=005_test_gnup
+-s, Number of simulations specified, using SIMS=8
+-c, Number of cores specified, using CORES=2
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+005-Writing parameters file-
+
+005-Running script-
+Running Dedalus script
+mL= 3.5714285714285716
+2020-12-16 13:33:35,053 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.5e+00/s
+2020-12-16 13:33:35,054 __main__ 0/1 INFO :: Solver built
+2020-12-16 13:33:35,056 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-16 13:33:35,056 __main__ 0/1 INFO :: Starting loop
+2020-12-16 13:33:36,408 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:37,320 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:38,235 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:39,151 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:40,139 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:41,139 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2020-12-16 13:33:42,148 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:43,115 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:44,001 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:44,944 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:45,866 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:46,759 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:47,671 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:48,570 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2020-12-16 13:33:49,224 solvers 0/1 INFO :: Simulation stop time reached.
+2020-12-16 13:33:49,224 __main__ 0/1 INFO :: Iterations: 1472
+2020-12-16 13:33:49,224 __main__ 0/1 INFO :: Sim end period: 23.000000
+2020-12-16 13:33:49,224 __main__ 0/1 INFO :: Run time: 14.17 sec
+2020-12-16 13:33:49,224 __main__ 0/1 INFO :: Run time: 0.003936 cpu-hr
+
+Done running script
+
+005-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Found snapshots
+Merging snapshots
+2020-12-16 13:33:54,168 post 0/1 INFO :: Merging files from snapshots
+2020-12-16 13:33:55,652 post 0/1 INFO :: Creating joint file snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+005-Post processing-
+Checking for snapshots in directory: snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 284
+(n_layers = 1 (mL = 3.5714285714285716 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 0.012556543458238457
+AnaEq 2.4 transmission coefficient is: 0.0031569682141221844
+Done post processing
+
+005-Done running simulation-
+
+slurmstepd: error: *** JOB 42014280 ON gra50 CANCELLED AT 2020-12-16T13:34:05 DUE TO TIME LIMIT ***

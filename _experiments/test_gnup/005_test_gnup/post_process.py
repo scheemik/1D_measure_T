@@ -2,11 +2,10 @@
 Performs post-processing actions. Run with $ python3 post_process.py NAME PLOT_CHECKS snapshots/*.h5
 
 Usage:
-    post_process.py NAME SWITCHBOARD PLOT_CHECKS <files>... [--output=<dir>]
+    post_process.py NAME PLOT_CHECKS <files>... [--output=<dir>]
 
 Options:
     NAME            # name of the experiment run from -n
-    SWITCHBOARD     # name of the switchboard file
     PLOT_CHECKS     # True or False whether to make the plots or not
     <files>         # h5 snapshot files
 
@@ -29,7 +28,6 @@ from dedalus.extras.plot_tools import quad_mesh
 from docopt import docopt
 args = docopt(__doc__)
 run_name    = args['NAME']      # Simulation name, used to route filepaths of plots
-switchboard = args['SWITCHBOARD']   # Switchboard file
 plot_checks = args['PLOT_CHECKS'].lower() == 'true'
 h5_files    = args['<files>']
 
@@ -37,8 +35,9 @@ h5_files    = args['<files>']
 # Import auxiliary files
 
 # Import SwitchBoard Parameters (sbp)
-switchboard_module = run_name + "." + run_name + "_" + switchboard
-sbp = importlib.import_module(switchboard_module)
+import switchboard as sbp
+# switchboard_module = run_name + "." + run_name + "_" + switchboard
+# sbp = importlib.import_module(switchboard_module)
 
 import helper_functions as hf
 import helper_functions_CD as hfCD

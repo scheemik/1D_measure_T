@@ -1,11 +1,10 @@
 """
 Usage:
-    main.py NAME ID SWITCHBOARD PLOT_CHECKS
+    main.py NAME ID PLOT_CHECKS
 
 Options:
     NAME            # name of the experiment run from -n
     ID              # Simulation ID number
-    SWITCHBOARD     # name of the switchboard file
     PLOT_CHECKS     # True or False whether to make the plots or not
 
 Author: Mikhail Schee
@@ -50,8 +49,6 @@ from docopt import docopt
 args = docopt(__doc__)
 run_name    = args['NAME']          # Simulation name, used to route filepaths of plots
 sim_id      = int(args['ID'])       # Simulation ID number
-switchboard = args['SWITCHBOARD']   # Switchboard file
-# print('switchboard=',switchboard)
 plot_checks = args['PLOT_CHECKS'].lower() == 'true'
 
 # Add functions in helper file
@@ -63,6 +60,7 @@ import switchboard as sbp
 # switchboard_module = run_name + "." + run_name + "_" + switchboard
 # importlib.invalidate_caches() # force python to search the directories again
 # sbp = importlib.import_module(switchboard_module)
+
 # Physical parameters
 nu          = 0#sbp.nu            # [m^2/s]       Viscosity (momentum diffusivity)
 f_0         = sbp.f_0           # [s^-1]        Reference Coriolis parameter

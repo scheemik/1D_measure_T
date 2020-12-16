@@ -200,7 +200,7 @@ then
 		rm -rf "${snapshot_path}"		# Careful, easy to accidentally remove $NAME dir
 	fi
 	echo "Running Dedalus script"
-	${python_command} $code_file $NAME $ID $switchboard $PLT
+	${python_command} $code_file $NAME $ID $PLT
   echo ""
 	echo 'Done running script'
 fi
@@ -238,10 +238,10 @@ then
 		for ((i=1;i<=9;++i))
 		do
 			old_name=${snapshot_path}/snapshots_s${i}.h5
-			echo "Reformatting: ${old_name}"
 			if [ -e $old_name ]
 			then
 				new_name=${snapshot_path}/snapshots_s0${i}.h5
+				echo "Reformatting: ${old_name} to ${new_name}"
 				mv $old_name $new_name
 			fi
 		done
@@ -264,7 +264,7 @@ then
 		exit 1
 	fi
 	echo 'Running post processing script'
-	${python_command} $post_process $NAME $switchboard $PLT $snapshot_path/*.h5
+	${python_command} $post_process $NAME $PLT $snapshot_path/*.h5
 	echo 'Done post processing'
 fi
 
