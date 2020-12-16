@@ -59,10 +59,10 @@ import helper_functions as hf
 
 ###############################################################################
 # Import SwitchBoard Parameters (sbp)
-switchboard_module = switchboard
+import switchboard as sbp
 # switchboard_module = run_name + "." + run_name + "_" + switchboard
-importlib.invalidate_caches() # force python to search the directories again
-sbp = importlib.import_module(switchboard_module)
+# importlib.invalidate_caches() # force python to search the directories again
+# sbp = importlib.import_module(switchboard_module)
 # Physical parameters
 nu          = 0#sbp.nu            # [m^2/s]       Viscosity (momentum diffusivity)
 f_0         = sbp.f_0           # [s^-1]        Reference Coriolis parameter
