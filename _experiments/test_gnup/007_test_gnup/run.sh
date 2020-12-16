@@ -114,7 +114,7 @@ fi
 ###############################################################################
 
 # The command and arguments for running scripts with mpi
-mpiexec_command="mpiexec"
+# mpiexec_command="mpiexec"
 # The version of python to use
 python_command="python3"
 # Path to snapshot files
@@ -129,26 +129,17 @@ cleanup_snapshots="True"
 
 # Name of the script to write the parameters
 params_script='write_params.py'
-# params_file='params.py'
 # Name of the main code file
 code_file='main.py'
 # Name of switchboard file
 switchboard="switchboard"
 switch_file="${switchboard}.py"
-# sim_switch="${NAME}/${NAME}_${switch_file}"
 # Name of merging file
 merge_file="merge.py"
-# Helper code files
-# helper_funcs="helper_functions.py"
-# helper_funcs_CD="helper_functions_CD.py"
 # Name of post processing file
 post_process="post_process.py"
-# Name of slice plotting file
-# plot_file="plot_slices.py"
 # Name of gif creation file
 gif_cre_file="create_gif.py"
-# Group all the code files for ease of calling
-# CODE_FILES="$params_script $code_file $switch_file $merge_file $helper_funcs $helper_funcs_CD $post_process $plot_exp $plot_file $gif_cre_file"
 
 ###############################################################################
 # echo ""
@@ -235,7 +226,7 @@ then
 		echo "Snapshots already merged"
 	else
 		echo "Merging snapshots"
-		${mpiexec_command} -n $CORES python3 $merge_file $snapshot_path --cleanup=$cleanup_snapshots
+		${python_command} $merge_file $snapshot_path --cleanup=$cleanup_snapshots
 	fi
   echo 'Done merging snapshots'
 
