@@ -1,5 +1,7 @@
 #!/bin/bash
+
 # A bash script to run the Dedalus python code
+#		Assumes it is run inside a simulation directory
 # Takes in optional arguments:
 #	$ sh run.sh -e <name of experiment> 				Default: test_exp
 #             -i <sim ID>          						Default: 0
@@ -151,20 +153,20 @@ gif_cre_file="create_gif.py"
 CODE_FILES="$params_script $code_file $switch_file $merge_file $helper_funcs $helper_funcs_CD $post_process $plot_exp $plot_file $gif_cre_file"
 
 ###############################################################################
-echo ""
-echo "${ID}-Checking experiment directory-"
-# Check if experiments folder exists
-if [ -e _experiments ]
-then
-	echo 'Experiment folder exists'
-else
-	echo 'Experiment folder not found. Aborting script'
-	exit 1
-fi
-echo ''
-echo "${ID}-Navigating to experiment directory-"
-cd _experiments/${EXP}
-pwd
+# echo ""
+# echo "${ID}-Checking experiment directory-"
+# # Check if experiments folder exists
+# if [ -e _experiments ]
+# then
+# 	echo 'Experiment folder exists'
+# else
+# 	echo 'Experiment folder not found. Aborting script'
+# 	exit 1
+# fi
+# echo ''
+# echo "${ID}-Navigating to experiment directory-"
+# cd _experiments/${EXP}
+# pwd
 ###############################################################################
 echo ''
 echo "${ID}-Checking simulation directory-"

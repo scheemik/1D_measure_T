@@ -44,53 +44,38 @@ done
 if [ -z "$EXP" ]
 then
 	EXP=$DATETIME
-#	echo "-e, No name specified, using EXP=$EXP"
-#else
-#  echo "-e, Name specified, using EXP=$EXP"
 fi
 if [ -z "$SIMS" ]
 then
 	SIMS=5
-#	echo "-s, No number of simulations specified, using SIMS=$SIMS"
-#else
-#  echo "-s, Number of simulations specified, using SIMS=$SIMS"
 fi
 if [ -z "$CORES" ]
 then
 	CORES=32
-# 	echo "-c, No number of cores specified, using CORES=$CORES"
-# else
-#  echo "-c, Number of cores specified, using CORES=$CORES"
 fi
 if [ "$RUN" = r ]
 then
 	ARGS=true
-#	echo "-r, Run the simulation"
 fi
 if [ "$MER" = m ]
 then
 	ARGS=true
-#	echo "-m, Merge the data"
 fi
 if [ "$PRO" = o ]
 then
 	ARGS=true
-#	echo "-o, Post-process data"
 fi
 if [ "$PLT" = p ]
 then
 	ARGS=true
-#	echo "-p, Plot the simulation"
 fi
 if [ "$GIF" = g ]
 then
 	ARGS=true
-#	echo "-g, Create gif of simulation"
 fi
 if [ "$VID" = v ]
 then
 	ARGS=true
-#	echo "-v, Create video (mp4) of the simulation"
 fi
 
 ###############################################################################
@@ -102,6 +87,7 @@ fi
 module load mpi4py
 module load StdEnv/2020
 module load python/3.7.7
+module load gnu-parallel
 
 export FFTW_PATH=$EBROOTFFTW
 export MPI_PATH=$EBROOTOPENMPI
@@ -118,9 +104,15 @@ source ~/projects/def-ngrisoua/mschee/Dedalus_repos/2020a-dedalus/bin/activate
 
 ###############################################################################
 # Start the experiment script
-if [ "$ARGS" = true ]
-then
-	bash ./exp_run.sh -e $EXP -s $SIMS -c $CORES -$RUN$MER$PRO$PLT$GIF$VID
-else
-	bash ./exp_run.sh -e $EXP -s $SIMS -c $CORES
-fi
+
+# Define experiment file path
+EXP_PATH="_experiments/$EXP"
+# Execute serial scripts in parallel
+parallel --joblog $SLURM_JOBID.log "cd _experiments/$EXP/{}_$EXP && bash run.sh -e $EXP -s $SIMS -c $CORES" ::: {000..$SIMS}
+
+# if [ "$ARGS" = true ]
+# then
+# 	bash ./exp_run.sh -e $EXP -s $SIMS -c $CORES -$RUN$MER$PRO$PLT$GIF$VID
+# else
+# 	bash ./exp_run.sh -e $EXP -s $SIMS -c $CORES
+# fi

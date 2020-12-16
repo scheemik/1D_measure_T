@@ -80,6 +80,8 @@ plot_exp="plot_exp_data.py"
 ###############################################################################
 # Code file variables needed for each simulation
 
+# Name of the run script
+run_file="run.sh"
 # Name of the script to write the unique parameters file
 params_script='write_params.py'
 # Name of the main code file
@@ -98,7 +100,7 @@ plot_file="plot_slices.py"
 # Name of gif creation file
 gif_cre_file="create_gif.py"
 # Group all the code files for ease of calling
-CODE_FILES="$params_script $code_file $switch_file $merge_file $helper_funcs $helper_funcs_CD $post_process $plot_file $gif_cre_file"
+CODE_FILES="$run_file $params_script $code_file $switch_file $merge_file $helper_funcs $helper_funcs_CD $post_process $plot_file $gif_cre_file"
 
 ###############################################################################
 
