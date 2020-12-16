@@ -53,6 +53,8 @@ fi
 
 # Name of the job to submit
 JOBNAME=$EXP
+# Name of the lanceur file
+LANCEUR="HPC_lanceur.slrm"
 
 # Pull the most recent changes from git
 git pull
