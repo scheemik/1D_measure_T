@@ -109,18 +109,18 @@ EXP_PATH="_experiments/${EXP}"
 # Format number of simulations with correct number of digits
 printf -v PSIMS "%03d" $SIMS
 # Execute serial scripts in parallel
-# parallel --joblog ${EXP_PATH}/${SLURM_JOBID}.log "cd ${EXP_PATH}/{}_$EXP && bash run.sh -e $EXP -s $SIMS -c $CORES" ::: {000..$PSIMS}
+# parallel --joblog ${EXP_PATH}/${SLURM_JOBID}.log "cd ${EXP_PATH}/{}_$EXP && bash run.sh -e $EXP -i {} -s $SIMS -c $CORES" ::: {000..$PSIMS}
 
 # EXECUTION COMMAND - DON'T USE THIS ONE
 parallel --joblog ${EXP_PATH}/${SLURM_JOBID}.log -j $SLURM_TASKS_PER_NODE <<EOF
-  cd ${EXP_PATH}/000_$EXP && bash run.sh -e $EXP -s $SIMS -c $CORES
-  cd ${EXP_PATH}/001_$EXP && bash run.sh -e $EXP -s $SIMS -c $CORES
-	cd ${EXP_PATH}/002_$EXP && bash run.sh -e $EXP -s $SIMS -c $CORES
-	cd ${EXP_PATH}/003_$EXP && bash run.sh -e $EXP -s $SIMS -c $CORES
-	cd ${EXP_PATH}/004_$EXP && bash run.sh -e $EXP -s $SIMS -c $CORES
-	cd ${EXP_PATH}/005_$EXP && bash run.sh -e $EXP -s $SIMS -c $CORES
-	cd ${EXP_PATH}/006_$EXP && bash run.sh -e $EXP -s $SIMS -c $CORES
-	cd ${EXP_PATH}/007_$EXP && bash run.sh -e $EXP -s $SIMS -c $CORES
+  cd ${EXP_PATH}/000_$EXP && bash run.sh -e $EXP -i 000 -s $SIMS -c $CORES
+  cd ${EXP_PATH}/001_$EXP && bash run.sh -e $EXP -i 001 -s $SIMS -c $CORES
+	cd ${EXP_PATH}/002_$EXP && bash run.sh -e $EXP -i 002 -s $SIMS -c $CORES
+	cd ${EXP_PATH}/003_$EXP && bash run.sh -e $EXP -i 003 -s $SIMS -c $CORES
+	cd ${EXP_PATH}/004_$EXP && bash run.sh -e $EXP -i 004 -s $SIMS -c $CORES
+	cd ${EXP_PATH}/005_$EXP && bash run.sh -e $EXP -i 005 -s $SIMS -c $CORES
+	cd ${EXP_PATH}/006_$EXP && bash run.sh -e $EXP -i 006 -s $SIMS -c $CORES
+	cd ${EXP_PATH}/007_$EXP && bash run.sh -e $EXP -i 007 -s $SIMS -c $CORES
 EOF
 
 # if [ "$ARGS" = true ]
