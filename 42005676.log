@@ -1,2 +1,0 @@
-Seq	Host	Starttime	JobRuntime	Send	Receive	Exitval	Signal	Command
-1	:	1608129963.496	     0.000	0	0	1	0	cd _experiments/test_gnup/'{000..8}'_test_gnup && bash run.sh -e test_gnup -s 8 -c 2
