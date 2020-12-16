@@ -99,8 +99,9 @@ fi
 # Make the experiment directory
 mkdir _experiments/${EXP}
 
-# Copy experiment plotting file to experiment directory
+# Copy experiment plotting file and switchboard to experiment directory
 cp $plot_exp _experiments/${EXP}
+cp $switch_file _experiments/${EXP}
 
 ###############################################################################
 # Get each individual simulation's directory ready to run

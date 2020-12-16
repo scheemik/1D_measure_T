@@ -3,11 +3,11 @@
 This script plots the simulated and analytical values of the transmission coefficient
 
 Usage:
-    plot_exp_data.py EXP SWITCHBOARD
+    plot_exp_data.py EXP SIMS
 
 Options:
     EXP             # name of the experiment from -e
-    SWITCHBOARD     # name of the switchboard file
+    SIMS            # number of simulations in the experiment from -s
 
 """
 
@@ -17,21 +17,22 @@ import matplotlib.pyplot as plt
 # Parse input parameters
 from docopt import docopt
 args = docopt(__doc__)
-exp_name    = args['EXP']      # Experiment name, needed to form file path to sbp
-switchboard = args['SWITCHBOARD']   # Switchboard file
+exp_name    = args['EXP']       # Experiment name, for finding csv files
+num_sims    = args['SIMS']      # Number of simulations
 
 ###############################################################################
 # Import SwitchBoard Parameters (sbp)
 #   This import assumes the default simulation naming convention
 import importlib
-switchboard_module = "000_" + exp_name + "." + switchboard
-sbp = importlib.import_module(switchboard_module)
+import switchboard as sbp
+# switchboard_module = "000_" + exp_name + "." + switchboard
+# sbp = importlib.import_module(switchboard_module)
 # Add functions in helper file
 import helper_functions as hf
 
 # Physical parameters
 # nu          = sbp.nu            # [m^2/s] Viscosity (momentum diffusivity)
-# #kappa       = sbp.kappa         # [m^2/s] Thermal diffusivity
+# kappa       = sbp.kappa         # [m^2/s] Thermal diffusivity
 # f_0         = sbp.f_0           # [s^-1]        Reference Coriolis parameter
 # g           = sbp.g             # [m/s^2] Acceleration due to gravity
 # Problem parameters
@@ -39,13 +40,15 @@ theta       = sbp.theta         # [rad]         Propagation angle from vertical
 omega       = sbp.omega         # [rad s^-1]    Wave frequency
 
 ###############################################################################
-# Read data from the csv file
+# Read data from the csv files
 
 import csv
-csv_file = "exp_data.csv"
-with open(csv_file, 'r') as datafile:
-    csvreader = csv.reader(datafile)
-    data_arr = np.array(list(csvreader))
+data_arr = []
+for i in range(num_sims):
+    sim_csv = str(id) + "_" + str(exp_name) + "/sim_data.csv"
+    with open(csv_file, 'r') as datafile:
+        csvreader = csv.reader(datafile)
+        np.append(data_arr, np.array(list(csvreader)), axis=1)
 
 # csv read in as U32, convert data to float 64 before using
 mL_array = data_arr[:,1].astype('float64')

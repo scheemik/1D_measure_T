@@ -5,7 +5,7 @@
 #SBATCH --output=_experiments/%x/_%x_%j.out						# %x = job_name, %j = job_number
 #SBATCH --ntasks-per-node=2
 #SBATCH --nodes=1
-#SBATCH --time=0-00:02  # d-HH:MM
+#SBATCH --time=0-00:09  # d-HH:MM
 
 # Submit this script to a HPC with `sbatch`
 # Takes in optional arguments:
@@ -129,4 +129,10 @@ else
 		cd ${EXP_PATH}/006_$EXP && bash run.sh -e $EXP -i 006 -s $SIMS -c $CORES
 		cd ${EXP_PATH}/007_$EXP && bash run.sh -e $EXP -i 007 -s $SIMS -c $CORES
 	EOF
+fi
+
+if [ "$PLT" = p ]
+then
+	cd _experiments/$EXP
+	python3 plot_exp_data.py $EXP $SIMS
 fi
