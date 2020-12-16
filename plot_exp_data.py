@@ -24,7 +24,7 @@ switchboard = args['SWITCHBOARD']   # Switchboard file
 # Import SwitchBoard Parameters (sbp)
 #   This import assumes the default simulation naming convention
 import importlib
-switchboard_module = "000_" + exp_name + "." + "000_" + exp_name + "_" + switchboard
+switchboard_module = "000_" + exp_name + "." + switchboard
 sbp = importlib.import_module(switchboard_module)
 # Add functions in helper file
 import helper_functions as hf

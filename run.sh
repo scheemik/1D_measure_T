@@ -5,7 +5,7 @@
 # Takes in optional arguments:
 #	$ sh run.sh -e <name of experiment> 				Default: test_exp
 #             -i <sim ID>          						Default: 0
-#							-n <name of simulation>         Default: ID + current datetime
+#							-n <name of simulation>         Default: ID + name of experiment
 #							-s <number of simulations>      Default: 1
 #							-c <number of cores>            Default: 1
 #							-a <ask before deleting>				Default: False
@@ -119,7 +119,7 @@ mpiexec_command="mpiexec"
 python_command="python3"
 # Path to snapshot files
 snapshot_name="snapshots"
-snapshot_path="${NAME}/${snapshot_name}"
+snapshot_path="${snapshot_name}"
 # Name of output directory
 output_dir="outputs"
 # Path to frames
@@ -129,28 +129,26 @@ cleanup_snapshots="True"
 
 # Name of the script to write the parameters
 params_script='write_params.py'
-params_file='params.py'
+# params_file='params.py'
 # Name of the main code file
 code_file='main.py'
 # Name of switchboard file
 switchboard="switchboard"
 switch_file="${switchboard}.py"
-sim_switch="${NAME}/${NAME}_${switch_file}"
+# sim_switch="${NAME}/${NAME}_${switch_file}"
 # Name of merging file
 merge_file="merge.py"
 # Helper code files
-helper_funcs="helper_functions.py"
-helper_funcs_CD="helper_functions_CD.py"
+# helper_funcs="helper_functions.py"
+# helper_funcs_CD="helper_functions_CD.py"
 # Name of post processing file
 post_process="post_process.py"
-# Name of experiment plotting file
-plot_exp="plot_exp_data.py"
 # Name of slice plotting file
-plot_file="plot_slices.py"
+# plot_file="plot_slices.py"
 # Name of gif creation file
 gif_cre_file="create_gif.py"
 # Group all the code files for ease of calling
-CODE_FILES="$params_script $code_file $switch_file $merge_file $helper_funcs $helper_funcs_CD $post_process $plot_exp $plot_file $gif_cre_file"
+# CODE_FILES="$params_script $code_file $switch_file $merge_file $helper_funcs $helper_funcs_CD $post_process $plot_exp $plot_file $gif_cre_file"
 
 ###############################################################################
 # echo ""
@@ -168,25 +166,25 @@ CODE_FILES="$params_script $code_file $switch_file $merge_file $helper_funcs $he
 # cd _experiments/${EXP}
 # pwd
 ###############################################################################
-echo ''
-echo "${ID}-Checking simulation directory-"
-# Check if simulation folder exists
-if [ -d $NAME ]
-then
-	echo "Simulation for $NAME exists"
-else
-	echo "Creating simulation for $NAME"
-	mkdir "$NAME"
-fi
-echo 'Overwriting simulation switchboard'
-# Check if simulation folder exists
-if [ -e $switch_file ]
-then
-	cp $switch_file $sim_switch
-else
-	echo "Cannot find $switch_file, aborting execution"
-	exit 1
-fi
+# echo ''
+# echo "${ID}-Checking simulation directory-"
+# # Check if simulation folder exists
+# if [ -d $NAME ]
+# then
+# 	echo "Simulation for $NAME exists"
+# else
+# 	echo "Creating simulation for $NAME"
+# 	mkdir "$NAME"
+# fi
+# echo 'Overwriting simulation switchboard'
+# # Check if simulation folder exists
+# if [ -e $switch_file ]
+# then
+# 	cp $switch_file $sim_switch
+# else
+# 	echo "Cannot find $switch_file, aborting execution"
+# 	exit 1
+# fi
 echo ''
 echo "${ID}-Writing parameters file-"
 # Check if simulation folder exists

@@ -5,6 +5,9 @@
 #	$ sh prepare_exp.sh -e <name of experiment> 				 Default: current datetime
 #								  		-s <number of simulations>      Default: 5
 
+echo ""
+echo "Preparing experiment directory"
+
 # Current datetime
 DATETIME=`date +"%Y-%m-%d_%Hh%M"`
 

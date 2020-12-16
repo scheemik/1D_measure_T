@@ -59,7 +59,8 @@ import helper_functions as hf
 
 ###############################################################################
 # Import SwitchBoard Parameters (sbp)
-switchboard_module = run_name + "." + run_name + "_" + switchboard
+switchboard_module = switchboard
+# switchboard_module = run_name + "." + run_name + "_" + switchboard
 importlib.invalidate_caches() # force python to search the directories again
 sbp = importlib.import_module(switchboard_module)
 # Physical parameters
@@ -176,7 +177,7 @@ def add_new_file_handler(snapshot_directory='snapshots/new', sdt=sbp.snap_dt):
     return solver.evaluator.add_file_handler(snapshot_directory, sim_dt=sdt, max_writes=sbp.snap_max_writes, mode=sbp.fh_mode)
 
 # Add file handler for snapshots and output state of variables
-snapshot_path = run_name + '/snapshots'
+snapshot_path = 'snapshots'
 snapshots = add_new_file_handler(snapshot_path)
 # Add analysis tasks for all state variables
 snapshots.add_system(solver.state)

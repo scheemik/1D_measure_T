@@ -1,5 +1,5 @@
 """
-Writes parameters for one simulation. 
+Writes parameters for one simulation.
 
 Usage:
     write_params.py NAME ID N_SIMS
@@ -33,7 +33,7 @@ mL_arr = np.linspace(mL_start, mL_stop, n_sims)
 ###############################################################################
 # Write out parameters based on sim ID
 
-filename = run_name + "/params.py"
+filename = "params.py"
 params_file = open(filename, "w+")
 
 params_file.write("mL = " + str(mL_arr[sim_id]))
