@@ -53,27 +53,8 @@ if [ -z "$CORES" ]
 then
 	CORES=32
 fi
-if [ "$RUN" = r ]
-then
-	ARGS=true
-fi
-if [ "$MER" = m ]
-then
-	ARGS=true
-fi
-if [ "$PRO" = o ]
-then
-	ARGS=true
-fi
-if [ "$PLT" = p ]
-then
-	ARGS=true
-fi
-if [ "$GIF" = g ]
-then
-	ARGS=true
-fi
-if [ "$VID" = v ]
+# Check for run arguments
+if [ "$RUN" = r ] || [ "$MER" = m ] || [ "$PRO" = o ] || [ "$PLT" = p ] || [ "$GIF" = g ] || [ "$VID" = v ]
 then
 	ARGS=true
 fi

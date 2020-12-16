@@ -47,6 +47,11 @@ then
 else
   echo "-s, Number of simulations specified, using SIMS=$SIMS"
 fi
+# Check for run arguments
+if [ "$RUN" = r ] || [ "$MER" = m ] || [ "$PRO" = o ] || [ "$PLT" = p ] || [ "$GIF" = g ] || [ "$VID" = v ]
+then
+	ARGS=true
+fi
 
 ###############################################################################
 # Miscellaneous variables
