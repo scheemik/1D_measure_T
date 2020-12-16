@@ -107,7 +107,7 @@ printf -v PSIMS "%03d" $SIMS
 if [ "$ARGS" = true ]
 then
 	# EXECUTION COMMAND - DON'T USE THIS ONE
-	parallel --joblog ${EXP_PATH}/${SLURM_JOBID}.log -j $SLURM_TASKS_PER_NODE <<-EOF
+	parallel --joblog ${EXP_PATH}/_${EXP}_${SLURM_JOBID}.log -j $SLURM_TASKS_PER_NODE <<-EOF
 	  cd ${EXP_PATH}/000_$EXP && bash run.sh -e $EXP -i 000 -s $SIMS -c $CORES -$RUN$MER$PRO$PLT$GIF$VID
 	  cd ${EXP_PATH}/001_$EXP && bash run.sh -e $EXP -i 001 -s $SIMS -c $CORES -$RUN$MER$PRO$PLT$GIF$VID
 		cd ${EXP_PATH}/002_$EXP && bash run.sh -e $EXP -i 002 -s $SIMS -c $CORES -$RUN$MER$PRO$PLT$GIF$VID
@@ -119,7 +119,7 @@ then
 	EOF
 else
 	# EXECUTION COMMAND - DON'T USE THIS ONE
-	parallel --joblog ${EXP_PATH}/${SLURM_JOBID}.log -j $SLURM_TASKS_PER_NODE <<-EOF
+	parallel --joblog ${EXP_PATH}/_${EXP}_${SLURM_JOBID}.log -j $SLURM_TASKS_PER_NODE <<-EOF
 	  cd ${EXP_PATH}/000_$EXP && bash run.sh -e $EXP -i 000 -s $SIMS -c $CORES
 	  cd ${EXP_PATH}/001_$EXP && bash run.sh -e $EXP -i 001 -s $SIMS -c $CORES
 		cd ${EXP_PATH}/002_$EXP && bash run.sh -e $EXP -i 002 -s $SIMS -c $CORES
