@@ -62,9 +62,9 @@ bash prepare_exp.sh -e $EXP -s $SIMS
 
 ###############################################################################
 # Submit job to queue
-# if [ "$ARGS" = true ]
-# then
-# 	sbatch --job-name=$JOBNAME $LANCEUR -e $EXP -s $SIMS -c $CORES -$RUN$MER$PRO$PLT$GIF$VID
-# else
-# 	sbatch --job-name=$JOBNAME $LANCEUR -e $EXP -s $SIMS -c $CORES
-# fi
+if [ "$ARGS" = true ]
+then
+	sbatch --job-name=$JOBNAME $LANCEUR -e $EXP -s $SIMS -c $CORES -$RUN$MER$PRO$PLT$GIF$VID
+else
+	sbatch --job-name=$JOBNAME $LANCEUR -e $EXP -s $SIMS -c $CORES
+fi
