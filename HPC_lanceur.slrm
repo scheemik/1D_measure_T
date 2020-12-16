@@ -104,10 +104,10 @@ source ~/projects/def-ngrisoua/mschee/Dedalus_repos/2020a-dedalus/bin/activate
 ###############################################################################
 # Start the experiment script
 
-# Define experiment file path
-EXP_PATH="_experiments/$EXP"
+# Format number of simulations with correct number of digits
+printf -v PSIMS "%03d" $SIMS
 # Execute serial scripts in parallel
-parallel --joblog $SLURM_JOBID.log "cd _experiments/$EXP/{}_$EXP && bash run.sh -e $EXP -s $SIMS -c $CORES" ::: {000..$SIMS}
+parallel --joblog $SLURM_JOBID.log "cd _experiments/$EXP/{}_$EXP && bash run.sh -e $EXP -s $SIMS -c $CORES" ::: {000..$PSIMS}
 
 # if [ "$ARGS" = true ]
 # then
