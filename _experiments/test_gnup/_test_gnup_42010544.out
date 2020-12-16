@@ -1,4 +1,4 @@
-Launched script: 2020-12-16_11h45
+Launched script: 2020-12-16_12h09
 
 Inactive Modules:
   1) python/3.7.4
@@ -60,17 +60,6 @@ Activating Modules:
 003-Done running simulation-
 
 -e, Name specified, using EXP=test_gnup
--i, Simulation ID specified, using ID=005
--n, No simulation name specified, using NAME=005_test_gnup
--s, Number of simulations specified, using SIMS=8
--c, Number of cores specified, using CORES=2
--a, Will not ask before overwriting files
-
-005-Writing parameters file-
-
-005-Done running simulation-
-
--e, Name specified, using EXP=test_gnup
 -i, Simulation ID specified, using ID=004
 -n, No simulation name specified, using NAME=004_test_gnup
 -s, Number of simulations specified, using SIMS=8
@@ -80,6 +69,17 @@ Activating Modules:
 004-Writing parameters file-
 
 004-Done running simulation-
+
+-e, Name specified, using EXP=test_gnup
+-i, Simulation ID specified, using ID=005
+-n, No simulation name specified, using NAME=005_test_gnup
+-s, Number of simulations specified, using SIMS=8
+-c, Number of cores specified, using CORES=2
+-a, Will not ask before overwriting files
+
+005-Writing parameters file-
+
+005-Done running simulation-
 
 -e, Name specified, using EXP=test_gnup
 -i, Simulation ID specified, using ID=007
