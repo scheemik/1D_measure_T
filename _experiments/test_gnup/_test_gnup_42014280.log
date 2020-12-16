@@ -1,7 +1,0 @@
-Seq	Host	Starttime	JobRuntime	Send	Receive	Exitval	Signal	Command
-1	:	1608143524.461	    44.365	0	3134	0	0	  cd _experiments/test_gnup/000_test_gnup && bash run.sh -e test_gnup -i 000 -s 8 -c 2 -rmo
-2	:	1608143524.463	    44.363	0	3180	0	0	  cd _experiments/test_gnup/001_test_gnup && bash run.sh -e test_gnup -i 001 -s 8 -c 2 -rmo
-3	:	1608143569.365	    38.467	0	3181	0	0	cd _experiments/test_gnup/002_test_gnup && bash run.sh -e test_gnup -i 002 -s 8 -c 2 -rmo
-4	:	1608143569.370	    38.466	0	3181	0	0	cd _experiments/test_gnup/003_test_gnup && bash run.sh -e test_gnup -i 003 -s 8 -c 2 -rmo
-5	:	1608143608.345	    35.994	0	3182	0	0	cd _experiments/test_gnup/004_test_gnup && bash run.sh -e test_gnup -i 004 -s 8 -c 2 -rmo
-6	:	1608143608.348	    35.993	0	3185	0	0	cd _experiments/test_gnup/005_test_gnup && bash run.sh -e test_gnup -i 005 -s 8 -c 2 -rmo

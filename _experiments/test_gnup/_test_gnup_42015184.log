@@ -1,0 +1,3 @@
+Seq	Host	Starttime	JobRuntime	Send	Receive	Exitval	Signal	Command
+1	:	1608145629.640	   414.994	0	3158	0	0	  cd _experiments/test_gnup/000_test_gnup && bash run.sh -e test_gnup -i 000 -s 8 -c 2 -rmop
+2	:	1608145629.646	   415.021	0	3204	0	0	  cd _experiments/test_gnup/001_test_gnup && bash run.sh -e test_gnup -i 001 -s 8 -c 2 -rmop

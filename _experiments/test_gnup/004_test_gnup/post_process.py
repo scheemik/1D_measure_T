@@ -135,7 +135,7 @@ print("AnaEq 2.4 transmission coefficient is:", hf.SY_eq2_4(theta, mL))
 
 # Write out results to file
 import csv
-csv_file = "exp_data.csv"
+csv_file = "sim_data.csv"
 with open(csv_file, 'a') as datafile:
     csvwriter = csv.writer(datafile)
     csvwriter.writerow([run_name, mL, theta, big_T])
