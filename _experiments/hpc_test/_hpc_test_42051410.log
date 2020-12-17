@@ -1,0 +1,9 @@
+Seq	Host	Starttime	JobRuntime	Send	Receive	Exitval	Signal	Command
+2	:	1608216882.458	    74.750	0	3176	0	0	  cd _experiments/hpc_test/001_hpc_test && bash run.sh -e hpc_test -i 001 -s 8 -c 4 -rmo
+3	:	1608216882.462	    74.748	0	3179	0	0	cd _experiments/hpc_test/002_hpc_test && bash run.sh -e hpc_test -i 002 -s 8 -c 4 -rmo
+4	:	1608216882.467	    74.743	0	3178	0	0	cd _experiments/hpc_test/003_hpc_test && bash run.sh -e hpc_test -i 003 -s 8 -c 4 -rmo
+1	:	1608216882.456	    74.754	0	3132	0	0	  cd _experiments/hpc_test/000_hpc_test && bash run.sh -e hpc_test -i 000 -s 8 -c 4 -rmo
+7	:	1608216958.048	    62.607	0	3180	0	0	cd _experiments/hpc_test/006_hpc_test && bash run.sh -e hpc_test -i 006 -s 8 -c 4 -rmo
+6	:	1608216957.750	    62.907	0	3183	0	0	cd _experiments/hpc_test/005_hpc_test && bash run.sh -e hpc_test -i 005 -s 8 -c 4 -rmo
+8	:	1608216958.213	    62.445	0	3153	0	0	cd _experiments/hpc_test/007_hpc_test && bash run.sh -e hpc_test -i 007 -s 8 -c 4 -rmo
+5	:	1608216957.747	    62.914	0	3180	0	0	cd _experiments/hpc_test/004_hpc_test && bash run.sh -e hpc_test -i 004 -s 8 -c 4 -rmo
