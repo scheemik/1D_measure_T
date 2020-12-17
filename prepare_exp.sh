@@ -117,6 +117,6 @@ do
 	# mkdir _experiments/${EXP}/${SIM_NAME}
 	# # Copy code files to simulation directory
 	# cp $CODE_FILES _experiments/${EXP}/${SIM_NAME}
-	cp $CODE_FILES _experiments/${EXP}
+	cp -r $CODE_FILES _experiments/${EXP}
 	mv _experiments/${EXP}/${CODE_FILES} _experiments/${EXP}/${SIM_NAME}
 done
