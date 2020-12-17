@@ -74,11 +74,7 @@ export OMPI_MCA_mpi_warn_on_fork=0
 # export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
 # Activate the Dedalus virtual environment
-# source ${HOME}/Dedalus_Projects/venv/bin/activate
 source ~/projects/def-ngrisoua/mschee/Dedalus_repos/2020a-dedalus/bin/activate
-
-# Check which version of python is installed
-# echo python3 --version
 
 ###############################################################################
 # Start the experiment script
