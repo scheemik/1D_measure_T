@@ -63,8 +63,6 @@ fi
 # Load module stack for Graham
 # module loading sets values of environment variables
 #   so have these commands before the `export` lines
-# module purge		# problem purging modules, might need to use module --force purge
-# module load python/3.7.0 scipy-stack fftw-mpi mpi4py
 module load mpi4py
 module load StdEnv/2020
 module load python/3.7.7
@@ -92,18 +90,6 @@ printf -v PSIMS "%03d" $SIMS
 # Execute serial scripts in parallel
 # parallel --joblog ${EXP_PATH}/${SLURM_JOBID}.log "cd ${EXP_PATH}/{}_$EXP && bash run.sh -e $EXP -i {} -s $SIMS -c $CORES" ::: {000..$PSIMS}
 
-# # EXECUTION COMMAND - DON'T USE THIS ONE
-# parallel --joblog ${EXP_PATH}/${SLURM_JOBID}.log -j $SLURM_TASKS_PER_NODE <<EOF
-#   cd ${EXP_PATH}/000_$EXP && bash run.sh -e $EXP -i 000 -s $SIMS -c $CORES
-#   cd ${EXP_PATH}/001_$EXP && bash run.sh -e $EXP -i 001 -s $SIMS -c $CORES
-# 	cd ${EXP_PATH}/002_$EXP && bash run.sh -e $EXP -i 002 -s $SIMS -c $CORES
-# 	cd ${EXP_PATH}/003_$EXP && bash run.sh -e $EXP -i 003 -s $SIMS -c $CORES
-# 	cd ${EXP_PATH}/004_$EXP && bash run.sh -e $EXP -i 004 -s $SIMS -c $CORES
-# 	cd ${EXP_PATH}/005_$EXP && bash run.sh -e $EXP -i 005 -s $SIMS -c $CORES
-# 	cd ${EXP_PATH}/006_$EXP && bash run.sh -e $EXP -i 006 -s $SIMS -c $CORES
-# 	cd ${EXP_PATH}/007_$EXP && bash run.sh -e $EXP -i 007 -s $SIMS -c $CORES
-# EOF
-
 if [ "$ARGS" = true ]
 then
 	# EXECUTION COMMAND - DON'T USE THIS ONE
@@ -129,10 +115,4 @@ else
 		cd ${EXP_PATH}/006_$EXP && bash run.sh -e $EXP -i 006 -s $SIMS -c $CORES
 		cd ${EXP_PATH}/007_$EXP && bash run.sh -e $EXP -i 007 -s $SIMS -c $CORES
 	EOF
-fi
-
-if [ "$PLT" = p ]
-then
-	cd _experiments/$EXP
-	python3 plot_exp_data.py $EXP $SIMS
 fi

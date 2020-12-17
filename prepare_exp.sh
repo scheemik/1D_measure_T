@@ -46,27 +46,28 @@ plot_exp="plot_exp_data.py"
 ###############################################################################
 # Code file variables needed for each simulation
 
-# Name of the run script
-run_file="run.sh"
-# Name of the script to write the unique parameters file
-params_script='write_params.py'
-# Name of the main code file
-code_file='main.py'
-# Name of switchboard file
-switch_file="switchboard.py"
-# Name of merging file
-merge_file="merge.py"
-# Helper code files
-helper_funcs="helper_functions.py"
-helper_funcs_CD="helper_functions_CD.py"
-# Name of post processing file
-post_process="post_process.py"
-# Name of slice plotting file
-plot_file="plot_slices.py"
-# Name of gif creation file
-gif_cre_file="create_gif.py"
-# Group all the code files for ease of calling
-CODE_FILES="$run_file $params_script $code_file $switch_file $merge_file $helper_funcs $helper_funcs_CD $post_process $plot_file $gif_cre_file"
+# # Name of the run script
+# run_file="run.sh"
+# # Name of the script to write the unique parameters file
+# params_script='write_params.py'
+# # Name of the main code file
+# code_file='main.py'
+# # Name of switchboard file
+# switch_file="switchboard.py"
+# # Name of merging file
+# merge_file="merge.py"
+# # Helper code files
+# helper_funcs="helper_functions.py"
+# helper_funcs_CD="helper_functions_CD.py"
+# # Name of post processing file
+# post_process="post_process.py"
+# # Name of slice plotting file
+# plot_file="plot_slices.py"
+# # Name of gif creation file
+# gif_cre_file="create_gif.py"
+# # Group all the code files for ease of calling
+# CODE_FILES="$run_file $params_script $code_file $switch_file $merge_file $helper_funcs $helper_funcs_CD $post_process $plot_file $gif_cre_file"
+CODE_FILES="_code_files"
 
 ###############################################################################
 
@@ -101,7 +102,6 @@ mkdir _experiments/${EXP}
 
 # Copy experiment plotting file and switchboard to experiment directory
 cp $plot_exp _experiments/${EXP}
-cp $switch_file _experiments/${EXP}
 
 ###############################################################################
 # Get each individual simulation's directory ready to run
@@ -113,8 +113,10 @@ do
 	printf -v NID "%03d" $id
 	# Generate simulation name
 	SIM_NAME="${NID}_${EXP}"
-	# Make directory for that simulation
-	mkdir _experiments/${EXP}/${SIM_NAME}
-	# Copy code files to simulation directory
-	cp $CODE_FILES _experiments/${EXP}/${SIM_NAME}
+	# # Make directory for that simulation
+	# mkdir _experiments/${EXP}/${SIM_NAME}
+	# # Copy code files to simulation directory
+	# cp $CODE_FILES _experiments/${EXP}/${SIM_NAME}
+	cp $CODE_FILES _experiments/${EXP}
+	mv _experiments/${EXP}/${CODE_FILES} _experiments/${EXP}/${SIM_NAME}
 done
