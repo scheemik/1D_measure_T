@@ -84,7 +84,7 @@ EXP_PATH="_experiments/${EXP}"
 # Format number of simulations with correct number of digits
 printf -v PSIMS "%03d" $SIMS
 # Execute serial scripts in parallel
-parallel --joblog ${EXP_PATH}/${SLURM_JOBID}.log "cd ${EXP_PATH}/{}_$EXP && bash run.sh -e $EXP -i {} -s $SIMS -c $CORES" ::: {000..008}
+parallel --joblog ${EXP_PATH}/${SLURM_JOBID}.log "cd ${EXP_PATH}/{}_$EXP && bash run.sh -e $EXP -i {} -s $SIMS -c $CORES" ::: {000..007}
 
 # if [ "$ARGS" = true ]
 # then
