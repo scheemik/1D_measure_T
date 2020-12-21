@@ -1,4 +1,4 @@
-Launched script: 2020-12-21_11h24
+Launched script: 2020-12-21_11h30
 
 Inactive Modules:
   1) python/3.7.4
@@ -15,4 +15,5 @@ The following have been reloaded with a version change:
 Activating Modules:
   1) python/3.7.7
 
+parallel --joblog _experiments/gnup_test/_gnup_test_42194918.log cd _experiments/gnup_test/{}_gnup_test && bash run.sh -e gnup_test -i {} -s 8 -c 4 -rmo ::: {000..007}
 bash: run.sh: No such file or directory
