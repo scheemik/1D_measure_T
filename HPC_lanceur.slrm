@@ -87,7 +87,8 @@ printf -v PSIMS "%03d" $((SIMS-1))
 # Command to execute in parallel for each simulation
 run_sim_command="cd ${EXP_PATH}/{}_$EXP && bash run.sh -e $EXP -i {} -s $SIMS -c $CORES -$RUN$MER$PRO$PLT$GIF$VID"
 # Execute serial scripts in parallel
-eval parallel --joblog ${EXP_PATH}/_${EXP}_${SLURM_JOBID}.log $run_sim_command ::: {000..007}
+par_command="parallel --joblog ${EXP_PATH}/_${EXP}_${SLURM_JOBID}.log $run_sim_command ::: {000..007}"
+eval $par_command
 
 # if [ "$ARGS" = true ]
 # then
