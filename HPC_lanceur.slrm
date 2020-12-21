@@ -82,9 +82,10 @@ source ~/projects/def-ngrisoua/mschee/Dedalus_repos/2020a-dedalus/bin/activate
 # Path to experiment directory
 EXP_PATH="_experiments/${EXP}"
 # Format number of simulations with correct number of digits
-printf -v PSIMS "%03d" $SIMS
+#		Using SIMS-1 to avoid off-by-one error
+printf -v PSIMS "%03d" $((SIMS-1))
 # Execute serial scripts in parallel
-parallel --joblog ${EXP_PATH}/${SLURM_JOBID}.log "cd ${EXP_PATH}/{}_$EXP && bash run.sh -e $EXP -i {} -s $SIMS -c $CORES -$RUN$MER$PRO$PLT$GIF$VID" ::: {000..007}
+parallel --joblog ${EXP_PATH}/_${EXP}_${SLURM_JOBID}.log "cd ${EXP_PATH}/{}_$EXP && bash run.sh -e $EXP -i {} -s $SIMS -c $CORES -$RUN$MER$PRO$PLT$GIF$VID" ::: {000..$PSIMS}
 
 # if [ "$ARGS" = true ]
 # then
