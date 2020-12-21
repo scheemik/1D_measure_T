@@ -95,116 +95,27 @@ then
 fi
 
 ###############################################################################
-# The command and arguments for running scripts with mpi
-mpiexec_command="mpiexec"
-# The version of python to use
-python_command="python3"
-# Path to snapshot files
-snapshot_name="snapshots"
-snapshot_path="${NAME}/${snapshot_name}"
-# Name of output directory
-output_dir="outputs"
-# Path to frames
-frames_path='frames'
-# Clean up the snapshots after merging
-cleanup_snapshots="True"
+# Path to experiment directory
+EXP_PATH="_experiments/${EXP}"
 
-# Name of the script to write the parameters
-params_script='write_params.py'
-params_file='params.py'
-# Name of the main code file
-code_file='main.py'
-# Name of switchboard file
-switchboard="switchboard"
-switch_file="${switchboard}.py"
-sim_switch="${NAME}/${NAME}_${switch_file}"
-# Name of merging file
-merge_file="merge.py"
-# Helper code files
-helper_funcs="helper_functions.py"
-helper_funcs_CD="helper_functions_CD.py"
-# Name of post processing file
-post_process="post_process.py"
-# Name of experiment plotting file
-plot_exp="plot_exp_data.py"
-# Name of slice plotting file
-plot_file="plot_slices.py"
-# Name of gif creation file
-gif_cre_file="create_gif.py"
-# Group all the code files for ease of calling
-CODE_FILES="$params_script $code_file $switch_file $merge_file $helper_funcs $helper_funcs_CD $post_process $plot_exp $plot_file $gif_cre_file"
+# Prepare experiment directory
+bash prepare_exp.sh -e $EXP -s $SIMS
 
 ###############################################################################
-echo ''
-echo '--Checking experiment directory--'
-# Check if experiments folder exists
-if [ -e _experiments ]
-then
-	echo 'Experiment folder exists'
-else
-	echo 'Experiment folder not found. Aborting script'
-	exit 1
-fi
-echo ''
-OVERWRITE_CODE_FILES=true
-# Check if this experiment has been created
-if [ -e _experiments/$EXP ]
-then
-	echo "Experiment for $EXP exists"
-	if [ "$ASK" != a ]
-	then
-		echo "Overwriting code files"
-		# Go in to directory, remove code files, come back out to main directory
-		cd _experiments/$EXP
-		rm -rf $CODE_FILES
-		cd ..
-		cd ..
-	else
-		# Begin loop waiting for user to confirm
-		while true
-		do
-			read -r -p "Overwrite old code files in $EXP [y/n]? Or cancel? [Ctrl+c] " input
-			case $input in
-				[yY][eE][sS]|[yY])
-			echo "Yes"
-			# Go in to directory, remove code files, come back out to main directory
-			cd _experiments/$EXP
-			rm -rf $CODE_FILES
-			cd ..
-			cd ..
-			break
-			;;
-				[nN][oO]|[nN])
-			echo "No"
-			OVERWRITE_CODE_FILES=false
-			break
-					;;
-				*)
-			echo "Invalid input"
-			;;
-			esac
-		done
-	fi
-else
-	echo "Creating experiment for $EXP"
-	mkdir "_experiments/$EXP"
-fi
-if [ $OVERWRITE_CODE_FILES = true ] || [ "$ASK" = false ]
-then
-	echo 'Copying code files to experiment directory'
-	cp $CODE_FILES _experiments/${EXP}
-fi
-echo ''
+# Run simulations
 
-###############################################################################
-###############################################################################
-# run simulations
-for (( id=0; id<$SIMS; id++ ))
-do
-	echo "--Running simulation $id--"
-	# If -c is more than 1, it will run the simulations in parallel
-	if [ $CORES -eq 1 ] # run serially
-	then
+# Navigate to experiment directory
+cd ${EXP_PATH}
+# Loop over all simulations if any of -rm args are activated
+if [ "$RUN" = r ] || [ "$MER" = m ]
+then
+	for (( id=0; id<$SIMS; id++ ))
+	do
+		echo "--Running simulation $id--"
+		# Format ID with correct number of digits
+		printf -v PID "%03d" $id
+		# Navigate to the simulation directory
+		cd ${PID}_$EXP
 		# Check whether any switch arguments were activated
 		if [ "$ARGS" = true ]
 		then
@@ -212,45 +123,28 @@ do
 		else
 			bash run.sh -e $EXP -i $id -s $SIMS -c $CORES
 		fi
-	else # run in parallel
-		# Check whether any switch arguments were activated
-		#		The `&` will mean all simulations will start at around the same time
-		if [ "$ARGS" = true ]
-		then
-			bash run.sh -e $EXP -i $id -s $SIMS -c $CORES -$ASK$RUN$MER$PRO$PLT$GIF$VID &
-		else
-			bash run.sh -e $EXP -i $id -s $SIMS -c $CORES &
-		fi
-	# Record pid of last command run
-	pids[${id}]=$!
-	fi
-done
-
-# Wait for all pids to complete before continuing
-for pid in ${pids[*]}; do
-    wait $pid
-done
+		# Back out to experiment directory
+		cd ..
+	done
+fi
 
 # exit 0
 ###############################################################################
 # The version of python to use
 python_command="python3"
 # Name of csv data file
-csv_data_file="exp_data.csv"
+csv_data_file="sim_data.csv"
 # Name of plotting script
 plot_data_file="plot_exp_data.py"
-# Name of switchboard file
-switchboard="switchboard"
 ###############################################################################
 # Plot experiments' transmission coefficients if simulations were run
 if [ "$PRO" = o ]
 then
-	cd _experiments/${EXP}
 	echo ''
 	echo '--Plotting transmission coefficients--'
 	# Check to make sure snapshots exists
 	echo "Checking for csv data file"
-	if [ -e $csv_data_file ]
+	if [ -e 000_${EXP}/$csv_data_file ]
 	then
 		echo "Data found"
 	else
@@ -258,7 +152,7 @@ then
 		exit 1
 	fi
 	echo 'Plotting experiment data'
-	${python_command} $plot_data_file $EXP $switchboard
+	${python_command} $plot_data_file $EXP $SIMS
 	echo 'Done plotting'
 fi
 

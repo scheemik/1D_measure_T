@@ -46,6 +46,14 @@ plot_exp="plot_exp_data.py"
 CODE_FILES="_code_files"
 
 ###############################################################################
+# Check if experiments folder exists
+if [ -e _experiments ]
+then
+	echo 'Experiment folder exists'
+else
+	echo 'Experiment folder not found. Aborting script'
+	exit 1
+fi
 
 # Check if directory for experiment exists already
 if [ -d _experiments/${EXP} ]
@@ -94,3 +102,4 @@ do
 	# Rename code file folder for specific simulation
 	mv _experiments/${EXP}/${CODE_FILES} _experiments/${EXP}/${SIM_NAME}
 done
+echo ''
