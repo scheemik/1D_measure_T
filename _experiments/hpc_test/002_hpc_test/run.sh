@@ -112,7 +112,6 @@ then
 fi
 
 ###############################################################################
-
 # The command and arguments for running scripts with mpi
 # mpiexec_command="mpiexec"
 # The version of python to use
@@ -142,40 +141,7 @@ post_process="post_process.py"
 gif_cre_file="create_gif.py"
 
 ###############################################################################
-# echo ""
-# echo "${ID}-Checking experiment directory-"
-# # Check if experiments folder exists
-# if [ -e _experiments ]
-# then
-# 	echo 'Experiment folder exists'
-# else
-# 	echo 'Experiment folder not found. Aborting script'
-# 	exit 1
-# fi
-# echo ''
-# echo "${ID}-Navigating to experiment directory-"
-# cd _experiments/${EXP}
-# pwd
-###############################################################################
-# echo ''
-# echo "${ID}-Checking simulation directory-"
-# # Check if simulation folder exists
-# if [ -d $NAME ]
-# then
-# 	echo "Simulation for $NAME exists"
-# else
-# 	echo "Creating simulation for $NAME"
-# 	mkdir "$NAME"
-# fi
-# echo 'Overwriting simulation switchboard'
-# # Check if simulation folder exists
-# if [ -e $switch_file ]
-# then
-# 	cp $switch_file $sim_switch
-# else
-# 	echo "Cannot find $switch_file, aborting execution"
-# 	exit 1
-# fi
+# parameters file
 echo ''
 echo "${ID}-Writing parameters file-"
 # Check if simulation folder exists
@@ -186,7 +152,7 @@ else
 	echo "Cannot find $params_script, aborting execution"
 	exit 1
 fi
-###############################################################################
+
 ###############################################################################
 # run simulation
 if [ "$RUN" = true ]
