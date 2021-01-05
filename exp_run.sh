@@ -115,7 +115,7 @@ then
 		# Format ID with correct number of digits
 		printf -v PID "%03d" $id
 		# Navigate to the simulation directory
-		cd ${PID}_$EXP
+		cd _simulations/${PID}_$EXP
 		# Check whether any switch arguments were activated
 		if [ "$ARGS" = true ]
 		then
@@ -124,6 +124,7 @@ then
 			bash run.sh -e $EXP -i $id -s $SIMS -c $CORES
 		fi
 		# Back out to experiment directory
+		cd ..
 		cd ..
 	done
 fi
@@ -144,7 +145,7 @@ then
 	echo '--Plotting transmission coefficients--'
 	# Check to make sure snapshots exists
 	echo "Checking for csv data file"
-	if [ -e 000_${EXP}/$csv_data_file ]
+	if [ -e _simulations/000_${EXP}/$csv_data_file ]
 	then
 		echo "Data found"
 	else

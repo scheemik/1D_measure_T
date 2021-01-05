@@ -90,6 +90,9 @@ cp $plot_exp _experiments/${EXP}
 ###############################################################################
 # Get each individual simulation's directory ready to run
 
+# Make directory for all the simulations
+mkdir _experiments/${EXP}/_simulations
+
 # Loop over each simulation ID
 for (( id=0; id<$SIMS; id++ ))
 do
@@ -98,8 +101,8 @@ do
 	# Generate simulation name
 	SIM_NAME="${NID}_${EXP}"
 	# Copy code files to experiment directory
-	cp -r $CODE_FILES _experiments/${EXP}
+	cp -r $CODE_FILES _experiments/${EXP}/_simulations
 	# Rename code file folder for specific simulation
-	mv _experiments/${EXP}/${CODE_FILES} _experiments/${EXP}/${SIM_NAME}
+	mv _experiments/${EXP}/_simulations/${CODE_FILES} _experiments/${EXP}/_simulations/${SIM_NAME}
 done
 echo ''
