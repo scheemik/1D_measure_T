@@ -88,15 +88,15 @@ use_rayleigh_friction   = False
 boundary_forcing_region = True  # If False, waves will be forced over entire domain
 
 # Plotting parameters
-plot_spacetime = False
+plot_spacetime = True
 plot_wavespace = False
 plot_spectra   = False
 plot_amplitude = False
-plot_windows   = False
+plot_windows   = True
 plot_up_dn     = False
 # If true, plot will include full simulated domain, if false, just the display domain
 plot_full_x = True
-plot_full_y = False
+plot_full_y = True
 
 # # Measurements
 # take_ef_comp  = False # Energy flux terms recorded separately
