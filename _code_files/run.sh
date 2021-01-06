@@ -128,6 +128,8 @@ cleanup_snapshots="True"
 
 # Name of the script to write the parameters
 params_script='write_params.py'
+# Name of parameter file
+params_file='params.py'
 # Name of the main code file
 code_file='main.py'
 # Name of switchboard file
@@ -144,13 +146,18 @@ gif_cre_file="create_gif.py"
 # parameters file
 echo ''
 echo "${ID}-Writing parameters file-"
-# Check if simulation folder exists
-if [ -e $params_script ]
+# Check if parameter file already exists
+if [ -e $params_file ]
 then
-	${python_command} $params_script $NAME $ID $SIMS
+	echo "Found $params_file"
 else
-	echo "Cannot find $params_script, aborting run script"
-	exit 1
+	if [ -e $params_script ]
+	then
+		${python_command} $params_script $NAME $ID $SIMS
+	else
+		echo "Cannot find $params_script, aborting run script"
+		exit 1
+	fi
 fi
 
 ###############################################################################
