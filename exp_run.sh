@@ -152,7 +152,7 @@ then
 		echo "Data found, merging into one csv"
 		cat _simulations/*/${csv_data_file} > ${exp_csv_file}
 	else
-		echo "Cannot find data. Aborting script"
+		echo "Cannot find data. Aborting exp_run script"
 		exit 1
 	fi
 	echo 'Plotting experiment data'

@@ -51,7 +51,7 @@ if [ -e _experiments ]
 then
 	echo 'Experiment folder exists'
 else
-	echo 'Experiment folder not found. Aborting script'
+	echo 'Experiment folder not found. Aborting prepare_exp script'
 	exit 1
 fi
 
@@ -70,7 +70,7 @@ then
 		break
 		;;
 			[nN][oO]|[nN])
-		echo "Not overwriting ${EXP}. Aborting script"
+		echo "Not overwriting ${EXP}. Aborting prepare_exp script"
 		exit 1
 		break
 				;;

@@ -149,7 +149,7 @@ if [ -e $params_script ]
 then
 	${python_command} $params_script $NAME $ID $SIMS
 else
-	echo "Cannot find $params_script, aborting execution"
+	echo "Cannot find $params_script, aborting run script"
 	exit 1
 fi
 
@@ -183,7 +183,7 @@ then
 	then
 		echo "Found snapshots"
 	else
-		echo "Cannot find snapshots. Aborting script"
+		echo "Cannot find snapshots. Aborting run script"
 		exit 1
 	fi
 	# Check if snapshots have already been merged
@@ -226,7 +226,7 @@ then
 	then
 		echo "Snapshots found"
 	else
-		echo "Cannot find snapshots. Aborting script"
+		echo "Cannot find snapshots. Aborting run script"
 		exit 1
 	fi
 	echo 'Running post processing script'
