@@ -105,7 +105,7 @@ plot_full_y = True
 
 ###############################################################################
 # Background profile in N_0
-n_layers = 1
+n_layers = 2
 layer_th = mL/m
 L        = layer_th
 R_i      = 1.0
