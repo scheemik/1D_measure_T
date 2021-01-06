@@ -142,7 +142,7 @@ problem.substitutions['S_term_psi'] = "win_sp * nabla2dt_psi / tau_sp"
 ###############################################################################
 # Plotting windows
 if plot_checks and sbp.plot_windows:
-    hf.plot_v_profiles(z, BP_array, sbp.win_bf_array, sbp.win_sp_array, mL, theta, omega, sbp.z_I, sbp.z_T, sbp.z0_dis, sbp.zf_dis, plot_full_x=True, plot_full_y=True, title_str=run_name)
+    hf.plot_v_profiles(np.flip(z), np.flip(BP_array), sbp.win_bf_array, sbp.win_sp_array, mL, theta, omega, sbp.z_I, sbp.z_T, sbp.z0_dis, sbp.zf_dis, plot_full_x=True, plot_full_y=True, title_str=run_name)
 # raise SystemExit(0)
 
 ###############################################################################
