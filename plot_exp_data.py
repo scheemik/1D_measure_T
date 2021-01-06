@@ -29,10 +29,7 @@ import importlib
 helper_module = "_simulations.000_" + exp_name + ".helper_functions"
 hf = importlib.import_module(helper_module)
 
-# Add functions in helper file
-# import helper_functions as hf
-
-# Problem parameters
+# Problem parameters -> eventually should be taken from switchboard
 # theta       = sbp.theta         # [rad]         Propagation angle from vertical
 # omega       = sbp.omega         # [rad s^-1]    Wave frequency
 theta   = np.arctan(1)
@@ -44,13 +41,10 @@ omega   = 1 * np.cos(theta)
 import csv
 # Make blank list to hold csv data
 data = [None]*num_sims
-# Read each sim's csv into a row
-for i in range(0, num_sims):
-    csv_file = f'_simulations/{i:03}_{exp_name}/sim_data.csv'
-    print(csv_file)
-    with open(csv_file, 'r') as datafile:
-        csvreader = csv.reader(datafile)
-        data[i] = list(csvreader)[0]
+# Read in exp csv row by row
+with open(csv_file, 'r') as datafile:
+    csvreader = csv.reader(datafile)
+    data = list(csvreader)[0]
 # Format lists into a numpy array
 data_arr = np.array(data)
 

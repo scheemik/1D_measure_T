@@ -133,8 +133,10 @@ fi
 ###############################################################################
 # The version of python to use
 python_command="python3"
-# Name of csv data file
+# Name of csv data file for each simulation
 csv_data_file="sim_data.csv"
+# Name of combined csv data file for exp
+exp_csv_file="exp_data.csv"
 # Name of plotting script
 plot_data_file="plot_exp_data.py"
 ###############################################################################
@@ -144,10 +146,11 @@ then
 	echo ''
 	echo '--Plotting transmission coefficients--'
 	# Check to make sure snapshots exists
-	echo "Checking for csv data file"
+	echo "Checking for csv data files"
 	if [ -e _simulations/000_${EXP}/$csv_data_file ]
 	then
-		echo "Data found"
+		echo "Data found, merging into one csv"
+		cat _simulations/*/${csv_data_file} > ${exp_csv_file}
 	else
 		echo "Cannot find data. Aborting script"
 		exit 1
