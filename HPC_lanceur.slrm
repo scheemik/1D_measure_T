@@ -5,7 +5,7 @@
 #SBATCH --output=_experiments/%x/_%x_%j.out						# %x = job_name, %j = job_number
 #SBATCH --ntasks-per-node=32
 #SBATCH --nodes=1
-#SBATCH --time=0-00:20  # d-HH:MM
+#SBATCH --time=0-00:05  # d-HH:MM
 
 # Submit this script to a HPC with `sbatch`
 # Takes in optional arguments:
