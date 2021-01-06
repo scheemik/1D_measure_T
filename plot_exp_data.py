@@ -50,6 +50,7 @@ data_arr = np.array(data)
 
 # csv read in as U32, convert data to float 64 before using
 mL_array = data_arr[:,1].astype('float64')
+th_array = data_arr[:,2].astype('float64')
 sim_data = data_arr[:,3].astype('float64')
 
 def plot_T_vs_mL(mL_array, sim_data, theta, omega, title_str='Transmission Coefficient', filename='f_1D_T_vs_mL.png'):
