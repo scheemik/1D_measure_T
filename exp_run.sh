@@ -147,13 +147,18 @@ then
 	echo '--Plotting transmission coefficients--'
 	# Check to make sure snapshots exists
 	echo "Checking for csv data files"
-	if [ -e _simulations/000_${EXP}/$csv_data_file ]
+	if [ -e $exp_csv_file ]
 	then
-		echo "Data found, merging into one csv"
-		cat _simulations/*/${csv_data_file} > ${exp_csv_file}
+		echo "Data already merged into one csv"
 	else
-		echo "Cannot find data. Aborting exp_run script"
-		exit 1
+		if [ -e _simulations/000_${EXP}/$csv_data_file ]
+		then
+			echo "Data found, merging into one csv"
+			cat _simulations/*/${csv_data_file} > ${exp_csv_file}
+		else
+			echo "Cannot find data. Aborting exp_run script"
+			exit 1
+		fi
 	fi
 	echo 'Plotting experiment data'
 	${python_command} $plot_data_file $EXP $SIMS
