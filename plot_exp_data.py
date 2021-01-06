@@ -26,7 +26,8 @@ num_sims    = int(args['SIMS']) # Number of simulations in the experiment
 # Import SwitchBoard Parameters (sbp)
 #   This import assumes the default simulation naming convention
 import importlib
-helper_module = "_simulations.000_" + exp_name + ".helper_functions"
+helper_module = "_code_files.helper_functions"
+# helper_module = "_simulations.000_" + exp_name + ".helper_functions"
 hf = importlib.import_module(helper_module)
 
 # Problem parameters -> eventually should be taken from switchboard
@@ -42,9 +43,9 @@ import csv
 # Make blank list to hold csv data
 data = [None]*num_sims
 # Read in exp csv row by row
-with open(csv_file, 'r') as datafile:
+with open("exp_data.csv", 'r') as datafile:
     csvreader = csv.reader(datafile)
-    data = list(csvreader)[0]
+    data = list(csvreader)
 # Format lists into a numpy array
 data_arr = np.array(data)
 
