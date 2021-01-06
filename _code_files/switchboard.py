@@ -107,7 +107,12 @@ plot_full_y = True
 # Background profile in N_0
 n_layers = 1
 layer_th = mL/m
-L       = layer_th
+L        = layer_th
+R_i      = 1.0
+# If there are no mixed layers,
+#   set interface ratio to zero to avoid negative lengths in structure
+if n_layers == 0:
+    R_i = 0
 
 ###############################################################################
 # Buffers and important depths
@@ -117,10 +122,13 @@ L       = layer_th
 dis_buff    = 2*lam_z           # [m] buffer from vertical structure to display domain
 IT_buff     = dis_buff/2.0      # [m] buffer from vertical structure to measure I and T
 
+# The total length of the vertical structure
+Lz_str  = n_layers*L + (n_layers-1)*R_i*L
+
 # Depths
 z0_str  = z0_dis - dis_buff     # [m] top of vertical structure
 z_I     = z0_str + IT_buff      # [m] depth at which to measure Incident wave
-zf_str  = z0_str - L            # [m] bottom of vertical structure
+zf_str  = z0_str - Lz_str       # [m] bottom of vertical structure
 z_T     = zf_str - IT_buff      # [m] depth at which to measure Transmitted wave
 zf_buff = dis_buff+(lam_z-L)    # [m] extra buffer to make sure dis domain is integer number of lam_z
 zf_dis  = zf_str - zf_buff      # [m] bottom of display domain

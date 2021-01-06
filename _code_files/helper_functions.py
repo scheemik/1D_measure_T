@@ -346,29 +346,28 @@ def add_plot_title(fig, title_str, mL, theta, omega):
     fig.suptitle(r'%s, $(mL,\theta,\omega)$=(%s)' %(title_str, param_formated_str))
 
 # Background profile in N_0
-def BP_n_layers(n, z, z0_str, zf_str):
+def BP_n_layers(z, z0_str, n, L, R_i):
     """
-    n           number of layers
     z           array of z values
     z0_str      top of vertical structure extent
-    zf_str      bottom of vertical structure extent
+    n           number of layers
+    L           layer thickness
+    R_i         ratio of interface to layer thickness
     """
-    # create blank array the same size as z
+    # create array of 1's the same length as z
     BP_array = z*0+1
-    # divide the vertical structure extent for n layers (steps)
-    Lz_str = abs(zf_str - z0_str)
-    # find step separation
-    step_sep = Lz_str / (n+1)
+    # start the first step's top at the top of the structure
+    step_top = z0_str
     # Loop across each i step
     for i in range(n):
-        # Set center of step
-        step_c   = z0_str - (i+1)*step_sep
-        # Set top and bottom of step
-        step_top = step_c + step_sep
-        step_bot = step_c - step_sep
+        # Set bottom of step
+        step_bot = step_top - L
+        # Set the vertical structure to 0 for that step
         for j in range(len(BP_array)):
             if z[j] < step_top and z[j] > step_bot:
                 BP_array[j] = 0
+        # Set step top for next step
+        step_top = step_bot - R_i*L
     return BP_array
 
 # # Mask to just keep display domain

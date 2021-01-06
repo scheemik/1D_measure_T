@@ -148,7 +148,8 @@ with open(csv_file, 'a') as datafile:
 if plot_checks == False:
     raise SystemExit(0)
 
-BP_array = hf.BP_n_layers(n_layers, z, sbp.z0_str, sbp.zf_str)
+BP_array = hf.BP_n_layers(z, sbp.z0_str, n_layers, sbp.L, sbp.R_i)
+#hf.BP_n_layers(n_layers, z, sbp.z0_str, sbp.zf_str)
 foo, BP_tr   = hf.trim_data_z(z, BP_array, z0_dis, zf_dis)
 
 filename_prefix = run_name #+ '/' + run_name
