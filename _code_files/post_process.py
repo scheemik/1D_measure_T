@@ -151,7 +151,7 @@ if plot_checks == False:
 BP_array = hf.BP_n_layers(n_layers, z, sbp.z0_str, sbp.zf_str)
 foo, BP_tr   = hf.trim_data_z(z, BP_array, z0_dis, zf_dis)
 
-filename_prefix = run_name + '/' + run_name
+filename_prefix = run_name #+ '/' + run_name
 
 # Plot windows
 if sbp.plot_windows:
