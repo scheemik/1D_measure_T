@@ -32,11 +32,6 @@ hf = importlib.import_module(helper_module)
 # Add functions in helper file
 # import helper_functions as hf
 
-# Physical parameters
-# nu          = sbp.nu            # [m^2/s] Viscosity (momentum diffusivity)
-# #kappa       = sbp.kappa         # [m^2/s] Thermal diffusivity
-# f_0         = sbp.f_0           # [s^-1]        Reference Coriolis parameter
-# g           = sbp.g             # [m/s^2] Acceleration due to gravity
 # Problem parameters
 # theta       = sbp.theta         # [rad]         Propagation angle from vertical
 # omega       = sbp.omega         # [rad s^-1]    Wave frequency
@@ -58,7 +53,6 @@ for i in range(0, num_sims):
         data[i] = list(csvreader)[0]
 # Format lists into a numpy array
 data_arr = np.array(data)
-
 
 # csv read in as U32, convert data to float 64 before using
 mL_array = data_arr[:,1].astype('float64')
