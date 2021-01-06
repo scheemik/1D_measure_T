@@ -81,6 +81,11 @@ source ~/projects/def-ngrisoua/mschee/Dedalus_repos/2020a-dedalus/bin/activate
 
 # Path to experiment directory
 EXP_PATH="_experiments/${EXP}"
+# Name of csv data file for each simulation
+csv_data_file="sim_data.csv"
+# Name of combined csv data file for exp
+exp_csv_file="exp_data.csv"
+
 # Format number of simulations with correct number of digits
 #		Using SIMS-1 to avoid off-by-one error
 printf -v PSIMS "%03d" $((SIMS-1))
