@@ -1,0 +1,17 @@
+Seq	Host	Starttime	JobRuntime	Send	Receive	Exitval	Signal	Command
+15	:	1610565313.595	    15.569	0	555	1	0	cd _experiments/trap_waves/_simulations/014_trap_waves && bash run.sh -e trap_waves -i 014 -s 16 -c 32 -rmo
+14	:	1610565313.588	    15.641	0	555	1	0	cd _experiments/trap_waves/_simulations/013_trap_waves && bash run.sh -e trap_waves -i 013 -s 16 -c 32 -rmo
+16	:	1610565313.602	    15.628	0	555	1	0	cd _experiments/trap_waves/_simulations/015_trap_waves && bash run.sh -e trap_waves -i 015 -s 16 -c 32 -rmo
+9	:	1610565313.555	    70.259	0	6791	0	0	cd _experiments/trap_waves/_simulations/008_trap_waves && bash run.sh -e trap_waves -i 008 -s 16 -c 32 -rmo
+11	:	1610565313.569	    70.329	0	6788	0	0	cd _experiments/trap_waves/_simulations/010_trap_waves && bash run.sh -e trap_waves -i 010 -s 16 -c 32 -rmo
+13	:	1610565313.584	    70.367	0	6761	0	0	cd _experiments/trap_waves/_simulations/012_trap_waves && bash run.sh -e trap_waves -i 012 -s 16 -c 32 -rmo
+8	:	1610565313.551	    70.903	0	6788	0	0	cd _experiments/trap_waves/_simulations/007_trap_waves && bash run.sh -e trap_waves -i 007 -s 16 -c 32 -rmo
+12	:	1610565313.580	    71.288	0	6790	0	0	cd _experiments/trap_waves/_simulations/011_trap_waves && bash run.sh -e trap_waves -i 011 -s 16 -c 32 -rmo
+10	:	1610565313.564	    71.430	0	6759	0	0	cd _experiments/trap_waves/_simulations/009_trap_waves && bash run.sh -e trap_waves -i 009 -s 16 -c 32 -rmo
+4	:	1610565313.530	    75.199	0	6756	0	0	cd _experiments/trap_waves/_simulations/003_trap_waves && bash run.sh -e trap_waves -i 003 -s 16 -c 32 -rmo
+6	:	1610565313.540	    75.256	0	6785	0	0	cd _experiments/trap_waves/_simulations/005_trap_waves && bash run.sh -e trap_waves -i 005 -s 16 -c 32 -rmo
+2	:	1610565313.520	    75.749	0	6785	0	0	cd _experiments/trap_waves/_simulations/001_trap_waves && bash run.sh -e trap_waves -i 001 -s 16 -c 32 -rmo
+7	:	1610565313.545	    75.799	0	6758	0	0	cd _experiments/trap_waves/_simulations/006_trap_waves && bash run.sh -e trap_waves -i 006 -s 16 -c 32 -rmo
+3	:	1610565313.525	    76.459	0	6786	0	0	cd _experiments/trap_waves/_simulations/002_trap_waves && bash run.sh -e trap_waves -i 002 -s 16 -c 32 -rmo
+1	:	1610565313.516	    76.536	0	6740	0	0	cd _experiments/trap_waves/_simulations/000_trap_waves && bash run.sh -e trap_waves -i 000 -s 16 -c 32 -rmo
+5	:	1610565313.536	    76.522	0	6785	0	0	cd _experiments/trap_waves/_simulations/004_trap_waves && bash run.sh -e trap_waves -i 004 -s 16 -c 32 -rmo

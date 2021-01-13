@@ -1,0 +1,1436 @@
+Launched script: 2021-01-13_14h15
+
+Inactive Modules:
+  1) python/3.7.4
+
+Due to MODULEPATH changes, the following have been reloaded:
+  1) mpi4py/3.0.3
+
+The following have been reloaded with a version change:
+  1) StdEnv/2016.4 => StdEnv/2020           4) intel/2016.4 => intel/2020.1.217
+  2) gcccore/.5.4.0 => gcccore/.9.3.0       5) openmpi/2.1.1 => openmpi/4.0.3
+  3) imkl/11.3.4.258 => imkl/2020.1.217
+
+
+Activating Modules:
+  1) python/3.7.7
+
+-e, Name specified, using EXP=trap_waves
+-i, Simulation ID specified, using ID=014
+-n, No simulation name specified, using NAME=012_trap_waves
+-s, Number of simulations specified, using SIMS=16
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+014-Writing parameters file-
+
+014-Running script-
+Running Dedalus script
+
+Done running script
+
+014-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/trap_waves/_simulations/014_trap_waves/switchboard.py", line 165, in <module>
+    domain = de.Domain([z_basis], grid_dtype=np.complex128)#float64)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/domain.py", line 60, in __init__
+    self.dealias_buffer_size = self.dist.buffer_size(self.dealias)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/tools/cache.py", line 71, in __call__
+    self.cache[call] = result = self.function(*args, **kw)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/distributor.py", line 174, in buffer_size
+    return max(layout.buffer_size(scales) for layout in self.layouts)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/distributor.py", line 174, in <genexpr>
+    return max(layout.buffer_size(scales) for layout in self.layouts)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/tools/cache.py", line 71, in __call__
+    self.cache[call] = result = self.function(*args, **kw)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/distributor.py", line 263, in buffer_size
+    local_shape = self.local_shape(scales)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/tools/cache.py", line 71, in __call__
+    self.cache[call] = result = self.function(*args, **kw)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/distributor.py", line 239, in local_shape
+    global_shape = self.global_shape(scales)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/tools/cache.py", line 71, in __call__
+    self.cache[call] = result = self.function(*args, **kw)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/distributor.py", line 214, in global_shape
+    global_grid_shape = self.domain.global_grid_shape(scales)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/domain.py", line 68, in global_grid_shape
+    return np.array([b.grid_size(s) for (s, b) in zip(scales, self.bases)])
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/domain.py", line 68, in <listcomp>
+    return np.array([b.grid_size(s) for (s, b) in zip(scales, self.bases)])
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/basis.py", line 111, in grid_size
+    raise ValueError("Scaled grid size is not an integer: %f" %grid_size)
+ValueError: Scaled grid size is not an integer: 2851.500000
+-e, Name specified, using EXP=trap_waves
+-i, Simulation ID specified, using ID=013
+-n, No simulation name specified, using NAME=011_trap_waves
+-s, Number of simulations specified, using SIMS=16
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+013-Writing parameters file-
+
+013-Running script-
+Running Dedalus script
+
+Done running script
+
+013-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/trap_waves/_simulations/013_trap_waves/switchboard.py", line 165, in <module>
+    domain = de.Domain([z_basis], grid_dtype=np.complex128)#float64)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/domain.py", line 60, in __init__
+    self.dealias_buffer_size = self.dist.buffer_size(self.dealias)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/tools/cache.py", line 71, in __call__
+    self.cache[call] = result = self.function(*args, **kw)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/distributor.py", line 174, in buffer_size
+    return max(layout.buffer_size(scales) for layout in self.layouts)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/distributor.py", line 174, in <genexpr>
+    return max(layout.buffer_size(scales) for layout in self.layouts)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/tools/cache.py", line 71, in __call__
+    self.cache[call] = result = self.function(*args, **kw)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/distributor.py", line 263, in buffer_size
+    local_shape = self.local_shape(scales)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/tools/cache.py", line 71, in __call__
+    self.cache[call] = result = self.function(*args, **kw)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/distributor.py", line 239, in local_shape
+    global_shape = self.global_shape(scales)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/tools/cache.py", line 71, in __call__
+    self.cache[call] = result = self.function(*args, **kw)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/distributor.py", line 214, in global_shape
+    global_grid_shape = self.domain.global_grid_shape(scales)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/domain.py", line 68, in global_grid_shape
+    return np.array([b.grid_size(s) for (s, b) in zip(scales, self.bases)])
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/domain.py", line 68, in <listcomp>
+    return np.array([b.grid_size(s) for (s, b) in zip(scales, self.bases)])
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/basis.py", line 111, in grid_size
+    raise ValueError("Scaled grid size is not an integer: %f" %grid_size)
+ValueError: Scaled grid size is not an integer: 2851.500000
+-e, Name specified, using EXP=trap_waves
+-i, Simulation ID specified, using ID=015
+-n, No simulation name specified, using NAME=013_trap_waves
+-s, Number of simulations specified, using SIMS=16
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+015-Writing parameters file-
+
+015-Running script-
+Running Dedalus script
+
+Done running script
+
+015-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/trap_waves/_simulations/015_trap_waves/switchboard.py", line 165, in <module>
+    domain = de.Domain([z_basis], grid_dtype=np.complex128)#float64)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/domain.py", line 60, in __init__
+    self.dealias_buffer_size = self.dist.buffer_size(self.dealias)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/tools/cache.py", line 71, in __call__
+    self.cache[call] = result = self.function(*args, **kw)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/distributor.py", line 174, in buffer_size
+    return max(layout.buffer_size(scales) for layout in self.layouts)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/distributor.py", line 174, in <genexpr>
+    return max(layout.buffer_size(scales) for layout in self.layouts)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/tools/cache.py", line 71, in __call__
+    self.cache[call] = result = self.function(*args, **kw)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/distributor.py", line 263, in buffer_size
+    local_shape = self.local_shape(scales)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/tools/cache.py", line 71, in __call__
+    self.cache[call] = result = self.function(*args, **kw)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/distributor.py", line 239, in local_shape
+    global_shape = self.global_shape(scales)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/tools/cache.py", line 71, in __call__
+    self.cache[call] = result = self.function(*args, **kw)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/distributor.py", line 214, in global_shape
+    global_grid_shape = self.domain.global_grid_shape(scales)
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/domain.py", line 68, in global_grid_shape
+    return np.array([b.grid_size(s) for (s, b) in zip(scales, self.bases)])
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/domain.py", line 68, in <listcomp>
+    return np.array([b.grid_size(s) for (s, b) in zip(scales, self.bases)])
+  File "/home/mschee/.local/lib/python3.7/site-packages/dedalus/core/basis.py", line 111, in grid_size
+    raise ValueError("Scaled grid size is not an integer: %f" %grid_size)
+ValueError: Scaled grid size is not an integer: 2851.500000
+-e, Name specified, using EXP=trap_waves
+-i, Simulation ID specified, using ID=008
+-n, No simulation name specified, using NAME=000_trap_waves
+-s, Number of simulations specified, using SIMS=16
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+008-Writing parameters file-
+
+008-Running script-
+Running Dedalus script
+mL= 2.6666666666666665
+2021-01-13 14:15:29,392 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.3e+00/s
+2021-01-13 14:15:29,393 __main__ 0/1 INFO :: Solver built
+2021-01-13 14:15:29,394 __main__ 0/1 INFO :: Sim end period: 79.000000
+2021-01-13 14:15:29,394 __main__ 0/1 INFO :: Starting loop
+2021-01-13 14:15:31,540 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:32,424 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:33,191 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:33,962 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:34,782 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:35,514 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:36,250 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:37,007 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:37,895 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:38,776 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:39,650 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:40,458 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:41,201 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:41,966 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:42,764 __main__ 0/1 INFO :: Iteration: 1500, t/T: 2.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:43,626 __main__ 0/1 INFO :: Iteration: 1600, t/T: 2.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:44,381 __main__ 0/1 INFO :: Iteration: 1700, t/T: 2.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:45,176 __main__ 0/1 INFO :: Iteration: 1800, t/T: 2.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:45,968 __main__ 0/1 INFO :: Iteration: 1900, t/T: 2.968750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:46,808 __main__ 0/1 INFO :: Iteration: 2000, t/T: 3.125000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:47,555 __main__ 0/1 INFO :: Iteration: 2100, t/T: 3.281250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:48,310 __main__ 0/1 INFO :: Iteration: 2200, t/T: 3.437500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:49,166 __main__ 0/1 INFO :: Iteration: 2300, t/T: 3.593750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:49,997 __main__ 0/1 INFO :: Iteration: 2400, t/T: 3.750000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:50,804 __main__ 0/1 INFO :: Iteration: 2500, t/T: 3.906250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:51,668 __main__ 0/1 INFO :: Iteration: 2600, t/T: 4.062500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:52,416 __main__ 0/1 INFO :: Iteration: 2700, t/T: 4.218750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:53,212 __main__ 0/1 INFO :: Iteration: 2800, t/T: 4.375000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:53,964 __main__ 0/1 INFO :: Iteration: 2900, t/T: 4.531250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:54,736 __main__ 0/1 INFO :: Iteration: 3000, t/T: 4.687500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:55,492 __main__ 0/1 INFO :: Iteration: 3100, t/T: 4.843750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:56,347 __main__ 0/1 INFO :: Iteration: 3200, t/T: 5.000000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:57,228 __main__ 0/1 INFO :: Iteration: 3300, t/T: 5.156250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:57,964 __main__ 0/1 INFO :: Iteration: 3400, t/T: 5.312500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:58,707 __main__ 0/1 INFO :: Iteration: 3500, t/T: 5.468750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:59,446 __main__ 0/1 INFO :: Iteration: 3600, t/T: 5.625000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:00,203 __main__ 0/1 INFO :: Iteration: 3700, t/T: 5.781250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:00,972 __main__ 0/1 INFO :: Iteration: 3800, t/T: 5.937500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:01,720 __main__ 0/1 INFO :: Iteration: 3900, t/T: 6.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:02,457 __main__ 0/1 INFO :: Iteration: 4000, t/T: 6.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:03,229 __main__ 0/1 INFO :: Iteration: 4100, t/T: 6.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:03,967 __main__ 0/1 INFO :: Iteration: 4200, t/T: 6.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:04,854 __main__ 0/1 INFO :: Iteration: 4300, t/T: 6.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:05,634 __main__ 0/1 INFO :: Iteration: 4400, t/T: 6.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:06,455 __main__ 0/1 INFO :: Iteration: 4500, t/T: 7.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:07,255 __main__ 0/1 INFO :: Iteration: 4600, t/T: 7.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:08,011 __main__ 0/1 INFO :: Iteration: 4700, t/T: 7.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:08,778 __main__ 0/1 INFO :: Iteration: 4800, t/T: 7.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:09,536 __main__ 0/1 INFO :: Iteration: 4900, t/T: 7.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:10,316 __main__ 0/1 INFO :: Iteration: 5000, t/T: 7.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:10,755 solvers 0/1 INFO :: Simulation stop time reached.
+2021-01-13 14:16:10,755 __main__ 0/1 INFO :: Iterations: 5057
+2021-01-13 14:16:10,756 __main__ 0/1 INFO :: Sim end period: 79.015625
+2021-01-13 14:16:10,756 __main__ 0/1 INFO :: Run time: 41.36 sec
+2021-01-13 14:16:10,756 __main__ 0/1 INFO :: Run time: 0.011489 cpu-hr
+
+Done running script
+
+008-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Found snapshots
+Merging snapshots
+2021-01-13 14:16:12,541 post 0/1 INFO :: Merging files from snapshots
+2021-01-13 14:16:17,484 post 0/1 INFO :: Creating joint file snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+008-Post processing-
+Checking for snapshots in directory: snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 2275
+(n_layers = 2 (mL = 2.6666666666666665 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 0.00036585675576226133
+AnaEq 2.4 transmission coefficient is: 0.019126668947411402
+Done post processing
+
+008-Done running simulation-
+
+run.sh: line 60: printf: 008: invalid octal number
+-e, Name specified, using EXP=trap_waves
+-i, Simulation ID specified, using ID=010
+-n, No simulation name specified, using NAME=008_trap_waves
+-s, Number of simulations specified, using SIMS=16
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+010-Writing parameters file-
+
+010-Running script-
+Running Dedalus script
+mL= 3.333333333333333
+2021-01-13 14:15:29,367 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.3e+00/s
+2021-01-13 14:15:29,368 __main__ 0/1 INFO :: Solver built
+2021-01-13 14:15:29,369 __main__ 0/1 INFO :: Sim end period: 79.000000
+2021-01-13 14:15:29,369 __main__ 0/1 INFO :: Starting loop
+2021-01-13 14:15:31,725 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:32,489 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:33,246 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:33,983 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:34,784 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:35,586 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:36,338 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:37,076 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:37,818 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:38,568 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:39,307 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:40,176 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:40,923 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:41,689 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:42,528 __main__ 0/1 INFO :: Iteration: 1500, t/T: 2.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:43,271 __main__ 0/1 INFO :: Iteration: 1600, t/T: 2.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:44,022 __main__ 0/1 INFO :: Iteration: 1700, t/T: 2.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:44,761 __main__ 0/1 INFO :: Iteration: 1800, t/T: 2.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:45,513 __main__ 0/1 INFO :: Iteration: 1900, t/T: 2.968750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:46,347 __main__ 0/1 INFO :: Iteration: 2000, t/T: 3.125000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:47,174 __main__ 0/1 INFO :: Iteration: 2100, t/T: 3.281250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:47,913 __main__ 0/1 INFO :: Iteration: 2200, t/T: 3.437500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:48,661 __main__ 0/1 INFO :: Iteration: 2300, t/T: 3.593750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:49,410 __main__ 0/1 INFO :: Iteration: 2400, t/T: 3.750000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:50,208 __main__ 0/1 INFO :: Iteration: 2500, t/T: 3.906250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:51,064 __main__ 0/1 INFO :: Iteration: 2600, t/T: 4.062500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:51,824 __main__ 0/1 INFO :: Iteration: 2700, t/T: 4.218750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:52,606 __main__ 0/1 INFO :: Iteration: 2800, t/T: 4.375000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:53,398 __main__ 0/1 INFO :: Iteration: 2900, t/T: 4.531250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:54,170 __main__ 0/1 INFO :: Iteration: 3000, t/T: 4.687500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:54,960 __main__ 0/1 INFO :: Iteration: 3100, t/T: 4.843750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:55,798 __main__ 0/1 INFO :: Iteration: 3200, t/T: 5.000000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:56,718 __main__ 0/1 INFO :: Iteration: 3300, t/T: 5.156250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:57,526 __main__ 0/1 INFO :: Iteration: 3400, t/T: 5.312500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:58,365 __main__ 0/1 INFO :: Iteration: 3500, t/T: 5.468750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:59,178 __main__ 0/1 INFO :: Iteration: 3600, t/T: 5.625000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:00,119 __main__ 0/1 INFO :: Iteration: 3700, t/T: 5.781250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:00,851 __main__ 0/1 INFO :: Iteration: 3800, t/T: 5.937500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:01,592 __main__ 0/1 INFO :: Iteration: 3900, t/T: 6.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:02,328 __main__ 0/1 INFO :: Iteration: 4000, t/T: 6.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:03,122 __main__ 0/1 INFO :: Iteration: 4100, t/T: 6.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:03,919 __main__ 0/1 INFO :: Iteration: 4200, t/T: 6.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:04,664 __main__ 0/1 INFO :: Iteration: 4300, t/T: 6.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:05,408 __main__ 0/1 INFO :: Iteration: 4400, t/T: 6.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:06,161 __main__ 0/1 INFO :: Iteration: 4500, t/T: 7.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:06,925 __main__ 0/1 INFO :: Iteration: 4600, t/T: 7.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:07,666 __main__ 0/1 INFO :: Iteration: 4700, t/T: 7.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:08,412 __main__ 0/1 INFO :: Iteration: 4800, t/T: 7.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:09,148 __main__ 0/1 INFO :: Iteration: 4900, t/T: 7.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:10,031 __main__ 0/1 INFO :: Iteration: 5000, t/T: 7.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:10,522 solvers 0/1 INFO :: Simulation stop time reached.
+2021-01-13 14:16:10,522 __main__ 0/1 INFO :: Iterations: 5057
+2021-01-13 14:16:10,522 __main__ 0/1 INFO :: Sim end period: 79.015625
+2021-01-13 14:16:10,522 __main__ 0/1 INFO :: Run time: 41.15 sec
+2021-01-13 14:16:10,522 __main__ 0/1 INFO :: Run time: 0.011431 cpu-hr
+
+Done running script
+
+010-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Found snapshots
+Merging snapshots
+2021-01-13 14:16:12,336 post 0/1 INFO :: Merging files from snapshots
+2021-01-13 14:16:17,604 post 0/1 INFO :: Creating joint file snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+010-Post processing-
+Checking for snapshots in directory: snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 2275
+(n_layers = 2 (mL = 3.333333333333333 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 0.0007518135922640596
+AnaEq 2.4 transmission coefficient is: 0.005077603122961368
+Done post processing
+
+010-Done running simulation-
+
+-e, Name specified, using EXP=trap_waves
+-i, Simulation ID specified, using ID=012
+-n, No simulation name specified, using NAME=010_trap_waves
+-s, Number of simulations specified, using SIMS=16
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+012-Writing parameters file-
+
+012-Running script-
+Running Dedalus script
+mL= 4.0
+2021-01-13 14:15:29,376 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.3e+00/s
+2021-01-13 14:15:29,377 __main__ 0/1 INFO :: Solver built
+2021-01-13 14:15:29,378 __main__ 0/1 INFO :: Sim end period: 79.000000
+2021-01-13 14:15:29,378 __main__ 0/1 INFO :: Starting loop
+2021-01-13 14:15:31,484 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:32,236 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:32,992 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:33,887 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:34,678 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:35,460 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:36,292 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:37,036 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:37,787 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:38,548 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:39,296 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:40,045 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:40,793 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:41,553 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:42,383 __main__ 0/1 INFO :: Iteration: 1500, t/T: 2.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:43,138 __main__ 0/1 INFO :: Iteration: 1600, t/T: 2.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:43,887 __main__ 0/1 INFO :: Iteration: 1700, t/T: 2.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:44,639 __main__ 0/1 INFO :: Iteration: 1800, t/T: 2.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:45,406 __main__ 0/1 INFO :: Iteration: 1900, t/T: 2.968750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:46,163 __main__ 0/1 INFO :: Iteration: 2000, t/T: 3.125000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:46,930 __main__ 0/1 INFO :: Iteration: 2100, t/T: 3.281250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:47,753 __main__ 0/1 INFO :: Iteration: 2200, t/T: 3.437500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:48,547 __main__ 0/1 INFO :: Iteration: 2300, t/T: 3.593750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:49,300 __main__ 0/1 INFO :: Iteration: 2400, t/T: 3.750000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:50,045 __main__ 0/1 INFO :: Iteration: 2500, t/T: 3.906250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:50,797 __main__ 0/1 INFO :: Iteration: 2600, t/T: 4.062500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:51,550 __main__ 0/1 INFO :: Iteration: 2700, t/T: 4.218750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:52,412 __main__ 0/1 INFO :: Iteration: 2800, t/T: 4.375000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:53,157 __main__ 0/1 INFO :: Iteration: 2900, t/T: 4.531250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:53,912 __main__ 0/1 INFO :: Iteration: 3000, t/T: 4.687500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:54,663 __main__ 0/1 INFO :: Iteration: 3100, t/T: 4.843750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:55,530 __main__ 0/1 INFO :: Iteration: 3200, t/T: 5.000000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:56,308 __main__ 0/1 INFO :: Iteration: 3300, t/T: 5.156250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:57,173 __main__ 0/1 INFO :: Iteration: 3400, t/T: 5.312500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:57,985 __main__ 0/1 INFO :: Iteration: 3500, t/T: 5.468750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:58,808 __main__ 0/1 INFO :: Iteration: 3600, t/T: 5.625000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:59,593 __main__ 0/1 INFO :: Iteration: 3700, t/T: 5.781250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:00,373 __main__ 0/1 INFO :: Iteration: 3800, t/T: 5.937500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:01,146 __main__ 0/1 INFO :: Iteration: 3900, t/T: 6.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:01,911 __main__ 0/1 INFO :: Iteration: 4000, t/T: 6.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:02,722 __main__ 0/1 INFO :: Iteration: 4100, t/T: 6.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:03,486 __main__ 0/1 INFO :: Iteration: 4200, t/T: 6.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:04,272 __main__ 0/1 INFO :: Iteration: 4300, t/T: 6.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:05,128 __main__ 0/1 INFO :: Iteration: 4400, t/T: 6.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:05,904 __main__ 0/1 INFO :: Iteration: 4500, t/T: 7.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:06,689 __main__ 0/1 INFO :: Iteration: 4600, t/T: 7.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:07,482 __main__ 0/1 INFO :: Iteration: 4700, t/T: 7.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:08,305 __main__ 0/1 INFO :: Iteration: 4800, t/T: 7.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:09,051 __main__ 0/1 INFO :: Iteration: 4900, t/T: 7.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:09,834 __main__ 0/1 INFO :: Iteration: 5000, t/T: 7.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:10,266 solvers 0/1 INFO :: Simulation stop time reached.
+2021-01-13 14:16:10,266 __main__ 0/1 INFO :: Iterations: 5057
+2021-01-13 14:16:10,266 __main__ 0/1 INFO :: Sim end period: 79.015625
+2021-01-13 14:16:10,266 __main__ 0/1 INFO :: Run time: 40.89 sec
+2021-01-13 14:16:10,266 __main__ 0/1 INFO :: Run time: 0.011358 cpu-hr
+
+Done running script
+
+012-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Found snapshots
+Merging snapshots
+2021-01-13 14:16:12,332 post 0/1 INFO :: Merging files from snapshots
+2021-01-13 14:16:17,448 post 0/1 INFO :: Creating joint file snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+012-Post processing-
+Checking for snapshots in directory: snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 2275
+(n_layers = 2 (mL = 4.0 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 0.0009934764033284423
+AnaEq 2.4 transmission coefficient is: 0.0013409506830258972
+Done post processing
+
+012-Done running simulation-
+
+-e, Name specified, using EXP=trap_waves
+-i, Simulation ID specified, using ID=007
+-n, No simulation name specified, using NAME=007_trap_waves
+-s, Number of simulations specified, using SIMS=16
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+007-Writing parameters file-
+
+007-Running script-
+Running Dedalus script
+mL= 2.333333333333333
+2021-01-13 14:15:29,342 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.4e+00/s
+2021-01-13 14:15:29,343 __main__ 0/1 INFO :: Solver built
+2021-01-13 14:15:29,345 __main__ 0/1 INFO :: Sim end period: 79.000000
+2021-01-13 14:15:29,346 __main__ 0/1 INFO :: Starting loop
+2021-01-13 14:15:31,489 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:32,290 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:33,044 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:33,843 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:34,728 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:35,564 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:36,465 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:37,341 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:38,121 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:38,994 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:39,876 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:40,691 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:41,520 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:42,393 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:43,160 __main__ 0/1 INFO :: Iteration: 1500, t/T: 2.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:43,924 __main__ 0/1 INFO :: Iteration: 1600, t/T: 2.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:44,690 __main__ 0/1 INFO :: Iteration: 1700, t/T: 2.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:45,457 __main__ 0/1 INFO :: Iteration: 1800, t/T: 2.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:46,229 __main__ 0/1 INFO :: Iteration: 1900, t/T: 2.968750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:46,992 __main__ 0/1 INFO :: Iteration: 2000, t/T: 3.125000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:47,815 __main__ 0/1 INFO :: Iteration: 2100, t/T: 3.281250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:48,577 __main__ 0/1 INFO :: Iteration: 2200, t/T: 3.437500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:49,438 __main__ 0/1 INFO :: Iteration: 2300, t/T: 3.593750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:50,247 __main__ 0/1 INFO :: Iteration: 2400, t/T: 3.750000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:51,002 __main__ 0/1 INFO :: Iteration: 2500, t/T: 3.906250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:51,752 __main__ 0/1 INFO :: Iteration: 2600, t/T: 4.062500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:52,540 __main__ 0/1 INFO :: Iteration: 2700, t/T: 4.218750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:53,338 __main__ 0/1 INFO :: Iteration: 2800, t/T: 4.375000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:54,267 __main__ 0/1 INFO :: Iteration: 2900, t/T: 4.531250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:55,013 __main__ 0/1 INFO :: Iteration: 3000, t/T: 4.687500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:55,753 __main__ 0/1 INFO :: Iteration: 3100, t/T: 4.843750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:56,503 __main__ 0/1 INFO :: Iteration: 3200, t/T: 5.000000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:57,291 __main__ 0/1 INFO :: Iteration: 3300, t/T: 5.156250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:58,273 __main__ 0/1 INFO :: Iteration: 3400, t/T: 5.312500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:59,060 __main__ 0/1 INFO :: Iteration: 3500, t/T: 5.468750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:59,821 __main__ 0/1 INFO :: Iteration: 3600, t/T: 5.625000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:00,609 __main__ 0/1 INFO :: Iteration: 3700, t/T: 5.781250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:01,412 __main__ 0/1 INFO :: Iteration: 3800, t/T: 5.937500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:02,186 __main__ 0/1 INFO :: Iteration: 3900, t/T: 6.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:02,950 __main__ 0/1 INFO :: Iteration: 4000, t/T: 6.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:03,742 __main__ 0/1 INFO :: Iteration: 4100, t/T: 6.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:04,504 __main__ 0/1 INFO :: Iteration: 4200, t/T: 6.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:05,349 __main__ 0/1 INFO :: Iteration: 4300, t/T: 6.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:06,262 __main__ 0/1 INFO :: Iteration: 4400, t/T: 6.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:07,031 __main__ 0/1 INFO :: Iteration: 4500, t/T: 7.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:07,832 __main__ 0/1 INFO :: Iteration: 4600, t/T: 7.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:08,590 __main__ 0/1 INFO :: Iteration: 4700, t/T: 7.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:09,363 __main__ 0/1 INFO :: Iteration: 4800, t/T: 7.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:10,134 __main__ 0/1 INFO :: Iteration: 4900, t/T: 7.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:11,028 __main__ 0/1 INFO :: Iteration: 5000, t/T: 7.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:11,450 solvers 0/1 INFO :: Simulation stop time reached.
+2021-01-13 14:16:11,450 __main__ 0/1 INFO :: Iterations: 5057
+2021-01-13 14:16:11,450 __main__ 0/1 INFO :: Sim end period: 79.015625
+2021-01-13 14:16:11,450 __main__ 0/1 INFO :: Run time: 42.10 sec
+2021-01-13 14:16:11,450 __main__ 0/1 INFO :: Run time: 0.011696 cpu-hr
+
+Done running script
+
+007-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Found snapshots
+Merging snapshots
+2021-01-13 14:16:13,550 post 0/1 INFO :: Merging files from snapshots
+2021-01-13 14:16:18,304 post 0/1 INFO :: Creating joint file snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+007-Post processing-
+Checking for snapshots in directory: snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 2275
+(n_layers = 2 (mL = 2.333333333333333 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 0.0003353695575436928
+AnaEq 2.4 transmission coefficient is: 0.036916688986191035
+Done post processing
+
+007-Done running simulation-
+
+-e, Name specified, using EXP=trap_waves
+-i, Simulation ID specified, using ID=011
+-n, No simulation name specified, using NAME=009_trap_waves
+-s, Number of simulations specified, using SIMS=16
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+011-Writing parameters file-
+
+011-Running script-
+Running Dedalus script
+mL= 3.6666666666666665
+2021-01-13 14:15:29,364 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.3e+00/s
+2021-01-13 14:15:29,365 __main__ 0/1 INFO :: Solver built
+2021-01-13 14:15:29,367 __main__ 0/1 INFO :: Sim end period: 79.000000
+2021-01-13 14:15:29,367 __main__ 0/1 INFO :: Starting loop
+2021-01-13 14:15:31,631 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:32,412 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:33,184 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:33,931 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:34,696 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:35,448 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:36,208 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:36,952 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:37,712 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:38,574 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:39,361 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:40,218 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:40,986 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:41,856 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:42,623 __main__ 0/1 INFO :: Iteration: 1500, t/T: 2.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:43,501 __main__ 0/1 INFO :: Iteration: 1600, t/T: 2.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:44,283 __main__ 0/1 INFO :: Iteration: 1700, t/T: 2.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:45,046 __main__ 0/1 INFO :: Iteration: 1800, t/T: 2.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:45,923 __main__ 0/1 INFO :: Iteration: 1900, t/T: 2.968750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:46,715 __main__ 0/1 INFO :: Iteration: 2000, t/T: 3.125000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:47,461 __main__ 0/1 INFO :: Iteration: 2100, t/T: 3.281250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:48,212 __main__ 0/1 INFO :: Iteration: 2200, t/T: 3.437500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:48,989 __main__ 0/1 INFO :: Iteration: 2300, t/T: 3.593750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:49,759 __main__ 0/1 INFO :: Iteration: 2400, t/T: 3.750000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:50,556 __main__ 0/1 INFO :: Iteration: 2500, t/T: 3.906250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:51,358 __main__ 0/1 INFO :: Iteration: 2600, t/T: 4.062500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:52,206 __main__ 0/1 INFO :: Iteration: 2700, t/T: 4.218750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:53,097 __main__ 0/1 INFO :: Iteration: 2800, t/T: 4.375000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:53,857 __main__ 0/1 INFO :: Iteration: 2900, t/T: 4.531250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:54,758 __main__ 0/1 INFO :: Iteration: 3000, t/T: 4.687500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:55,647 __main__ 0/1 INFO :: Iteration: 3100, t/T: 4.843750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:56,439 __main__ 0/1 INFO :: Iteration: 3200, t/T: 5.000000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:57,209 __main__ 0/1 INFO :: Iteration: 3300, t/T: 5.156250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:58,059 __main__ 0/1 INFO :: Iteration: 3400, t/T: 5.312500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:58,913 __main__ 0/1 INFO :: Iteration: 3500, t/T: 5.468750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:59,758 __main__ 0/1 INFO :: Iteration: 3600, t/T: 5.625000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:00,629 __main__ 0/1 INFO :: Iteration: 3700, t/T: 5.781250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:01,465 __main__ 0/1 INFO :: Iteration: 3800, t/T: 5.937500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:02,348 __main__ 0/1 INFO :: Iteration: 3900, t/T: 6.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:03,168 __main__ 0/1 INFO :: Iteration: 4000, t/T: 6.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:04,071 __main__ 0/1 INFO :: Iteration: 4100, t/T: 6.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:04,955 __main__ 0/1 INFO :: Iteration: 4200, t/T: 6.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:05,768 __main__ 0/1 INFO :: Iteration: 4300, t/T: 6.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:06,545 __main__ 0/1 INFO :: Iteration: 4400, t/T: 6.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:07,302 __main__ 0/1 INFO :: Iteration: 4500, t/T: 7.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:08,087 __main__ 0/1 INFO :: Iteration: 4600, t/T: 7.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:08,882 __main__ 0/1 INFO :: Iteration: 4700, t/T: 7.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:09,788 __main__ 0/1 INFO :: Iteration: 4800, t/T: 7.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:10,571 __main__ 0/1 INFO :: Iteration: 4900, t/T: 7.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:11,428 __main__ 0/1 INFO :: Iteration: 5000, t/T: 7.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:11,932 solvers 0/1 INFO :: Simulation stop time reached.
+2021-01-13 14:16:11,932 __main__ 0/1 INFO :: Iterations: 5057
+2021-01-13 14:16:11,932 __main__ 0/1 INFO :: Sim end period: 79.015625
+2021-01-13 14:16:11,932 __main__ 0/1 INFO :: Run time: 42.57 sec
+2021-01-13 14:16:11,932 __main__ 0/1 INFO :: Run time: 0.011824 cpu-hr
+
+Done running script
+
+011-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Found snapshots
+Merging snapshots
+2021-01-13 14:16:13,875 post 0/1 INFO :: Merging files from snapshots
+2021-01-13 14:16:18,779 post 0/1 INFO :: Creating joint file snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+011-Post processing-
+Checking for snapshots in directory: snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 2275
+(n_layers = 2 (mL = 3.6666666666666665 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 0.0009536051331553613
+AnaEq 2.4 transmission coefficient is: 0.002610155895282588
+Done post processing
+
+011-Done running simulation-
+
+-e, Name specified, using EXP=trap_waves
+-i, Simulation ID specified, using ID=009
+-n, No simulation name specified, using NAME=000_trap_waves
+-s, Number of simulations specified, using SIMS=16
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+009-Writing parameters file-
+
+009-Running script-
+Running Dedalus script
+mL= 3.0
+2021-01-13 14:15:29,356 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.3e+00/s
+2021-01-13 14:15:29,356 __main__ 0/1 INFO :: Solver built
+2021-01-13 14:15:29,358 __main__ 0/1 INFO :: Sim end period: 79.000000
+2021-01-13 14:15:29,358 __main__ 0/1 INFO :: Starting loop
+2021-01-13 14:15:31,656 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:32,556 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:33,375 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:34,218 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:35,060 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:35,995 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:36,809 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:37,553 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:38,308 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:39,067 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:39,812 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:40,565 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:41,314 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:42,073 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:42,834 __main__ 0/1 INFO :: Iteration: 1500, t/T: 2.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:43,593 __main__ 0/1 INFO :: Iteration: 1600, t/T: 2.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:44,334 __main__ 0/1 INFO :: Iteration: 1700, t/T: 2.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:45,182 __main__ 0/1 INFO :: Iteration: 1800, t/T: 2.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:45,955 __main__ 0/1 INFO :: Iteration: 1900, t/T: 2.968750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:46,748 __main__ 0/1 INFO :: Iteration: 2000, t/T: 3.125000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:47,585 __main__ 0/1 INFO :: Iteration: 2100, t/T: 3.281250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:48,370 __main__ 0/1 INFO :: Iteration: 2200, t/T: 3.437500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:49,195 __main__ 0/1 INFO :: Iteration: 2300, t/T: 3.593750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:50,062 __main__ 0/1 INFO :: Iteration: 2400, t/T: 3.750000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:50,976 __main__ 0/1 INFO :: Iteration: 2500, t/T: 3.906250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:51,834 __main__ 0/1 INFO :: Iteration: 2600, t/T: 4.062500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:52,638 __main__ 0/1 INFO :: Iteration: 2700, t/T: 4.218750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:53,439 __main__ 0/1 INFO :: Iteration: 2800, t/T: 4.375000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:54,198 __main__ 0/1 INFO :: Iteration: 2900, t/T: 4.531250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:54,971 __main__ 0/1 INFO :: Iteration: 3000, t/T: 4.687500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:55,736 __main__ 0/1 INFO :: Iteration: 3100, t/T: 4.843750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:56,603 __main__ 0/1 INFO :: Iteration: 3200, t/T: 5.000000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:57,381 __main__ 0/1 INFO :: Iteration: 3300, t/T: 5.156250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:58,138 __main__ 0/1 INFO :: Iteration: 3400, t/T: 5.312500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:58,906 __main__ 0/1 INFO :: Iteration: 3500, t/T: 5.468750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:59,678 __main__ 0/1 INFO :: Iteration: 3600, t/T: 5.625000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:00,484 __main__ 0/1 INFO :: Iteration: 3700, t/T: 5.781250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:01,329 __main__ 0/1 INFO :: Iteration: 3800, t/T: 5.937500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:02,099 __main__ 0/1 INFO :: Iteration: 3900, t/T: 6.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:02,875 __main__ 0/1 INFO :: Iteration: 4000, t/T: 6.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:03,670 __main__ 0/1 INFO :: Iteration: 4100, t/T: 6.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:04,582 __main__ 0/1 INFO :: Iteration: 4200, t/T: 6.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:05,343 __main__ 0/1 INFO :: Iteration: 4300, t/T: 6.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:06,097 __main__ 0/1 INFO :: Iteration: 4400, t/T: 6.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:06,868 __main__ 0/1 INFO :: Iteration: 4500, t/T: 7.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:07,672 __main__ 0/1 INFO :: Iteration: 4600, t/T: 7.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:08,535 __main__ 0/1 INFO :: Iteration: 4700, t/T: 7.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:09,354 __main__ 0/1 INFO :: Iteration: 4800, t/T: 7.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:10,097 __main__ 0/1 INFO :: Iteration: 4900, t/T: 7.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:10,933 __main__ 0/1 INFO :: Iteration: 5000, t/T: 7.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:11,362 solvers 0/1 INFO :: Simulation stop time reached.
+2021-01-13 14:16:11,363 __main__ 0/1 INFO :: Iterations: 5057
+2021-01-13 14:16:11,363 __main__ 0/1 INFO :: Sim end period: 79.015625
+2021-01-13 14:16:11,363 __main__ 0/1 INFO :: Run time: 42.00 sec
+2021-01-13 14:16:11,363 __main__ 0/1 INFO :: Run time: 0.011668 cpu-hr
+
+Done running script
+
+009-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Found snapshots
+Merging snapshots
+2021-01-13 14:16:13,532 post 0/1 INFO :: Merging files from snapshots
+2021-01-13 14:16:18,804 post 0/1 INFO :: Creating joint file snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+009-Post processing-
+Checking for snapshots in directory: snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 2275
+(n_layers = 2 (mL = 3.0 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 0.0006005573017313281
+AnaEq 2.4 transmission coefficient is: 0.00986603716544019
+Done post processing
+
+009-Done running simulation-
+
+run.sh: line 60: printf: 009: invalid octal number
+-e, Name specified, using EXP=trap_waves
+-i, Simulation ID specified, using ID=003
+-n, No simulation name specified, using NAME=003_trap_waves
+-s, Number of simulations specified, using SIMS=16
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+003-Writing parameters file-
+
+003-Running script-
+Running Dedalus script
+mL= 1.0
+2021-01-13 14:15:29,378 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.2e+00/s
+2021-01-13 14:15:29,378 __main__ 0/1 INFO :: Solver built
+2021-01-13 14:15:29,380 __main__ 0/1 INFO :: Sim end period: 79.000000
+2021-01-13 14:15:29,380 __main__ 0/1 INFO :: Starting loop
+2021-01-13 14:15:30,829 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:31,860 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:32,734 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:33,588 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:34,568 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:35,465 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:36,384 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:37,273 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:38,234 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:39,137 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:40,034 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:40,929 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:41,822 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:42,724 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:43,696 __main__ 0/1 INFO :: Iteration: 1500, t/T: 2.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:44,596 __main__ 0/1 INFO :: Iteration: 1600, t/T: 2.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:45,481 __main__ 0/1 INFO :: Iteration: 1700, t/T: 2.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:46,390 __main__ 0/1 INFO :: Iteration: 1800, t/T: 2.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:47,371 __main__ 0/1 INFO :: Iteration: 1900, t/T: 2.968750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:48,273 __main__ 0/1 INFO :: Iteration: 2000, t/T: 3.125000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:49,184 __main__ 0/1 INFO :: Iteration: 2100, t/T: 3.281250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:50,072 __main__ 0/1 INFO :: Iteration: 2200, t/T: 3.437500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:50,964 __main__ 0/1 INFO :: Iteration: 2300, t/T: 3.593750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:51,855 __main__ 0/1 INFO :: Iteration: 2400, t/T: 3.750000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:52,735 __main__ 0/1 INFO :: Iteration: 2500, t/T: 3.906250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:53,638 __main__ 0/1 INFO :: Iteration: 2600, t/T: 4.062500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:54,575 __main__ 0/1 INFO :: Iteration: 2700, t/T: 4.218750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:55,469 __main__ 0/1 INFO :: Iteration: 2800, t/T: 4.375000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:56,324 __main__ 0/1 INFO :: Iteration: 2900, t/T: 4.531250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:57,290 __main__ 0/1 INFO :: Iteration: 3000, t/T: 4.687500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:58,155 __main__ 0/1 INFO :: Iteration: 3100, t/T: 4.843750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:59,043 __main__ 0/1 INFO :: Iteration: 3200, t/T: 5.000000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:59,908 __main__ 0/1 INFO :: Iteration: 3300, t/T: 5.156250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:00,779 __main__ 0/1 INFO :: Iteration: 3400, t/T: 5.312500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:01,643 __main__ 0/1 INFO :: Iteration: 3500, t/T: 5.468750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:02,501 __main__ 0/1 INFO :: Iteration: 3600, t/T: 5.625000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:03,379 __main__ 0/1 INFO :: Iteration: 3700, t/T: 5.781250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:04,235 __main__ 0/1 INFO :: Iteration: 3800, t/T: 5.937500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:05,209 __main__ 0/1 INFO :: Iteration: 3900, t/T: 6.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:06,142 __main__ 0/1 INFO :: Iteration: 4000, t/T: 6.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:07,045 __main__ 0/1 INFO :: Iteration: 4100, t/T: 6.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:07,903 __main__ 0/1 INFO :: Iteration: 4200, t/T: 6.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:08,872 __main__ 0/1 INFO :: Iteration: 4300, t/T: 6.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:09,748 __main__ 0/1 INFO :: Iteration: 4400, t/T: 6.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:10,680 __main__ 0/1 INFO :: Iteration: 4500, t/T: 7.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:11,632 __main__ 0/1 INFO :: Iteration: 4600, t/T: 7.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:12,636 __main__ 0/1 INFO :: Iteration: 4700, t/T: 7.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:13,568 __main__ 0/1 INFO :: Iteration: 4800, t/T: 7.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:14,444 __main__ 0/1 INFO :: Iteration: 4900, t/T: 7.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:15,320 __main__ 0/1 INFO :: Iteration: 5000, t/T: 7.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:15,807 solvers 0/1 INFO :: Simulation stop time reached.
+2021-01-13 14:16:15,807 __main__ 0/1 INFO :: Iterations: 5057
+2021-01-13 14:16:15,807 __main__ 0/1 INFO :: Sim end period: 79.015625
+2021-01-13 14:16:15,807 __main__ 0/1 INFO :: Run time: 46.43 sec
+2021-01-13 14:16:15,807 __main__ 0/1 INFO :: Run time: 0.012896 cpu-hr
+
+Done running script
+
+003-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Found snapshots
+Merging snapshots
+2021-01-13 14:16:17,637 post 0/1 INFO :: Merging files from snapshots
+2021-01-13 14:16:22,446 post 0/1 INFO :: Creating joint file snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+003-Post processing-
+Checking for snapshots in directory: snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 2275
+(n_layers = 2 (mL = 1.0 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 0.27472553958853285
+AnaEq 2.4 transmission coefficient is: 0.4199743416140261
+Done post processing
+
+003-Done running simulation-
+
+-e, Name specified, using EXP=trap_waves
+-i, Simulation ID specified, using ID=005
+-n, No simulation name specified, using NAME=005_trap_waves
+-s, Number of simulations specified, using SIMS=16
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+005-Writing parameters file-
+
+005-Running script-
+Running Dedalus script
+mL= 1.6666666666666665
+2021-01-13 14:15:29,403 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.1e+00/s
+2021-01-13 14:15:29,403 __main__ 0/1 INFO :: Solver built
+2021-01-13 14:15:29,405 __main__ 0/1 INFO :: Sim end period: 79.000000
+2021-01-13 14:15:29,405 __main__ 0/1 INFO :: Starting loop
+2021-01-13 14:15:30,721 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:31,628 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:32,526 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:33,410 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:34,305 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:35,174 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:36,056 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:37,002 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:38,037 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:38,922 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:39,807 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:40,763 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:41,660 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:42,542 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:43,442 __main__ 0/1 INFO :: Iteration: 1500, t/T: 2.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:44,321 __main__ 0/1 INFO :: Iteration: 1600, t/T: 2.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:45,211 __main__ 0/1 INFO :: Iteration: 1700, t/T: 2.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:46,085 __main__ 0/1 INFO :: Iteration: 1800, t/T: 2.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:46,969 __main__ 0/1 INFO :: Iteration: 1900, t/T: 2.968750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:47,838 __main__ 0/1 INFO :: Iteration: 2000, t/T: 3.125000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:48,772 __main__ 0/1 INFO :: Iteration: 2100, t/T: 3.281250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:49,655 __main__ 0/1 INFO :: Iteration: 2200, t/T: 3.437500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:50,538 __main__ 0/1 INFO :: Iteration: 2300, t/T: 3.593750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:51,515 __main__ 0/1 INFO :: Iteration: 2400, t/T: 3.750000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:52,395 __main__ 0/1 INFO :: Iteration: 2500, t/T: 3.906250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:53,279 __main__ 0/1 INFO :: Iteration: 2600, t/T: 4.062500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:54,161 __main__ 0/1 INFO :: Iteration: 2700, t/T: 4.218750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:55,162 __main__ 0/1 INFO :: Iteration: 2800, t/T: 4.375000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:56,053 __main__ 0/1 INFO :: Iteration: 2900, t/T: 4.531250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:56,931 __main__ 0/1 INFO :: Iteration: 3000, t/T: 4.687500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:57,805 __main__ 0/1 INFO :: Iteration: 3100, t/T: 4.843750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:58,696 __main__ 0/1 INFO :: Iteration: 3200, t/T: 5.000000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:59,644 __main__ 0/1 INFO :: Iteration: 3300, t/T: 5.156250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:00,545 __main__ 0/1 INFO :: Iteration: 3400, t/T: 5.312500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:01,519 __main__ 0/1 INFO :: Iteration: 3500, t/T: 5.468750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:02,425 __main__ 0/1 INFO :: Iteration: 3600, t/T: 5.625000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:03,342 __main__ 0/1 INFO :: Iteration: 3700, t/T: 5.781250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:04,292 __main__ 0/1 INFO :: Iteration: 3800, t/T: 5.937500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:05,200 __main__ 0/1 INFO :: Iteration: 3900, t/T: 6.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:06,094 __main__ 0/1 INFO :: Iteration: 4000, t/T: 6.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:07,010 __main__ 0/1 INFO :: Iteration: 4100, t/T: 6.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:07,989 __main__ 0/1 INFO :: Iteration: 4200, t/T: 6.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:08,912 __main__ 0/1 INFO :: Iteration: 4300, t/T: 6.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:09,820 __main__ 0/1 INFO :: Iteration: 4400, t/T: 6.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:10,790 __main__ 0/1 INFO :: Iteration: 4500, t/T: 7.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:11,828 __main__ 0/1 INFO :: Iteration: 4600, t/T: 7.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:12,761 __main__ 0/1 INFO :: Iteration: 4700, t/T: 7.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:13,774 __main__ 0/1 INFO :: Iteration: 4800, t/T: 7.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:14,668 __main__ 0/1 INFO :: Iteration: 4900, t/T: 7.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:15,583 __main__ 0/1 INFO :: Iteration: 5000, t/T: 7.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:16,098 solvers 0/1 INFO :: Simulation stop time reached.
+2021-01-13 14:16:16,098 __main__ 0/1 INFO :: Iterations: 5057
+2021-01-13 14:16:16,098 __main__ 0/1 INFO :: Sim end period: 79.015625
+2021-01-13 14:16:16,098 __main__ 0/1 INFO :: Run time: 46.69 sec
+2021-01-13 14:16:16,098 __main__ 0/1 INFO :: Run time: 0.012970 cpu-hr
+
+Done running script
+
+005-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Found snapshots
+Merging snapshots
+2021-01-13 14:16:17,917 post 0/1 INFO :: Merging files from snapshots
+2021-01-13 14:16:22,722 post 0/1 INFO :: Creating joint file snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+005-Post processing-
+Checking for snapshots in directory: snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 2275
+(n_layers = 2 (mL = 1.6666666666666665 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 0.4148642870814665
+AnaEq 2.4 transmission coefficient is: 0.1330348966469104
+Done post processing
+
+005-Done running simulation-
+
+-e, Name specified, using EXP=trap_waves
+-i, Simulation ID specified, using ID=001
+-n, No simulation name specified, using NAME=001_trap_waves
+-s, Number of simulations specified, using SIMS=16
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+001-Writing parameters file-
+
+001-Running script-
+Running Dedalus script
+mL= 0.3333333333333333
+2021-01-13 14:15:29,381 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.3e+00/s
+2021-01-13 14:15:29,382 __main__ 0/1 INFO :: Solver built
+2021-01-13 14:15:29,385 __main__ 0/1 INFO :: Sim end period: 79.000000
+2021-01-13 14:15:29,385 __main__ 0/1 INFO :: Starting loop
+2021-01-13 14:15:30,723 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:31,798 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:32,703 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:33,594 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:34,512 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:35,396 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:36,289 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:37,171 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:38,151 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:39,047 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:39,936 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:40,818 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:41,810 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:42,694 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:43,684 __main__ 0/1 INFO :: Iteration: 1500, t/T: 2.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:44,585 __main__ 0/1 INFO :: Iteration: 1600, t/T: 2.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:45,553 __main__ 0/1 INFO :: Iteration: 1700, t/T: 2.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:46,526 __main__ 0/1 INFO :: Iteration: 1800, t/T: 2.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:47,546 __main__ 0/1 INFO :: Iteration: 1900, t/T: 2.968750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:48,421 __main__ 0/1 INFO :: Iteration: 2000, t/T: 3.125000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:49,304 __main__ 0/1 INFO :: Iteration: 2100, t/T: 3.281250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:50,177 __main__ 0/1 INFO :: Iteration: 2200, t/T: 3.437500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:51,090 __main__ 0/1 INFO :: Iteration: 2300, t/T: 3.593750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:51,962 __main__ 0/1 INFO :: Iteration: 2400, t/T: 3.750000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:52,845 __main__ 0/1 INFO :: Iteration: 2500, t/T: 3.906250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:53,718 __main__ 0/1 INFO :: Iteration: 2600, t/T: 4.062500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:54,752 __main__ 0/1 INFO :: Iteration: 2700, t/T: 4.218750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:55,671 __main__ 0/1 INFO :: Iteration: 2800, t/T: 4.375000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:56,557 __main__ 0/1 INFO :: Iteration: 2900, t/T: 4.531250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:57,581 __main__ 0/1 INFO :: Iteration: 3000, t/T: 4.687500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:58,535 __main__ 0/1 INFO :: Iteration: 3100, t/T: 4.843750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:59,546 __main__ 0/1 INFO :: Iteration: 3200, t/T: 5.000000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:00,505 __main__ 0/1 INFO :: Iteration: 3300, t/T: 5.156250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:01,403 __main__ 0/1 INFO :: Iteration: 3400, t/T: 5.312500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:02,360 __main__ 0/1 INFO :: Iteration: 3500, t/T: 5.468750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:03,323 __main__ 0/1 INFO :: Iteration: 3600, t/T: 5.625000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:04,216 __main__ 0/1 INFO :: Iteration: 3700, t/T: 5.781250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:05,090 __main__ 0/1 INFO :: Iteration: 3800, t/T: 5.937500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:05,978 __main__ 0/1 INFO :: Iteration: 3900, t/T: 6.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:06,863 __main__ 0/1 INFO :: Iteration: 4000, t/T: 6.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:07,755 __main__ 0/1 INFO :: Iteration: 4100, t/T: 6.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:08,658 __main__ 0/1 INFO :: Iteration: 4200, t/T: 6.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:09,606 __main__ 0/1 INFO :: Iteration: 4300, t/T: 6.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:10,522 __main__ 0/1 INFO :: Iteration: 4400, t/T: 6.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:11,527 __main__ 0/1 INFO :: Iteration: 4500, t/T: 7.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:12,549 __main__ 0/1 INFO :: Iteration: 4600, t/T: 7.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:13,429 __main__ 0/1 INFO :: Iteration: 4700, t/T: 7.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:14,323 __main__ 0/1 INFO :: Iteration: 4800, t/T: 7.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:15,331 __main__ 0/1 INFO :: Iteration: 4900, t/T: 7.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:16,317 __main__ 0/1 INFO :: Iteration: 5000, t/T: 7.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:16,843 solvers 0/1 INFO :: Simulation stop time reached.
+2021-01-13 14:16:16,843 __main__ 0/1 INFO :: Iterations: 5057
+2021-01-13 14:16:16,843 __main__ 0/1 INFO :: Sim end period: 79.015625
+2021-01-13 14:16:16,843 __main__ 0/1 INFO :: Run time: 47.46 sec
+2021-01-13 14:16:16,843 __main__ 0/1 INFO :: Run time: 0.013183 cpu-hr
+
+Done running script
+
+001-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Found snapshots
+Merging snapshots
+2021-01-13 14:16:18,684 post 0/1 INFO :: Merging files from snapshots
+2021-01-13 14:16:23,415 post 0/1 INFO :: Creating joint file snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+001-Post processing-
+Checking for snapshots in directory: snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 2275
+(n_layers = 2 (mL = 0.3333333333333333 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 0.7198839122891366
+AnaEq 2.4 transmission coefficient is: 0.8966295596049144
+Done post processing
+
+001-Done running simulation-
+
+-e, Name specified, using EXP=trap_waves
+-i, Simulation ID specified, using ID=006
+-n, No simulation name specified, using NAME=006_trap_waves
+-s, Number of simulations specified, using SIMS=16
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+006-Writing parameters file-
+
+006-Running script-
+Running Dedalus script
+mL= 2.0
+2021-01-13 14:15:29,332 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.4e+00/s
+2021-01-13 14:15:29,333 __main__ 0/1 INFO :: Solver built
+2021-01-13 14:15:29,335 __main__ 0/1 INFO :: Sim end period: 79.000000
+2021-01-13 14:15:29,335 __main__ 0/1 INFO :: Starting loop
+2021-01-13 14:15:30,767 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:31,695 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:32,759 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:33,691 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:34,576 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:35,438 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:36,394 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:37,275 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:38,146 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:39,069 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:40,004 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:40,888 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:41,878 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:42,791 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:43,768 __main__ 0/1 INFO :: Iteration: 1500, t/T: 2.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:44,706 __main__ 0/1 INFO :: Iteration: 1600, t/T: 2.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:45,587 __main__ 0/1 INFO :: Iteration: 1700, t/T: 2.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:46,600 __main__ 0/1 INFO :: Iteration: 1800, t/T: 2.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:47,530 __main__ 0/1 INFO :: Iteration: 1900, t/T: 2.968750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:48,429 __main__ 0/1 INFO :: Iteration: 2000, t/T: 3.125000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:49,315 __main__ 0/1 INFO :: Iteration: 2100, t/T: 3.281250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:50,286 __main__ 0/1 INFO :: Iteration: 2200, t/T: 3.437500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:51,259 __main__ 0/1 INFO :: Iteration: 2300, t/T: 3.593750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:52,222 __main__ 0/1 INFO :: Iteration: 2400, t/T: 3.750000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:53,101 __main__ 0/1 INFO :: Iteration: 2500, t/T: 3.906250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:53,985 __main__ 0/1 INFO :: Iteration: 2600, t/T: 4.062500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:54,859 __main__ 0/1 INFO :: Iteration: 2700, t/T: 4.218750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:55,824 __main__ 0/1 INFO :: Iteration: 2800, t/T: 4.375000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:56,698 __main__ 0/1 INFO :: Iteration: 2900, t/T: 4.531250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:57,600 __main__ 0/1 INFO :: Iteration: 3000, t/T: 4.687500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:58,484 __main__ 0/1 INFO :: Iteration: 3100, t/T: 4.843750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:59,402 __main__ 0/1 INFO :: Iteration: 3200, t/T: 5.000000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:00,339 __main__ 0/1 INFO :: Iteration: 3300, t/T: 5.156250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:01,203 __main__ 0/1 INFO :: Iteration: 3400, t/T: 5.312500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:02,077 __main__ 0/1 INFO :: Iteration: 3500, t/T: 5.468750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:02,938 __main__ 0/1 INFO :: Iteration: 3600, t/T: 5.625000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:03,932 __main__ 0/1 INFO :: Iteration: 3700, t/T: 5.781250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:04,845 __main__ 0/1 INFO :: Iteration: 3800, t/T: 5.937500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:05,728 __main__ 0/1 INFO :: Iteration: 3900, t/T: 6.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:06,594 __main__ 0/1 INFO :: Iteration: 4000, t/T: 6.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:07,481 __main__ 0/1 INFO :: Iteration: 4100, t/T: 6.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:08,358 __main__ 0/1 INFO :: Iteration: 4200, t/T: 6.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:09,306 __main__ 0/1 INFO :: Iteration: 4300, t/T: 6.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:10,310 __main__ 0/1 INFO :: Iteration: 4400, t/T: 6.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:11,250 __main__ 0/1 INFO :: Iteration: 4500, t/T: 7.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:12,319 __main__ 0/1 INFO :: Iteration: 4600, t/T: 7.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:13,318 __main__ 0/1 INFO :: Iteration: 4700, t/T: 7.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:14,330 __main__ 0/1 INFO :: Iteration: 4800, t/T: 7.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:15,316 __main__ 0/1 INFO :: Iteration: 4900, t/T: 7.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:16,341 __main__ 0/1 INFO :: Iteration: 5000, t/T: 7.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:16,883 solvers 0/1 INFO :: Simulation stop time reached.
+2021-01-13 14:16:16,883 __main__ 0/1 INFO :: Iterations: 5057
+2021-01-13 14:16:16,883 __main__ 0/1 INFO :: Sim end period: 79.015625
+2021-01-13 14:16:16,883 __main__ 0/1 INFO :: Run time: 47.55 sec
+2021-01-13 14:16:16,883 __main__ 0/1 INFO :: Run time: 0.013208 cpu-hr
+
+Done running script
+
+006-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Found snapshots
+Merging snapshots
+2021-01-13 14:16:18,693 post 0/1 INFO :: Merging files from snapshots
+2021-01-13 14:16:23,359 post 0/1 INFO :: Creating joint file snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+006-Post processing-
+Checking for snapshots in directory: snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 2275
+(n_layers = 2 (mL = 2.0 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 0.008195034127820907
+AnaEq 2.4 transmission coefficient is: 0.07065082485316446
+Done post processing
+
+006-Done running simulation-
+
+-e, Name specified, using EXP=trap_waves
+-i, Simulation ID specified, using ID=002
+-n, No simulation name specified, using NAME=002_trap_waves
+-s, Number of simulations specified, using SIMS=16
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+002-Writing parameters file-
+
+002-Running script-
+Running Dedalus script
+mL= 0.6666666666666666
+2021-01-13 14:15:29,402 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.1e+00/s
+2021-01-13 14:15:29,403 __main__ 0/1 INFO :: Solver built
+2021-01-13 14:15:29,405 __main__ 0/1 INFO :: Sim end period: 79.000000
+2021-01-13 14:15:29,405 __main__ 0/1 INFO :: Starting loop
+2021-01-13 14:15:30,702 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:31,654 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:32,558 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:33,455 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:34,651 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:35,655 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:36,607 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:37,552 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:38,550 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:39,510 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:40,398 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:41,277 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:42,174 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:43,072 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:44,001 __main__ 0/1 INFO :: Iteration: 1500, t/T: 2.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:44,887 __main__ 0/1 INFO :: Iteration: 1600, t/T: 2.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:45,766 __main__ 0/1 INFO :: Iteration: 1700, t/T: 2.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:46,648 __main__ 0/1 INFO :: Iteration: 1800, t/T: 2.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:47,598 __main__ 0/1 INFO :: Iteration: 1900, t/T: 2.968750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:48,530 __main__ 0/1 INFO :: Iteration: 2000, t/T: 3.125000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:49,412 __main__ 0/1 INFO :: Iteration: 2100, t/T: 3.281250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:50,300 __main__ 0/1 INFO :: Iteration: 2200, t/T: 3.437500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:51,193 __main__ 0/1 INFO :: Iteration: 2300, t/T: 3.593750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:52,110 __main__ 0/1 INFO :: Iteration: 2400, t/T: 3.750000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:53,033 __main__ 0/1 INFO :: Iteration: 2500, t/T: 3.906250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:53,911 __main__ 0/1 INFO :: Iteration: 2600, t/T: 4.062500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:54,779 __main__ 0/1 INFO :: Iteration: 2700, t/T: 4.218750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:55,682 __main__ 0/1 INFO :: Iteration: 2800, t/T: 4.375000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:56,566 __main__ 0/1 INFO :: Iteration: 2900, t/T: 4.531250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:57,441 __main__ 0/1 INFO :: Iteration: 3000, t/T: 4.687500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:58,399 __main__ 0/1 INFO :: Iteration: 3100, t/T: 4.843750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:59,350 __main__ 0/1 INFO :: Iteration: 3200, t/T: 5.000000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:00,242 __main__ 0/1 INFO :: Iteration: 3300, t/T: 5.156250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:01,267 __main__ 0/1 INFO :: Iteration: 3400, t/T: 5.312500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:02,189 __main__ 0/1 INFO :: Iteration: 3500, t/T: 5.468750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:03,118 __main__ 0/1 INFO :: Iteration: 3600, t/T: 5.625000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:04,040 __main__ 0/1 INFO :: Iteration: 3700, t/T: 5.781250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:04,967 __main__ 0/1 INFO :: Iteration: 3800, t/T: 5.937500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:05,871 __main__ 0/1 INFO :: Iteration: 3900, t/T: 6.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:06,851 __main__ 0/1 INFO :: Iteration: 4000, t/T: 6.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:07,935 __main__ 0/1 INFO :: Iteration: 4100, t/T: 6.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:08,929 __main__ 0/1 INFO :: Iteration: 4200, t/T: 6.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:09,920 __main__ 0/1 INFO :: Iteration: 4300, t/T: 6.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:10,901 __main__ 0/1 INFO :: Iteration: 4400, t/T: 6.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:11,833 __main__ 0/1 INFO :: Iteration: 4500, t/T: 7.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:12,878 __main__ 0/1 INFO :: Iteration: 4600, t/T: 7.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:13,926 __main__ 0/1 INFO :: Iteration: 4700, t/T: 7.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:14,889 __main__ 0/1 INFO :: Iteration: 4800, t/T: 7.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:15,779 __main__ 0/1 INFO :: Iteration: 4900, t/T: 7.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:16,761 __main__ 0/1 INFO :: Iteration: 5000, t/T: 7.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:17,327 solvers 0/1 INFO :: Simulation stop time reached.
+2021-01-13 14:16:17,327 __main__ 0/1 INFO :: Iterations: 5057
+2021-01-13 14:16:17,327 __main__ 0/1 INFO :: Sim end period: 79.015625
+2021-01-13 14:16:17,327 __main__ 0/1 INFO :: Run time: 47.92 sec
+2021-01-13 14:16:17,328 __main__ 0/1 INFO :: Run time: 0.013312 cpu-hr
+
+Done running script
+
+002-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Found snapshots
+Merging snapshots
+2021-01-13 14:16:19,041 post 0/1 INFO :: Merging files from snapshots
+2021-01-13 14:16:23,749 post 0/1 INFO :: Creating joint file snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+002-Post processing-
+Checking for snapshots in directory: snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 2275
+(n_layers = 2 (mL = 0.6666666666666666 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 0.42268199138988877
+AnaEq 2.4 transmission coefficient is: 0.6603640386116149
+Done post processing
+
+002-Done running simulation-
+
+-e, Name specified, using EXP=trap_waves
+-i, Simulation ID specified, using ID=000
+-n, No simulation name specified, using NAME=000_trap_waves
+-s, Number of simulations specified, using SIMS=16
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+000-Writing parameters file-
+
+000-Running script-
+Running Dedalus script
+mL= 0.0
+2021-01-13 14:15:29,396 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.2e+00/s
+2021-01-13 14:15:29,396 __main__ 0/1 INFO :: Solver built
+2021-01-13 14:15:29,398 __main__ 0/1 INFO :: Sim end period: 79.000000
+2021-01-13 14:15:29,398 __main__ 0/1 INFO :: Starting loop
+2021-01-13 14:15:30,760 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:31,629 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:32,498 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:33,384 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:34,303 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:35,203 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:36,112 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:37,014 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:37,917 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:38,825 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:39,730 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:40,624 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:41,540 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:42,464 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:43,363 __main__ 0/1 INFO :: Iteration: 1500, t/T: 2.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:44,272 __main__ 0/1 INFO :: Iteration: 1600, t/T: 2.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:45,251 __main__ 0/1 INFO :: Iteration: 1700, t/T: 2.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:46,283 __main__ 0/1 INFO :: Iteration: 1800, t/T: 2.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:47,243 __main__ 0/1 INFO :: Iteration: 1900, t/T: 2.968750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:48,197 __main__ 0/1 INFO :: Iteration: 2000, t/T: 3.125000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:49,171 __main__ 0/1 INFO :: Iteration: 2100, t/T: 3.281250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:50,123 __main__ 0/1 INFO :: Iteration: 2200, t/T: 3.437500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:51,090 __main__ 0/1 INFO :: Iteration: 2300, t/T: 3.593750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:52,058 __main__ 0/1 INFO :: Iteration: 2400, t/T: 3.750000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:53,026 __main__ 0/1 INFO :: Iteration: 2500, t/T: 3.906250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:54,012 __main__ 0/1 INFO :: Iteration: 2600, t/T: 4.062500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:54,883 __main__ 0/1 INFO :: Iteration: 2700, t/T: 4.218750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:55,867 __main__ 0/1 INFO :: Iteration: 2800, t/T: 4.375000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:56,861 __main__ 0/1 INFO :: Iteration: 2900, t/T: 4.531250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:57,804 __main__ 0/1 INFO :: Iteration: 3000, t/T: 4.687500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:58,746 __main__ 0/1 INFO :: Iteration: 3100, t/T: 4.843750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:59,626 __main__ 0/1 INFO :: Iteration: 3200, t/T: 5.000000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:00,505 __main__ 0/1 INFO :: Iteration: 3300, t/T: 5.156250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:01,386 __main__ 0/1 INFO :: Iteration: 3400, t/T: 5.312500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:02,260 __main__ 0/1 INFO :: Iteration: 3500, t/T: 5.468750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:03,127 __main__ 0/1 INFO :: Iteration: 3600, t/T: 5.625000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:04,016 __main__ 0/1 INFO :: Iteration: 3700, t/T: 5.781250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:05,033 __main__ 0/1 INFO :: Iteration: 3800, t/T: 5.937500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:06,093 __main__ 0/1 INFO :: Iteration: 3900, t/T: 6.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:07,036 __main__ 0/1 INFO :: Iteration: 4000, t/T: 6.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:08,003 __main__ 0/1 INFO :: Iteration: 4100, t/T: 6.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:08,945 __main__ 0/1 INFO :: Iteration: 4200, t/T: 6.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:09,900 __main__ 0/1 INFO :: Iteration: 4300, t/T: 6.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:10,877 __main__ 0/1 INFO :: Iteration: 4400, t/T: 6.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:11,823 __main__ 0/1 INFO :: Iteration: 4500, t/T: 7.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:12,831 __main__ 0/1 INFO :: Iteration: 4600, t/T: 7.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:13,890 __main__ 0/1 INFO :: Iteration: 4700, t/T: 7.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:14,911 __main__ 0/1 INFO :: Iteration: 4800, t/T: 7.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:15,795 __main__ 0/1 INFO :: Iteration: 4900, t/T: 7.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:16,776 __main__ 0/1 INFO :: Iteration: 5000, t/T: 7.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:17,359 solvers 0/1 INFO :: Simulation stop time reached.
+2021-01-13 14:16:17,359 __main__ 0/1 INFO :: Iterations: 5057
+2021-01-13 14:16:17,359 __main__ 0/1 INFO :: Sim end period: 79.015625
+2021-01-13 14:16:17,359 __main__ 0/1 INFO :: Run time: 47.96 sec
+2021-01-13 14:16:17,359 __main__ 0/1 INFO :: Run time: 0.013322 cpu-hr
+
+Done running script
+
+000-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Found snapshots
+Merging snapshots
+2021-01-13 14:16:19,161 post 0/1 INFO :: Merging files from snapshots
+2021-01-13 14:16:23,978 post 0/1 INFO :: Creating joint file snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+000-Post processing-
+Checking for snapshots in directory: snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 2275
+(n_layers = 2 (mL = 0.0 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 1.0119988255831538
+AnaEq 2.4 transmission coefficient is: 1.0
+Done post processing
+
+000-Done running simulation-
+
+-e, Name specified, using EXP=trap_waves
+-i, Simulation ID specified, using ID=004
+-n, No simulation name specified, using NAME=004_trap_waves
+-s, Number of simulations specified, using SIMS=16
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+004-Writing parameters file-
+
+004-Running script-
+Running Dedalus script
+mL= 1.3333333333333333
+2021-01-13 14:15:29,416 pencil 0/1 INFO :: Building pencil matrix 1/1 (~100%) Elapsed: 0s, Remaining: 0s, Rate: 2.2e+00/s
+2021-01-13 14:15:29,417 __main__ 0/1 INFO :: Solver built
+2021-01-13 14:15:29,418 __main__ 0/1 INFO :: Sim end period: 79.000000
+2021-01-13 14:15:29,418 __main__ 0/1 INFO :: Starting loop
+2021-01-13 14:15:30,709 __main__ 0/1 INFO :: Iteration: 100, t/T: 1.562500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:31,607 __main__ 0/1 INFO :: Iteration: 200, t/T: 3.125000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:32,513 __main__ 0/1 INFO :: Iteration: 300, t/T: 4.687500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:33,454 __main__ 0/1 INFO :: Iteration: 400, t/T: 6.250000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:34,458 __main__ 0/1 INFO :: Iteration: 500, t/T: 7.812500e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:35,390 __main__ 0/1 INFO :: Iteration: 600, t/T: 9.375000e+00, dt/T: 1.562500e-02
+2021-01-13 14:15:36,380 __main__ 0/1 INFO :: Iteration: 700, t/T: 1.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:37,293 __main__ 0/1 INFO :: Iteration: 800, t/T: 1.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:38,265 __main__ 0/1 INFO :: Iteration: 900, t/T: 1.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:39,220 __main__ 0/1 INFO :: Iteration: 1000, t/T: 1.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:40,196 __main__ 0/1 INFO :: Iteration: 1100, t/T: 1.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:41,115 __main__ 0/1 INFO :: Iteration: 1200, t/T: 1.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:42,103 __main__ 0/1 INFO :: Iteration: 1300, t/T: 2.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:42,984 __main__ 0/1 INFO :: Iteration: 1400, t/T: 2.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:43,853 __main__ 0/1 INFO :: Iteration: 1500, t/T: 2.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:44,725 __main__ 0/1 INFO :: Iteration: 1600, t/T: 2.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:45,590 __main__ 0/1 INFO :: Iteration: 1700, t/T: 2.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:46,477 __main__ 0/1 INFO :: Iteration: 1800, t/T: 2.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:47,373 __main__ 0/1 INFO :: Iteration: 1900, t/T: 2.968750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:48,361 __main__ 0/1 INFO :: Iteration: 2000, t/T: 3.125000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:49,261 __main__ 0/1 INFO :: Iteration: 2100, t/T: 3.281250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:50,182 __main__ 0/1 INFO :: Iteration: 2200, t/T: 3.437500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:51,087 __main__ 0/1 INFO :: Iteration: 2300, t/T: 3.593750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:52,013 __main__ 0/1 INFO :: Iteration: 2400, t/T: 3.750000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:52,933 __main__ 0/1 INFO :: Iteration: 2500, t/T: 3.906250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:53,899 __main__ 0/1 INFO :: Iteration: 2600, t/T: 4.062500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:54,856 __main__ 0/1 INFO :: Iteration: 2700, t/T: 4.218750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:55,808 __main__ 0/1 INFO :: Iteration: 2800, t/T: 4.375000e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:56,674 __main__ 0/1 INFO :: Iteration: 2900, t/T: 4.531250e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:57,630 __main__ 0/1 INFO :: Iteration: 3000, t/T: 4.687500e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:58,588 __main__ 0/1 INFO :: Iteration: 3100, t/T: 4.843750e+01, dt/T: 1.562500e-02
+2021-01-13 14:15:59,548 __main__ 0/1 INFO :: Iteration: 3200, t/T: 5.000000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:00,488 __main__ 0/1 INFO :: Iteration: 3300, t/T: 5.156250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:01,375 __main__ 0/1 INFO :: Iteration: 3400, t/T: 5.312500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:02,263 __main__ 0/1 INFO :: Iteration: 3500, t/T: 5.468750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:03,147 __main__ 0/1 INFO :: Iteration: 3600, t/T: 5.625000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:04,104 __main__ 0/1 INFO :: Iteration: 3700, t/T: 5.781250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:04,985 __main__ 0/1 INFO :: Iteration: 3800, t/T: 5.937500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:06,034 __main__ 0/1 INFO :: Iteration: 3900, t/T: 6.093750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:06,954 __main__ 0/1 INFO :: Iteration: 4000, t/T: 6.250000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:07,906 __main__ 0/1 INFO :: Iteration: 4100, t/T: 6.406250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:08,904 __main__ 0/1 INFO :: Iteration: 4200, t/T: 6.562500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:09,818 __main__ 0/1 INFO :: Iteration: 4300, t/T: 6.718750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:10,720 __main__ 0/1 INFO :: Iteration: 4400, t/T: 6.875000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:11,758 __main__ 0/1 INFO :: Iteration: 4500, t/T: 7.031250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:12,826 __main__ 0/1 INFO :: Iteration: 4600, t/T: 7.187500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:13,844 __main__ 0/1 INFO :: Iteration: 4700, t/T: 7.343750e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:14,897 __main__ 0/1 INFO :: Iteration: 4800, t/T: 7.500000e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:15,927 __main__ 0/1 INFO :: Iteration: 4900, t/T: 7.656250e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:16,907 __main__ 0/1 INFO :: Iteration: 5000, t/T: 7.812500e+01, dt/T: 1.562500e-02
+2021-01-13 14:16:17,516 solvers 0/1 INFO :: Simulation stop time reached.
+2021-01-13 14:16:17,516 __main__ 0/1 INFO :: Iterations: 5057
+2021-01-13 14:16:17,516 __main__ 0/1 INFO :: Sim end period: 79.015625
+2021-01-13 14:16:17,516 __main__ 0/1 INFO :: Run time: 48.10 sec
+2021-01-13 14:16:17,516 __main__ 0/1 INFO :: Run time: 0.013361 cpu-hr
+
+Done running script
+
+004-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Found snapshots
+Merging snapshots
+2021-01-13 14:16:19,206 post 0/1 INFO :: Merging files from snapshots
+2021-01-13 14:16:23,862 post 0/1 INFO :: Creating joint file snapshots/consolidated_analysis.h5
+Done merging snapshots
+
+004-Post processing-
+Checking for snapshots in directory: snapshots
+Snapshots found
+Running post processing script
+nt is not a power of 2: 2275
+(n_layers = 2 (mL = 1.3333333333333333 , theta = 0.7853981633974483 )
+Simulated transmission coefficient is: 0.3828127858201559
+AnaEq 2.4 transmission coefficient is: 0.2429927047655804
+Done post processing
+
+004-Done running simulation-
+
