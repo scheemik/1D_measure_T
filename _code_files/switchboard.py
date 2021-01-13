@@ -89,10 +89,10 @@ boundary_forcing_region = True  # If False, waves will be forced over entire dom
 
 # Plotting parameters
 plot_spacetime = True
-plot_wavespace = True
-plot_spectra   = True
+plot_wavespace = False
+plot_spectra   = False
 plot_amplitude = True
-plot_windows   = True
+plot_windows   = False
 plot_up_dn     = True
 # If true, plot will include full simulated domain, if false, just the display domain
 plot_full_x = True
