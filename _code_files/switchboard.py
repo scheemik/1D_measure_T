@@ -19,7 +19,7 @@ mL      = params.mL             # [] vertical wave number times step length
 theta   = None                  # [] angle between wave's propagation and horizontal (or vertical?)
 
 # Time parameters
-p_n_steps   = 9                 # [] power of the number of timesteps for the simulation
+p_n_steps   = 12                 # [] power of the number of timesteps for the simulation
 p_o_steps   = 6                 # [] power of the number of timesteps per oscillation period
 T_cutoff    = 15                # [] number of oscillations to cut from beginning to leave just steady state
 #
@@ -89,11 +89,11 @@ boundary_forcing_region = True  # If False, waves will be forced over entire dom
 
 # Plotting parameters
 plot_spacetime = True
-plot_wavespace = False
-plot_spectra   = False
-plot_amplitude = False
+plot_wavespace = True
+plot_spectra   = True
+plot_amplitude = True
 plot_windows   = True
-plot_up_dn     = False
+plot_up_dn     = True
 # If true, plot will include full simulated domain, if false, just the display domain
 plot_full_x = True
 plot_full_y = True
@@ -105,7 +105,7 @@ plot_full_y = True
 
 ###############################################################################
 # Background profile in N_0
-n_layers = 1
+n_layers = 2
 layer_th = mL/m
 L        = layer_th
 R_i      = 1.0
