@@ -1,6 +1,6 @@
 """
 Runs an idealized steady state test of various functions.
-Run with $ python3 steady_state_test.py
+Run with $ python3 steady_state_tst.py
 
 Overview of post-processing operations:
 * Import simulation data
