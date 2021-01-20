@@ -48,25 +48,50 @@ def test_is_divisible_by_2(multiples_of_2):
     assert multiples_of_2%2 == 0, "This should be divisible by 2"
 
 ###############################################################################
+# Set up fixtures
+@pytest.fixture
+def wave_params_std():
+    return sbp.calc_wave_params(sbp.N_0, sbp.theta, sbp.lam_z)
+
+@pytest.fixture(params=[sbp.N_0, 1.0])
+def arr_N_0(request):
+    return request.param
+
+@pytest.fixture(params=[sbp.theta, 0.7])
+def arr_theta(request):
+    return request.param
+
+@pytest.fixture(params=[sbp.lam_z, 1.0])
+def arr_lam_z(request):
+    return request.param
+
+###############################################################################
 # Physical parameter tests
 
-def test_dispersion_relation():
+def test_dispersion_relation(arr_N_0, arr_theta, arr_lam_z):
     """
     Checking to make sure the dispersion relation is satifsied within a certain tolerance
     Using eq (3.54) from Sutherland 2010
     """
-    LHS = sbp.omega**2
-    RHS = sbp.N_0**2 * sbp.k**2 / (sbp.k**2 + sbp.m**2)
+    N_0 = arr_N_0
+    omega, m, k, k_total, lam_x = sbp.calc_wave_params(arr_N_0, arr_theta, arr_lam_z)
+    # Set up both sides of the equation
+    LHS = omega**2
+    RHS = N_0**2 * k**2 / (k**2 + m**2)
     tolerance = 1E-14       # usually fine down to 10^-15 or 10^-16
     assert abs(LHS - RHS) < tolerance, "Dispersion relation not satisfied"
 
-def test_propagation_angle():
+def test_propagation_angle(arr_N_0, arr_theta, arr_lam_z):
     """
     Checking to make sure theta matches with omega and N_0 within a certain tolerance
     Using eq (3.57) from Sutherland 2010
     """
-    LHS = sbp.omega
-    RHS = sbp.N_0 * np.cos(sbp.theta)
+    N_0 = arr_N_0
+    theta = arr_theta
+    omega, m, k, k_total, lam_x = sbp.calc_wave_params(arr_N_0, arr_theta, arr_lam_z)
+    # Set up both sides of the equation
+    LHS = omega
+    RHS = N_0 * np.cos(theta)
     tolerance = 1E-14       # usually fine down to 10^-15 or 10^-16
     assert abs(LHS - RHS) < tolerance, "Propagation angle doesn't match"
 
@@ -86,10 +111,19 @@ def test_Lz():
 
 def test_nz():
     """
-    Checking to make sure the number of points in the z direction is both
+    Check to make sure the number of points in the z direction is both
         an integer and a power of 2 to allow fast Fourier transforms
     """
     nz = sbp.nz
     assert isinstance(nz, int), "nz should be an integer"
     # Use bit operation to check for a power of 2
     assert nz != 0 and (nz & (nz-1) == 0), "nz should be a power of 2"
+
+def test_n_steps_per_oscillation():
+    """
+    Check to make sure the number of total timesteps in the simulation is
+        larger than the number of timesteps per oscillation period
+    If this isn't true, n_T = 2^-n, so it will be less than 1
+    """
+    n_T = sbp.calc_oscillation_periods(sbp.p_n_steps, sbp.p_o_steps)
+    assert n_T > 1, "Total timesteps must be greater than timesteps per oscillation"

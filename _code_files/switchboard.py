@@ -22,25 +22,29 @@ kL      = params.kL             # []        Vertical wave number times step leng
 theta   = np.arctan(1.0)        # [rad]     Propagation angle from horizontal (if arctan(k/m))
 lam_z   = 1.0                   # [m]       Vertical wavelength (used as vertical scale)
 
+A       = 2.0e-4                # []        Amplitude of boundary forcing
+f_0     = 0.000                 # [s^-1]    Reference Coriolis parameter
+
 # Time parameters
-p_n_steps   = 12                 # [] power of the number of timesteps for the simulation
-p_o_steps   = 6                 # [] power of the number of timesteps per oscillation period
+p_n_steps   = 12                # [] total number of simulation timesteps = 2 ** p_n_steps
+p_o_steps   = 6                 # [] timesteps per oscillation period = 2 ** p_o_steps
 T_cutoff    = 15                # [] number of oscillations to cut from beginning to leave just steady state
+T_keep      = 10                # [] number of oscillations to keep at the end for steady state
 #
-n_steps     = int(2**p_n_steps) # [] number of timesteps for the simulation
-o_steps     = int(2**p_o_steps) # [] number of timesteps per oscillation period
-p_n_T       =p_n_steps-p_o_steps# [] power of the number of oscillation periods
-if p_n_T <= 0:
-    print("Total timesteps must be greater than timesteps per oscillation")
-    raise SystemExit(0)
-n_T         = int(2**p_n_T)     # [] number of oscillation periods
+def calc_timesteps(p_n_steps, p_o_steps):
+    n_steps     = int(2**p_n_steps)  # [] number of timesteps for the simulation
+    o_steps     = int(2**p_o_steps)  # [] number of timesteps per oscillation period
+    return n_steps, o_steps
+n_steps, o_steps = calc_timesteps(p_n_steps, p_o_steps)
+
+def calc_oscillation_periods(p_n_steps, p_o_steps):
+    p_n_T       =p_n_steps-p_o_steps # [] power of the number of oscillation periods
+    n_T         = int(2**p_n_T)      # [] number of oscillation periods
+    return n_T
+n_T = calc_oscillation_periods(p_n_steps, p_o_steps)
 
 # Displayed domain parameters
 z0_dis = 0.0                    # [m] Top of the displayed z domain
-
-# Problem parameters
-A       = 2.0e-4                # []            Amplitude of boundary forcing
-f_0     = 0.000                 # [s^-1]        Reference Coriolis parameter
 
 def calc_wave_params(N_0, theta, lam_z):
     omega   = N_0 * np.cos(theta)   # [rad s^-1]    Wave frequency
@@ -49,7 +53,6 @@ def calc_wave_params(N_0, theta, lam_z):
     k_total = np.sqrt(k**2 + m**2)  # [m^-1]        Total wavenumber
     lam_x   = 2*np.pi / k           # [m]           Horizontal wavelength
     return omega, m, k, k_total, lam_x
-
 omega, m, k, k_total, lam_x = calc_wave_params(N_0, theta, lam_z)
 
 T       = 2*np.pi / omega       # [s]           Wave period
