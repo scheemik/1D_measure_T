@@ -25,10 +25,10 @@ n_sims      = int(args['N_SIMS'])
 ###############################################################################
 # Make arrays of parameters
 
-mL_start = 0
-mL_stop  = 5
+kL_start = 0
+kL_stop  = 5
 
-mL_arr = np.linspace(mL_start, mL_stop, n_sims)
+kL_arr = np.linspace(kL_start, kL_stop, n_sims)
 
 ###############################################################################
 # Write out parameters based on sim ID
@@ -36,7 +36,7 @@ mL_arr = np.linspace(mL_start, mL_stop, n_sims)
 filename = "params.py"
 params_file = open(filename, "w+")
 
-params_file.write("mL = " + str(mL_arr[sim_id]))
+params_file.write("kL = " + str(kL_arr[sim_id]))
 params_file.write("\ntheta = 0.7")
 
 params_file.close()

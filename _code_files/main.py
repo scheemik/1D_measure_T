@@ -71,8 +71,8 @@ lam_x       = sbp.lam_x         # [m]           Horizontal wavelength
 lam_z       = sbp.lam_z         # [m]           Vertical wavelength
 k           = sbp.k             # [m^-1]        Horizontal wavenumber
 m           = sbp.m             # [m^-1]        Vertical wavenumber
-mL          = sbp.mL
-print('mL=',mL)
+kL          = sbp.kL
+print('kL=',kL)
 k_total     = sbp.k_total       # [m^-1]        Total wavenumber
 theta       = sbp.theta         # [rad]         Propagation angle from vertical
 omega       = sbp.omega         # [rad s^-1]    Wave frequency
@@ -113,7 +113,7 @@ problem.substitutions['f_psi'] = "A*sin(m*z - omega*t)"
 ###############################################################################
 # Background Profile for N_0
 BP = domain.new_field(name = 'BP')
-BP_array = hf.BP_n_layers(z, sbp.z0_str, sbp.n_layers, sbp.L, sbp.R_i) 
+BP_array = hf.BP_n_layers(z, sbp.z0_str, sbp.n_layers, sbp.L, sbp.R_i)
 #hf.BP_n_layers(sbp.n_layers, z, sbp.z0_str, sbp.zf_str)
 BP['g'] = BP_array
 problem.parameters['BP'] = BP
@@ -143,7 +143,7 @@ problem.substitutions['S_term_psi'] = "win_sp * nabla2dt_psi / tau_sp"
 ###############################################################################
 # Plotting windows
 if plot_checks and sbp.plot_windows:
-    hf.plot_v_profiles(np.flip(z), np.flip(BP_array), sbp.win_bf_array, sbp.win_sp_array, mL, theta, omega, sbp.z_I, sbp.z_T, sbp.z0_dis, sbp.zf_dis, plot_full_x=True, plot_full_y=True, title_str=run_name)
+    hf.plot_v_profiles(np.flip(z), np.flip(BP_array), sbp.win_bf_array, sbp.win_sp_array, kL, theta, omega, sbp.z_I, sbp.z_T, sbp.z0_dis, sbp.zf_dis, plot_full_x=True, plot_full_y=True, title_str=run_name)
 # raise SystemExit(0)
 
 ###############################################################################
