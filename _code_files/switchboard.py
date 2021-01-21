@@ -13,9 +13,7 @@ import params
 ###############################################################################
 # Main parameters, the ones I'll change a lot. Many more below
 
-# Relevant parameters
-nz      = 1024                  # [] number of grid points in the z direction in display domain
-
+# Problem parameters
 N_0     = 1.0                   # [rad/s]   Reference stratification
 kL      = params.kL             # []        Vertical wave number times step length
 
@@ -25,12 +23,24 @@ lam_z   = 1.0                   # [m]       Vertical wavelength (used as vertica
 A       = 2.0e-4                # []        Amplitude of boundary forcing
 f_0     = 0.000                 # [s^-1]    Reference Coriolis parameter
 
+# Background profile in N_0
+n_layers = 2                    # []        Number of mixed layers in the background stratification
+interface_ratio = 1.0           # []        Ratio between the thickness of an interfaces to a layers
+
+# Vertical space parameters (z)
+nz      = 1024                  # [] number of grid points in the z direction in display domain
+
 # Time parameters
 p_n_steps   = 12                # [] total number of simulation timesteps = 2 ** p_n_steps
 p_o_steps   = 6                 # [] timesteps per oscillation period = 2 ** p_o_steps
 T_cutoff    = 15                # [] number of oscillations to cut from beginning to leave just steady state
 T_keep      = 10                # [] number of oscillations to keep at the end for steady state
-#
+
+# Displayed domain parameters
+z0_dis = 0.0                    # [m] Top of the displayed z domain
+
+###############################################################################
+
 def calc_timesteps(p_n_steps, p_o_steps):
     n_steps     = int(2**p_n_steps)  # [] number of timesteps for the simulation
     o_steps     = int(2**p_o_steps)  # [] number of timesteps per oscillation period
@@ -43,9 +53,6 @@ def calc_oscillation_periods(p_n_steps, p_o_steps):
     return n_T
 n_T = calc_oscillation_periods(p_n_steps, p_o_steps)
 
-# Displayed domain parameters
-z0_dis = 0.0                    # [m] Top of the displayed z domain
-
 def calc_wave_params(N_0, theta, lam_z):
     omega   = N_0 * np.cos(theta)   # [rad s^-1]    Wave frequency
     m       = 2*np.pi / lam_z       # [m^-1]        Vertical wavenumber
@@ -55,7 +62,10 @@ def calc_wave_params(N_0, theta, lam_z):
     return omega, m, k, k_total, lam_x
 omega, m, k, k_total, lam_x = calc_wave_params(N_0, theta, lam_z)
 
-T       = 2*np.pi / omega       # [s]           Wave period
+def calc_period(omega):
+    T       = 2*np.pi / omega       # [s]           Wave period
+    return T
+T = calc_period(omega)
 
 ###############################################################################
 # Physical parameters
@@ -101,10 +111,10 @@ plot_full_y = True
 
 ###############################################################################
 # Background profile in N_0
-n_layers = 2
-layer_th = kL/m
-L        = layer_th
-interface_ratio = 1.0
+def calc_layer_thickness(kL, k):
+    L = kL/k                        # [m]       Layer thickness
+    return L
+L = calc_layer_thickness(kL, k)
 
 def calc_R_i(interface_ratio, n_layers):
     # If there are no mixed layers,
@@ -112,8 +122,7 @@ def calc_R_i(interface_ratio, n_layers):
     if n_layers == 0:
         return 0.0
     else:
-        return interface_ratio
-
+        return interface_ratio      # []        Ratio between layer and interface thicknesses
 R_i = calc_R_i(interface_ratio, n_layers)
 ###############################################################################
 # Buffers and important depths
@@ -144,7 +153,6 @@ def calc_structure_depths(z0_dis, kL, m, n_layers, R_i):
     zf_dis  = zf_str - zf_buff      # [m] bottom of display domain
     # Return relevant depths
     return z_I, z0_str, zf_str, z_T, zf_dis
-
 z_I, z0_str, zf_str, z_T, zf_dis = calc_structure_depths(z0_dis, kL, m, n_layers, R_i)
 
 ###############################################################################

@@ -49,20 +49,48 @@ def test_is_divisible_by_2(multiples_of_2):
 
 ###############################################################################
 # Set up fixtures
-@pytest.fixture
-def wave_params_std():
-    return sbp.calc_wave_params(sbp.N_0, sbp.theta, sbp.lam_z)
-
-@pytest.fixture(params=[sbp.N_0, 1.0])
+@pytest.fixture(params=[sbp.N_0])
 def arr_N_0(request):
     return request.param
 
-@pytest.fixture(params=[sbp.theta, 0.7])
+@pytest.fixture(params=[sbp.kL, 0.0, 1.1, 4.9])
+def arr_kL(request):
+    return request.param
+
+@pytest.fixture(params=[sbp.theta, 0.3])
 def arr_theta(request):
     return request.param
 
-@pytest.fixture(params=[sbp.lam_z, 1.0])
+@pytest.fixture(params=[sbp.lam_z, 0.5])
 def arr_lam_z(request):
+    return request.param
+
+@pytest.fixture(params=[0, 1, 2, 3, 4, 5])
+def arr_n_layers(request):
+    return request.param
+
+@pytest.fixture(params=[sbp.R_i, 0, 0.2, 0.5, 0.7])
+def arr_R_i(request):
+    return request.param
+
+@pytest.fixture(params=[sbp.nz])
+def arr_nz(request):
+    return request.param
+
+@pytest.fixture(params=[sbp.p_n_steps])
+def arr_p_n_steps(request):
+    return request.param
+
+@pytest.fixture(params=[sbp.p_o_steps])
+def arr_p_o_steps(request):
+    return request.param
+
+@pytest.fixture(params=[sbp.T_cutoff])
+def arr_T_cutoff(request):
+    return request.param
+
+@pytest.fixture(params=[sbp.T_keep])
+def arr_T_keep(request):
     return request.param
 
 ###############################################################################
@@ -96,6 +124,17 @@ def test_propagation_angle(arr_N_0, arr_theta, arr_lam_z):
     assert abs(LHS - RHS) < tolerance, "Propagation angle doesn't match"
 
 ###############################################################################
+# Background profile tests
+
+def test_0_layers(arr_R_i):
+    """
+    Check to make sure the interface ratio is set appropriately when the
+        number of layers is zero
+    """
+    R_i = sbp.calc_R_i(arr_R_i, 0)
+    assert R_i == 0, "Interface ratio for zero layers set incorrectly"
+
+###############################################################################
 # Domain parameter tests
 
 def test_Lz():
@@ -105,6 +144,15 @@ def test_Lz():
     """
     n_lambda = sbp.Lz / sbp.lam_z
     assert n_lambda - int(n_lambda) == 0, "Z domain is not an integer number of lambda"
+
+def test_dis_domain(arr_kL, arr_n_layers, arr_R_i):
+    """
+    Check to make sure the display domain is an integer number of wavelengths
+    """
+    z_I, z0_str, zf_str, z_T, zf_dis = sbp.calc_structure_depths(sbp.z0_dis, arr_kL, sbp.m, arr_n_layers, arr_R_i)
+    Lz_dis = zf_dis - sbp.z0_dis
+    n_lambda = Lz_dis / sbp.lam_z
+    assert n_lambda - int(n_lambda) == 0, "Display domain is not an integer number of lambda"
 
 ###############################################################################
 # Computational parameter tests
