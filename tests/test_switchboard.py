@@ -53,7 +53,8 @@ def test_is_divisible_by_2(multiples_of_2):
 def arr_N_0(request):
     return request.param
 
-@pytest.fixture(params=[sbp.kL, 0.0, 1.1, 4.9])
+kL_s = np.linspace(0.0, 0.5, 16)
+@pytest.fixture(params=kL_s)
 def arr_kL(request):
     return request.param
 
@@ -145,13 +146,15 @@ def test_Lz():
     n_lambda = sbp.Lz / sbp.lam_z
     assert n_lambda - int(n_lambda) == 0, "Z domain is not an integer number of lambda"
 
-def test_dis_domain(arr_kL, arr_n_layers, arr_R_i):
+def test_dis_domain(arr_N_0, arr_theta, arr_lam_z, arr_kL, arr_n_layers, arr_R_i):
     """
     Check to make sure the display domain is an integer number of wavelengths
     """
-    z_I, z0_str, zf_str, z_T, zf_dis = sbp.calc_structure_depths(sbp.z0_dis, arr_kL, sbp.m, arr_n_layers, arr_R_i)
+    omega, m, k, k_total, lam_x = sbp.calc_wave_params(arr_N_0, arr_theta, arr_lam_z)
+    L = sbp.calc_layer_thickness(arr_kL, k)
+    z_I, z0_str, zf_str, z_T, zf_dis = sbp.calc_structure_depths(sbp.z0_dis, arr_lam_z, L, arr_n_layers, arr_R_i)
     Lz_dis = zf_dis - sbp.z0_dis
-    n_lambda = Lz_dis / sbp.lam_z
+    n_lambda = Lz_dis / arr_lam_z
     assert n_lambda - int(n_lambda) == 0, "Display domain is not an integer number of lambda"
 
 ###############################################################################
