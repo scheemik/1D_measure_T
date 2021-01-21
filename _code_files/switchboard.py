@@ -139,12 +139,7 @@ def calc_R_i(interface_ratio, n_layers):
 R_i = calc_R_i(interface_ratio, n_layers)
 ###############################################################################
 # Calculate buffers and important depths
-def calc_structure_depths(z0_dis, kL, m, n_layers, R_i):
-    # Calculate the vertical wavelength
-    lam_z = 2*np.pi / m
-    # Calculate the layer thickness
-    L = kL/m
-
+def calc_structure_depths(z0_dis, lam_z, L, n_layers, R_i):
     # Find distance between ends of vertical structure extent and other points
     dis_buff    = 2*lam_z           # [m] buffer from vertical structure to display domain
     IT_buff     = dis_buff/2.0      # [m] buffer from vertical structure to measure I and T
@@ -165,7 +160,7 @@ def calc_structure_depths(z0_dis, kL, m, n_layers, R_i):
     zf_dis  = zf_str - zf_buff      # [m] bottom of display domain
     # Return relevant depths
     return z_I, z0_str, zf_str, z_T, zf_dis
-z_I, z0_str, zf_str, z_T, zf_dis = calc_structure_depths(z0_dis, kL, m, n_layers, R_i)
+z_I, z0_str, zf_str, z_T, zf_dis = calc_structure_depths(z0_dis, lam_z, L, n_layers, R_i)
 
 ###############################################################################
 # Boundary forcing window parameters
