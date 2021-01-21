@@ -40,40 +40,12 @@ T_keep      = 10                # [] number of oscillations to keep at the end f
 z0_dis = 0.0                    # [m] Top of the displayed z domain
 
 ###############################################################################
-
-def calc_timesteps(p_n_steps, p_o_steps):
-    n_steps     = int(2**p_n_steps)  # [] number of timesteps for the simulation
-    o_steps     = int(2**p_o_steps)  # [] number of timesteps per oscillation period
-    return n_steps, o_steps
-n_steps, o_steps = calc_timesteps(p_n_steps, p_o_steps)
-
-def calc_oscillation_periods(p_n_steps, p_o_steps):
-    p_n_T       =p_n_steps-p_o_steps # [] power of the number of oscillation periods
-    n_T         = int(2**p_n_T)      # [] number of oscillation periods
-    return n_T
-n_T = calc_oscillation_periods(p_n_steps, p_o_steps)
-
-def calc_wave_params(N_0, theta, lam_z):
-    omega   = N_0 * np.cos(theta)   # [rad s^-1]    Wave frequency
-    m       = 2*np.pi / lam_z       # [m^-1]        Vertical wavenumber
-    k       = m/np.tan(theta)       # [m^-1]        Horizontal wavenumber
-    k_total = np.sqrt(k**2 + m**2)  # [m^-1]        Total wavenumber
-    lam_x   = 2*np.pi / k           # [m]           Horizontal wavelength
-    return omega, m, k, k_total, lam_x
-omega, m, k, k_total, lam_x = calc_wave_params(N_0, theta, lam_z)
-
-def calc_period(omega):
-    T       = 2*np.pi / omega       # [s]           Wave period
-    return T
-T = calc_period(omega)
-
-###############################################################################
 # Physical parameters
-nu          = 1.0E-6        # [m^2/s] Viscosity (momentum diffusivity)
-kappa       = 1.4E-7        # [m^2/s] Thermal diffusivity
-Prandtl     = nu / kappa    # [] Prandtl number, about 7.0 for water at 20 C
-Rayleigh    = 1e6
-g           = 9.81          # [m/s^2] Acceleration due to gravity
+nu          = 1.0E-6        # [m^2/s]   Viscosity (momentum diffusivity)
+kappa       = 1.4E-7        # [m^2/s]   Thermal diffusivity
+Prandtl     = nu / kappa    # []        Prandtl number, about 7.0 for water at 20 C
+Rayleigh    = 1e6           # []        Rayleigh number
+g           = 9.81          # [m/s^2]   Acceleration due to gravity
 
 ###############################################################################
 # ON / OFF Switches
@@ -110,7 +82,48 @@ plot_full_y = True
 # take_ef_snaps = False # Total energy flux recorded
 
 ###############################################################################
-# Background profile in N_0
+###############################################################################
+# Calculate wave parameters
+def calc_wave_params(N_0, theta, lam_z):
+    omega   = N_0 * np.cos(theta)   # [rad s^-1]    Wave frequency
+    m       = 2*np.pi / lam_z       # [m^-1]        Vertical wavenumber
+    k       = m/np.tan(theta)       # [m^-1]        Horizontal wavenumber
+    k_total = np.sqrt(k**2 + m**2)  # [m^-1]        Total wavenumber
+    lam_x   = 2*np.pi / k           # [m]           Horizontal wavelength
+    return omega, m, k, k_total, lam_x
+omega, m, k, k_total, lam_x = calc_wave_params(N_0, theta, lam_z)
+
+def calc_period(omega):
+    T       = 2*np.pi / omega       # [s]           Wave period
+    return T
+T = calc_period(omega)
+
+def calc_wave_speeds(omega, k, m):
+    # Cushman-Roisin and Beckers eq 13.8 pg 399
+    c_ph = omega / np.sqrt(k**2 + m**2)     # [m/s] Phase speed
+    # Cushman-Roisin and Beckers eq 13.9 pg 400
+    c_gx = omega*m**2 / (k*(k**2 + m**2))   # [m/s] Horizontal group speed
+    # Cushman-Roisin and Beckers eq 13.9 pg 400
+    c_gz = - omega*k / (k**2 + m**2)        # [m/s] Vertical group speed
+    return c_ph, c_gx, c_gz
+# c_ph, c_gx, c_gz = calc_wave_speeds(omega, k, m)
+
+###############################################################################
+# Calculate simulation timing
+def calc_timesteps(p_n_steps, p_o_steps):
+    n_steps     = int(2**p_n_steps)  # [] number of timesteps for the simulation
+    o_steps     = int(2**p_o_steps)  # [] number of timesteps per oscillation period
+    return n_steps, o_steps
+n_steps, o_steps = calc_timesteps(p_n_steps, p_o_steps)
+
+def calc_oscillation_periods(p_n_steps, p_o_steps):
+    p_n_T       =p_n_steps-p_o_steps # [] power of the number of oscillation periods
+    n_T         = int(2**p_n_T)      # [] number of oscillation periods
+    return n_T
+n_T = calc_oscillation_periods(p_n_steps, p_o_steps)
+
+###############################################################################
+# Calculate background profile in N_0
 def calc_layer_thickness(kL, k):
     L = kL/k                        # [m]       Layer thickness
     return L
@@ -125,8 +138,7 @@ def calc_R_i(interface_ratio, n_layers):
         return interface_ratio      # []        Ratio between layer and interface thicknesses
 R_i = calc_R_i(interface_ratio, n_layers)
 ###############################################################################
-# Buffers and important depths
-
+# Calculate buffers and important depths
 def calc_structure_depths(z0_dis, kL, m, n_layers, R_i):
     # Calculate the vertical wavelength
     lam_z = 2*np.pi / m
