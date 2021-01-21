@@ -140,22 +140,22 @@ def test_0_layers(arr_R_i):
 
 def test_Lz():
     """
-    Check to make sure Lz is an integer number of wavelengths
+    Check to make sure Lz is an integer number of vertical wavelengths
         to insure periodic boundary conditions are applicable
     """
     n_lambda = sbp.Lz / sbp.lam_z
-    assert n_lambda - int(n_lambda) == 0, "Z domain is not an integer number of lambda"
+    assert n_lambda - int(n_lambda) == 0, "Simulation domain is not an integer number of lambda_z"
 
 def test_dis_domain(arr_N_0, arr_theta, arr_lam_z, arr_kL, arr_n_layers, arr_R_i):
     """
-    Check to make sure the display domain is an integer number of wavelengths
+    Check to make sure the display domain is an integer number of vertical wavelengths
     """
     omega, m, k, k_total, lam_x = sbp.calc_wave_params(arr_N_0, arr_theta, arr_lam_z)
     L = sbp.calc_layer_thickness(arr_kL, k)
     z_I, z0_str, zf_str, z_T, zf_dis = sbp.calc_structure_depths(sbp.z0_dis, arr_lam_z, L, arr_n_layers, arr_R_i)
     Lz_dis = zf_dis - sbp.z0_dis
     n_lambda = Lz_dis / arr_lam_z
-    assert n_lambda - int(n_lambda) == 0, "Display domain is not an integer number of lambda"
+    assert n_lambda - int(n_lambda) == 0, "Display domain is not an integer number of lambda_z"
 
 ###############################################################################
 # Computational parameter tests
