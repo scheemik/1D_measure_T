@@ -70,7 +70,6 @@ plt_f_x     = sbp.plot_full_x
 plt_f_y     = sbp.plot_full_y
 T_cutoff    = sbp.T_cutoff
 n_layers    = sbp.n_layers
-layer_th    = sbp.layer_th
 
 ###############################################################################
 # Additional post-processing helper functions
@@ -149,7 +148,8 @@ if plot_checks == False:
     raise SystemExit(0)
 
 BP_array = hf.BP_n_layers(z, sbp.z0_str, n_layers, sbp.L, sbp.R_i)
-#hf.BP_n_layers(n_layers, z, sbp.z0_str, sbp.zf_str)
+win_bf_array = sbp.calc_bf_array(z, sbp.c_bf, sbp.b_bf, sbp.boundary_forcing_region)
+win_sp_array = sbp.calc_sp_array(z, sbp.c_sp, sbp.b_sp, sbp.use_sponge)
 foo, BP_tr   = hf.trim_data_z(z, BP_array, z0_dis, zf_dis)
 
 filename_prefix = run_name #+ '/' + run_name

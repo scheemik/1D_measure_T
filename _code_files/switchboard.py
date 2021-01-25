@@ -17,7 +17,7 @@ import params
 N_0     = 1.0                   # [rad/s]   Reference stratification
 kL      = params.kL             # []        Vertical wave number times step length
 
-theta   = np.arctan(1.0)        # [rad]     Propagation angle from horizontal (if arctan(k/m))
+theta   = params.theta          # [rad]     Propagation angle from horizontal (if arctan(k/m))
 lam_z   = 1.0                   # [m]       Vertical wavelength (used as vertical scale)
 
 A       = 2.0e-4                # []        Amplitude of boundary forcing
@@ -31,7 +31,7 @@ interface_ratio = 1.0           # []        Ratio between the thickness of an in
 nz      = 1024                  # [] number of grid points in the z direction in display domain
 
 # Time parameters
-p_n_steps   = 12                # [] total number of simulation timesteps = 2 ** p_n_steps
+p_n_steps   = 10                # [] total number of simulation timesteps = 2 ** p_n_steps
 p_o_steps   = 6                 # [] timesteps per oscillation period = 2 ** p_o_steps
 T_cutoff    = 15                # [] number of oscillations to cut from beginning to leave just steady state
 T_keep      = 10                # [] number of oscillations to keep at the end for steady state
@@ -65,13 +65,16 @@ rotation_term           = False
 use_sponge              = True
 use_rayleigh_friction   = False
 boundary_forcing_region = True  # If False, waves will be forced over entire domain
+if boundary_forcing_region == False:
+    # Having sp layer and full domain forcing causes problems
+    use_sponge = False
 
 # Plotting parameters
 plot_spacetime = True
 plot_wavespace = False
 plot_spectra   = False
 plot_amplitude = True
-plot_windows   = False
+plot_windows   = True
 plot_up_dn     = True
 # If true, plot will include full simulated domain, if false, just the display domain
 plot_full_x = True
@@ -166,15 +169,19 @@ z_I, z0_str, zf_str, z_T, zf_dis, Lz_dis = calc_structure_depths(z0_dis, lam_z, 
 
 ###############################################################################
 # Calculate boundary forcing window parameters
-def calc_bf_win_params(z0_dis, lam_z, a, b, c):
-    b_bf    = b*lam_z               # [m] full width at half max of gaussian forcing window
-    a_bf    = a*b_bf                # [m] forcing extent, outside display domain
-    c_bf    = z0_dis + c*a_bf/2     # [m] center of forcing area, c is +1 or -1
+def calc_bf_win_params(zE_dis, t_or_b, lam_z, a, b):
+    """
+    zE_dis          One edge of the display domain (top or bottom)
+    t_or_b          Either 1 for top of display domain or -1 for bottom
+    """
+    b_bf    = b*lam_z                   # [m] full width at half max of gaussian forcing window
+    a_bf    = a*b_bf                    # [m] forcing extent, outside display domain
+    c_bf    = zE_dis + t_or_b*a_bf/2    # [m] center of forcing area, t_or_b is +1 or -1
     return a_bf, b_bf, c_bf
 # Boundary forcing from above
-a_bf, b_bf, c_bf = calc_bf_win_params(z0_dis, lam_z, 3, 1, 1)
+a_bf, b_bf, c_bf = calc_bf_win_params(z0_dis,  1, lam_z, 3, 1)
 # Sponge layer below
-a_sp, b_sp, c_sp = calc_bf_win_params(z0_dis, lam_z, 3, 1, -1)
+a_sp, b_sp, c_sp = calc_bf_win_params(zf_dis, -1, lam_z, 3, 1)
 
 # Boundary forcing window parameters
 tau_bf  = 1.0e-0                # [s] time constant for boundary forcing
@@ -193,12 +200,11 @@ z0, zf, Lz = calc_sim_domain(z0_dis, zf_dis, a_bf, a_sp)
 def calc_nz_sim(nz, Lz, Lz_dis):
     dz     = Lz_dis / nz            # [m] spacing between each grid point
     nz_sim = int(Lz/dz)             # []  number of points in the simulated domain
-    return nz_sim
-nz_sim = calc_nz_sim(nz, Lz, Lz_dis)
-
-# print("nz:", nz)
-# print("Lz:", Lz)
-# print("Lz_dis:", Lz_dis)
+    # make sure nz_sim is an even number
+    if nz_sim%2 != 0:
+        nz_sim += 1
+    return nz_sim, dz
+nz_sim, dz = calc_nz_sim(nz, Lz, Lz_dis)
 
 # Bases and domain
 z_basis = de.Fourier('z', nz_sim, interval=(z0, zf), dealias=dealias)
@@ -213,19 +219,24 @@ ks = z_basis.wavenumbers
 # Windows for simulation
 
 # Boundary forcing window 2
-if boundary_forcing_region == True:
-    # the -4*ln(2) is to insure the FWHM is easily identifiable
-    win_bf_array = np.exp(-4*np.log(2)*((z - c_bf)/b_bf)**2)     # Gaussian
-else:
-    win_bf_array = z*0.0 + 1.0  # Forcing over entire domain
-    use_sponge = False          # Having sp layer and full domain forcing causes problems
+def calc_bf_array(z, c_bf, b_bf, boundary_forcing_region):
+    if boundary_forcing_region == True:
+        # the -4*ln(2) is to insure the FWHM is easily identifiable
+        win_bf_array = np.exp(-4*np.log(2)*((z - c_bf)/b_bf)**2)     # Gaussian
+    else:
+        win_bf_array = z*0.0 + 1.0  # Forcing over entire domain
+    return win_bf_array
+win_bf_array = calc_bf_array(z, c_bf, b_bf, boundary_forcing_region)
 
 # Sponge layer window 2
-if use_sponge == True:
-    # the -4*ln(2) is to insure the FWHM is easily identifiable
-    win_sp_array = np.exp(-4*np.log(2)*((z - c_sp)/b_sp)**2)     # Gaussian
-else:
-    win_sp_array = z * 0.0      # No sponge
+def calc_sp_array(z, c_sp, b_sp, use_sponge):
+    if use_sponge == True:
+        # the -4*ln(2) is to insure the FWHM is easily identifiable
+        win_sp_array = np.exp(-4*np.log(2)*((z - c_sp)/b_sp)**2)     # Gaussian
+    else:
+        win_sp_array = z * 0.0      # No sponge
+    return win_sp_array
+win_sp_array = calc_sp_array(z, c_sp, b_sp, use_sponge)
 
 ###############################################################################
 # Run parameters

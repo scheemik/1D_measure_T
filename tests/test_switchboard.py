@@ -126,15 +126,33 @@ def test_0_layers(arr_R_i):
     R_i = sbp.calc_R_i(arr_R_i, 0)
     assert R_i == 0, "Interface ratio for zero layers set incorrectly"
 
-def test_bf_windows():
+def test_top_window():
     """
     Check to make sure the parameters for the gaussian forcing windows
-        are calculated correctly
+        are calculated correctly for the top window
     """
-    a_bf, b_bf, c_bf = sbp.calc_bf_win_params(0.0, 1.0, 3, 1, -1)
+    z0_dis = 0.0
+    lam_z  = 1.0
+    a, b   = 3, 1
+    a_bf, b_bf, c_bf = sbp.calc_bf_win_params(z0_dis, 1, lam_z, a, b)
     assert a_bf ==  3.0
     assert b_bf ==  1.0
-    assert c_bf == -1.5
+    assert c_bf >   z0_dis
+    assert c_bf ==  1.5
+
+def test_bottom_window():
+    """
+    Check to make sure the parameters for the gaussian forcing windows
+        are calculated correctly for the bottom window
+    """
+    zf_dis = -5.0
+    lam_z  = 1.0
+    a, b   = 3, 1
+    a_bf, b_bf, c_bf = sbp.calc_bf_win_params(zf_dis, -1, lam_z, a, b)
+    assert a_bf ==  3.0
+    assert b_bf ==  1.0
+    assert c_bf <   zf_dis
+    assert c_bf == -6.5
 
 ###############################################################################
 # Domain parameter tests
@@ -178,7 +196,7 @@ def test_nz_dealias(arr_nz, arr_kL, arr_n_layers, arr_R_i):
     L = sbp.calc_layer_thickness(arr_kL, sbp.k)
     z_I, z0_str, zf_str, z_T, zf_dis, Lz_dis = sbp.calc_structure_depths(sbp.z0_dis, sbp.lam_z, L, arr_n_layers, arr_R_i)
     z0, zf, Lz = sbp.calc_sim_domain(sbp.z0_dis, zf_dis, sbp.a_bf, sbp.a_sp)
-    nz_sim = sbp.calc_nz_sim(arr_nz, Lz, sbp.Lz_dis)
+    nz_sim, dz = sbp.calc_nz_sim(arr_nz, Lz, sbp.Lz_dis)
     nz_da  = nz_sim * sbp.dealias
     assert nz_da - int(nz_da) == 0, "nz_sim*dealias should be an integer"
 
