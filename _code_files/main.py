@@ -71,8 +71,8 @@ lam_x       = sbp.lam_x         # [m]           Horizontal wavelength
 lam_z       = sbp.lam_z         # [m]           Vertical wavelength
 k           = sbp.k             # [m^-1]        Horizontal wavenumber
 m           = sbp.m             # [m^-1]        Vertical wavenumber
-mL          = sbp.mL
-print('mL=',mL)
+kL          = sbp.kL
+print('kL=',kL)
 k_total     = sbp.k_total       # [m^-1]        Total wavenumber
 theta       = sbp.theta         # [rad]         Propagation angle from vertical
 omega       = sbp.omega         # [rad s^-1]    Wave frequency
@@ -88,7 +88,6 @@ domain      = sbp.domain
 z_da        = sbp.z_da
 z           = sbp.z
 nz          = sbp.nz
-dz          = sbp.dz
 # Getting wavenumbers
 ks          = sbp.ks
 
@@ -113,7 +112,7 @@ problem.substitutions['f_psi'] = "A*sin(m*z - omega*t)"
 ###############################################################################
 # Background Profile for N_0
 BP = domain.new_field(name = 'BP')
-BP_array = hf.BP_n_layers(z, sbp.z0_str, sbp.n_layers, sbp.L, sbp.R_i) 
+BP_array = hf.BP_n_layers(z, sbp.z0_str, sbp.n_layers, sbp.L, sbp.R_i)
 #hf.BP_n_layers(sbp.n_layers, z, sbp.z0_str, sbp.zf_str)
 BP['g'] = BP_array
 problem.parameters['BP'] = BP
@@ -121,7 +120,8 @@ problem.parameters['BP'] = BP
 ###############################################################################
 # Boundary forcing window
 win_bf = domain.new_field(name = 'win_bf')
-win_bf['g'] = sbp.win_bf_array
+win_bf_array = sbp.calc_bf_array(z, sbp.c_bf, sbp.b_bf, sbp.boundary_forcing_region)
+win_bf['g'] = win_bf_array
 problem.parameters['win_bf'] = win_bf
 problem.parameters['tau_bf'] = sbp.tau_bf # [s] time constant for boundary forcing
 
@@ -130,8 +130,9 @@ problem.substitutions['F_term_psi'] = "win_bf * (f_psi - psi)/tau_bf"
 
 ###############################################################################
 # Sponge window
-win_sp      = domain.new_field(name = 'win_sp')
-win_sp['g'] = sbp.win_sp_array
+win_sp = domain.new_field(name = 'win_sp')
+win_sp_array = sbp.calc_sp_array(z, sbp.c_sp, sbp.b_sp, sbp.use_sponge)
+win_sp['g'] = win_sp_array
 problem.parameters['win_sp'] = win_sp
 problem.parameters['tau_sp'] = sbp.tau_sp # [s] time constant for sponge layer
 
@@ -142,8 +143,9 @@ problem.substitutions['S_term_psi'] = "win_sp * nabla2dt_psi / tau_sp"
 
 ###############################################################################
 # Plotting windows
+#   Need to flip all the z axes to fit what the plotting function expects
 if plot_checks and sbp.plot_windows:
-    hf.plot_v_profiles(np.flip(z), np.flip(BP_array), sbp.win_bf_array, sbp.win_sp_array, mL, theta, omega, sbp.z_I, sbp.z_T, sbp.z0_dis, sbp.zf_dis, plot_full_x=True, plot_full_y=True, title_str=run_name)
+    hf.plot_v_profiles(np.flip(z), np.flip(BP_array), np.flip(win_bf_array), np.flip(win_sp_array), kL, theta, omega, sbp.z_I, sbp.z_T, sbp.z0_dis, sbp.zf_dis, plot_full_x=True, plot_full_y=True, title_str=run_name)
 # raise SystemExit(0)
 
 ###############################################################################
