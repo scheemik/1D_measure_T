@@ -370,22 +370,6 @@ def BP_n_layers(z, z0_str, n, L, R_i):
         step_top = step_bot - R_i*L
     return BP_array
 
-# # Mask to just keep display domain
-# def make_DD_mask(z, z0_dis, zf_dis):
-#     """
-#     z           array of z values
-#     z0_dis      bottom of display domain
-#     zf_dis      top of display domain
-#     """
-#     # create blank array the same size as z
-#     DD_array = z*0
-#     # Set display domain range to have value 1
-#     for i in range(len(DD_array)):
-#         if z[i] < zf_dis and z[i] > z0_dis:
-#             DD_array[i] = 1
-#     return DD_array
-
-
 def add_lines_to_ax(ax, z_I=None, z_T=None, z0_dis=None, zf_dis=None, T_cutoff=None):
     """
     Adds straight lines, either vertical or horizontal depending, to the provided axis
@@ -452,7 +436,7 @@ def plot_BP(ax, BP, z, omega=None):
     """
     ax.plot(BP, z, color=my_clrs['N_0'], label=r'$N_0$')
     ax.set_xlabel(r'$N_0$ (s$^{-1}$)')
-    ax.set_ylabel(r'$z$ (m)')
+    ax.set_ylabel(r'$z/\lambda_z$')
     ax.set_title(r'Background Profile')
     ax.set_ylim([min(z),max(z)])
     if omega != None:
