@@ -16,8 +16,8 @@ from dedalus.extras.plot_tools import quad_mesh, pad_limits
 ###############################################################################
 # The analytical solution to the tranmission coefficient in the linear,
 #   non-rotating, non-viscous case. From Sutherland and Yewchuk 2004, equation 2.4
-def SY_eq2_4(theta, mL):
-    return 1 / (1 + (np.sinh(mL)/np.sin(2*theta))**2 )
+def SY_eq2_4(theta, kL):
+    return 1 / (1 + (np.sinh(kL)/np.sin(2*theta))**2 )
 
 ###############################################################################
 # Measuring the Transmission Coefficient
@@ -335,40 +335,39 @@ def set_colorbar(data, im, plt, axis):
     cbar.ax.ticklabel_format(style='sci', scilimits=(-2,2), useMathText=True)
 
 # A standard title for most of my plots
-def add_plot_title(fig, title_str, mL, theta, omega):
+def add_plot_title(fig, title_str, kL, theta, omega):
     """
     Adds overall title (suptitle) to given figure
     fig         figure object on which to add the title
     title_str   string of title
     others      values of parameters to include in title
     """
-    param_formated_str = latex_exp(mL)+', '+rad_to_degs(theta)+', '+latex_exp(omega)
-    fig.suptitle(r'%s, $(mL,\theta,\omega)$=(%s)' %(title_str, param_formated_str))
+    param_formated_str = latex_exp(kL)+', '+rad_to_degs(theta)+', '+latex_exp(omega)
+    fig.suptitle(r'%s, $(kL,\theta,\omega)$=(%s)' %(title_str, param_formated_str))
 
 # Background profile in N_0
-def BP_n_layers(n, z, z0_str, zf_str):
+def BP_n_layers(z, z0_str, n, L, R_i):
     """
-    n           number of layers
     z           array of z values
     z0_str      top of vertical structure extent
-    zf_str      bottom of vertical structure extent
+    n           number of layers
+    L           layer thickness
+    R_i         ratio of interface to layer thickness
     """
-    # create blank array the same size as z
+    # create array of 1's the same length as z
     BP_array = z*0+1
-    # divide the vertical structure extent for n layers (steps)
-    Lz_str = abs(zf_str - z0_str)
-    # find step separation
-    step_sep = Lz_str / (n+1)
+    # start the first step's top at the top of the structure
+    step_top = z0_str
     # Loop across each i step
     for i in range(n):
-        # Set center of step
-        step_c   = z0_str - (i+1)*step_sep
-        # Set top and bottom of step
-        step_top = step_c + step_sep
-        step_bot = step_c - step_sep
+        # Set bottom of step
+        step_bot = step_top - L
+        # Set the vertical structure to 0 for that step
         for j in range(len(BP_array)):
             if z[j] < step_top and z[j] > step_bot:
                 BP_array[j] = 0
+        # Set step top for next step
+        step_top = step_bot - R_i*L
     return BP_array
 
 # # Mask to just keep display domain
@@ -462,7 +461,7 @@ def plot_BP(ax, BP, z, omega=None):
 
 ###############################################################################
 
-def plot_v_profiles(z_array, BP_array, bf_array, sp_array, mL=None, theta=None, omega=None, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_x=True, plot_full_y=True, title_str='Forced 1D Wave', filename='f_1D_windows.png'):
+def plot_v_profiles(z_array, BP_array, bf_array, sp_array, kL=None, theta=None, omega=None, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_x=True, plot_full_y=True, title_str='Forced 1D Wave', filename='f_1D_windows.png'):
     """
     Plots the vertical profiles: stratification, boundary forcing, sponge layer
         Note: all arrays must be imput as full-domain, no trimmed versions
@@ -471,7 +470,7 @@ def plot_v_profiles(z_array, BP_array, bf_array, sp_array, mL=None, theta=None, 
     BP_array    1D array of the background profile values in z
     bf_array    1D array of boundary forcing window
     sp_array    1D array of sponge layer window
-    mL          Non-dimensional number relating wavelength and layer thickness
+    kL          Non-dimensional number relating wavelength and layer thickness
     theta       Angle at which wave is incident on stratification structure
     omega       frequency of wave
     z_I         depth to measure incident wave
@@ -505,7 +504,7 @@ def plot_v_profiles(z_array, BP_array, bf_array, sp_array, mL=None, theta=None, 
 # Main plotting functions
 ###############################################################################
 
-def plot_z_vs_t(z_array, t_array, T, data, BP_array, mL, theta, omega, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_x=True, plot_full_y=True, T_cutoff=0.0, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave.png'):
+def plot_z_vs_t(z_array, t_array, T, data, BP_array, kL, theta, omega, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_x=True, plot_full_y=True, T_cutoff=0.0, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave.png'):
     """
     Plots the data as a colormap on z vs t with the vertical profile included to the left
 
@@ -514,7 +513,7 @@ def plot_z_vs_t(z_array, t_array, T, data, BP_array, mL, theta, omega, z_I=None,
     T           oscillation period (in seconds)
     data        data to be plotted on colormap (assmued real valued)
     BP_array    array of the background profile values in z
-    mL          Non-dimensional number relating wavelength and layer thickness
+    kL          Non-dimensional number relating wavelength and layer thickness
     theta       Angle at which wave is incident on stratification structure
     omega       frequency of wave
     z_I         depth to measure incident wave
@@ -543,13 +542,13 @@ def plot_z_vs_t(z_array, t_array, T, data, BP_array, mL, theta, omega, z_I=None,
     # Add titles and labels
     axes[1].set_xlabel(r'$t/T$')
     axes[1].set_title(r'$\Psi$ (m$^2$/s)')
-    add_plot_title(fig, title_str, mL, theta, omega)
+    add_plot_title(fig, title_str, kL, theta, omega)
     #plt.show()
     plt.savefig(filename)
 
 ###############################################################################
 
-def plot_A_of_I_T(z_array, t_array, T, dn_array, mL, theta, omega, z_I, z_T, plot_full_x=True, plot_full_y=True, T_cutoff=0.0, title_str='Forced 1D Wave', filename='f_1D_A_of_I_T.png'):
+def plot_A_of_I_T(z_array, t_array, T, dn_array, kL, theta, omega, z_I, z_T, plot_full_x=True, plot_full_y=True, T_cutoff=0.0, title_str='Forced 1D Wave', filename='f_1D_A_of_I_T.png'):
     """
     Plots the amplitude of the downward propagating wave as a function of time
         for both the incident and transmission depths
@@ -560,7 +559,7 @@ def plot_A_of_I_T(z_array, t_array, T, dn_array, mL, theta, omega, z_I, z_T, plo
     dn_array    wavefield data for downward propagating wave (complex valued)
     z_I         depth to measure incident wave
     z_T         depth to meausre transmitted wave
-    mL          Non-dimensional number relating wavelength and layer thickness
+    kL          Non-dimensional number relating wavelength and layer thickness
     theta       Angle at which wave is incident on stratification structure
     omega       frequency of wave
     z_I         depth to measure incident wave
@@ -588,20 +587,20 @@ def plot_A_of_I_T(z_array, t_array, T, dn_array, mL, theta, omega, z_I, z_T, plo
     axes[1].set_ylabel(r'Amplitude')
     axes[0].set_title(r'$z_I=%s$' %(z_I))
     axes[1].set_title(r'$z_T=%s$' %(z_T))
-    add_plot_title(fig, title_str, mL, theta, omega)
+    add_plot_title(fig, title_str, kL, theta, omega)
     #plt.show()
     plt.savefig(filename)
 
 ###############################################################################
 
-def plot_AA_for_z(z_array, BP_array, dn_array, mL, theta, omega, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_x=True, plot_full_y=True, title_str='Forced 1D Wave', filename='f_1D_AA_for_z.png'):
+def plot_AA_for_z(z_array, BP_array, dn_array, kL, theta, omega, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_x=True, plot_full_y=True, title_str='Forced 1D Wave', filename='f_1D_AA_for_z.png'):
     """
     Plots the average of the downward-propagating wave's AA^* for all depths
 
     z_array     array of z values
     dn_array    wavefield data for downward propagating wave (AA^*, complex parts ~0)
     BP_array    array of the background profile values in z
-    mL          Non-dimensional number relating wavelength and layer thickness
+    kL          Non-dimensional number relating wavelength and layer thickness
     theta       Angle at which wave is incident on stratification structure
     omega       frequency of wave
     z_I         depth to measure incident wave
@@ -632,7 +631,7 @@ def plot_AA_for_z(z_array, BP_array, dn_array, mL, theta, omega, z_I=None, z_T=N
     #axes[1].set_ylabel(r'$z$')
     axes[1].set_title(r'Windows')
     axes[1].legend()
-    add_plot_title(fig, title_str, mL, theta, omega)
+    add_plot_title(fig, title_str, kL, theta, omega)
     plt.savefig(filename)
 
 ###############################################################################
@@ -650,13 +649,13 @@ def sort_k_coeffs(arr, nz):
             arr[i][:] = sort_k_coeffs(arr[i][:], nz)
         return arr
 
-def plot_spectral(k_array, f_array, r_array, i_array, mL, theta, omega, c_map='viridis', title_str='Forced 1D Wave', filename='f_1D_wave_spectra.png'):
+def plot_spectral(k_array, f_array, r_array, i_array, kL, theta, omega, c_map='viridis', title_str='Forced 1D Wave', filename='f_1D_wave_spectra.png'):
     """
     k_array     1D array of wavenumber values
     f_array     1D array of frequency values
     r_array     2D real part of data
     i_array     2D imaginary part of data
-    mL          Non-dimensional number relating wavelength and layer thickness
+    kL          Non-dimensional number relating wavelength and layer thickness
     theta       Angle at which wave is incident on stratification structure
     omega       frequency of wave
     """
@@ -680,11 +679,11 @@ def plot_spectral(k_array, f_array, r_array, i_array, mL, theta, omega, c_map='v
     # Set limits
     axes[0].set_ylim([-100,100])
     axes[1].set_ylim([-100,100])
-    add_plot_title(fig, title_str, mL, theta, omega)
+    add_plot_title(fig, title_str, kL, theta, omega)
     #plt.show()
     plt.savefig(filename)
 
-def plot_k_f_spectra(z_array, dz, t_array, dt, T, k_array, f_array, k_data, f_data, mL, theta, omega, z_I, z_T, plot_full_x=True, plot_full_y=True, T_cutoff=0.0, title_str='Forced 1D Wave', filename='f_1D_k_and_f.png'):
+def plot_k_f_spectra(z_array, dz, t_array, dt, T, k_array, f_array, k_data, f_data, kL, theta, omega, z_I, z_T, plot_full_x=True, plot_full_y=True, T_cutoff=0.0, title_str='Forced 1D Wave', filename='f_1D_k_and_f.png'):
     """
     Plots the spectral content of the data in wavenumber and frequency space for
         the T_cutoff time and z_I depth, respectively
@@ -700,7 +699,7 @@ def plot_k_f_spectra(z_array, dz, t_array, dt, T, k_array, f_array, k_data, f_da
     f_data      2D data in frequency  space (z, f)
     z_I         depth to measure incident wave
     z_T         depth to meausre transmitted wave
-    mL          Non-dimensional number relating wavelength and layer thickness
+    kL          Non-dimensional number relating wavelength and layer thickness
     theta       Angle at which wave is incident on stratification structure
     omega       frequency of wave
     z_I         depth to measure incident wave
@@ -771,7 +770,7 @@ def plot_k_f_spectra(z_array, dz, t_array, dt, T, k_array, f_array, k_data, f_da
         axes[1].set_ylabel(r'$z$')
         axes[0].set_title(r'Wavenumber spectrum')
         axes[1].set_title(r'Frequency spectrum')
-    add_plot_title(fig, title_str, mL, theta, omega)
+    add_plot_title(fig, title_str, kL, theta, omega)
     #plt.show()
     plt.savefig(filename)
 

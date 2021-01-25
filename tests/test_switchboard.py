@@ -27,16 +27,7 @@ from _code_files import switchboard as sbp
 import pytest
 
 ###############################################################################
-# Set up fixtures
-@pytest.fixture
-def example_array():
-    return [1, 2, 3]
-
-###############################################################################
 # example tests
-def test_array_sum(example_array):
-    assert sum(example_array) == 6, "Should be 6"
-
 @pytest.mark.myfirstmark
 def test_numbers():
     assert 2.0 == 2.0
@@ -53,7 +44,7 @@ def test_is_divisible_by_2(multiples_of_2):
 def arr_N_0(request):
     return request.param
 
-kL_s = np.linspace(0.0, 0.5, 16)
+kL_s = np.linspace(0.0, 5.0, 16)
 @pytest.fixture(params=kL_s)
 def arr_kL(request):
     return request.param
@@ -135,6 +126,16 @@ def test_0_layers(arr_R_i):
     R_i = sbp.calc_R_i(arr_R_i, 0)
     assert R_i == 0, "Interface ratio for zero layers set incorrectly"
 
+def test_bf_windows():
+    """
+    Check to make sure the parameters for the gaussian forcing windows
+        are calculated correctly
+    """
+    a_bf, b_bf, c_bf = sbp.calc_bf_win_params(0.0, 1.0, 3, 1, -1)
+    assert a_bf ==  3.0
+    assert b_bf ==  1.0
+    assert c_bf == -1.5
+
 ###############################################################################
 # Domain parameter tests
 
@@ -152,23 +153,34 @@ def test_dis_domain(arr_N_0, arr_theta, arr_lam_z, arr_kL, arr_n_layers, arr_R_i
     """
     omega, m, k, k_total, lam_x = sbp.calc_wave_params(arr_N_0, arr_theta, arr_lam_z)
     L = sbp.calc_layer_thickness(arr_kL, k)
-    z_I, z0_str, zf_str, z_T, zf_dis = sbp.calc_structure_depths(sbp.z0_dis, arr_lam_z, L, arr_n_layers, arr_R_i)
-    Lz_dis = zf_dis - sbp.z0_dis
+    z_I, z0_str, zf_str, z_T, zf_dis, Lz_dis = sbp.calc_structure_depths(sbp.z0_dis, arr_lam_z, L, arr_n_layers, arr_R_i)
     n_lambda = Lz_dis / arr_lam_z
     assert n_lambda - int(n_lambda) == 0, "Display domain is not an integer number of lambda_z"
 
 ###############################################################################
 # Computational parameter tests
 
-def test_nz():
+def test_nz(arr_nz):
     """
-    Check to make sure the number of points in the z direction is both
+    Check to make sure the number of points in the z display domain is both
         an integer and a power of 2 to allow fast Fourier transforms
     """
-    nz = sbp.nz
+    nz = arr_nz
     assert isinstance(nz, int), "nz should be an integer"
     # Use bit operation to check for a power of 2
     assert nz != 0 and (nz & (nz-1) == 0), "nz should be a power of 2"
+
+def test_nz_dealias(arr_nz, arr_kL, arr_n_layers, arr_R_i):
+    """
+    Check to make sure the total number of points in the z direction
+        multiplied by the dealias factor is an integer
+    """
+    L = sbp.calc_layer_thickness(arr_kL, sbp.k)
+    z_I, z0_str, zf_str, z_T, zf_dis, Lz_dis = sbp.calc_structure_depths(sbp.z0_dis, sbp.lam_z, L, arr_n_layers, arr_R_i)
+    z0, zf, Lz = sbp.calc_sim_domain(sbp.z0_dis, zf_dis, sbp.a_bf, sbp.a_sp)
+    nz_sim = sbp.calc_nz_sim(arr_nz, Lz, sbp.Lz_dis)
+    nz_da  = nz_sim * sbp.dealias
+    assert nz_da - int(nz_da) == 0, "nz_sim*dealias should be an integer"
 
 def test_n_steps_per_oscillation():
     """

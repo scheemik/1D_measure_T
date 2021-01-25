@@ -13,61 +13,39 @@ import params
 ###############################################################################
 # Main parameters, the ones I'll change a lot. Many more below
 
-# Relevant parameters
+# Problem parameters
+N_0     = 1.0                   # [rad/s]   Reference stratification
+kL      = params.kL             # []        Vertical wave number times step length
+
+theta   = np.arctan(1.0)        # [rad]     Propagation angle from horizontal (if arctan(k/m))
+lam_z   = 1.0                   # [m]       Vertical wavelength (used as vertical scale)
+
+A       = 2.0e-4                # []        Amplitude of boundary forcing
+f_0     = 0.000                 # [s^-1]    Reference Coriolis parameter
+
+# Background profile in N_0
+n_layers = 2                    # []        Number of mixed layers in the background stratification
+interface_ratio = 1.0           # []        Ratio between the thickness of an interfaces to a layers
+
+# Vertical space parameters (z)
 nz      = 1024                  # [] number of grid points in the z direction in display domain
-mL      = params.mL             # [] vertical wave number times step length
-theta   = None                  # [] angle between wave's propagation and horizontal (or vertical?)
 
 # Time parameters
-p_n_steps   = 9                 # [] power of the number of timesteps for the simulation
-p_o_steps   = 6                 # [] power of the number of timesteps per oscillation period
+p_n_steps   = 12                # [] total number of simulation timesteps = 2 ** p_n_steps
+p_o_steps   = 6                 # [] timesteps per oscillation period = 2 ** p_o_steps
 T_cutoff    = 15                # [] number of oscillations to cut from beginning to leave just steady state
-#
-n_steps     = int(2**p_n_steps) # [] number of timesteps for the simulation
-o_steps     = int(2**p_o_steps) # [] number of timesteps per oscillation period
-p_n_T       =p_n_steps-p_o_steps# [] power of the number of oscillation periods
-if p_n_T <= 0:
-    print("Total timesteps must be greater than timesteps per oscillation")
-    raise SystemExit(0)
-n_T         = int(2**p_n_T)     # [] number of oscillation periods
+T_keep      = 10                # [] number of oscillations to keep at the end for steady state
 
 # Displayed domain parameters
 z0_dis = 0.0                    # [m] Top of the displayed z domain
 
-# Problem parameters
-A       = 2.0e-4                # []            Amplitude of boundary forcing
-N_0     = 1.0                   # [rad/s]       Reference stratification
-f_0     = 0.000                 # [s^-1]        Reference Coriolis parameter
-set_case= 1                     # Picks combination of variables to set in switch below
-if set_case == 1:
-    lam_z   = 1.0 / 4.0             # [m]           Vertical wavelength
-    lam_x   = lam_z                 # [m]           Horizontal wavelength
-    #
-    m       = 2*np.pi / lam_z       # [m^-1]        Vertical wavenumber
-    k       = 2*np.pi / lam_x       # [m^-1]        Horizontal wavenumber
-    k_total = np.sqrt(k**2 + m**2)  # [m^-1]        Total wavenumber
-    theta   = np.arctan(m/k)        # [rad]         Propagation angle from vertical
-    omega   = N_0 * np.cos(theta)   # [rad s^-1]    Wave frequency
-elif set_case == 2:
-    lam_z   = Lz_dis / 8.0          # [m]           Vertical wavelength
-    omega   = 0.7071                # [rad s^-1]    Wave frequency
-    #
-    m       = 2*np.pi / lam_z       # [m^-1]        Vertical wavenumber
-    theta   = np.arccos(omega/N_0)  # [rad]         Propagation angle from vertical
-    k       = m/np.tan(theta)       # [m^-1]        Horizontal wavenumber
-    k_total = np.sqrt(k**2 + m**2)  # [m^-1]        Total wavenumber
-    lam_x   = 2*np.pi / k           # [m]           Horizontal wavelength
-elif set_case == 3:
-    lam_z   = Lz_dis / 8.0          # [m]           Vertical wavelength
-    theta   = 0.7854 # 45deg        # [rad]         Propagation angle from vertical
-    #
-    m       = 2*np.pi / lam_z       # [m^-1]        Vertical wavenumber
-    k       = m/np.tan(theta)       # [m^-1]        Horizontal wavenumber
-    k_total = np.sqrt(k**2 + m**2)  # [m^-1]        Total wavenumber
-    lam_x   = 2*np.pi / k           # [m]           Horizontal wavelength
-    omega   = N_0 * np.cos(theta)   # [rad s^-1]    Wave frequency
-
-T       = 2*np.pi / omega       # [s]           Wave period
+###############################################################################
+# Physical parameters
+nu          = 1.0E-6        # [m^2/s]   Viscosity (momentum diffusivity)
+kappa       = 1.4E-7        # [m^2/s]   Thermal diffusivity
+Prandtl     = nu / kappa    # []        Prandtl number, about 7.0 for water at 20 C
+Rayleigh    = 1e6           # []        Rayleigh number
+g           = 9.81          # [m/s^2]   Acceleration due to gravity
 
 ###############################################################################
 # ON / OFF Switches
@@ -91,9 +69,9 @@ boundary_forcing_region = True  # If False, waves will be forced over entire dom
 plot_spacetime = True
 plot_wavespace = False
 plot_spectra   = False
-plot_amplitude = False
-plot_windows   = True
-plot_up_dn     = False
+plot_amplitude = True
+plot_windows   = False
+plot_up_dn     = True
 # If true, plot will include full simulated domain, if false, just the display domain
 plot_full_x = True
 plot_full_y = True
@@ -104,26 +82,85 @@ plot_full_y = True
 # take_ef_snaps = False # Total energy flux recorded
 
 ###############################################################################
-# Background profile in N_0
-n_layers = 1
-layer_th = mL/m
-L       = layer_th
+###############################################################################
+# Calculate wave parameters
+def calc_wave_params(N_0, theta, lam_z):
+    omega   = N_0 * np.cos(theta)   # [rad s^-1]    Wave frequency
+    m       = 2*np.pi / lam_z       # [m^-1]        Vertical wavenumber
+    k       = m/np.tan(theta)       # [m^-1]        Horizontal wavenumber
+    k_total = np.sqrt(k**2 + m**2)  # [m^-1]        Total wavenumber
+    lam_x   = 2*np.pi / k           # [m]           Horizontal wavelength
+    return omega, m, k, k_total, lam_x
+omega, m, k, k_total, lam_x = calc_wave_params(N_0, theta, lam_z)
+
+def calc_period(omega):
+    T       = 2*np.pi / omega       # [s]           Wave period
+    return T
+T = calc_period(omega)
+
+def calc_wave_speeds(omega, k, m):
+    # Cushman-Roisin and Beckers eq 13.8 pg 399
+    c_ph = omega / np.sqrt(k**2 + m**2)     # [m/s] Phase speed
+    # Cushman-Roisin and Beckers eq 13.9 pg 400
+    c_gx = omega*m**2 / (k*(k**2 + m**2))   # [m/s] Horizontal group speed
+    # Cushman-Roisin and Beckers eq 13.9 pg 400
+    c_gz = - omega*k / (k**2 + m**2)        # [m/s] Vertical group speed
+    return c_ph, c_gx, c_gz
+# c_ph, c_gx, c_gz = calc_wave_speeds(omega, k, m)
 
 ###############################################################################
-# Buffers and important depths
+# Calculate simulation timing
+def calc_timesteps(p_n_steps, p_o_steps):
+    n_steps     = int(2**p_n_steps)  # [] number of timesteps for the simulation
+    o_steps     = int(2**p_o_steps)  # [] number of timesteps per oscillation period
+    return n_steps, o_steps
+n_steps, o_steps = calc_timesteps(p_n_steps, p_o_steps)
 
-# Buffers
-#   distance between ends of vertical structure extent and other points
-dis_buff    = 2*lam_z           # [m] buffer from vertical structure to display domain
-IT_buff     = dis_buff/2.0      # [m] buffer from vertical structure to measure I and T
+def calc_oscillation_periods(p_n_steps, p_o_steps):
+    p_n_T       =p_n_steps-p_o_steps # [] power of the number of oscillation periods
+    n_T         = int(2**p_n_T)      # [] number of oscillation periods
+    return n_T
+n_T = calc_oscillation_periods(p_n_steps, p_o_steps)
 
-# Depths
-z0_str  = z0_dis - dis_buff     # [m] top of vertical structure
-z_I     = z0_str + IT_buff      # [m] depth at which to measure Incident wave
-zf_str  = z0_str - L            # [m] bottom of vertical structure
-z_T     = zf_str - IT_buff      # [m] depth at which to measure Transmitted wave
-zf_buff = dis_buff+(lam_z-L)    # [m] extra buffer to make sure dis domain is integer number of lam_z
-zf_dis  = zf_str - zf_buff      # [m] bottom of display domain
+###############################################################################
+# Calculate background profile in N_0
+def calc_layer_thickness(kL, k):
+    L = kL/k                        # [m]       Layer thickness
+    return L
+L = calc_layer_thickness(kL, k)
+
+def calc_R_i(interface_ratio, n_layers):
+    # If there are no mixed layers,
+    #   set interface ratio to zero to avoid negative lengths in structure
+    if n_layers == 0:
+        return 0.0
+    else:
+        return interface_ratio      # []        Ratio between layer and interface thicknesses
+R_i = calc_R_i(interface_ratio, n_layers)
+###############################################################################
+# Calculate buffers and important depths
+def calc_structure_depths(z0_dis, lam_z, L, n_layers, R_i):
+    # Find distance between ends of vertical structure extent and other points
+    dis_buff    = 2*lam_z           # [m] buffer from vertical structure to display domain
+    IT_buff     = dis_buff/2.0      # [m] buffer from vertical structure to measure I and T
+
+    # The total length of the vertical structure
+    Lz_str  = n_layers*L + (n_layers-1)*R_i*L
+    # Find a correction (structure buffer)
+    #   to ensure the display domain is an integer number of lam_z
+    foo      = Lz_str / lam_z
+    str_buff = (1- (foo - int(foo))) * lam_z
+
+    # Depths
+    z0_str  = z0_dis - dis_buff     # [m] top of vertical structure
+    z_I     = z0_str + IT_buff      # [m] depth at which to measure Incident wave
+    zf_str  = z0_str - Lz_str       # [m] bottom of vertical structure
+    z_T     = zf_str - IT_buff      # [m] depth at which to measure Transmitted wave
+    zf_buff = dis_buff + str_buff   # [m] add extra buffer so dis domain is integer number of lam_z
+    zf_dis  = zf_str - zf_buff      # [m] bottom of display domain
+    # Return relevant depths
+    return z_I, z0_str, zf_str, z_T, zf_dis
+z_I, z0_str, zf_str, z_T, zf_dis = calc_structure_depths(z0_dis, lam_z, L, n_layers, R_i)
 
 ###############################################################################
 # Boundary forcing window parameters
@@ -185,14 +222,6 @@ fh_mode         = 'overwrite'   # file handling mode, either 'overwrite' or 'app
 sim_time_stop = T*(T_cutoff+n_T)# [s] number of simulated seconds until the sim stops
 stop_wall_time = 180 * 60.0     # [s] length in minutes * 60 = length in seconds, sim stops if exceeded
 stop_iteration = np.inf         # [] number of iterations before the simulation stops
-
-###############################################################################
-# Physical parameters
-nu          = 1.0E-6        # [m^2/s] Viscosity (momentum diffusivity)
-kappa       = 1.4E-7        # [m^2/s] Thermal diffusivity
-Prandtl     = nu / kappa    # [] Prandtl number, about 7.0 for water at 20 C
-Rayleigh    = 1e6
-g           = 9.81          # [m/s^2] Acceleration due to gravity
 
 ###############################################################################
 # Plotting parameters

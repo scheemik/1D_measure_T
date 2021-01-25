@@ -36,8 +36,9 @@ p_o_steps   = 6                 # [] timesteps per oscillation period = 2 ** p_o
 T_cutoff    = 15                # [] number of oscillations to cut from beginning to leave just steady state
 T_keep      = 10                # [] number of oscillations to keep at the end for steady state
 
-# Displayed domain parameters
+# Domain parameters
 z0_dis = 0.0                    # [m] Top of the displayed z domain
+dealias= 3/2                    # []  Dealiasing factor
 
 ###############################################################################
 # Physical parameters
@@ -158,32 +159,46 @@ def calc_structure_depths(z0_dis, lam_z, L, n_layers, R_i):
     z_T     = zf_str - IT_buff      # [m] depth at which to measure Transmitted wave
     zf_buff = dis_buff + str_buff   # [m] add extra buffer so dis domain is integer number of lam_z
     zf_dis  = zf_str - zf_buff      # [m] bottom of display domain
+    Lz_dis = abs(zf_dis - z0_dis)   # [m] length of display domain
     # Return relevant depths
-    return z_I, z0_str, zf_str, z_T, zf_dis
-z_I, z0_str, zf_str, z_T, zf_dis = calc_structure_depths(z0_dis, lam_z, L, n_layers, R_i)
+    return z_I, z0_str, zf_str, z_T, zf_dis, Lz_dis
+z_I, z0_str, zf_str, z_T, zf_dis, Lz_dis = calc_structure_depths(z0_dis, lam_z, L, n_layers, R_i)
 
 ###############################################################################
-# Boundary forcing window parameters
-b_bf    = 1*lam_z               # [m] full width at half max of forcing window
-a_bf    = 3*b_bf                # [m] forcing area, height above display domain
-c_bf    = z0_dis + 0.5*a_bf     # [m] center of forcing area
-tau_bf  = 1.0e-0                # [s] time constant for boundary forcing
+# Calculate boundary forcing window parameters
+def calc_bf_win_params(z0_dis, lam_z, a, b, c):
+    b_bf    = b*lam_z               # [m] full width at half max of gaussian forcing window
+    a_bf    = a*b_bf                # [m] forcing extent, outside display domain
+    c_bf    = z0_dis + c*a_bf/2     # [m] center of forcing area, c is +1 or -1
+    return a_bf, b_bf, c_bf
+# Boundary forcing from above
+a_bf, b_bf, c_bf = calc_bf_win_params(z0_dis, lam_z, 3, 1, 1)
+# Sponge layer below
+a_sp, b_sp, c_sp = calc_bf_win_params(z0_dis, lam_z, 3, 1, -1)
 
+# Boundary forcing window parameters
+tau_bf  = 1.0e-0                # [s] time constant for boundary forcing
 # Sponge layer window parameters
-b_sp    = 1*lam_z               # [m] full width at half max of sponge window
-a_sp    = 3*b_sp                # [m] sponge area, height below display domain
-c_sp    = zf_dis - 0.5*a_sp     # [m] center of sponge area
 tau_sp  = 1.0e-0                # [s] time constant for sponge layer
 
 ###############################################################################
 # Simulated domain parameters
-z0     = z0_dis + a_bf          # [m] top of simulated domain
-zf     = zf_dis - a_sp          # [m] bottom of simulated domain
-Lz     = abs(zf - z0)           # [m] length of simulated domain
-Lz_dis = abs(zf_dis - z0_dis)   # [m] length of display domain
-dz     = Lz_dis / nz            # [m] spacing between each grid point
-nz_sim = int(Lz/dz)             # [] number of points in the simulated domain
-dealias= 3/2                    # [] dealiasing factor
+def calc_sim_domain(z0_dis, zf_dis, a_bf, a_sp):
+    z0     = z0_dis + a_bf          # [m] top of simulated domain
+    zf     = zf_dis - a_sp          # [m] bottom of simulated domain
+    Lz     = abs(zf - z0)           # [m] length of simulated domain
+    return z0, zf, Lz
+z0, zf, Lz = calc_sim_domain(z0_dis, zf_dis, a_bf, a_sp)
+
+def calc_nz_sim(nz, Lz, Lz_dis):
+    dz     = Lz_dis / nz            # [m] spacing between each grid point
+    nz_sim = int(Lz/dz)             # []  number of points in the simulated domain
+    return nz_sim
+nz_sim = calc_nz_sim(nz, Lz, Lz_dis)
+
+# print("nz:", nz)
+# print("Lz:", Lz)
+# print("Lz_dis:", Lz_dis)
 
 # Bases and domain
 z_basis = de.Fourier('z', nz_sim, interval=(z0, zf), dealias=dealias)
