@@ -69,6 +69,7 @@ dz          = sbp.dz
 plt_f_x     = sbp.plot_full_x
 plt_f_y     = sbp.plot_full_y
 T_cutoff    = sbp.T_cutoff
+nt_keep     = sbp.nt_keep
 n_layers    = sbp.n_layers
 
 ###############################################################################
@@ -111,7 +112,7 @@ z_tr, psi_tr = hf.trim_data_z(z, psi, z0_dis, zf_dis)
 # Trim in time
 # print("T_cutoff = ", T_cutoff)
 # print("t = ", t)
-t_tr, psi_tr = hf.trim_data_t(t, psi_tr, T_cutoff, T)
+t_tr, psi_tr = hf.trim_data_t(t, psi_tr, nt_keep, T)
 
 ###############################################################################
 # Perform complex demodulation

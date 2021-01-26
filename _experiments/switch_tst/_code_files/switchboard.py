@@ -28,13 +28,15 @@ n_layers = 2                    # []        Number of mixed layers in the backgr
 interface_ratio = 1.0           # []        Ratio between the thickness of an interfaces to a layers
 
 # Vertical space parameters (z)
-nz      = 1024                  # [] number of grid points in the z direction in display domain
+nz      = 1024                  # [] number of grid points in z display domain (expecting power of 2)
 
 # Time parameters
-p_n_steps   = 10                # [] total number of simulation timesteps = 2 ** p_n_steps
+p_T_keep    = 3                 # [] number of steady state oscillations to keep = 2 ** p_T_keep
 p_o_steps   = 6                 # [] timesteps per oscillation period = 2 ** p_o_steps
-T_cutoff    = 15                # [] number of oscillations to cut from beginning to leave just steady state
-T_keep      = 10                # [] number of oscillations to keep at the end for steady state
+
+p_n_steps   = 10                # [] total number of simulation timesteps = 2 ** p_n_steps
+# T_cutoff    = 15                # [] number of oscillations to cut from beginning to leave just steady state
+# T_keep      = 10                # [] number of oscillations to keep at the end for steady state
 
 # Domain parameters
 z0_dis = 0.0                    # [m] Top of the displayed z domain
@@ -114,6 +116,12 @@ def calc_wave_speeds(omega, k, m):
 
 ###############################################################################
 # Calculate simulation timing
+def calc_keep_timesteps(p_T_keep, p_o_steps):
+    # The number of time steps to be kept at the end of the simulation
+    nt_keep     = int(2**(p_T_keep + p_o_steps))
+    return nt_keep
+nt_keep = calc_keep_timesteps(p_T_keep, p_o_steps)
+
 def calc_timesteps(p_n_steps, p_o_steps):
     n_steps     = int(2**p_n_steps)  # [] number of timesteps for the simulation
     o_steps     = int(2**p_o_steps)  # [] number of timesteps per oscillation period
@@ -125,6 +133,12 @@ def calc_oscillation_periods(p_n_steps, p_o_steps):
     n_T         = int(2**p_n_T)      # [] number of oscillation periods
     return n_T
 n_T = calc_oscillation_periods(p_n_steps, p_o_steps)
+
+def calc_T_cutoff(p_T_keep, n_T):
+    T_keep = 2**p_T_keep
+    T_cutoff = n_T - T_keep
+    return T_cutoff
+T_cutoff = calc_T_cutoff(p_T_keep, n_T)
 
 ###############################################################################
 # Calculate background profile in N_0
