@@ -200,6 +200,14 @@ def test_nz_dealias(arr_nz, arr_kL, arr_n_layers, arr_R_i):
     nz_da  = nz_sim * sbp.dealias
     assert nz_da - int(nz_da) == 0, "nz_sim*dealias should be an integer"
 
+def test_nt_keep():
+    """
+    """
+    nt_keep = sbp.calc_keep_timesteps(sbp.p_T_keep, sbp.p_o_steps)
+    assert isinstance(nt_keep, int), "nt_keep should be an integer"
+    # Use bit operation to check for a power of 2
+    assert nt_keep != 0 and (nt_keep & (nt_keep-1) == 0), "nt_keep should be a power of 2"
+
 def test_n_steps_per_oscillation():
     """
     Check to make sure the number of total timesteps in the simulation is
