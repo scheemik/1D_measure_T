@@ -69,11 +69,11 @@ def arr_R_i(request):
 def arr_nz(request):
     return request.param
 
-@pytest.fixture(params=[sbp.p_n_steps])
-def arr_p_n_steps(request):
+@pytest.fixture(params=[1, 2, 3, 4, 5])
+def arr_p_T_keep(request):
     return request.param
 
-@pytest.fixture(params=[sbp.p_o_steps])
+@pytest.fixture(params=[4, 5, 6, 7])
 def arr_p_o_steps(request):
     return request.param
 
@@ -200,10 +200,12 @@ def test_nz_dealias(arr_nz, arr_kL, arr_n_layers, arr_R_i):
     nz_da  = nz_sim * sbp.dealias
     assert nz_da - int(nz_da) == 0, "nz_sim*dealias should be an integer"
 
-def test_nt_keep():
+def test_nt_keep(arr_p_T_keep, arr_p_o_steps):
     """
+    Check to make sure the number of time steps to keep at the end of the simulation
+        is a power of 2
     """
-    nt_keep = sbp.calc_keep_timesteps(sbp.p_T_keep, sbp.p_o_steps)
+    nt_keep = sbp.calc_keep_timesteps(arr_p_T_keep, arr_p_o_steps)
     assert isinstance(nt_keep, int), "nt_keep should be an integer"
     # Use bit operation to check for a power of 2
     assert nt_keep != 0 and (nt_keep & (nt_keep-1) == 0), "nt_keep should be a power of 2"
