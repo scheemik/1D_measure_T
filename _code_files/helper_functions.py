@@ -388,6 +388,19 @@ def add_lines_to_ax(ax, z_I=None, z_T=None, z0_dis=None, zf_dis=None, T_cutoff=N
         line_color = my_clrs['black']
         ax.axvline(x=T_cutoff, color=line_color, linestyle='--')
 
+def add_cg_lines(ax, t, T, c_gz):
+    """
+    Adds a diagonal line representing the vertical group
+    Careful about having the time axis be t/T
+
+    ax          axis for plot
+    t           array of time values
+    c_gz       vertical group speed
+    """
+    if c_gz != None:
+        print("c_gz = ",c_gz)
+        ax.plot(t, c_gz*t*T, color=my_clrs['F_sp'], label='Vertical group speed')
+
 def set_plot_bounds(ax, plot_full_x, plot_full_y, z_array=None, z0_dis=None, zf_dis=None, t_array=None, T=None, T_cutoff=None):
     """
     Sets plot bounds, transient oscillations cutoff and display domain
@@ -480,7 +493,7 @@ def plot_v_profiles(z_array, BP_array, bf_array, sp_array, kL=None, theta=None, 
 # Main plotting functions
 ###############################################################################
 
-def plot_z_vs_t(z_array, t_array, T, data, BP_array, kL, theta, omega, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_x=True, plot_full_y=True, T_cutoff=0.0, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave.png'):
+def plot_z_vs_t(z_array, t_array, T, data, BP_array, kL, theta, omega, c_gz=None, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_x=True, plot_full_y=True, T_cutoff=0.0, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave.png'):
     """
     Plots the data as a colormap on z vs t with the vertical profile included to the left
 
@@ -492,6 +505,7 @@ def plot_z_vs_t(z_array, t_array, T, data, BP_array, kL, theta, omega, z_I=None,
     kL          Non-dimensional number relating wavelength and layer thickness
     theta       Angle at which wave is incident on stratification structure
     omega       frequency of wave
+    c_gz       vertical group speed
     z_I         depth to measure incident wave
     z_T         depth to meausre transmitted wave
     z0_dis      top of vertical structure extent
@@ -512,6 +526,8 @@ def plot_z_vs_t(z_array, t_array, T, data, BP_array, kL, theta, omega, z_I=None,
     add_lines_to_ax(axes[0], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis)
     # Add straight lines to wavefield plot
     add_lines_to_ax(axes[1], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, T_cutoff=T_cutoff)
+    # Add diagonal line for vertical group speed
+    add_cg_lines(axes[1], t_array, T, c_gz)
     # Set plot bounds to include full domain or not
     set_plot_bounds(axes[0], plot_full_x, plot_full_y, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis)
     set_plot_bounds(axes[1], plot_full_x, plot_full_y, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis, t_array=t_array, T=T, T_cutoff=T_cutoff)

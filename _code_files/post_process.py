@@ -173,7 +173,7 @@ if sbp.plot_up_dn:
 if sbp.plot_untrimmed:
     # Plot untrimmed wavefield
     if sbp.plot_spacetime:
-        hf.plot_z_vs_t(z, t, T, psi.real, BP_array, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, title_str=run_name, filename=filename_prefix+'_wave.png')
+        hf.plot_z_vs_t(z, t, T, psi.real, BP_array, kL, theta, omega, c_gz=sbp.c_gz, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, title_str=run_name, filename=filename_prefix+'_wave.png')
 
     # Plot untrimmed up and downward propagating waves
         # This will lead to warning about nt not being a power of 2

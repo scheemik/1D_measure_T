@@ -75,10 +75,10 @@ if boundary_forcing_region == False:
 plot_spacetime = True
 plot_wavespace = False
 plot_spectra   = False
-plot_amplitude = True
-plot_windows   = True
-plot_up_dn     = True
-plot_untrimmed = False
+plot_amplitude = False
+plot_windows   = False
+plot_up_dn     = False
+plot_untrimmed = True
 # If true, plot will include full simulated domain, if false, just the display domain
 plot_full_x = True
 plot_full_y = True
@@ -113,7 +113,7 @@ def calc_wave_speeds(omega, k, m):
     # Cushman-Roisin and Beckers eq 13.9 pg 400
     c_gz = - omega*k / (k**2 + m**2)        # [m/s] Vertical group speed
     return c_ph, c_gx, c_gz
-# c_ph, c_gx, c_gz = calc_wave_speeds(omega, k, m)
+c_ph, c_gx, c_gz = calc_wave_speeds(omega, k, m)
 
 ###############################################################################
 # Calculate simulation timing
