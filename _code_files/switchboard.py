@@ -25,7 +25,7 @@ f_0     = 0.000                 # [s^-1]    Reference Coriolis parameter
 
 # Background profile in N_0
 n_layers = 2                    # []        Number of mixed layers in the background stratification
-interface_ratio = 1.0           # []        Ratio between the thickness of an interfaces to a layers
+interface_ratio = 1.0           # []        Ratio between the thickness of an interfaces to a layer
 
 # Vertical space parameters (z)
 nz      = 1024                  # [] number of grid points in z display domain (expecting power of 2)
@@ -34,9 +34,8 @@ nz      = 1024                  # [] number of grid points in z display domain (
 p_T_keep    = 3                 # [] number of steady state oscillations to keep = 2 ** p_T_keep
 p_o_steps   = 6                 # [] timesteps per oscillation period = 2 ** p_o_steps
 
-p_n_steps   = 10                # [] total number of simulation timesteps = 2 ** p_n_steps
-# T_cutoff    = 15                # [] number of oscillations to cut from beginning to leave just steady state
-# T_keep      = 10                # [] number of oscillations to keep at the end for steady state
+# To be depricated in favor of group speed calculation
+p_n_steps   = 11                # [] total number of simulation timesteps = 2 ** p_n_steps
 
 # Domain parameters
 z0_dis = 0.0                    # [m] Top of the displayed z domain
@@ -63,6 +62,7 @@ advection_term          = False
 buoyancy_term           = True
 diffusivity_term        = True
 rotation_term           = False
+
 # Diffusion / dissipation of reflections
 use_sponge              = True
 use_rayleigh_friction   = False

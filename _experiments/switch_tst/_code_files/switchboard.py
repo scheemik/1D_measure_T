@@ -34,7 +34,7 @@ nz      = 1024                  # [] number of grid points in z display domain (
 p_T_keep    = 3                 # [] number of steady state oscillations to keep = 2 ** p_T_keep
 p_o_steps   = 6                 # [] timesteps per oscillation period = 2 ** p_o_steps
 
-p_n_steps   = 10                # [] total number of simulation timesteps = 2 ** p_n_steps
+p_n_steps   = 11                # [] total number of simulation timesteps = 2 ** p_n_steps
 # T_cutoff    = 15                # [] number of oscillations to cut from beginning to leave just steady state
 # T_keep      = 10                # [] number of oscillations to keep at the end for steady state
 
@@ -78,6 +78,7 @@ plot_spectra   = False
 plot_amplitude = True
 plot_windows   = True
 plot_up_dn     = True
+plot_untrimmed = False
 # If true, plot will include full simulated domain, if false, just the display domain
 plot_full_x = True
 plot_full_y = True

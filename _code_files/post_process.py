@@ -104,15 +104,11 @@ z = np.flip(z)
 psi = np.flipud(psi)
 
 ###############################################################################
-# Trim data
-
-# Trim in space
+# Trim data in space
 z_tr, psi_tr = hf.trim_data_z(z, psi, z0_dis, zf_dis)
 
-# Trim in time
-# print("T_cutoff = ", T_cutoff)
-# print("t = ", t)
-t_tr, psi_tr = hf.trim_data_t(t, psi_tr, nt_keep, T)
+# Trim data in time
+t_tr, psi_tr = hf.trim_data_t(t, psi_tr, nt_keep)
 
 ###############################################################################
 # Perform complex demodulation

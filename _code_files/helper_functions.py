@@ -195,9 +195,9 @@ def extended_stop_time(sim_time_stop, dt):
     new_sim_time_stop = dt * (2**i)
     return new_sim_time_stop, int(nt)
 
-def trim_data(z_array, t_array, data, z0_dis=None, zf_dis=None, nt_keep=None, T=None):
+def trim_data(z_array, t_array, data, z0_dis=None, zf_dis=None, nt_keep=None):
     """
-    Trims data, removes time before T_cutoff and space outside display domain
+    Trims data, removes time before the cutoff and space outside display domain
 
     z_array     array of z values
     t_array     array of time values (in seconds)
@@ -205,14 +205,10 @@ def trim_data(z_array, t_array, data, z0_dis=None, zf_dis=None, nt_keep=None, T=
     z0_dis      top of vertical structure extent
     zf_dis      bottom of vertical structure extent
     nt_keep     integer, time steps to keep at end of simulation
-    T           oscillation period (in seconds)
     """
-    ## Trim time before T_cutoff
-    if nt_keep != None and T != None:
-        # Find time in seconds of cutoff
-        # cutoff_time = T_cutoff * T
+    ## Trim time to just keep last nt_keep time steps
+    if nt_keep != None:
         # Find index of cutoff time
-        # idx_cutoff = find_nearest_index(t_array, cutoff_time)
         idx_cutoff = len(t_array) - nt_keep
         # Trim time
         t_data = data[:,idx_cutoff:]
@@ -257,21 +253,15 @@ def trim_data_z(z_array, data, z0_dis, zf_dis):
     trimmed_z_array = z_array[idx_zf:idx_z0]
     return trimmed_z_array, trimmed_data
 
-def trim_data_t(t_array, data, nt_keep, T):
+def trim_data_t(t_array, data, nt_keep):
     """
-    Trims data, removes time before T_cutoff
+    Trims data, keeps only the last nt_keep timesteps of the simulation
 
     t_array     1D array of time values (in seconds)
     data        2D data to be trimmed (z, t)
     nt_keep     integer, time steps to keep at end of simulation
-    T           oscillation period (in seconds)
     """
-    ## Trim time before T_cutoff
-    #   Find time in seconds of cutoff
-    # cutoff_time = T_cutoff * T
-    # print("cutoff_time = ",cutoff_time)
     # Find index of cutoff time
-    # idx_cutoff = find_nearest_index(t_array, cutoff_time)
     idx_cutoff = len(t_array) - nt_keep
     # Trim time
     trimmed_data    = data[:,idx_cutoff:]
