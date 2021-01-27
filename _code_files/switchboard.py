@@ -78,6 +78,7 @@ plot_spectra   = False
 plot_amplitude = True
 plot_windows   = True
 plot_up_dn     = True
+plot_untrimmed = False
 # If true, plot will include full simulated domain, if false, just the display domain
 plot_full_x = True
 plot_full_y = True
