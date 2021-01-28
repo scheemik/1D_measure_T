@@ -63,7 +63,8 @@ def FT_in_time(t, z, data, dt, omega):
     if nt != nt_data:
         print('MISMATCH IN nt!')
     if is_power_of_2(nt) == False:
-        print('nt is not a power of 2:',nt)
+        print('Warning nt is not a power of 2:',nt)
+        print('  Are you plotting untrimmed data?')
     # FT in time of the data (axis 1 is time)
     ftd = np.fft.fft(data, axis=1)
     # find relevant frequencies
