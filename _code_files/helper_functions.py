@@ -388,20 +388,22 @@ def add_lines_to_ax(ax, z_I=None, z_T=None, z0_dis=None, zf_dis=None, T_cutoff=N
         line_color = my_clrs['black']
         ax.axvline(x=T_cutoff, color=line_color, linestyle='--')
 
-def add_cg_lines(ax, t, T, c_gz):
+def add_cg_lines(ax, t, T, c_gz, c_bf):
     """
     Adds a diagonal line representing the vertical group
     Careful about having the time axis be t/T
 
     ax          axis for plot
     t           array of time values
-    c_gz       vertical group speed
+    c_gz        vertical group speed
+    c_bf        depth of center of boudary forcing window
     """
-    if c_gz != None:
+    if c_gz != None and c_bf != None:
+        print('c_gz = ', c_gz)
         # Calculate the linear vertical propagation from the group speed
         #   Multiplying by T to put time in terms of t/T
-        #   Adding 1.5 to align with center of forcing window
-        c_gz_prop = c_gz*T*t + 1.5
+        #   Adding c_bf to align with center of forcing window
+        c_gz_prop = c_gz*T*t + c_bf
         # Plot line of propagation
         ax.plot(t, c_gz_prop, color=my_clrs['w'], label='Vertical group speed')
 
@@ -497,7 +499,7 @@ def plot_v_profiles(z_array, BP_array, bf_array, sp_array, kL=None, theta=None, 
 # Main plotting functions
 ###############################################################################
 
-def plot_z_vs_t(z_array, t_array, T, data, BP_array, kL, theta, omega, c_gz=None, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_x=True, plot_full_y=True, T_cutoff=0.0, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave.png'):
+def plot_z_vs_t(z_array, t_array, T, data, BP_array, kL, theta, omega, c_gz=None, c_bf=None, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_x=True, plot_full_y=True, T_cutoff=0.0, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave.png'):
     """
     Plots the data as a colormap on z vs t with the vertical profile included to the left
 
@@ -509,7 +511,8 @@ def plot_z_vs_t(z_array, t_array, T, data, BP_array, kL, theta, omega, c_gz=None
     kL          Non-dimensional number relating wavelength and layer thickness
     theta       Angle at which wave is incident on stratification structure
     omega       frequency of wave
-    c_gz       vertical group speed
+    c_gz        vertical group speed
+    c_bf        depth of center of boudary forcing window
     z_I         depth to measure incident wave
     z_T         depth to meausre transmitted wave
     z0_dis      top of vertical structure extent
@@ -531,7 +534,7 @@ def plot_z_vs_t(z_array, t_array, T, data, BP_array, kL, theta, omega, c_gz=None
     # Add straight lines to wavefield plot
     add_lines_to_ax(axes[1], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, T_cutoff=T_cutoff)
     # Add diagonal line for vertical group speed
-    add_cg_lines(axes[1], t_array, T, c_gz)
+    add_cg_lines(axes[1], t_array, T, c_gz, c_bf)
     # Set plot bounds to include full domain or not
     set_plot_bounds(axes[0], plot_full_x, plot_full_y, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis)
     set_plot_bounds(axes[1], plot_full_x, plot_full_y, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis, t_array=t_array, T=T, T_cutoff=T_cutoff)
