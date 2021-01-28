@@ -398,8 +398,12 @@ def add_cg_lines(ax, t, T, c_gz):
     c_gz       vertical group speed
     """
     if c_gz != None:
-        print("c_gz = ",c_gz)
-        ax.plot(t, c_gz*t*T, color=my_clrs['F_sp'], label='Vertical group speed')
+        # Calculate the linear vertical propagation from the group speed
+        #   Multiplying by T to put time in terms of t/T
+        #   Adding 1.5 to align with center of forcing window
+        c_gz_prop = c_gz*T*t + 1.5
+        # Plot line of propagation
+        ax.plot(t, c_gz_prop, color=my_clrs['w'], label='Vertical group speed')
 
 def set_plot_bounds(ax, plot_full_x, plot_full_y, z_array=None, z0_dis=None, zf_dis=None, t_array=None, T=None, T_cutoff=None):
     """
