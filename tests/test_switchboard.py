@@ -81,10 +81,6 @@ def arr_p_o_steps(request):
 def arr_T_cutoff(request):
     return request.param
 
-@pytest.fixture(params=[sbp.T_keep])
-def arr_T_keep(request):
-    return request.param
-
 ###############################################################################
 # Physical parameter tests
 
@@ -174,6 +170,20 @@ def test_dis_domain(arr_N_0, arr_theta, arr_lam_z, arr_kL, arr_n_layers, arr_R_i
     z_I, z0_str, zf_str, z_T, zf_dis, Lz_dis = sbp.calc_structure_depths(sbp.z0_dis, arr_lam_z, L, arr_n_layers, arr_R_i)
     n_lambda = Lz_dis / arr_lam_z
     assert n_lambda - int(n_lambda) == 0, "Display domain is not an integer number of lambda_z"
+
+def test_t_tr():
+    """
+    Check to make sure the transient time is calculated correctly
+        Assumes the transient time is how long it takes a wave moving at
+        the vertical group speed from its generation point, down to the
+        bottom of the structure and back
+    """
+    c_bf = 1.5
+    z0_dis = 0.0
+    zf_str = -4.0
+    c_gz = -1.0
+    t_tr = sbp.calc_t_tr(c_bf, z0_dis, zf_str, c_gz)
+    assert t_tr == 11.0, "Transient time calculated incorrectly"
 
 ###############################################################################
 # Computational parameter tests
