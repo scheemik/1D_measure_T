@@ -111,7 +111,7 @@ def calc_wave_speeds(omega, k, m):
     # Cushman-Roisin and Beckers eq 13.9 pg 400
     c_gx = omega*m**2 / (k*(k**2 + m**2))   # [m/s] Horizontal group speed
     # Cushman-Roisin and Beckers eq 13.9 pg 400
-    c_gz = - omega*k / (k**2 + m**2)        # [m/s] Vertical group speed
+    c_gz = - omega*m / (k**2 + m**2)        # [m/s] Vertical group speed
     return c_ph, c_gx, c_gz
 c_ph, c_gx, c_gz = calc_wave_speeds(omega, k, m)
 
