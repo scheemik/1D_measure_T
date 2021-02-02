@@ -50,35 +50,35 @@ with open("exp_data.csv", 'r') as datafile:
 data_arr = np.array(data)
 
 # csv read in as U32, convert data to float 64 before using
-mL_array = data_arr[:,1].astype('float64')
+kL_array = data_arr[:,1].astype('float64')
 th_array = data_arr[:,2].astype('float64')
 sim_data = data_arr[:,3].astype('float64')
 
-def plot_T_vs_mL(mL_array, sim_data, theta, omega, title_str='Transmission Coefficient', filename='f_1D_T_vs_mL.png'):
+def plot_T_vs_kL(kL_array, sim_data, theta, omega, title_str='Transmission Coefficient', filename='f_1D_T_vs_kL.png'):
     """
     Plots the amplitude of the downward propagating wave as a function of time
         for both the incident and transmission depths
 
-    mL_array    1D array of mL values used in simulations
-    sim_data    1D array of measured transmission coefficients for values in mL_array
+    kL_array    1D array of kL values used in simulations
+    sim_data    1D array of measured transmission coefficients for values in kL_array
     theta       Angle at which wave is incident on stratification structure
     omega       frequency of wave
     """
     # Set figure and axes for plot
     fig, axes = hf.set_fig_axes([1], [1])
     # Create array of analytical function
-    mL_ana = np.linspace(mL_array[0], mL_array[-1], 100)
-    ana_data = hf.SY_eq2_4(theta, mL_ana)
+    kL_ana = np.linspace(kL_array[0], kL_array[-1], 100)
+    ana_data = hf.SY_eq2_4(theta, kL_ana)
     # Plot line for analytical solution
-    axes.plot(mL_ana, ana_data, color='black', label=r'$\mathbb{T}_{ana}$')
+    axes.plot(kL_ana, ana_data, color='black', label=r'$\mathbb{T}_{ana}$')
     # Plot points from measurements in simulations
-    axes.scatter(mL_array, sim_data, color='red', marker='o', label=r'$\mathbb{T}_{sim}$')
+    axes.scatter(kL_array, sim_data, color='red', marker='o', label=r'$\mathbb{T}_{sim}$')
     axes.legend()
     # Add labels and titles
-    axes.set_xlabel(r'$mL$')
+    axes.set_xlabel(r'$kL$')
     axes.set_ylabel(r'$\mathbb{T}$')
     plt.title(r'%s for $\theta=$%s' %(title_str, hf.rad_to_degs(theta)))
     #plt.show()
     plt.savefig(filename)
 
-plot_T_vs_mL(mL_array, sim_data, theta, omega)
+plot_T_vs_kL(kL_array, sim_data, theta, omega)
