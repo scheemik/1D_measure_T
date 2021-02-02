@@ -181,15 +181,16 @@ tau_sp  = 1.0e-0                # [s] time constant for sponge layer
 # Calculate simulation timing
 
 # Calculate the transient time of the simulation based on vertical group speed
-def calc_t_tr(c_bf, z0_dis, zf_str, c_gz):
+def calc_t_tr(c_bf, z0_dis, zf_dis, c_gz):
     # Calculate distance a wave would propagate during transient time
     #   Assuming wave comes from generation point, travels down to
-    #   the bottom of the structure, and back to the generation point
-    d_prop = 2 * (abs(z0_dis - c_bf) + abs(zf_str - z0_dis))
+    #   the bottom of the display domain, and back to the top of
+    #   the display domain
+    d_prop = abs(z0_dis - c_bf) + 2*abs(zf_dis - z0_dis)
     # Use the vertical group speed to find transient time (require a positive number)
     t_tr = abs(d_prop / c_gz)
     return t_tr
-t_tr = calc_t_tr(c_bf, z0_dis, zf_str, c_gz)
+t_tr = calc_t_tr(c_bf, z0_dis, zf_dis, c_gz)
 
 def calc_tr_timesteps(t_tr, T, p_o_steps):
     # The number of time steps required for the transient period at the
