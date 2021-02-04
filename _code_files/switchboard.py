@@ -24,8 +24,8 @@ A       = 2.0e-4                # []        Amplitude of boundary forcing
 f_0     = 0.000                 # [s^-1]    Reference Coriolis parameter
 
 # Background profile in N_0
-n_layers = 2                    # []        Number of mixed layers in the background stratification
-interface_ratio = 1.0           # []        Ratio between the thickness of an interfaces to a layer
+n_layers = 1                    # []        Number of mixed layers in the background stratification
+interface_ratio = 1.0           # []        Ratio between the thickness of an interface to a layer
 
 # Vertical space parameters (z)
 nz      = 1024                  # [] number of grid points in z display domain (expecting power of 2)
@@ -78,7 +78,7 @@ plot_spectra   = False
 plot_amplitude = True
 plot_windows   = False
 plot_up_dn     = True
-plot_untrimmed = True
+plot_untrimmed = False
 # If true, plot will include full simulated domain, if false, just the display domain
 plot_full_x = True
 plot_full_y = True
