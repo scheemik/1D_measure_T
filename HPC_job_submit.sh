@@ -4,7 +4,7 @@
 # Takes in optional arguments:
 #	$ sh HPC_job_submit.sh -e <name of experiment> 				 Default: current datetime
 #								  			 -s <number of simulations>      Default: 5
-#								  			 -c <number of cores>            Default: 1
+#								  			 -c <number of cores>            Default: 32
 #								  			 -r <run simulation>             Default: False
 #             	  			 -m <merge h5 files>             Default: False
 #								  			 -o <post-process data>          Default: False
@@ -46,6 +46,13 @@ then
 	echo "-s, No number of simulations specified, using SIMS=$SIMS"
 else
   echo "-s, Number of simulations specified, using SIMS=$SIMS"
+fi
+if [ -z "$CORES" ]
+then
+	CORES=32
+	echo "-c, No number of simulations specified, using CORES=$CORES"
+else
+  echo "-c, Number of simulations specified, using CORES=$CORES"
 fi
 # Check for run arguments
 if [ "$RUN" = r ] || [ "$MER" = m ] || [ "$PRO" = o ] || [ "$PLT" = p ] || [ "$GIF" = g ] || [ "$VID" = v ]
