@@ -1,0 +1,17 @@
+Seq	Host	Starttime	JobRuntime	Send	Receive	Exitval	Signal	Command
+8	:	1612476772.665	    41.311	0	3627	0	0	cd _experiments/16s_1l/_simulations/007_16s_1l && bash run.sh -e 16s_1l -i 007 -s 16 -c 32 -rmo
+2	:	1612476772.635	    41.387	0	3624	0	0	cd _experiments/16s_1l/_simulations/001_16s_1l && bash run.sh -e 16s_1l -i 001 -s 16 -c 32 -rmo
+3	:	1612476772.641	    41.381	0	3625	0	0	cd _experiments/16s_1l/_simulations/002_16s_1l && bash run.sh -e 16s_1l -i 002 -s 16 -c 32 -rmo
+9	:	1612476772.672	    41.351	0	3629	0	0	cd _experiments/16s_1l/_simulations/008_16s_1l && bash run.sh -e 16s_1l -i 008 -s 16 -c 32 -rmo
+14	:	1612476772.704	    41.391	0	3628	0	0	cd _experiments/16s_1l/_simulations/013_16s_1l && bash run.sh -e 16s_1l -i 013 -s 16 -c 32 -rmo
+5	:	1612476772.649	    41.526	0	3625	0	0	cd _experiments/16s_1l/_simulations/004_16s_1l && bash run.sh -e 16s_1l -i 004 -s 16 -c 32 -rmo
+12	:	1612476772.692	    41.607	0	3629	0	0	cd _experiments/16s_1l/_simulations/011_16s_1l && bash run.sh -e 16s_1l -i 011 -s 16 -c 32 -rmo
+11	:	1612476772.683	    41.680	0	3628	0	0	cd _experiments/16s_1l/_simulations/010_16s_1l && bash run.sh -e 16s_1l -i 010 -s 16 -c 32 -rmo
+13	:	1612476772.698	    41.746	0	3615	0	0	cd _experiments/16s_1l/_simulations/012_16s_1l && bash run.sh -e 16s_1l -i 012 -s 16 -c 32 -rmo
+10	:	1612476772.677	    41.838	0	3613	0	0	cd _experiments/16s_1l/_simulations/009_16s_1l && bash run.sh -e 16s_1l -i 009 -s 16 -c 32 -rmo
+6	:	1612476772.655	    41.924	0	3626	0	0	cd _experiments/16s_1l/_simulations/005_16s_1l && bash run.sh -e 16s_1l -i 005 -s 16 -c 32 -rmo
+4	:	1612476772.645	    42.003	0	3611	0	0	cd _experiments/16s_1l/_simulations/003_16s_1l && bash run.sh -e 16s_1l -i 003 -s 16 -c 32 -rmo
+15	:	1612476772.710	    42.007	0	3629	0	0	cd _experiments/16s_1l/_simulations/014_16s_1l && bash run.sh -e 16s_1l -i 014 -s 16 -c 32 -rmo
+16	:	1612476772.715	    42.212	0	3617	0	0	cd _experiments/16s_1l/_simulations/015_16s_1l && bash run.sh -e 16s_1l -i 015 -s 16 -c 32 -rmo
+7	:	1612476772.660	    42.667	0	3612	0	0	cd _experiments/16s_1l/_simulations/006_16s_1l && bash run.sh -e 16s_1l -i 006 -s 16 -c 32 -rmo
+1	:	1612476772.631	    42.770	0	3595	0	0	cd _experiments/16s_1l/_simulations/000_16s_1l && bash run.sh -e 16s_1l -i 000 -s 16 -c 32 -rmo
