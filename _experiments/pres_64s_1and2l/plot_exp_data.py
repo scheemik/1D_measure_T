@@ -56,7 +56,8 @@ sim_data = data_arr[:,3].astype('float64')
 
 def plot_T_vs_kL(kL_array, sim_data, theta, omega, title_str='Transmission Coefficient', filename='f_1D_T_vs_kL.png'):
     """
-    Plots the transmission coefficient as a function of kL
+    Plots the amplitude of the downward propagating wave as a function of time
+        for both the incident and transmission depths
 
     kL_array    1D array of kL values used in simulations
     sim_data    1D array of measured transmission coefficients for values in kL_array
