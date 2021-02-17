@@ -26,7 +26,7 @@ n_sims      = int(args['N_SIMS'])
 # Make arrays of parameters
 
 kL_start = 0
-kL_stop  = 5
+kL_stop  = 10
 
 kL_arr = np.linspace(kL_start, kL_stop, n_sims)
 
