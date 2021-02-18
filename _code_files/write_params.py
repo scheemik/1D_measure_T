@@ -22,11 +22,14 @@ run_name    = args['NAME']      # Simulation name, used to route filepaths of pl
 sim_id      = int(args['ID'])
 n_sims      = int(args['N_SIMS'])
 
+# Import SwitchBoard Parameters (sbp)
+import switchboard as sbp
+
 ###############################################################################
 # Make arrays of parameters
 
 kL_start = 0
-kL_stop  = 5
+kL_stop  = 5/sbp.n_layers
 
 kL_arr = np.linspace(kL_start, kL_stop, n_sims)
 
