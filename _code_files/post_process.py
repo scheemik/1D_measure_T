@@ -63,13 +63,13 @@ z_I         = sbp.z_I           # [m]           depth at which to measure Incide
 z_T         = sbp.z_T           # [m]           depth at which to measure Transmitted wave
 
 # Grid spacing
-dt          = sbp.dt
+dt          = sbp.snap_dt
 dz          = sbp.dz
 
 plt_f_x     = sbp.plot_full_x
 plt_f_y     = sbp.plot_full_y
 T_cutoff    = sbp.T_cutoff
-nt_keep     = sbp.nt_keep
+nt_keep     = sbp.nt_snap
 n_layers    = sbp.n_layers
 
 ###############################################################################
@@ -124,7 +124,7 @@ tr_dn_field, tr_up_field = hfCD.Complex_Demodulate(t_then_z, t_tr, z_tr, kz_tr, 
 
 I_, T_, AAcc_I, AAcc_T = hf.measure_T(tr_dn_field, z_tr, z_I, z_T, T_skip=None, T=T, t=t_tr)
 big_T = T_/I_
-print("(n_layers =",n_layers,"(kL =",kL,", theta =",theta,")")
+print("(n_layers =",n_layers,", kL =",kL,", theta =",theta,")")
 print("Simulated transmission coefficient is:", big_T)
 print("AnaEq 2.4 transmission coefficient is:", hf.SY_eq2_4(theta, kL))
 

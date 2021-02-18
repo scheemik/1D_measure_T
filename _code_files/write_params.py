@@ -31,7 +31,7 @@ kL_stop  = 5/n_layers
 
 kL_arr = np.linspace(kL_start, kL_stop, n_sims)
 
-theta  = np.arctan(1.0)
+theta  = np.arctan(1.0) # 0.7853981634
 
 ###############################################################################
 # Write out parameters based on sim ID

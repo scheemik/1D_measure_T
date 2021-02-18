@@ -35,11 +35,12 @@ p_T_keep    = 3                 # [] number of steady state oscillations to keep
 p_o_steps   = 6                 # [] timesteps per oscillation period = 2 ** p_o_steps
 
 # To be depricated in favor of group speed calculation
-p_n_steps   = 11                # [] total number of simulation timesteps = 2 ** p_n_steps
+# p_n_steps   = 11                # [] total number of simulation timesteps = 2 ** p_n_steps
 
 # Domain parameters
-z0_dis = 0.0                    # [m] Top of the displayed z domain
-dealias= 3/2                    # []  Dealiasing factor
+z0_dis      = 0.0               # [m] Top of the displayed z domain
+dealias     = 3/2               # []  Dealiasing factor
+snap_rate   = 2                 # []  Snapshots record every `snap_rate` timesteps
 
 ###############################################################################
 # Physical parameters
@@ -280,14 +281,15 @@ win_sp_array = calc_sp_array(z, c_sp, b_sp, use_sponge)
 ###############################################################################
 # Run parameters
 dt              = T/o_steps     # [s] initial time step size (should be around 0.125)
-snap_dt         = dt            # [s] time step size for snapshots
-snap_max_writes = 100           # [] max number of writes per snapshot file
+snap_dt         = dt*snap_rate  # [s] time step size for snapshots
+nt_snap = nt_keep//snap_rate# []  number of time steps in the snapshots
+snap_max_writes = 100           # []  max number of writes per snapshot file
 snapshots_dir   = 'snapshots'   # name of directory in which to put snapshot files
 fh_mode         = 'overwrite'   # file handling mode, either 'overwrite' or 'append'
 # Stopping conditions for the simulation
 sim_time_stop  = t_tr + t_keep  # [s] number of simulated seconds until the sim stops
 stop_wall_time = 180 * 60.0     # [s] length in minutes * 60 = length in seconds, sim stops if exceeded
-stop_iteration = np.inf         # [] number of iterations before the simulation stops
+stop_iteration = np.inf         # []  number of iterations before the simulation stops
 
 ###############################################################################
 # Plotting parameters
