@@ -85,7 +85,7 @@ def plot_T_vs_kL(all_exp_data, theta, omega, title_str='Transmission Coefficient
     # Plot line for analytical solution
     axes.plot(kL_ana, ana_data, color='black', label=r'$\mathbb{T}_{ana}$')
     # Get colors
-    plt_clrs = [hf.CSS4_COLORS['forestgreen'], hf.CSS4_COLORS['steelblue']]
+    plt_clrs = [hf.CSS4_COLORS['forestgreen'], hf.CSS4_COLORS['blueviolet']]
     # Plot points from measurements in simulations
     for i in range(1,all_exp_data.shape[1]):
         axes.plot(all_exp_data[:,0], all_exp_data[:,i], color=plt_clrs[i-1], marker='.', label=rf'$T_{i}$')
