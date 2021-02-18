@@ -50,9 +50,9 @@ fi
 if [ -z "$CORES" ]
 then
 	CORES=32
-	echo "-c, No number of simulations specified, using CORES=$CORES"
+	echo "-c, No number of cores specified, using CORES=$CORES"
 else
-  echo "-c, Number of simulations specified, using CORES=$CORES"
+  echo "-c, Number of cores specified, using CORES=$CORES"
 fi
 # Check for run arguments
 if [ "$RUN" = r ] || [ "$MER" = m ] || [ "$PRO" = o ] || [ "$PLT" = p ] || [ "$GIF" = g ] || [ "$VID" = v ]
