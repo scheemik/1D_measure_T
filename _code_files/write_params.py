@@ -22,14 +22,12 @@ run_name    = args['NAME']      # Simulation name, used to route filepaths of pl
 sim_id      = int(args['ID'])
 n_sims      = int(args['N_SIMS'])
 
-# Import SwitchBoard Parameters (sbp)
-import switchboard as sbp
-
 ###############################################################################
 # Make arrays of parameters
 
+n_layers = 3
 kL_start = 0
-kL_stop  = 5/sbp.n_layers
+kL_stop  = 5/n_layers
 
 kL_arr = np.linspace(kL_start, kL_stop, n_sims)
 
@@ -41,7 +39,8 @@ theta  = np.arctan(1.0)
 filename = "params.py"
 params_file = open(filename, "w+")
 
-params_file.write("kL = " + str(kL_arr[sim_id]))
+params_file.write("n_layers = " + str(n_layers))
+params_file.write("\nkL = " + str(kL_arr[sim_id]))
 params_file.write("\ntheta = " + str(theta))
 
 params_file.close()
