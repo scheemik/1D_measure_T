@@ -34,13 +34,10 @@ nz      = 1024                  # [] number of grid points in z display domain (
 p_T_keep    = 3                 # [] number of steady state oscillations to keep = 2 ** p_T_keep
 p_o_steps   = 6                 # [] timesteps per oscillation period = 2 ** p_o_steps
 
-# To be depricated in favor of group speed calculation
-# p_n_steps   = 11                # [] total number of simulation timesteps = 2 ** p_n_steps
-
 # Domain parameters
 z0_dis      = 0.0               # [m] Top of the displayed z domain
 dealias     = 3/2               # []  Dealiasing factor
-snap_rate   = 2                 # []  Snapshots record every `snap_rate` timesteps
+snap_rate   = 4                 # []  Snapshots record every `snap_rate` timesteps
 
 ###############################################################################
 # Physical parameters
@@ -282,7 +279,7 @@ win_sp_array = calc_sp_array(z, c_sp, b_sp, use_sponge)
 # Run parameters
 dt              = T/o_steps     # [s] initial time step size (should be around 0.125)
 snap_dt         = dt*snap_rate  # [s] time step size for snapshots
-nt_snap = nt_keep//snap_rate# []  number of time steps in the snapshots
+nt_snap    = nt_keep//snap_rate # []  number of time steps in the snapshots
 snap_max_writes = 100           # []  max number of writes per snapshot file
 snapshots_dir   = 'snapshots'   # name of directory in which to put snapshot files
 fh_mode         = 'overwrite'   # file handling mode, either 'overwrite' or 'append'
