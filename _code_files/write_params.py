@@ -39,7 +39,7 @@ theta  = np.arctan(1.0) # 0.7853981634
 filename = "params.py"
 params_file = open(filename, "w+")
 
-params_file.write("n_layers = " + str(n_layers))
+# params_file.write("n_layers = " + str(n_layers))
 params_file.write("\nkL = " + str(kL_arr[sim_id]))
 params_file.write("\ntheta = " + str(theta))
 
