@@ -38,7 +38,7 @@ omega   = 1 * np.cos(theta)
 
 ###############################################################################
 # Read data from the csv file
-csv_files = ["1l_exp_data.csv", "2l_exp_data.csv"]
+csv_files = ["1l_exp_data.csv", "2l_exp_data.csv", "3l_exp_data.csv", "4l_exp_data.csv"]
 
 def combine_exp_csv_files(csv_files, output_file):
     import csv
@@ -69,7 +69,7 @@ def combine_exp_csv_files(csv_files, output_file):
     return combined_data_arr
 all_exp_data = combine_exp_csv_files(csv_files, "all_exp_data.csv")
 
-def plot_T_vs_kL(all_exp_data, theta, omega, title_str='Transmission Coefficient', filename='pres_64s_1and2l_T_vs_kL.png'):
+def plot_T_vs_kL(all_exp_data, theta, omega, title_str='Transmission Coefficient', filename='pres_64s_T_vs_kL.png'):
     """
     Plots the transmission coefficient as a function of kL
 
@@ -85,7 +85,10 @@ def plot_T_vs_kL(all_exp_data, theta, omega, title_str='Transmission Coefficient
     # Plot line for analytical solution
     axes.plot(kL_ana, ana_data, color='black', label=r'$\mathbb{T}_{ana}$')
     # Get colors
-    plt_clrs = [hf.CSS4_COLORS['forestgreen'], hf.CSS4_COLORS['blueviolet']]
+    plt_clrs = [hf.CSS4_COLORS['forestgreen'],
+                hf.CSS4_COLORS['blueviolet'],
+                hf.CSS4_COLORS['tomato'],
+                hf.CSS4_COLORS['royalblue']]
     # Plot points from measurements in simulations
     for i in range(1,all_exp_data.shape[1]):
         axes.plot(all_exp_data[:,0], all_exp_data[:,i], color=plt_clrs[i-1], marker='.', label=rf'$T_{i}$')
