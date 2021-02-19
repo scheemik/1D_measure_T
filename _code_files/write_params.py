@@ -25,9 +25,9 @@ n_sims      = int(args['N_SIMS'])
 ###############################################################################
 # Make arrays of parameters
 
-n_layers = 4
+# n_layers = 4
 kL_start = 0
-kL_stop  = 5/n_layers
+kL_stop  = 5 #/n_layers
 
 kL_arr = np.linspace(kL_start, kL_stop, n_sims)
 
