@@ -1,0 +1,1950 @@
+Launched script: 2021-02-19_10h27
+
+Inactive Modules:
+  1) python/3.7.4
+
+Due to MODULEPATH changes, the following have been reloaded:
+  1) mpi4py/3.0.3
+
+The following have been reloaded with a version change:
+  1) StdEnv/2016.4 => StdEnv/2020           4) intel/2016.4 => intel/2020.1.217
+  2) gcccore/.5.4.0 => gcccore/.9.3.0       5) openmpi/2.1.1 => openmpi/4.0.3
+  3) imkl/11.3.4.258 => imkl/2020.1.217
+
+
+Activating Modules:
+  1) python/3.7.7
+
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=022
+-n, No simulation name specified, using NAME=018_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+022-Writing parameters file-
+
+022-Running script-
+Running Dedalus script
+
+Done running script
+
+022-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/022_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=008
+-n, No simulation name specified, using NAME=000_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+008-Writing parameters file-
+
+008-Running script-
+Running Dedalus script
+
+Done running script
+
+008-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+run.sh: line 60: printf: 008: invalid octal number
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/008_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=029
+-n, No simulation name specified, using NAME=002_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+029-Writing parameters file-
+
+029-Running script-
+Running Dedalus script
+
+Done running script
+
+029-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+run.sh: line 60: printf: 029: invalid octal number
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/029_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=013
+-n, No simulation name specified, using NAME=011_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+013-Writing parameters file-
+
+013-Running script-
+Running Dedalus script
+
+Done running script
+
+013-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/013_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=010
+-n, No simulation name specified, using NAME=008_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+010-Writing parameters file-
+
+010-Running script-
+Running Dedalus script
+
+Done running script
+
+010-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/010_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=031
+-n, No simulation name specified, using NAME=025_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+031-Writing parameters file-
+
+031-Running script-
+Running Dedalus script
+
+Done running script
+
+031-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/031_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=025
+-n, No simulation name specified, using NAME=021_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+025-Writing parameters file-
+
+025-Running script-
+Running Dedalus script
+
+Done running script
+
+025-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/025_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=016
+-n, No simulation name specified, using NAME=014_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+016-Writing parameters file-
+
+016-Running script-
+Running Dedalus script
+
+Done running script
+
+016-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/016_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=012
+-n, No simulation name specified, using NAME=010_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+012-Writing parameters file-
+
+012-Running script-
+Running Dedalus script
+
+Done running script
+
+012-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/012_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=014
+-n, No simulation name specified, using NAME=012_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+014-Writing parameters file-
+
+014-Running script-
+Running Dedalus script
+
+Done running script
+
+014-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/014_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=000
+-n, No simulation name specified, using NAME=000_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+000-Writing parameters file-
+
+000-Running script-
+Running Dedalus script
+
+Done running script
+
+000-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/000_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=004
+-n, No simulation name specified, using NAME=004_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+004-Writing parameters file-
+
+004-Running script-
+Running Dedalus script
+
+Done running script
+
+004-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/004_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=021
+-n, No simulation name specified, using NAME=017_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+021-Writing parameters file-
+
+021-Running script-
+Running Dedalus script
+
+Done running script
+
+021-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/021_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=017
+-n, No simulation name specified, using NAME=015_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+017-Writing parameters file-
+
+017-Running script-
+Running Dedalus script
+
+Done running script
+
+017-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/017_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=007
+-n, No simulation name specified, using NAME=007_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+007-Writing parameters file-
+
+007-Running script-
+Running Dedalus script
+
+Done running script
+
+007-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/007_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=027
+-n, No simulation name specified, using NAME=023_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+027-Writing parameters file-
+
+027-Running script-
+Running Dedalus script
+
+Done running script
+
+027-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/027_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=005
+-n, No simulation name specified, using NAME=005_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+005-Writing parameters file-
+
+005-Running script-
+Running Dedalus script
+
+Done running script
+
+005-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/005_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=019
+-n, No simulation name specified, using NAME=001_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+019-Writing parameters file-
+
+019-Running script-
+Running Dedalus script
+
+Done running script
+
+019-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+run.sh: line 60: printf: 019: invalid octal number
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/019_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=026
+-n, No simulation name specified, using NAME=022_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+026-Writing parameters file-
+
+026-Running script-
+Running Dedalus script
+
+Done running script
+
+026-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/026_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=006
+-n, No simulation name specified, using NAME=006_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+006-Writing parameters file-
+
+006-Running script-
+Running Dedalus script
+
+Done running script
+
+006-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/006_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=002
+-n, No simulation name specified, using NAME=002_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+002-Writing parameters file-
+
+002-Running script-
+Running Dedalus script
+
+Done running script
+
+002-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/002_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=009
+-n, No simulation name specified, using NAME=000_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+009-Writing parameters file-
+
+009-Running script-
+Running Dedalus script
+
+Done running script
+
+009-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+run.sh: line 60: printf: 009: invalid octal number
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/009_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=018
+-n, No simulation name specified, using NAME=001_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+018-Writing parameters file-
+
+018-Running script-
+Running Dedalus script
+
+Done running script
+
+018-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+run.sh: line 60: printf: 018: invalid octal number
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/018_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=030
+-n, No simulation name specified, using NAME=024_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+030-Writing parameters file-
+
+030-Running script-
+Running Dedalus script
+
+Done running script
+
+030-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/030_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=015
+-n, No simulation name specified, using NAME=013_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+015-Writing parameters file-
+
+015-Running script-
+Running Dedalus script
+
+Done running script
+
+015-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/015_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=001
+-n, No simulation name specified, using NAME=001_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+001-Writing parameters file-
+
+001-Running script-
+Running Dedalus script
+
+Done running script
+
+001-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/001_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=003
+-n, No simulation name specified, using NAME=003_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+003-Writing parameters file-
+
+003-Running script-
+Running Dedalus script
+
+Done running script
+
+003-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/003_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=011
+-n, No simulation name specified, using NAME=009_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+011-Writing parameters file-
+
+011-Running script-
+Running Dedalus script
+
+Done running script
+
+011-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/011_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=020
+-n, No simulation name specified, using NAME=016_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+020-Writing parameters file-
+
+020-Running script-
+Running Dedalus script
+
+Done running script
+
+020-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/020_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=023
+-n, No simulation name specified, using NAME=019_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+023-Writing parameters file-
+
+023-Running script-
+Running Dedalus script
+
+Done running script
+
+023-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/023_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=028
+-n, No simulation name specified, using NAME=002_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+028-Writing parameters file-
+
+028-Running script-
+Running Dedalus script
+
+Done running script
+
+028-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+run.sh: line 60: printf: 028: invalid octal number
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/028_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=024
+-n, No simulation name specified, using NAME=020_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+024-Writing parameters file-
+
+024-Running script-
+Running Dedalus script
+
+Done running script
+
+024-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/024_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=036
+-n, No simulation name specified, using NAME=030_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+036-Writing parameters file-
+
+036-Running script-
+Running Dedalus script
+
+Done running script
+
+036-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/036_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=048
+-n, No simulation name specified, using NAME=004_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+048-Writing parameters file-
+
+048-Running script-
+Running Dedalus script
+
+Done running script
+
+048-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+run.sh: line 60: printf: 048: invalid octal number
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/048_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=043
+-n, No simulation name specified, using NAME=035_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+043-Writing parameters file-
+
+043-Running script-
+Running Dedalus script
+
+Done running script
+
+043-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/043_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=051
+-n, No simulation name specified, using NAME=041_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+051-Writing parameters file-
+
+051-Running script-
+Running Dedalus script
+
+Done running script
+
+051-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/051_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=045
+-n, No simulation name specified, using NAME=037_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+045-Writing parameters file-
+
+045-Running script-
+Running Dedalus script
+
+Done running script
+
+045-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/045_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=039
+-n, No simulation name specified, using NAME=003_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+039-Writing parameters file-
+
+039-Running script-
+Running Dedalus script
+
+Done running script
+
+039-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+run.sh: line 60: printf: 039: invalid octal number
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/039_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=044
+-n, No simulation name specified, using NAME=036_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+044-Writing parameters file-
+
+044-Running script-
+Running Dedalus script
+
+Done running script
+
+044-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/044_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=034
+-n, No simulation name specified, using NAME=028_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+034-Writing parameters file-
+
+034-Running script-
+Running Dedalus script
+
+Done running script
+
+034-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/034_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=037
+-n, No simulation name specified, using NAME=031_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+037-Writing parameters file-
+
+037-Running script-
+Running Dedalus script
+
+Done running script
+
+037-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/037_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=050
+-n, No simulation name specified, using NAME=040_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+050-Writing parameters file-
+
+050-Running script-
+Running Dedalus script
+
+Done running script
+
+050-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/050_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=033
+-n, No simulation name specified, using NAME=027_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+033-Writing parameters file-
+
+033-Running script-
+Running Dedalus script
+
+Done running script
+
+033-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/033_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=038
+-n, No simulation name specified, using NAME=003_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+038-Writing parameters file-
+
+038-Running script-
+Running Dedalus script
+
+Done running script
+
+038-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+run.sh: line 60: printf: 038: invalid octal number
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/038_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=060
+-n, No simulation name specified, using NAME=048_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+060-Writing parameters file-
+
+060-Running script-
+Running Dedalus script
+
+Done running script
+
+060-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/060_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=041
+-n, No simulation name specified, using NAME=033_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+041-Writing parameters file-
+
+041-Running script-
+Running Dedalus script
+
+Done running script
+
+041-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/041_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=056
+-n, No simulation name specified, using NAME=046_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+056-Writing parameters file-
+
+056-Running script-
+Running Dedalus script
+
+Done running script
+
+056-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/056_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=040
+-n, No simulation name specified, using NAME=032_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+040-Writing parameters file-
+
+040-Running script-
+Running Dedalus script
+
+Done running script
+
+040-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/040_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=063
+-n, No simulation name specified, using NAME=051_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+063-Writing parameters file-
+
+063-Running script-
+Running Dedalus script
+
+Done running script
+
+063-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/063_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=042
+-n, No simulation name specified, using NAME=034_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+042-Writing parameters file-
+
+042-Running script-
+Running Dedalus script
+
+Done running script
+
+042-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/042_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=047
+-n, No simulation name specified, using NAME=039_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+047-Writing parameters file-
+
+047-Running script-
+Running Dedalus script
+
+Done running script
+
+047-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/047_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=046
+-n, No simulation name specified, using NAME=038_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+046-Writing parameters file-
+
+046-Running script-
+Running Dedalus script
+
+Done running script
+
+046-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/046_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=059
+-n, No simulation name specified, using NAME=005_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+059-Writing parameters file-
+
+059-Running script-
+Running Dedalus script
+
+Done running script
+
+059-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+run.sh: line 60: printf: 059: invalid octal number
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/059_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=057
+-n, No simulation name specified, using NAME=047_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+057-Writing parameters file-
+
+057-Running script-
+Running Dedalus script
+
+Done running script
+
+057-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/057_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=054
+-n, No simulation name specified, using NAME=044_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+054-Writing parameters file-
+
+054-Running script-
+Running Dedalus script
+
+Done running script
+
+054-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/054_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=061
+-n, No simulation name specified, using NAME=049_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+061-Writing parameters file-
+
+061-Running script-
+Running Dedalus script
+
+Done running script
+
+061-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/061_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=035
+-n, No simulation name specified, using NAME=029_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+035-Writing parameters file-
+
+035-Running script-
+Running Dedalus script
+
+Done running script
+
+035-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/035_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=062
+-n, No simulation name specified, using NAME=050_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+062-Writing parameters file-
+
+062-Running script-
+Running Dedalus script
+
+Done running script
+
+062-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/062_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=055
+-n, No simulation name specified, using NAME=045_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+055-Writing parameters file-
+
+055-Running script-
+Running Dedalus script
+
+Done running script
+
+055-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/055_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=053
+-n, No simulation name specified, using NAME=043_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+053-Writing parameters file-
+
+053-Running script-
+Running Dedalus script
+
+Done running script
+
+053-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/053_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=032
+-n, No simulation name specified, using NAME=026_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+032-Writing parameters file-
+
+032-Running script-
+Running Dedalus script
+
+Done running script
+
+032-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/032_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=052
+-n, No simulation name specified, using NAME=042_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+052-Writing parameters file-
+
+052-Running script-
+Running Dedalus script
+
+Done running script
+
+052-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/052_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=058
+-n, No simulation name specified, using NAME=005_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+058-Writing parameters file-
+
+058-Running script-
+Running Dedalus script
+
+Done running script
+
+058-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+run.sh: line 60: printf: 058: invalid octal number
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/058_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+-e, Name specified, using EXP=pres_64s_2l
+-i, Simulation ID specified, using ID=049
+-n, No simulation name specified, using NAME=004_pres_64s_2l
+-s, Number of simulations specified, using SIMS=64
+-c, Number of cores specified, using CORES=32
+-a, Will not ask before overwriting files
+-r, Run the simulation
+-m, Merge the data
+-o, Post-process data
+
+049-Writing parameters file-
+
+049-Running script-
+Running Dedalus script
+
+Done running script
+
+049-Merging snapshots-
+Checking for snapshots in directory: snapshots
+Cannot find snapshots. Aborting run script
+run.sh: line 60: printf: 049: invalid octal number
+Traceback (most recent call last):
+  File "write_params.py", line 42, in <module>
+    params_file.write("n_layers = " + str(n_layers))
+NameError: name 'n_layers' is not defined
+Traceback (most recent call last):
+  File "main.py", line 59, in <module>
+    import switchboard as sbp
+  File "/project/6002522/mschee/Dedalus_repos/1D_measure_T/_experiments/pres_64s_2l/_simulations/049_pres_64s_2l/switchboard.py", line 18, in <module>
+    kL      = params.kL             # []        Vertical wave number times step length
+AttributeError: module 'params' has no attribute 'kL'
+cat: '_experiments/pres_64s_2l/_simulations/*/sim_data.csv': No such file or directory
