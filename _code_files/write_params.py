@@ -25,7 +25,7 @@ n_sims      = int(args['N_SIMS'])
 ###############################################################################
 # Make arrays of parameters
 
-n_layers = 1
+n_layers = 3
 kL_start = 0
 kL_stop  = 5/n_layers
 
