@@ -70,21 +70,17 @@ if boundary_forcing_region == False:
     use_sponge = False
 
 # Plotting parameters
-plot_spacetime = True
-plot_wavespace = False
-plot_spectra   = False
-plot_amplitude = False
-plot_windows   = False
-plot_up_dn     = False
-plot_untrimmed = False
+plot_spacetime  = True
+plot_wavespace  = False
+plot_spectra    = False
+plot_amplitude  = False
+plot_windows    = False
+plot_up_dn      = True
+plot_untrimmed  = True
 # If true, plot will include full simulated domain, if false, just the display domain
-plot_full_x = True
-plot_full_y = True
-
-# # Measurements
-# take_ef_comp  = False # Energy flux terms recorded separately
-# # Records snapshots of total vertical energy flux
-# take_ef_snaps = False # Total energy flux recorded
+plot_full_x     = True
+plot_full_y     = True
+dark_mode       = True
 
 ###############################################################################
 ###############################################################################
@@ -244,8 +240,9 @@ def calc_nz_sim(nz, Lz, Lz_dis):
 nz_sim, dz = calc_nz_sim(nz, Lz, Lz_dis)
 
 # Bases and domain
+grid_data_type = np.complex128
 z_basis = de.Fourier('z', nz_sim, interval=(z0, zf), dealias=dealias)
-domain = de.Domain([z_basis], grid_dtype=np.complex128)#float64)
+domain = de.Domain([z_basis], grid_dtype=grid_data_type)#float64)
 # Z grid
 z_da = domain.grid(0, scales=domain.dealias)
 z = domain.grid(0)
@@ -289,43 +286,31 @@ stop_wall_time = 180 * 60.0     # [s] length in minutes * 60 = length in seconds
 stop_iteration = np.inf         # []  number of iterations before the simulation stops
 
 ###############################################################################
-# Plotting parameters
-
-# Dark mode on or off (ideally would make plots that have white text and alpha background)
-dark_mode = False
-cmap = 'RdBu_r'
-# import colorcet as cc
-# cmap = cc.CET_D4
+# Set plotting parameters
+import colorcet as cc
+if dark_mode:
+    plt_style = 'dark_background'
+    cmap      = cc.cm.bkr
+else:
+    plt_style = 'default'
+    cmap      = 'RdBu_r' # cc.cm.CET_D9
 
 # Presentation mode on or off (increases size of fonts and contrast of colors)
 presenting = False
 
-# Vertical profile and Wave field animation
-# If True, plots b, p, u, and w. If false, plots profile and w
-plot_all_variables = False
-# If True, the sponge layer plot will be plotted to the right of the animation
-plot_sponge        = False
-# If True, the Rayleigh friction plot will replace background profile
-plot_rf            = False
-plot_twin          = False
-
-# Auxiliary snapshot plots
-plot_ef_total = False
-plot_ef_comps = False
-
-# Miscellaneous
-# Fudge factor to make plots look nicer
-buffer = 0.04
-# Extra buffer for a constant vertical profile
-extra_buffer = 0.5
-# Display ratio of vertical profile plot
-vp_dis_ratio = 2.0 # Profile plot gets skinnier as this goes up
-# The number of ticks on the top color bar
-n_clrbar_ticks = 3
-# Overall font size of plots
-font_size   = 12
-scale       = 2.5
-dpi         = 100
+# # Miscellaneous
+# # Fudge factor to make plots look nicer
+# buffer = 0.04
+# # Extra buffer for a constant vertical profile
+# extra_buffer = 0.5
+# # Display ratio of vertical profile plot
+# vp_dis_ratio = 2.0 # Profile plot gets skinnier as this goes up
+# # The number of ticks on the top color bar
+# n_clrbar_ticks = 3
+# # Overall font size of plots
+# font_size   = 12
+# scale       = 2.5
+# dpi         = 100
 
 # Animation parameters
 fps = 20
