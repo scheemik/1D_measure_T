@@ -23,7 +23,7 @@ do
 		e) EXP=${OPTARG};;
 		s) SIMS=${OPTARG};;
 		c) CORES=${OPTARG};;
-		a) ASK=true;;
+		a) ASK=a;;
 		r) RUN=r;;
     m) MER=m;;
     o) PRO=o;;
@@ -99,7 +99,31 @@ fi
 EXP_PATH="_experiments/${EXP}"
 
 # Prepare experiment directory
-bash prepare_exp.sh -e $EXP -s $SIMS
+if [ "$ASK" = a ]
+then
+	# If it does exist already, ask if it should be overwritten
+	# Begin loop waiting for user to confirm
+	while true
+	do
+		read -r -p "Prepare new exp directory [y/n]? " input
+		case $input in
+			[yY][eE][sS]|[yY])
+		echo "Preparing ${EXP}"
+		bash prepare_exp.sh -e $EXP -s $SIMS
+		break
+		;;
+			[nN][oO]|[nN])
+		echo "Not preparing ${EXP}"
+		break
+				;;
+			*)
+		echo "Invalid input"
+		;;
+		esac
+	done
+else
+	bash prepare_exp.sh -e $EXP -s $SIMS
+fi
 
 ###############################################################################
 # Run simulations

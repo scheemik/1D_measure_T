@@ -95,6 +95,7 @@ def plot_T_vs_kL(all_exp_data, theta, omega, title_str='Transmission Coefficient
     axes.legend()
     # Add labels and titles
     axes.set_xlabel(r'$kL$')
+    axes.set_xlim(0,2.5)
     axes.set_ylabel(r'$\mathbb{T}$')
     plt.title(r'%s for $\theta=$%s' %(title_str, hf.rad_to_degs(theta)))
     #plt.show()
