@@ -1,4 +1,6 @@
 """
+Author: Mikhail Schee
+
 Usage:
     main.py NAME ID PLOT_CHECKS
 

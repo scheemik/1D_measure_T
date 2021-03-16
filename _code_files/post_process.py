@@ -1,4 +1,6 @@
 """
+Author: Mikhail Schee
+
 Performs post-processing actions. Run with $ python3 post_process.py NAME PLOT_CHECKS snapshots/*.h5
 
 Usage:
@@ -39,7 +41,6 @@ h5_files    = args['<files>']
 import switchboard as sbp
 # switchboard_module = run_name + "." + run_name + "_" + switchboard
 # sbp = importlib.import_module(switchboard_module)
-plt.style.use('dark_background')
 
 import helper_functions as hf
 import helper_functions_CD as hfCD
@@ -109,7 +110,6 @@ def import_h5_data(h5_file, dtype=sbp.grid_data_type, dealias_f=sbp.dealias):
         psi_data = f['tasks']['psi']
         # Get dimensions
         t = psi_data.dims[0]['sim_time']
-        print("len(t) = ",len(t))
         z = psi_data.dims[1][0]
         # Bases and domain
         t_basis = de.Fourier('t', len(t), interval=(t[0], t[-1]), dealias=dealias_f)
@@ -123,6 +123,52 @@ def import_h5_data(h5_file, dtype=sbp.grid_data_type, dealias_f=sbp.dealias):
         kz = z_basis.wavenumbers
     return psi, t, z, kz
 
+# Same as the function above, but it gets the trimmed version of all the fields
+def import_h5_data_trim(h5_file, zf_dis, z0_dis, nt_keep, dtype=sbp.grid_data_type, dealias_f=sbp.dealias):
+    with h5py.File(h5_file[0], mode='r') as f:
+        # Get dimensions
+        t_array = np.array(f['scales']['sim_time'])
+        z_array = np.flip(np.array(f['scales']['z']['1.0']))
+        print("shape of t = ",t_array.shape)
+        # print(t_array)
+        print("shape of z = ",z_array.shape)
+        # print(z_array)
+        ## Trim space to only encompass display bounds
+        #   Find indices of display bounds
+        idx_z0 = hf.find_nearest_index(z_array, z0_dis)
+        idx_zf = hf.find_nearest_index(z_array, zf_dis)
+        # Trim space ### careful of the order, zf is bottom, so should have lower index
+        #   Check whether data is 1D or 2D
+        # if len(data.shape) == 2:
+        #     trimmed_data = data[idx_zf:idx_z0,:]
+        # elif len(data.shape) == 1:
+        #     trimmed_data = data[idx_zf:idx_z0]
+        # Trim data in space
+        # z_tr, psi_tr = hf.trim_data_z(z, psi, z0_dis, zf_dis)
+
+        # Trim data in time
+        # t_tr, psi_tr = hf.trim_data_t(t, psi_tr, nt_keep)
+
+        # Get task
+        psi_data = f['tasks']['psi']
+        print(psi_data)
+        # Get dimensions
+        t = psi_data.dims[0]['sim_time']
+        z = psi_data.dims[1][0]
+        # Bases and domain
+        t_basis = de.Fourier('t', len(t), interval=(t[0], t[-1]), dealias=dealias_f)
+        z_basis = de.Fourier('z', len(z), interval=(z[0], z[-1]), dealias=dealias_f)
+        domain = de.Domain([t_basis,z_basis], grid_dtype=dtype)
+        # set field
+        psi = domain.new_field(name = 'psi')
+        psi['g'] = psi_data
+        print(psi['c'])
+        t = domain.grid(0)[:,0]
+        z = domain.grid(1)[0,:]
+        kz = z_basis.wavenumbers
+    return psi, t, z, kz
+psi, t, z, kz = import_h5_data_trim(h5_files, zf_dis, z0_dis, nt_keep)
+raise SystemExit(0)
 ###############################################################################
 ###############################################################################
 # Get the data from the snapshot files

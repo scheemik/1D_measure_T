@@ -1,5 +1,7 @@
 # Switchboard for Dedalus experiment
 """
+Author: Mikhail Schee
+
 Description:
 This is the switchboard for the Dedalus experiment. This file contains parameter values called by multiple scripts. This insures they all get the same values
 """

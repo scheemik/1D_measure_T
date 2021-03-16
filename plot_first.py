@@ -1,4 +1,6 @@
 """
+Author: Mikhail Schee
+
 
 This script plots:
     z vs. t with Psi in a heatmap

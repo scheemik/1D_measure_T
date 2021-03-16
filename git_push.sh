@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Author: Mikhail Schee
+
 # A script to automate git add, commit, and push
 
 DATE=`date +"%y/%m/%d %T"`

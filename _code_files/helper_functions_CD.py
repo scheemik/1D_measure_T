@@ -1,5 +1,7 @@
 # Helper functions for Dedalus experiment
 """
+Author: Mikhail Schee
+
 Description:
 This contains helper functions for the Dedalus code so the same version of
     functions can be called by multiple scripts

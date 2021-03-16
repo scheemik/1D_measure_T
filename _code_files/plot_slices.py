@@ -1,4 +1,6 @@
 """
+Author: Mikhail Schee
+
 Plot planes from joint analysis files.
 
 Usage:

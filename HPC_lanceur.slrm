@@ -7,6 +7,8 @@
 #SBATCH --nodes=1
 #SBATCH --time=0-00:05  # d-HH:MM
 
+# Author: Mikhail Schee
+
 # Submit this script to a HPC with `sbatch`
 # Takes in optional arguments:
 #	$ sh HPC_lanceur.slrm -e <name of experiment> 				Default: current datetime

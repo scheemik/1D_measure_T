@@ -1,4 +1,6 @@
 #!/bin/bash
+# Author: Mikhail Schee
+
 # A bash script to run many simulations in an experiment
 # Takes in optional arguments:
 #	$ sh exp_run.sh -e <name of experiment> 				Default: current datetime

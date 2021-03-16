@@ -1,4 +1,6 @@
 #!/bin/bash
+# Author: Mikhail Schee
+
 
 # Run this script to submit a job to Graham
 # Takes in optional arguments:

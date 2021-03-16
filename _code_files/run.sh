@@ -1,4 +1,5 @@
 #!/bin/bash
+# Author: Mikhail Schee
 
 # A bash script to run the Dedalus python code
 #		Assumes it is run inside a simulation directory

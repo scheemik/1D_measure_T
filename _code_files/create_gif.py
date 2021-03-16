@@ -1,4 +1,6 @@
 """
+Author: Mikhail Schee
+
 Creates a gif of a set of png images in the stated directory.
 
 Usage:

@@ -1,4 +1,6 @@
 """
+Author: Mikhail Schee
+
 Writes parameters for one simulation.
 
 Usage:

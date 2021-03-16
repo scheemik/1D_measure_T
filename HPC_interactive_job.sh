@@ -1,4 +1,6 @@
 #!/bin/bash
+# Author: Mikhail Schee
+
 
 # Run this script to start an interactive job on Graham and run an experiment
 # Takes in optional arguments:

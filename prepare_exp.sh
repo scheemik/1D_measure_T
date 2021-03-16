@@ -1,4 +1,5 @@
 #!/bin/bash
+# Author: Mikhail Schee
 
 # Run this script to prepare an experiment directory
 # Takes in optional arguments:

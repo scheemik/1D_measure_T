@@ -1,4 +1,6 @@
 """
+Author: Mikhail Schee
+
 
 This script plots the simulated and analytical values of the transmission coefficient
 

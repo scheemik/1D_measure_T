@@ -1,4 +1,6 @@
 """
+Author: Mikhail Schee
+
 Merge distributed analysis sets from a FileHandler.
 
 Usage:
