@@ -104,8 +104,8 @@ def get_h5_data(tasks, h5_files):
 # This function is built to only work with one h5 file, need to merge before using
 #   Also, only works for 1 task that has 1 spatial and 1 temporal dimension
 #   It's a pretty specific function
-def import_h5_data(h5_file, dtype=sbp.grid_data_type, dealias_f=sbp.dealias):
-    with h5py.File(h5_file[0], mode='r') as f:
+def import_h5_data(h5_files, dtype=sbp.grid_data_type, dealias_f=sbp.dealias):
+    with h5py.File(h5_files[0], mode='r') as f:
         # Get task
         psi_data = f['tasks']['psi']
         # Get dimensions
@@ -124,56 +124,47 @@ def import_h5_data(h5_file, dtype=sbp.grid_data_type, dealias_f=sbp.dealias):
     return psi, t, z, kz
 
 # Same as the function above, but it gets the trimmed version of all the fields
-def import_h5_data_trim(h5_file, zf_dis, z0_dis, nt_keep, dtype=sbp.grid_data_type, dealias_f=sbp.dealias):
-    with h5py.File(h5_file[0], mode='r') as f:
-        # Get dimensions
-        t_array = np.array(f['scales']['sim_time'])
-        z_array = np.flip(np.array(f['scales']['z']['1.0']))
-        print("shape of t = ",t_array.shape)
-        # print(t_array)
-        print("shape of z = ",z_array.shape)
-        # print(z_array)
-        ## Trim space to only encompass display bounds
-        #   Find indices of display bounds
-        idx_z0 = hf.find_nearest_index(z_array, z0_dis)
-        idx_zf = hf.find_nearest_index(z_array, zf_dis)
-        # Trim space ### careful of the order, zf is bottom, so should have lower index
-        #   Check whether data is 1D or 2D
-        # if len(data.shape) == 2:
-        #     trimmed_data = data[idx_zf:idx_z0,:]
-        # elif len(data.shape) == 1:
-        #     trimmed_data = data[idx_zf:idx_z0]
-        # Trim data in space
-        # z_tr, psi_tr = hf.trim_data_z(z, psi, z0_dis, zf_dis)
-
-        # Trim data in time
-        # t_tr, psi_tr = hf.trim_data_t(t, psi_tr, nt_keep)
-
+def import_h5_data_trim(h5_files, zf_dis, z0_dis, nt_keep, dtype=sbp.grid_data_type, dealias_f=sbp.dealias):
+    with h5py.File(h5_files[0], mode='r') as f:
         # Get task
         psi_data = f['tasks']['psi']
-        print(psi_data)
         # Get dimensions
         t = psi_data.dims[0]['sim_time']
         z = psi_data.dims[1][0]
+        # Transpose and flip arrays to allow trimming
+        z_array = np.flip(np.array(z))
+        psi = np.transpose(np.array(psi_data[()]))
+        # Trim data in space
+        z_tr, psi_tr = hf.trim_data_z(z_array, psi, z0_dis, zf_dis)
+        # print('psi_tr.shape = ',psi_tr.shape)
+        # Trim data in time
+        t_tr, psi_tr = hf.trim_data_t(t, psi_tr, nt_keep)
+        # print('psi_tr.shape = ',psi_tr.shape)
+        # Transpose and flip arrays back
+        psi_tr = np.transpose(psi_tr)
+        # print('psi_tr.shape = ',psi_tr.shape)
+        z_tr = np.flip(z_tr)
+
         # Bases and domain
-        t_basis = de.Fourier('t', len(t), interval=(t[0], t[-1]), dealias=dealias_f)
-        z_basis = de.Fourier('z', len(z), interval=(z[0], z[-1]), dealias=dealias_f)
+        t_basis = de.Fourier('t', len(t_tr), interval=(t_tr[0], t_tr[-1]), dealias=dealias_f)
+        z_basis = de.Fourier('z', len(z_tr), interval=(z_tr[0], z_tr[-1]), dealias=dealias_f)
         domain = de.Domain([t_basis,z_basis], grid_dtype=dtype)
         # set field
         psi = domain.new_field(name = 'psi')
-        psi['g'] = psi_data
-        print(psi['c'])
+        psi['g'] = psi_tr
         t = domain.grid(0)[:,0]
         z = domain.grid(1)[0,:]
         kz = z_basis.wavenumbers
     return psi, t, z, kz
 psi, t, z, kz = import_h5_data_trim(h5_files, zf_dis, z0_dis, nt_keep)
-raise SystemExit(0)
+# print(psi['c'])
+
+# raise SystemExit(0)
 ###############################################################################
 ###############################################################################
 # Get the data from the snapshot files
 # t, z, kz, psi = get_h5_data(tasks, h5_files)
-psi, t, z, kz = import_h5_data(h5_files)
+# psi, t, z, kz = import_h5_data(h5_files)
 # z and psi arrays come out sorted from most positive to most negative on z axis
 #   This flips things around (ud = up / down)
 z = np.flip(z)

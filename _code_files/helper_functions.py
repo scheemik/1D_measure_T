@@ -197,40 +197,6 @@ def extended_stop_time(sim_time_stop, dt):
     new_sim_time_stop = dt * (2**i)
     return new_sim_time_stop, int(nt)
 
-def trim_data(z_array, t_array, data, z0_dis=None, zf_dis=None, nt_keep=None):
-    """
-    Trims data, removes time before the cutoff and space outside display domain
-
-    z_array     array of z values
-    t_array     array of time values (in seconds)
-    data        data to be trimmed (z, t)
-    z0_dis      top of vertical structure extent
-    zf_dis      bottom of vertical structure extent
-    nt_keep     integer, time steps to keep at end of simulation
-    """
-    ## Trim time to just keep last nt_keep time steps
-    if nt_keep != None:
-        # Find index of cutoff time
-        idx_cutoff = len(t_array) - nt_keep
-        # Trim time
-        t_data = data[:,idx_cutoff:]
-        trimmed_t_array = t_array[idx_cutoff:]
-    else:
-        t_data = data
-        trimmed_t_array = t_array
-    ## Trim space to only encompass display bounds
-    if z0_dis != None and zf_dis != None:
-        # Find indices of display bounds
-        idx_z0 = find_nearest_index(z_array, z0_dis)
-        idx_zf = find_nearest_index(z_array, zf_dis)
-        # Trim space ### careful of the order, zf is bottom, so should have lower index?
-        trimmed_data = t_data[idx_zf:idx_z0,:]
-        trimmed_z_array = z_array[idx_zf:idx_z0]
-    else:
-        trimmed_data = t_data
-        trimmed_z_array = z_array
-    return trimmed_z_array, trimmed_t_array, trimmed_data
-
 def trim_data_z(z_array, data, z0_dis, zf_dis):
     """
     Trims data, removes space outside display domain
