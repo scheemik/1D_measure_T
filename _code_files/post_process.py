@@ -95,7 +95,7 @@ cmap            = sbp.cmap
 #   It's a pretty specific function
 def import_h5_data(h5_files, zf_dis, z0_dis, nt_keep, dtype=sbp.grid_data_type, dealias_f=sbp.dealias):
     with h5py.File(h5_files[0], mode='r') as f:
-        # Get task
+        # Get task (one and only file i/o here)
         psi_data = f['tasks']['psi']
         # Get dimensions
         t = psi_data.dims[0]['sim_time']
@@ -120,6 +120,7 @@ def import_h5_data(h5_files, zf_dis, z0_dis, nt_keep, dtype=sbp.grid_data_type, 
         t_tr = domain_tr.grid(0)[:,0]
         z_tr = domain_tr.grid(1)[0,:]
         kz_tr = z_tr_basis.wavenumbers
+
         if plot_untrimmed:
             # Bases and domain
             t_basis = de.Fourier('t', len(t), interval=(t[0], t[-1]), dealias=dealias_f)
@@ -189,7 +190,9 @@ plt.style.use(plt_style)
 BP_array = hf.BP_n_layers(z, sbp.z0_str, n_layers, sbp.L, sbp.R_i)
 win_bf_array = sbp.calc_bf_array(z, sbp.c_bf, sbp.b_bf, sbp.boundary_forcing_region)
 win_sp_array = sbp.calc_sp_array(z, sbp.c_sp, sbp.b_sp, sbp.use_sponge)
-# foo, BP_tr   = hf.trim_data_z(z, BP_array, z0_dis, zf_dis)
+foo, BP_tr1   = hf.trim_data_z(z, BP_array, z0_dis, zf_dis)
+# BP_tr has one extra index for some reason, not sure why, so I'll just take one off here
+BP_tr = BP_tr1[0:-1]
 
 filename_prefix = run_name #+ '/' + run_name
 
@@ -201,13 +204,13 @@ if sbp.plot_windows:
 # Plotting with trimmed data
 
 # Plot trimmed wavefield
-if False:#sbp.plot_spacetime:
-    hf.plot_z_vs_t(z_tr, t_tr, T, psi_tr.real, BP_tr, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=True, plot_full_y=False, T_cutoff=T_cutoff, title_str=run_name, filename=filename_prefix+'_wave_tr.png')
+if sbp.plot_spacetime:
+    hf.plot_z_vs_t(z_tr, t_tr, T, plot_psi_tr.real, BP_tr, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=True, plot_full_y=False, T_cutoff=T_cutoff, c_map=cmap, title_str=run_name, filename=filename_prefix+'_wave_tr.png')
 
 # Plot trimmed up and downward propagating waves
-if False:#sbp.plot_up_dn:
-    hf.plot_z_vs_t(z_tr, t_tr, T, tr_up_field.real, BP_tr, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=None, title_str=run_name+' up', filename=filename_prefix+'_up_tr.png')
-    hf.plot_z_vs_t(z_tr, t_tr, T, tr_dn_field.real, BP_tr, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=None, title_str=run_name+' dn', filename=filename_prefix+'_dn_tr.png')
+if sbp.plot_up_dn:
+    hf.plot_z_vs_t(z_tr, t_tr, T, tr_up_field.real, BP_tr, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=None, title_str=run_name+' up', c_map=cmap, filename=filename_prefix+'_up_tr.png')
+    hf.plot_z_vs_t(z_tr, t_tr, T, tr_dn_field.real, BP_tr, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=None, title_str=run_name+' dn', c_map=cmap, filename=filename_prefix+'_dn_tr.png')
 
 ###############################################################################
 # Plotting with untrimmed data
@@ -229,12 +232,21 @@ if sbp.plot_untrimmed:
 # Plot spectral form of data
 
 if sbp.plot_spectra:
-    freqs, ks, spec_data = hfCD.z_t_to_k_omega(t_tr, z_tr, psi_tr, dt, dz)
-    hf.plot_spectral(ks, freqs, spec_data.real, spec_data.imag, kL, theta, omega, c_map='viridis', title_str=run_name, filename=filename_prefix+'_wave_spectra.png')
-    # plot spectra lines
-    k_data = np.fft.fft(psi_tr, axis=0)
-    f_data = np.fft.fft(psi_tr, axis=1)
-    hf.plot_k_f_spectra(z_tr, dz, t_tr, dt, T, ks, freqs, k_data, f_data, kL, theta, omega, z_I, z_T, plot_full_x=True, plot_full_y=True, T_cutoff=T_cutoff+1, title_str=run_name, filename=filename_prefix+'_k_and_f.png')
+    # plt.clf()
+    from dedalus.extras.plot_tools import plot_bot_2d
+    figkw = {'figsize':(6,4), 'dpi':100}
+    psi_tr['c']
+    # Plot log magnitude of spectral coefficients
+    log_mag = lambda xmesh, ymesh, data: (xmesh, ymesh, np.log10(np.abs(data)))
+    plot_bot_2d(psi_tr, func=log_mag, clim=(-20, 0), cmap='viridis', title="log10(abs(f['c'])", figkw=figkw);
+    # plt.show()
+    plt.savefig(filename_prefix+'_k_and_f.png')
+    # freqs, ks, spec_data = hfCD.z_t_to_k_omega(t_tr, z_tr, psi_tr, dt, dz)
+    # hf.plot_spectral(ks, freqs, spec_data.real, spec_data.imag, kL, theta, omega, c_map='viridis', title_str=run_name, filename=filename_prefix+'_wave_spectra.png')
+    # # plot spectra lines
+    # k_data = np.fft.fft(psi_tr, axis=0)
+    # f_data = np.fft.fft(psi_tr, axis=1)
+    # hf.plot_k_f_spectra(z_tr, dz, t_tr, dt, T, ks, freqs, k_data, f_data, kL, theta, omega, z_I, z_T, plot_full_x=True, plot_full_y=True, T_cutoff=T_cutoff+1, title_str=run_name, filename=filename_prefix+'_k_and_f.png')
 
 ###############################################################################
 # Multiply the downward wavefield by it's complex-conjugate to get AA^*

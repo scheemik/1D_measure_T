@@ -214,7 +214,7 @@ def trim_data_z(z_array, data, z0_dis, zf_dis):
     #   Check whether data is 1D or 2D
     if len(data.shape) == 2:
         trimmed_data = data[idx_zf:idx_z0,:]
-    elif len(data.shape) == 1:
+    elif len(data.shape) == 1: # For trimmind BP array, for example
         trimmed_data = data[idx_zf:idx_z0]
     else:
         print("trim_data_z only accepts 1D or 2D arrays")
