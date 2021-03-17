@@ -75,107 +75,80 @@ nt_keep     = sbp.nt_snap
 n_layers    = sbp.n_layers
 
 # Plotting parameters
-plt_f_x     = sbp.plot_full_x
-plt_f_y     = sbp.plot_full_y
-plt_style   = sbp.plt_style
-cmap        = sbp.cmap
+plot_spacetime  = sbp.plot_spacetime
+plot_wavespace  = sbp.plot_wavespace
+plot_spectra    = sbp.plot_spectra
+plot_amplitude  = sbp.plot_amplitude
+plot_windows    = sbp.plot_windows
+plot_up_dn      = sbp.plot_up_dn
+plot_untrimmed  = sbp.plot_untrimmed
+plt_f_x         = sbp.plot_full_x
+plt_f_y         = sbp.plot_full_y
+plt_style       = sbp.plt_style
+cmap            = sbp.cmap
 
 ###############################################################################
 # Additional post-processing helper functions
 
-def get_h5_data(tasks, h5_files):
-    for task in tasks:
-        # At the moment, this only works for one h5 file
-        for filename in h5_files:
-            with h5py.File(filename, mode='r') as f:
-                # The [()] syntax returns all data from an h5 object
-                psi   = f['tasks'][task]
-                # psi_c = f['tasks'][task]
-                # Need to transpose into the correct orientation
-                #   Also need to convert to np.array for plotting function
-                psi_array   = np.transpose(np.array(psi[()]))
-                # psi_c_array = np.transpose(np.array(psi_c[()]))
-                # Grab the scales t, z, and kz
-                t  = np.array(f['scales']['sim_time'])
-                z  = np.array(f['scales']['z']['1.0'])
-                kz = np.array(f['scales']['kz'])
-    return t, z, kz, psi_array#, psi_c_array
-
 # This function is built to only work with one h5 file, need to merge before using
 #   Also, only works for 1 task that has 1 spatial and 1 temporal dimension
 #   It's a pretty specific function
-def import_h5_data(h5_files, dtype=sbp.grid_data_type, dealias_f=sbp.dealias):
+def import_h5_data(h5_files, zf_dis, z0_dis, nt_keep, dtype=sbp.grid_data_type, dealias_f=sbp.dealias):
     with h5py.File(h5_files[0], mode='r') as f:
         # Get task
         psi_data = f['tasks']['psi']
         # Get dimensions
         t = psi_data.dims[0]['sim_time']
         z = psi_data.dims[1][0]
-        # Bases and domain
-        t_basis = de.Fourier('t', len(t), interval=(t[0], t[-1]), dealias=dealias_f)
-        z_basis = de.Fourier('z', len(z), interval=(z[0], z[-1]), dealias=dealias_f)
-        domain = de.Domain([t_basis,z_basis], grid_dtype=dtype)
-        # set field
-        psi = domain.new_field(name = 'psi')
-        psi['g'] = psi_data
-        t = domain.grid(0)[:,0]
-        z = domain.grid(1)[0,:]
-        kz = z_basis.wavenumbers
-    return psi, t, z, kz
-
-# Same as the function above, but it gets the trimmed version of all the fields
-def import_h5_data_trim(h5_files, zf_dis, z0_dis, nt_keep, dtype=sbp.grid_data_type, dealias_f=sbp.dealias):
-    with h5py.File(h5_files[0], mode='r') as f:
-        # Get task
-        psi_data = f['tasks']['psi']
-        # Get dimensions
-        t = psi_data.dims[0]['sim_time']
-        z = psi_data.dims[1][0]
-        # Transpose and flip arrays to allow trimming
+        # Transpose psi and flip z to allow trimming (see find_nearest_index)
         z_array = np.flip(np.array(z))
         psi = np.transpose(np.array(psi_data[()]))
         # Trim data in space
-        z_tr, psi_tr = hf.trim_data_z(z_array, psi, z0_dis, zf_dis)
-        # print('psi_tr.shape = ',psi_tr.shape)
+        z_tr, psi_tr_data = hf.trim_data_z(z_array, psi, z0_dis, zf_dis)
         # Trim data in time
-        t_tr, psi_tr = hf.trim_data_t(t, psi_tr, nt_keep)
-        # print('psi_tr.shape = ',psi_tr.shape)
-        # Transpose and flip arrays back
-        psi_tr = np.transpose(psi_tr)
-        # print('psi_tr.shape = ',psi_tr.shape)
+        t_tr, psi_tr_data = hf.trim_data_t(t, psi_tr_data, nt_keep)
+        # Transpose and flip arrays back to make domain
+        psi_tr_data = np.transpose(psi_tr_data)
         z_tr = np.flip(z_tr)
-
         # Bases and domain
-        t_basis = de.Fourier('t', len(t_tr), interval=(t_tr[0], t_tr[-1]), dealias=dealias_f)
-        z_basis = de.Fourier('z', len(z_tr), interval=(z_tr[0], z_tr[-1]), dealias=dealias_f)
-        domain = de.Domain([t_basis,z_basis], grid_dtype=dtype)
+        t_tr_basis = de.Fourier('t', len(t_tr), interval=(t_tr[0], t_tr[-1]), dealias=dealias_f)
+        z_tr_basis = de.Fourier('z', len(z_tr), interval=(z_tr[0], z_tr[-1]), dealias=dealias_f)
+        domain_tr = de.Domain([t_tr_basis,z_tr_basis], grid_dtype=dtype)
         # set field
-        psi = domain.new_field(name = 'psi')
-        psi['g'] = psi_tr
-        t = domain.grid(0)[:,0]
-        z = domain.grid(1)[0,:]
-        kz = z_basis.wavenumbers
-    return psi, t, z, kz
-psi, t, z, kz = import_h5_data_trim(h5_files, zf_dis, z0_dis, nt_keep)
-# print(psi['c'])
+        psi_tr = domain_tr.new_field(name = 'psi')
+        psi_tr['g'] = psi_tr_data
+        t_tr = domain_tr.grid(0)[:,0]
+        z_tr = domain_tr.grid(1)[0,:]
+        kz_tr = z_tr_basis.wavenumbers
+        if plot_untrimmed:
+            # Bases and domain
+            t_basis = de.Fourier('t', len(t), interval=(t[0], t[-1]), dealias=dealias_f)
+            z_basis = de.Fourier('z', len(z), interval=(z[0], z[-1]), dealias=dealias_f)
+            domain = de.Domain([t_basis,z_basis], grid_dtype=dtype)
+            # set field
+            psi = domain.new_field(name = 'psi')
+            psi['g'] = psi_data
+            t = domain.grid(0)[:,0]
+            z = domain.grid(1)[0,:]
+            kz = z_basis.wavenumbers
+        else:
+            psi = None
+            t   = None
+            z   = None
+            kz  = None
+    return psi_tr, t_tr, z_tr, kz_tr, psi, t, z, kz
 
 # raise SystemExit(0)
 ###############################################################################
 ###############################################################################
 # Get the data from the snapshot files
-# t, z, kz, psi = get_h5_data(tasks, h5_files)
-# psi, t, z, kz = import_h5_data(h5_files)
+psi_tr, t_tr, z_tr, kz_tr, psi, t, z, kz = import_h5_data(h5_files, zf_dis, z0_dis, nt_keep)
 # z and psi arrays come out sorted from most positive to most negative on z axis
 #   This flips things around (ud = up / down)
+z_tr = np.flip(z_tr)
+plot_psi_tr = np.flipud(np.transpose(psi_tr['g']))
 z = np.flip(z)
 plot_psi = np.flipud(np.transpose(psi['g']))
-
-###############################################################################
-# Trim data in space
-# z_tr, psi_tr = hf.trim_data_z(z, psi, z0_dis, zf_dis)
-
-# Trim data in time
-# t_tr, psi_tr = hf.trim_data_t(t, psi_tr, nt_keep)
 
 ###############################################################################
 # Perform complex demodulation
@@ -184,16 +157,16 @@ t_then_z = True
 # find relevant wavenumbers (k) for the trimmed z range
 # kz_tr = np.fft.fftfreq(len(z_tr), dz)
 # I don't know why, but the up and down fields switch when I trim the data
-# tr_dn_field, tr_up_field = hfCD.Complex_Demodulate(t_then_z, t_tr, z_tr, kz_tr, psi_tr, dt, omega)
+tr_dn_field, tr_up_field = hfCD.Complex_Demodulate(t_then_z, t_tr, z_tr, kz_tr, plot_psi_tr, dt, omega)
 
 ###############################################################################
 # Measuring the transmission coefficient
 
-# I_, T_, AAcc_I, AAcc_T = hf.measure_T(tr_dn_field, z_tr, z_I, z_T, T_skip=None, T=T, t=t_tr)
-# big_T = T_/I_
-# print("(n_layers =",n_layers,", kL =",kL,", theta =",theta,")")
-# print("Simulated transmission coefficient is:", big_T)
-# print("AnaEq 2.4 transmission coefficient is:", hf.SY_eq2_4(theta, kL))
+I_, T_, AAcc_I, AAcc_T = hf.measure_T(tr_dn_field, z_tr, z_I, z_T, T_skip=None, T=T, t=t_tr)
+big_T = T_/I_
+print("(n_layers =",n_layers,", kL =",kL,", theta =",theta,")")
+print("Simulated transmission coefficient is:", big_T)
+print("AnaEq 2.4 transmission coefficient is:", hf.SY_eq2_4(theta, kL))
 
 
 # Write out results to file
@@ -300,3 +273,21 @@ if plot_CD_checks:
     # Plot the difference, which ideally should be zero everywhere
     CD_diff = psi.real - up_plus_dn
     hf.plot_z_vs_t(z, t, T, CD_diff, BP_array, kL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_x=plt_f_x, plot_full_y=plt_f_y, nT=T_cutoff, title_str=run_name, filename=filename_prefix+'_CD_diff.png')
+
+def get_h5_data(tasks, h5_files):
+    for task in tasks:
+        # At the moment, this only works for one h5 file
+        for filename in h5_files:
+            with h5py.File(filename, mode='r') as f:
+                # The [()] syntax returns all data from an h5 object
+                psi   = f['tasks'][task]
+                # psi_c = f['tasks'][task]
+                # Need to transpose into the correct orientation
+                #   Also need to convert to np.array for plotting function
+                psi_array   = np.transpose(np.array(psi[()]))
+                # psi_c_array = np.transpose(np.array(psi_c[()]))
+                # Grab the scales t, z, and kz
+                t  = np.array(f['scales']['sim_time'])
+                z  = np.array(f['scales']['z']['1.0'])
+                kz = np.array(f['scales']['kz'])
+    return t, z, kz, psi_array#, psi_c_array
