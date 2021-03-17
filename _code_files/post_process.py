@@ -100,6 +100,7 @@ def import_h5_data(h5_files, zf_dis, z0_dis, nt_keep, dtype=sbp.grid_data_type, 
         # Get dimensions
         t = psi_data.dims[0]['sim_time']
         z = psi_data.dims[1][0]
+
         # Transpose psi and flip z to allow trimming (see find_nearest_index)
         z_array = np.flip(np.array(z))
         psi = np.transpose(np.array(psi_data[()]))
@@ -110,6 +111,7 @@ def import_h5_data(h5_files, zf_dis, z0_dis, nt_keep, dtype=sbp.grid_data_type, 
         # Transpose and flip arrays back to make domain
         psi_tr_data = np.transpose(psi_tr_data)
         z_tr = np.flip(z_tr)
+
         # Bases and domain
         t_tr_basis = de.Fourier('t', len(t_tr), interval=(t_tr[0], t_tr[-1]), dealias=dealias_f)
         z_tr_basis = de.Fourier('z', len(z_tr), interval=(z_tr[0], z_tr[-1]), dealias=dealias_f)
@@ -261,7 +263,7 @@ if sbp.plot_amplitude:
 
 # Plot this amplitude across time and space
 if sbp.plot_amplitude:
-    hf.plot_z_vs_t(z_tr, t_tr, T, hf.AAcc(tr_dn_field).real, BP_tr, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=None, title_str=run_name+' AA', filename=filename_prefix+'_1D_AA.png')
+    hf.plot_z_vs_t(z_tr, t_tr, T, hf.AAcc(tr_dn_field).real, BP_tr, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=None, c_map=cmap, title_str=run_name+' AA', filename=filename_prefix+'_1D_AA.png')
 
 raise SystemExit(0)
 
