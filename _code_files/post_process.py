@@ -102,10 +102,10 @@ def import_h5_data(h5_files, zf_dis, z0_dis, nt_keep, dtype=sbp.grid_data_type, 
         z = psi_data.dims[1][0]
 
         # Transpose psi and flip z to allow trimming (see find_nearest_index)
-        z_array = np.flip(np.array(z))
+        z = np.flip(np.array(z))
         psi = np.transpose(np.array(psi_data[()]))
         # Trim data in space
-        z_tr, psi_tr_data = hf.trim_data_z(z_array, psi, z0_dis, zf_dis)
+        z_tr, psi_tr_data = hf.trim_data_z(z, psi, z0_dis, zf_dis)
         # Trim data in time
         t_tr, psi_tr_data = hf.trim_data_t(t, psi_tr_data, nt_keep)
         # Transpose and flip arrays back to make domain
@@ -131,13 +131,9 @@ def import_h5_data(h5_files, zf_dis, z0_dis, nt_keep, dtype=sbp.grid_data_type, 
             # set field
             psi = domain.new_field(name = 'psi')
             psi['g'] = psi_data
-            t = domain.grid(0)[:,0]
-            z = domain.grid(1)[0,:]
+            t  = np.array(t)
             kz = z_basis.wavenumbers
         else:
-            psi = None
-            t   = None
-            z   = None
             kz  = None
     return psi_tr, t_tr, z_tr, kz_tr, psi, t, z, kz
 
@@ -150,8 +146,6 @@ psi_tr, t_tr, z_tr, kz_tr, psi, t, z, kz = import_h5_data(h5_files, zf_dis, z0_d
 #   This flips things around (ud = up / down)
 z_tr = np.flip(z_tr)
 plot_psi_tr = np.flipud(np.transpose(psi_tr['g']))
-z = np.flip(z)
-plot_psi = np.flipud(np.transpose(psi['g']))
 
 ###############################################################################
 # Perform complex demodulation
@@ -192,9 +186,7 @@ plt.style.use(plt_style)
 BP_array = hf.BP_n_layers(z, sbp.z0_str, n_layers, sbp.L, sbp.R_i)
 win_bf_array = sbp.calc_bf_array(z, sbp.c_bf, sbp.b_bf, sbp.boundary_forcing_region)
 win_sp_array = sbp.calc_sp_array(z, sbp.c_sp, sbp.b_sp, sbp.use_sponge)
-foo, BP_tr1   = hf.trim_data_z(z, BP_array, z0_dis, zf_dis)
-# BP_tr has one extra index for some reason, not sure why, so I'll just take one off here
-BP_tr = BP_tr1[0:-1]
+foo, BP_tr   = hf.trim_data_z(z, BP_array, z0_dis, zf_dis)
 
 filename_prefix = run_name #+ '/' + run_name
 
@@ -218,6 +210,7 @@ if sbp.plot_up_dn:
 # Plotting with untrimmed data
 
 if sbp.plot_untrimmed:
+    plot_psi = np.flipud(np.transpose(psi['g']))
     # Plot untrimmed wavefield
     if sbp.plot_spacetime:
         hf.plot_z_vs_t(z[:], t[:], T, plot_psi.real, BP_array, kL, theta, omega, c_gz=sbp.c_gz, c_bf=sbp.c_bf, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, c_map=cmap, title_str=run_name, filename=filename_prefix+'_wave.png')
