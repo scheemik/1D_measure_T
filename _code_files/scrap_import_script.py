@@ -13,6 +13,19 @@ import helper_functions_CD as hfCD
 
 plot_untrimmed = False
 
+def trim_data(z, t, psi_data, z0_dis, zf_dis, nt_keep):
+    # Transpose psi and flip z to allow trimming (see find_nearest_index)
+    z = np.flip(np.array(z))
+    psi = np.transpose(np.array(psi_data[()]))
+    # Trim data in space
+    z_tr, psi_tr_data = hf.trim_data_z(z, psi, z0_dis, zf_dis)
+    # Trim data in time
+    t_tr, psi_tr_data = hf.trim_data_t(t, psi_tr_data, nt_keep)
+    # Transpose and flip arrays back to make domain
+    psi_tr_data = np.transpose(psi_tr_data)
+    z_tr = np.flip(z_tr)
+    return z_tr, t_tr, psi, psi_tr_data
+
 # Inspired by this post from Jeff https://groups.google.com/g/dedalus-users/c/mTZliZszO_M/m/-_I76EJDAQAJ
 
 # In order to plot vs. time, I needed to fudge a `t_basis` which only works because
@@ -26,16 +39,8 @@ def import_h5_data(zf_dis, z0_dis, nt_keep, dtype=sbp.grid_data_type, dealias_f=
         t = psi_data.dims[0]['sim_time']
         z = psi_data.dims[1][0]
 
-        # Transpose psi and flip z to allow trimming (see find_nearest_index)
-        z = np.flip(np.array(z))
-        psi = np.transpose(np.array(psi_data[()]))
-        # Trim data in space
-        z_tr, psi_tr_data = hf.trim_data_z(z, psi, z0_dis, zf_dis)
-        # Trim data in time
-        t_tr, psi_tr_data = hf.trim_data_t(t, psi_tr_data, nt_keep)
-        # Transpose and flip arrays back to make domain
-        psi_tr_data = np.transpose(psi_tr_data)
-        z_tr = np.flip(z_tr)
+        # Trim domain of data
+        z_tr, t_tr, psi, psi_tr_data = trim_data(z, t, psi_data, z0_dis, zf_dis, nt_keep)
 
         # Bases and domain
         t_tr_basis = de.Fourier('t', len(t_tr), interval=(t_tr[0], t_tr[-1]), dealias=dealias_f)
