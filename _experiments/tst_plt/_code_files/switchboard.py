@@ -75,9 +75,9 @@ if boundary_forcing_region == False:
 plot_spacetime  = True
 plot_wavespace  = False
 plot_spectra    = True
-plot_amplitude  = False
-plot_windows    = False
-plot_up_dn      = False
+plot_amplitude  = True
+plot_windows    = True
+plot_up_dn      = True
 plot_untrimmed  = True
 # If true, plot will include full simulated domain, if false, just the display domain
 plot_full_x     = True
