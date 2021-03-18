@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 plt.style.use('dark_background')
 import colorcet as cc
 from dedalus import public as de
+from dedalus.core import operators as ops
 from dedalus.extras.plot_tools import quad_mesh, pad_limits
 
 # Import SwitchBoard Parameters (sbp)
@@ -26,21 +27,27 @@ def trim_data(z, t, psi_data, z0_dis, zf_dis, nt_keep):
     z_tr = np.flip(z_tr)
     return z_tr, t_tr, psi, psi_tr_data
 
-def Complex_Demodulation(ft, kz, psi):
-    #CD
+def Complex_Demodulation(ft, kz, psi_up):
     # Filter in time
     # Remove all negative frequencies
     selection1 = (ft<0) * (kz==kz)
-    psi['c'][selection1] = 0
+    psi_up['c'][selection1] = 0
     # Multiply remaining by 2 to compensate for lost magnitude
-    double_op = 2*psi
-    double_op.operate(psi)
+    double_op = 2*psi_up
+    double_op.operate(psi_up)
 
     # Filter in space
-    # Take the down propagating waves
-    selection2 = (ft==ft) * (kz>0)
-    psi['c'][selection2] = 0
-    return psi
+    psi_dn = psi_up.copy()
+    # Not sure why, but copying sets scales to (1.5,1.50)
+    psi_up.set_scales((1.0,1.0))
+    psi_dn.set_scales((1.0,1.0))
+    # Filter for the up propagating waves
+    selection2 = (ft==ft) * (kz<0)
+    psi_up['c'][selection2] = 0
+    # Filter for the down propagating waves
+    selection3 = (ft==ft) * (kz>0)
+    psi_dn['c'][selection3] = 0
+    return psi_up, psi_dn
 
 # Inspired by this post from Jeff https://groups.google.com/g/dedalus-users/c/mTZliZszO_M/m/-_I76EJDAQAJ
 
@@ -71,22 +78,25 @@ def import_h5_data(zf_dis, z0_dis, nt_keep, dtype=sbp.grid_data_type, dealias_f=
         ft_el = domain_tr.elements(0)
         kz_el = domain_tr.elements(1)
 
-        psi_tr = Complex_Demodulation(ft_el, kz_el, psi_tr)
+        psi_up, psi_dn = Complex_Demodulation(ft_el, kz_el, psi_tr)
 
         from dedalus.extras.plot_tools import plot_bot_2d
         figkw = {'figsize':(6,4), 'dpi':100}
         # Plot log magnitude of spectral coefficients
-        psi_tr['c']
+        psi_dn['c']
         # psi_tr.towards_coeff_space()
         log_mag = lambda xmesh, ymesh, data: (xmesh, ymesh, np.log10(np.abs(data)))
-        plot_bot_2d(psi_tr, func=log_mag, clim=(-20, 0), cmap='viridis', title="log10(abs(f['c'])", figkw=figkw);
+        plot_bot_2d(psi_dn, func=log_mag, clim=(-20, 0), cmap='viridis', title="log10(abs(f['c'])", figkw=figkw);
         plt.show()
 
         # psi_tr['g']
         # psi_tr.towards_grid_space()
-        plot_psi = np.flipud(np.transpose(psi_tr['g'].real))
-        print(plot_psi[0][0])
-        plt.pcolormesh(t_tr[:], np.flip(z_tr[:]), plot_psi, cmap=cc.cm.bkr);
+        plot_psi_dn = np.flipud(np.transpose(psi_dn['g'].real))
+        plt.pcolormesh(t_tr[:], np.flip(z_tr[:]), plot_psi_dn, cmap=cc.cm.bkr);
+        plt.show()
+
+        plot_psi_up = np.flipud(np.transpose(psi_up['g'].real))
+        plt.pcolormesh(t_tr[:], np.flip(z_tr[:]), plot_psi_up, cmap=cc.cm.bkr);
         plt.show()
 
         if plot_untrimmed:
