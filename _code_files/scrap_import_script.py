@@ -26,6 +26,22 @@ def trim_data(z, t, psi_data, z0_dis, zf_dis, nt_keep):
     z_tr = np.flip(z_tr)
     return z_tr, t_tr, psi, psi_tr_data
 
+def Complex_Demodulation(ft, kz, psi):
+    #CD
+    # Filter in time
+    # Remove all negative frequencies
+    selection1 = (ft<0) * (kz==kz)
+    psi['c'][selection1] = 0
+    # Multiply remaining by 2 to compensate for lost magnitude
+    double_op = 2*psi
+    double_op.operate(psi)
+
+    # Filter in space
+    # Take the down propagating waves
+    selection2 = (ft==ft) * (kz>0)
+    psi['c'][selection2] = 0
+    return psi
+
 # Inspired by this post from Jeff https://groups.google.com/g/dedalus-users/c/mTZliZszO_M/m/-_I76EJDAQAJ
 
 # In order to plot vs. time, I needed to fudge a `t_basis` which only works because
@@ -54,30 +70,8 @@ def import_h5_data(zf_dis, z0_dis, nt_keep, dtype=sbp.grid_data_type, dealias_f=
         kz_tr = z_tr_basis.wavenumbers
         ft_el = domain_tr.elements(0)
         kz_el = domain_tr.elements(1)
-        # print(kz_tr)
-        # print(kz_el)
-        # print("Result : ",np.array_equal(kz_tr,kz_el[0]))
-        # Write out results to file
-        # import csv
-        # csv_file = "wavenumbers.csv"
-        # with open(csv_file, 'a') as datafile:
-        #     csvwriter = csv.writer(datafile)
-        #     csvwriter.writerow(kz_tr)
-        #     csvwriter.writerow(kz_el[0])
 
-        #CD
-        # Filter in time
-        # Remove all negative frequencies
-        selection1 = (ft_el<0) * (kz_el==kz_el)
-        psi_tr['c'][selection1] = 0
-        # Multiply remaining by 2 to compensate for lost magnitude
-        double_op = 2*psi_tr
-        double_op.operate(psi_tr)
-
-        # Filter in space
-        # Take the up (down?) propagating waves
-        selection2 = (ft_el==ft_el) * (kz_el>0)
-        psi_tr['c'][selection2] = 0
+        psi_tr = Complex_Demodulation(ft_el, kz_el, psi_tr)
 
         from dedalus.extras.plot_tools import plot_bot_2d
         figkw = {'figsize':(6,4), 'dpi':100}
