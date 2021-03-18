@@ -4,15 +4,13 @@ import matplotlib.pyplot as plt
 plt.style.use('dark_background')
 import colorcet as cc
 from dedalus import public as de
-from dedalus.core import operators as ops
-from dedalus.extras.plot_tools import quad_mesh, pad_limits
 
 # Import SwitchBoard Parameters (sbp)
 import switchboard as sbp
 import helper_functions as hf
 import helper_functions_CD as hfCD
 
-plot_untrimmed = False
+plot_untrimmed = True
 
 def trim_data(z, t, psi_data, z0_dis, zf_dis, nt_keep):
     # Transpose psi and flip z to allow trimming (see find_nearest_index)
@@ -61,10 +59,8 @@ def import_h5_data(zf_dis, z0_dis, nt_keep, dtype=sbp.grid_data_type, dealias_f=
         # Get dimensions
         t = psi_data.dims[0]['sim_time']
         z = psi_data.dims[1][0]
-
         # Trim domain of data
         z_tr, t_tr, psi, psi_tr_data = trim_data(z, t, psi_data, z0_dis, zf_dis, nt_keep)
-
         # Bases and domain
         t_tr_basis = de.Fourier('t', len(t_tr), interval=(t_tr[0], t_tr[-1]), dealias=dealias_f)
         z_tr_basis = de.Fourier('z', len(z_tr), interval=(z_tr[0], z_tr[-1]), dealias=dealias_f)
@@ -72,32 +68,6 @@ def import_h5_data(zf_dis, z0_dis, nt_keep, dtype=sbp.grid_data_type, dealias_f=
         # set field
         psi_tr = domain_tr.new_field(name = 'psi_tr')
         psi_tr['g'] = psi_tr_data
-        t_tr = domain_tr.grid(0)[:,0]
-        z_tr = domain_tr.grid(1)[0,:]
-        kz_tr = z_tr_basis.wavenumbers
-        ft_el = domain_tr.elements(0)
-        kz_el = domain_tr.elements(1)
-
-        psi_up, psi_dn = Complex_Demodulation(ft_el, kz_el, psi_tr)
-
-        from dedalus.extras.plot_tools import plot_bot_2d
-        figkw = {'figsize':(6,4), 'dpi':100}
-        # Plot log magnitude of spectral coefficients
-        psi_dn['c']
-        # psi_tr.towards_coeff_space()
-        log_mag = lambda xmesh, ymesh, data: (xmesh, ymesh, np.log10(np.abs(data)))
-        plot_bot_2d(psi_dn, func=log_mag, clim=(-20, 0), cmap='viridis', title="log10(abs(f['c'])", figkw=figkw);
-        plt.show()
-
-        # psi_tr['g']
-        # psi_tr.towards_grid_space()
-        plot_psi_dn = np.flipud(np.transpose(psi_dn['g'].real))
-        plt.pcolormesh(t_tr[:], np.flip(z_tr[:]), plot_psi_dn, cmap=cc.cm.bkr);
-        plt.show()
-
-        plot_psi_up = np.flipud(np.transpose(psi_up['g'].real))
-        plt.pcolormesh(t_tr[:], np.flip(z_tr[:]), plot_psi_up, cmap=cc.cm.bkr);
-        plt.show()
 
         if plot_untrimmed:
             # Bases and domain
@@ -107,20 +77,47 @@ def import_h5_data(zf_dis, z0_dis, nt_keep, dtype=sbp.grid_data_type, dealias_f=
             # set field
             psi = domain.new_field(name = 'psi')
             psi['g'] = psi_data
-            t  = np.array(t)
-            kz = z_basis.wavenumbers
         else:
-            kz  = None
-    return psi_tr, t_tr, z_tr, kz_tr, psi, t, z, kz
+            psi    = None
+            domain = None
+    return psi_tr, domain_tr, psi, domain
+    # return psi_tr, t_tr, z_tr, kz_tr, psi, t, z, kz
 
-psi_tr, t_tr, z_tr, kz_tr, psi, t, z, kz = import_h5_data(sbp.zf_dis, sbp.z0_dis, sbp.nt_snap)
+psi_tr, domain_tr, psi, domain = import_h5_data(sbp.zf_dis, sbp.z0_dis, sbp.nt_snap)
 
-# # Plot data
-# plt.figure(figsize=(7,4), dpi=100)
-# plt.pcolormesh(t[:], z[:], np.transpose(psi['g'].real), shading='nearest', cmap=cc.cm.bkr)
-# plt.colorbar()
-# plt.xlabel('t')
-# plt.ylabel('z')
-# plt.title('Test plot of psi')
-# plt.tight_layout()
-# plt.show()
+def get_domain_scales(domain):
+    # For grid space
+    t = domain.grid(0)[:,0]
+    z = domain.grid(1)[0,:]
+    # For coefficient space
+    f = domain.elements(0)
+    k = domain.elements(1)
+    return t, z, f, k
+
+def plot_some_stuff(psi, domain):
+    t, z, f, k = get_domain_scales(domain)
+    psi_up, psi_dn = Complex_Demodulation(f, k, psi)
+    # plotting
+    from dedalus.extras.plot_tools import plot_bot_2d
+    figkw = {'figsize':(6,4), 'dpi':100}
+    # Plot log magnitude of spectral coefficients
+    psi_dn['c']
+    # psi_tr.towards_coeff_space()
+    log_mag = lambda xmesh, ymesh, data: (xmesh, ymesh, np.log10(np.abs(data)))
+    plot_bot_2d(psi_dn, func=log_mag, clim=(-20, 0), cmap='viridis', title="log10(abs(f['c'])", figkw=figkw);
+    plt.show()
+
+    # psi_tr['g']
+    # psi_tr.towards_grid_space()
+    plot_psi_dn = np.flipud(np.transpose(psi_dn['g'].real))
+    plt.pcolormesh(t[:], np.flip(z[:]), plot_psi_dn, cmap=cc.cm.bkr);
+    plt.show()
+
+    plot_psi_up = np.flipud(np.transpose(psi_up['g'].real))
+    plt.pcolormesh(t[:], np.flip(z[:]), plot_psi_up, cmap=cc.cm.bkr);
+    plt.show()
+
+if plot_untrimmed:
+    plot_some_stuff(psi, domain)
+else:
+    plot_some_stuff(psi_tr, domain_tr)
