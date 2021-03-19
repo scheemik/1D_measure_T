@@ -43,7 +43,7 @@ import switchboard as sbp
 # sbp = importlib.import_module(switchboard_module)
 
 import helper_functions as hf
-import helper_functions_CD as hfCD
+# import helper_functions_CD as hfCD
 
 ###############################################################################
 # Importing parameters from auxiliary files
@@ -90,43 +90,25 @@ cmap            = sbp.cmap
 ###############################################################################
 # Additional post-processing helper functions
 
-def trim_data(z, t, psi_data, z0_dis, zf_dis, nt_keep):
-    # Transpose psi and flip z to allow trimming (see find_nearest_index)
-    z = np.flip(np.array(z))
-    psi = np.transpose(np.array(psi_data[()]))
-    # Trim data in space
-    z_tr, psi_tr_data = hf.trim_data_z(z, psi, z0_dis, zf_dis)
-    # Trim data in time
-    t_tr, psi_tr_data = hf.trim_data_t(t, psi_tr_data, nt_keep)
-    # Transpose and flip arrays back to make domain
-    psi_tr_data = np.transpose(psi_tr_data)
-    z_tr = np.flip(z_tr)
-    return z_tr, t_tr, psi, psi_tr_data
-
 # This function is built to only work with one h5 file, need to merge before using
 #   Also, only works for 1 task that has 1 spatial and 1 temporal dimension
 #   It's a pretty specific function
-def import_h5_data(h5_files, zf_dis, z0_dis, nt_keep, dtype=sbp.grid_data_type, dealias_f=sbp.dealias):
-    with h5py.File(h5_files[0], mode='r') as f:
+def import_h5_data(hf_files, zf_dis, z0_dis, nt_keep, dtype=sbp.grid_data_type, dealias_f=sbp.dealias):
+    with h5py.File(hf_files[0], mode='r') as f:
         # Get task (one and only file i/o here)
         psi_data = f['tasks']['psi']
         # Get dimensions
         t = psi_data.dims[0]['sim_time']
         z = psi_data.dims[1][0]
-
         # Trim domain of data
-        z_tr, t_tr, psi, psi_tr_data = trim_data(z, t, psi_data, z0_dis, zf_dis, nt_keep)
-
+        z_tr, t_tr, psi, psi_tr_data = hf.trim_data(z, t, psi_data, z0_dis, zf_dis, nt_keep)
         # Bases and domain
         t_tr_basis = de.Fourier('t', len(t_tr), interval=(t_tr[0], t_tr[-1]), dealias=dealias_f)
         z_tr_basis = de.Fourier('z', len(z_tr), interval=(z_tr[0], z_tr[-1]), dealias=dealias_f)
         domain_tr = de.Domain([t_tr_basis,z_tr_basis], grid_dtype=dtype)
         # set field
-        psi_tr = domain_tr.new_field(name = 'psi')
+        psi_tr = domain_tr.new_field(name = 'psi_tr')
         psi_tr['g'] = psi_tr_data
-        t_tr = domain_tr.grid(0)[:,0]
-        z_tr = domain_tr.grid(1)[0,:]
-        kz_tr = z_tr_basis.wavenumbers
 
         if plot_untrimmed:
             # Bases and domain
@@ -136,47 +118,102 @@ def import_h5_data(h5_files, zf_dis, z0_dis, nt_keep, dtype=sbp.grid_data_type, 
             # set field
             psi = domain.new_field(name = 'psi')
             psi['g'] = psi_data
-            t  = np.array(t)
-            kz = z_basis.wavenumbers
         else:
-            kz  = None
-    return psi_tr, t_tr, z_tr, kz_tr, psi, t, z, kz
+            psi    = None
+            domain = None
+        z = np.flip(np.array(z))
+    return psi_tr, domain_tr, psi, domain, t, z
+
+def Complex_Demodulation(ft, kz, psi):
+    # Filter in time
+    n_ft = ft.shape[0] # ft is a 2D array with 1 column
+    # Add 1 because Nyquist is dropped
+    if hf.is_power_of_2(n_ft+1) == False:
+        print('Warning: n_ft is not a power of 2:',n_ft)
+        print('  Are you plotting untrimmed data?')
+    # Need to copy so I leave the original field untouched
+    psi_up = psi.copy()
+    # Not sure why, but copying sets scales to (1.5,1.50)
+    psi_up.set_scales((1.0,1.0))
+    psi.set_scales((1.0,1.0))
+    # Remove all negative frequencies
+    selection1 = (ft<0) * (kz==kz)
+    psi_up['c'][selection1] = 0
+    # Multiply remaining by 2 to compensate for lost magnitude
+    double_op = 2*psi_up
+    double_op.operate(psi_up)
+
+    # Filter in space
+    n_kz = kz.shape[1] # kz is a 2D array with 1 row
+    # Add 1 because Nyquist is dropped
+    if hf.is_power_of_2(n_kz+1) == False:
+        print('Warning: n_kz is not a power of 2:',n_kz)
+        print('  Are you plotting untrimmed data?')
+    psi_dn = psi_up.copy()
+    # Not sure why, but copying sets scales to (1.5,1.50)
+    psi_up.set_scales((1.0,1.0))
+    psi_dn.set_scales((1.0,1.0))
+    # Filter for the up propagating waves
+    selection2 = (ft==ft) * (kz<0)
+    psi_up['c'][selection2] = 0
+    # Filter for the down propagating waves
+    selection3 = (ft==ft) * (kz>0)
+    psi_dn['c'][selection3] = 0
+    return psi_up, psi_dn
+
+def get_domain_scales(domain):
+    # For grid space
+    t = domain.grid(0)[:,0]
+    z = domain.grid(1)[0,:]
+    # For coefficient space
+    f = domain.elements(0)
+    k = domain.elements(1)
+    return t, z, f, k
+
+def get_plt_field(field):
+    return np.flipud(np.transpose(field['g'].real))
 
 # raise SystemExit(0)
 ###############################################################################
 ###############################################################################
 # Get the data from the snapshot files
-psi_tr, t_tr, z_tr, kz_tr, psi, t, z, kz = import_h5_data(h5_files, zf_dis, z0_dis, nt_keep)
+psi_tr, domain_tr, psi, domain, t, z = import_h5_data(h5_files, zf_dis, z0_dis, nt_keep)
+# psi_tr, t_tr, z_tr, kz_tr, psi, t, z, kz = import_h5_data(h5_files, zf_dis, z0_dis, nt_keep)
 # z and psi arrays come out sorted from most positive to most negative on z axis
 #   This flips things around (ud = up / down)
-z_tr = np.flip(z_tr)
-plot_psi_tr = np.flipud(np.transpose(psi_tr['g']))
+# z_tr = np.flip(z_tr)
+# plot_psi_tr = np.flipud(np.transpose(psi_tr['g']))
 
 ###############################################################################
 # Perform complex demodulation
+t_tr, z_tr, f_tr, k_tr = get_domain_scales(domain_tr)
+tr_psi_up, tr_psi_dn = Complex_Demodulation(f_tr, k_tr, psi_tr)
 
-t_then_z = True
+plt_tr_dn = get_plt_field(tr_psi_dn)
+plt_tr_z = np.flip(z_tr[:])
+plt_tr_t = t_tr[:]
+
+# t_then_z = True
 # find relevant wavenumbers (k) for the trimmed z range
 # kz_tr = np.fft.fftfreq(len(z_tr), dz)
 # I don't know why, but the up and down fields switch when I trim the data
-tr_dn_field, tr_up_field = hfCD.Complex_Demodulate(t_then_z, t_tr, z_tr, kz_tr, plot_psi_tr, dt, omega)
+# tr_dn_field, tr_up_field = hfCD.Complex_Demodulate(t_then_z, t_tr, z_tr, kz_tr, plot_psi_tr, dt, omega)
 
 ###############################################################################
 # Measuring the transmission coefficient
 
-I_, T_, AAcc_I, AAcc_T = hf.measure_T(tr_dn_field, z_tr, z_I, z_T, T_skip=None, T=T, t=t_tr)
+I_, T_, AAcc_I, AAcc_T = hf.measure_T(plt_tr_dn, plt_tr_z, z_I, z_T, T_skip=None, T=T, t=plt_tr_t)
 big_T = T_/I_
 print("(n_layers =",n_layers,", kL =",kL,", theta =",theta,")")
 print("Simulated transmission coefficient is:", big_T)
 print("AnaEq 2.4 transmission coefficient is:", hf.SY_eq2_4(theta, kL))
 
-
-# Write out results to file
-import csv
-csv_file = "sim_data.csv"
-with open(csv_file, 'a') as datafile:
-    csvwriter = csv.writer(datafile)
-    csvwriter.writerow([run_name, kL, theta, big_T])
+# # Write out results to file
+# import csv
+# csv_file = "sim_data.csv"
+# with open(csv_file, 'a') as datafile:
+#     csvwriter = csv.writer(datafile)
+#     csvwriter.writerow([run_name, kL, theta, big_T])
 
 ###############################################################################
 ###############################################################################
@@ -188,45 +225,53 @@ if plot_checks == False:
 
 plt.style.use(plt_style)
 
-BP_array = hf.BP_n_layers(z, sbp.z0_str, n_layers, sbp.L, sbp.R_i)
-win_bf_array = sbp.calc_bf_array(z, sbp.c_bf, sbp.b_bf, sbp.boundary_forcing_region)
-win_sp_array = sbp.calc_sp_array(z, sbp.c_sp, sbp.b_sp, sbp.use_sponge)
+plt_z = z[:]
+
+BP_array = hf.BP_n_layers(plt_z, sbp.z0_str, n_layers, sbp.L, sbp.R_i)
+win_bf_array = sbp.calc_bf_array(plt_z, sbp.c_bf, sbp.b_bf, sbp.boundary_forcing_region)
+win_sp_array = sbp.calc_sp_array(plt_z, sbp.c_sp, sbp.b_sp, sbp.use_sponge)
 foo, BP_tr   = hf.trim_data_z(z, BP_array, z0_dis, zf_dis)
 
 filename_prefix = run_name #+ '/' + run_name
 
 # Plot windows
 if sbp.plot_windows:
-    hf.plot_v_profiles(z, BP_array, win_bf_array, win_sp_array, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=True, plot_full_y=True, title_str=run_name, filename=filename_prefix+'_windows.png')
+    hf.plot_v_profiles(plt_z, BP_array, win_bf_array, win_sp_array, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=True, plot_full_y=True, title_str=run_name, filename=filename_prefix+'_windows.png')
 
 ###############################################################################
 # Plotting with trimmed data
 
 # Plot trimmed wavefield
 if sbp.plot_spacetime:
-    hf.plot_z_vs_t(z_tr, t_tr, T, plot_psi_tr.real, BP_tr, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=True, plot_full_y=False, T_cutoff=T_cutoff, c_map=cmap, title_str=run_name, filename=filename_prefix+'_wave_tr.png')
+    plt_psi_tr = get_plt_field(psi_tr)
+    hf.plot_z_vs_t(plt_tr_z, plt_tr_t, T, plt_psi_tr, BP_tr, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=True, plot_full_y=False, T_cutoff=T_cutoff, c_map=cmap, title_str=run_name, filename=filename_prefix+'_wave_tr.png')
 
 # Plot trimmed up and downward propagating waves
 if sbp.plot_up_dn:
-    hf.plot_z_vs_t(z_tr, t_tr, T, tr_up_field.real, BP_tr, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=None, title_str=run_name+' up', c_map=cmap, filename=filename_prefix+'_up_tr.png')
-    hf.plot_z_vs_t(z_tr, t_tr, T, tr_dn_field.real, BP_tr, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=None, title_str=run_name+' dn', c_map=cmap, filename=filename_prefix+'_dn_tr.png')
+    plt_tr_up = get_plt_field(tr_psi_up)
+    hf.plot_z_vs_t(plt_tr_z, plt_tr_t, T, plt_tr_up, BP_tr, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=None, title_str=run_name+' up', c_map=cmap, filename=filename_prefix+'_up_tr.png')
+    hf.plot_z_vs_t(plt_tr_z, plt_tr_t, T, plt_tr_dn, BP_tr, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=None, title_str=run_name+' dn', c_map=cmap, filename=filename_prefix+'_dn_tr.png')
 
 ###############################################################################
 # Plotting with untrimmed data
 
 if sbp.plot_untrimmed:
-    plot_psi = np.flipud(np.transpose(psi['g']))
+    t, z, f, k = get_domain_scales(domain)
+    plot_psi = get_plt_field(psi)
     # Plot untrimmed wavefield
     if sbp.plot_spacetime:
-        hf.plot_z_vs_t(z[:], t[:], T, plot_psi.real, BP_array, kL, theta, omega, c_gz=sbp.c_gz, c_bf=sbp.c_bf, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, c_map=cmap, title_str=run_name, filename=filename_prefix+'_wave.png')
+        hf.plot_z_vs_t(plt_z, t[:], T, plot_psi, BP_array, kL, theta, omega, c_gz=sbp.c_gz, c_bf=sbp.c_bf, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, c_map=cmap, title_str=run_name, filename=filename_prefix+'_wave.png')
 
     # Plot untrimmed up and downward propagating waves
         # This will lead to warning about nt not being a power of 2
     # Full domain
     if sbp.plot_up_dn:
-        up_field, dn_field = hfCD.Complex_Demodulate(t_then_z, t, z, kz, plot_psi, dt, omega)
-        hf.plot_z_vs_t(z, t, T, up_field.real, BP_array, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, c_map=cmap, title_str=run_name+' up', filename=filename_prefix+'_up.png')
-        hf.plot_z_vs_t(z, t, T, dn_field.real, BP_array, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, c_map=cmap, title_str=run_name+' dn', filename=filename_prefix+'_dn.png')
+        psi_up, psi_dn = Complex_Demodulation(f, k, psi)
+        plt_up = get_plt_field(psi_up)
+        plt_dn = get_plt_field(psi_dn)
+        # up_field, dn_field = hfCD.Complex_Demodulate(t_then_z, t, z, kz, plot_psi, dt, omega)
+        hf.plot_z_vs_t(plt_z, t, T, plt_up, BP_array, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, c_map=cmap, title_str=run_name+' up', filename=filename_prefix+'_up.png')
+        hf.plot_z_vs_t(plt_z, t, T, plt_dn, BP_array, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, c_map=cmap, title_str=run_name+' dn', filename=filename_prefix+'_dn.png')
 
 ###############################################################################
 # Plot spectral form of data

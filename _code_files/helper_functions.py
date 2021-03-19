@@ -184,6 +184,15 @@ def rad_to_degs(num):
     deg_str = str(deg) + r'$^\circ$'
     return deg_str
 
+def is_power_of_2(x):
+    """
+    Takes in a number, returns True or False
+
+    x           number to determine if it is a power of 2 or not
+    """
+    n = np.log2(x)
+    return (np.floor(n) == np.ceil(n))
+
 ###############################################################################
 
 def extended_stop_time(sim_time_stop, dt):
@@ -196,6 +205,9 @@ def extended_stop_time(sim_time_stop, dt):
     # Calculate new sim_time_stop
     new_sim_time_stop = dt * (2**i)
     return new_sim_time_stop, int(nt)
+
+###############################################################################
+# Post-processing functions
 
 def trim_data_z(z_array, data, z0_dis, zf_dis):
     """
@@ -235,6 +247,19 @@ def trim_data_t(t_array, data, nt_keep):
     trimmed_data    = data[:,idx_cutoff:]
     trimmed_t_array = t_array[idx_cutoff:]
     return trimmed_t_array, trimmed_data
+
+def trim_data(z, t, psi_data, z0_dis, zf_dis, nt_keep):
+    # Transpose psi and flip z to allow trimming (see find_nearest_index)
+    z = np.flip(np.array(z))
+    psi = np.transpose(np.array(psi_data[()]))
+    # Trim data in space
+    z_tr, psi_tr_data = trim_data_z(z, psi, z0_dis, zf_dis)
+    # Trim data in time
+    t_tr, psi_tr_data = trim_data_t(t, psi_tr_data, nt_keep)
+    # Transpose and flip arrays back to make domain
+    psi_tr_data = np.transpose(psi_tr_data)
+    z_tr = np.flip(z_tr)
+    return z_tr, t_tr, psi, psi_tr_data
 
 ###############################################################################
 

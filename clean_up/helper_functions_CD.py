@@ -122,20 +122,6 @@ def Complex_Demodulate(t_then_z, t, z, kz, data, dt, omega):
         dn_field = FT_in_time(t, z, ift_z_y_n, dt, omega)[0]
     return up_field, dn_field
 
-def Complex_Demodulation(t_then_z, t, z, kz, data, dt, omega):
-    if t_then_z == True:
-        ## Step 1
-        ift_t_y = FT_in_time(t, z, data, dt, omega)[0]
-        ## Step 2
-        up_field, dn_field = FT_in_space(t, kz, ift_t_y)
-    else:
-        ## Step 1
-        ift_z_y_p, ift_z_y_n = FT_in_space(t, kz, data)
-        ## Step 2
-        up_field = FT_in_time(t, z, ift_z_y_p, dt, omega)[0]
-        dn_field = FT_in_time(t, z, ift_z_y_n, dt, omega)[0]
-    return up_field, dn_field
-
 ###############################################################################
 # Get data in spectral form
 

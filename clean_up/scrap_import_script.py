@@ -12,21 +12,13 @@ import helper_functions_CD as hfCD
 
 plot_untrimmed = True
 
-def trim_data(z, t, psi_data, z0_dis, zf_dis, nt_keep):
-    # Transpose psi and flip z to allow trimming (see find_nearest_index)
-    z = np.flip(np.array(z))
-    psi = np.transpose(np.array(psi_data[()]))
-    # Trim data in space
-    z_tr, psi_tr_data = hf.trim_data_z(z, psi, z0_dis, zf_dis)
-    # Trim data in time
-    t_tr, psi_tr_data = hf.trim_data_t(t, psi_tr_data, nt_keep)
-    # Transpose and flip arrays back to make domain
-    psi_tr_data = np.transpose(psi_tr_data)
-    z_tr = np.flip(z_tr)
-    return z_tr, t_tr, psi, psi_tr_data
-
 def Complex_Demodulation(ft, kz, psi_up):
     # Filter in time
+    n_ft = ft.shape[0] # ft is a 2D array with 1 column
+    # Add 1 because Nyquist is dropped
+    if hf.is_power_of_2(n_ft+1) == False:
+        print('Warning: n_ft is not a power of 2:',n_ft)
+        print('  Are you plotting untrimmed data?')
     # Remove all negative frequencies
     selection1 = (ft<0) * (kz==kz)
     psi_up['c'][selection1] = 0
@@ -35,6 +27,11 @@ def Complex_Demodulation(ft, kz, psi_up):
     double_op.operate(psi_up)
 
     # Filter in space
+    n_kz = kz.shape[1] # kz is a 2D array with 1 row
+    # Add 1 because Nyquist is dropped
+    if hf.is_power_of_2(n_kz+1) == False:
+        print('Warning: n_kz is not a power of 2:',n_kz)
+        print('  Are you plotting untrimmed data?')
     psi_dn = psi_up.copy()
     # Not sure why, but copying sets scales to (1.5,1.50)
     psi_up.set_scales((1.0,1.0))
@@ -60,7 +57,7 @@ def import_h5_data(zf_dis, z0_dis, nt_keep, dtype=sbp.grid_data_type, dealias_f=
         t = psi_data.dims[0]['sim_time']
         z = psi_data.dims[1][0]
         # Trim domain of data
-        z_tr, t_tr, psi, psi_tr_data = trim_data(z, t, psi_data, z0_dis, zf_dis, nt_keep)
+        z_tr, t_tr, psi, psi_tr_data = hf.trim_data(z, t, psi_data, z0_dis, zf_dis, nt_keep)
         # Bases and domain
         t_tr_basis = de.Fourier('t', len(t_tr), interval=(t_tr[0], t_tr[-1]), dealias=dealias_f)
         z_tr_basis = de.Fourier('z', len(z_tr), interval=(z_tr[0], z_tr[-1]), dealias=dealias_f)
@@ -107,8 +104,6 @@ def plot_some_stuff(psi, domain):
     plot_bot_2d(psi_dn, func=log_mag, clim=(-20, 0), cmap='viridis', title="log10(abs(f['c'])", figkw=figkw);
     plt.show()
 
-    # psi_tr['g']
-    # psi_tr.towards_grid_space()
     plot_psi_dn = np.flipud(np.transpose(psi_dn['g'].real))
     plt.pcolormesh(t[:], np.flip(z[:]), plot_psi_dn, cmap=cc.cm.bkr);
     plt.show()
