@@ -16,6 +16,24 @@ import matplotlib.colors as clrs
 from matplotlib import ticker
 from dedalus.extras.plot_tools import quad_mesh, pad_limits
 
+def get_h5_data(tasks, h5_files):
+    for task in tasks:
+        # At the moment, this only works for one h5 file
+        for filename in h5_files:
+            with h5py.File(filename, mode='r') as f:
+                # The [()] syntax returns all data from an h5 object
+                psi   = f['tasks'][task]
+                # psi_c = f['tasks'][task]
+                # Need to transpose into the correct orientation
+                #   Also need to convert to np.array for plotting function
+                psi_array   = np.transpose(np.array(psi[()]))
+                # psi_c_array = np.transpose(np.array(psi_c[()]))
+                # Grab the scales t, z, and kz
+                t  = np.array(f['scales']['sim_time'])
+                z  = np.array(f['scales']['z']['1.0'])
+                kz = np.array(f['scales']['kz'])
+    return t, z, kz, psi_array#, psi_c_array
+
 ###############################################################################
 # Additional post-processing helper functions
 

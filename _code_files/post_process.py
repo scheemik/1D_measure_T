@@ -41,9 +41,7 @@ h5_files    = args['<files>']
 import switchboard as sbp
 # switchboard_module = run_name + "." + run_name + "_" + switchboard
 # sbp = importlib.import_module(switchboard_module)
-
 import helper_functions as hf
-# import helper_functions_CD as hfCD
 
 ###############################################################################
 # Importing parameters from auxiliary files
@@ -319,21 +317,3 @@ if plot_CD_checks:
     # Plot the difference, which ideally should be zero everywhere
     CD_diff = psi.real - up_plus_dn
     hf.plot_z_vs_t(z, t, T, CD_diff, BP_array, kL, theta, omega, z0_dis=z0_dis, zf_dis=zf_dis, z_I=z_I, z_T=z_T, plot_full_x=plt_f_x, plot_full_y=plt_f_y, nT=T_cutoff, title_str=run_name, filename=filename_prefix+'_CD_diff.png')
-
-def get_h5_data(tasks, h5_files):
-    for task in tasks:
-        # At the moment, this only works for one h5 file
-        for filename in h5_files:
-            with h5py.File(filename, mode='r') as f:
-                # The [()] syntax returns all data from an h5 object
-                psi   = f['tasks'][task]
-                # psi_c = f['tasks'][task]
-                # Need to transpose into the correct orientation
-                #   Also need to convert to np.array for plotting function
-                psi_array   = np.transpose(np.array(psi[()]))
-                # psi_c_array = np.transpose(np.array(psi_c[()]))
-                # Grab the scales t, z, and kz
-                t  = np.array(f['scales']['sim_time'])
-                z  = np.array(f['scales']['z']['1.0'])
-                kz = np.array(f['scales']['kz'])
-    return t, z, kz, psi_array#, psi_c_array
