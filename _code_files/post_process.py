@@ -178,42 +178,31 @@ def get_plt_field(field):
 ###############################################################################
 # Get the data from the snapshot files
 psi_tr, domain_tr, psi, domain, t, z = import_h5_data(h5_files, zf_dis, z0_dis, nt_keep)
-# psi_tr, t_tr, z_tr, kz_tr, psi, t, z, kz = import_h5_data(h5_files, zf_dis, z0_dis, nt_keep)
-# z and psi arrays come out sorted from most positive to most negative on z axis
-#   This flips things around (ud = up / down)
-# z_tr = np.flip(z_tr)
-# plot_psi_tr = np.flipud(np.transpose(psi_tr['g']))
 
-###############################################################################
 # Perform complex demodulation
 t_tr, z_tr, f_tr, k_tr = get_domain_scales(domain_tr)
 tr_psi_up, tr_psi_dn = Complex_Demodulation(f_tr, k_tr, psi_tr)
 
+###############################################################################
+# Get some arrays ready for measuring T
 plt_tr_dn = get_plt_field(tr_psi_dn)
 plt_tr_z = np.flip(z_tr[:])
 plt_tr_t = t_tr[:]
 
-# t_then_z = True
-# find relevant wavenumbers (k) for the trimmed z range
-# kz_tr = np.fft.fftfreq(len(z_tr), dz)
-# I don't know why, but the up and down fields switch when I trim the data
-# tr_dn_field, tr_up_field = hfCD.Complex_Demodulate(t_then_z, t_tr, z_tr, kz_tr, plot_psi_tr, dt, omega)
-
 ###############################################################################
 # Measuring the transmission coefficient
-
 I_, T_, AAcc_I, AAcc_T = hf.measure_T(plt_tr_dn, plt_tr_z, z_I, z_T, T_skip=None, T=T, t=plt_tr_t)
 big_T = T_/I_
 print("(n_layers =",n_layers,", kL =",kL,", theta =",theta,")")
 print("Simulated transmission coefficient is:", big_T)
 print("AnaEq 2.4 transmission coefficient is:", hf.SY_eq2_4(theta, kL))
 
-# # Write out results to file
-# import csv
-# csv_file = "sim_data.csv"
-# with open(csv_file, 'a') as datafile:
-#     csvwriter = csv.writer(datafile)
-#     csvwriter.writerow([run_name, kL, theta, big_T])
+# Write out results to file
+import csv
+csv_file = "sim_data.csv"
+with open(csv_file, 'a') as datafile:
+    csvwriter = csv.writer(datafile)
+    csvwriter.writerow([run_name, kL, theta, big_T])
 
 ###############################################################################
 ###############################################################################
