@@ -24,12 +24,14 @@ def SY_eq2_4(theta, kL):
 ###############################################################################
 # Measuring the Transmission Coefficient
 
-def find_nearest_index(array, value):
+def find_nearest_index(array, value, allow_endpoints=False):
     """
     Assumes array is sorted, returns the integer of the index which contains
         the value closest to the value given. Assumes values are the same type
-    array       a 1 D array of values
-    value       the given value in question
+    array               a 1 D array of values
+    value               the given value in question
+    allow_endpoints     True or False whether I expect the value to be an
+                        endpoint of the array
     """
     class Error(Exception):
         pass
@@ -39,13 +41,14 @@ def find_nearest_index(array, value):
         return 0
     # Use a bisection search function from numpy
     idx = np.searchsorted(array, value, side="left")
+    if allow_endpoints == False:
     # Assumes there is a problem if the result is an endpoint
-    if idx == 0:
-        raise Error("Value to the left of index range")
-        return None
-    elif idx == len(array):
-        raise Error("Value to the right of index range")
-        return None
+        if idx == 0:
+            raise Error("Value to the left of index range")
+            return None
+        elif idx == len(array):
+            raise Error("Value to the right of index range")
+            return None
     # If closer to the right index, return index
     elif np.abs(value - array[idx]) < np.abs(value - array[idx-1]):
         return idx

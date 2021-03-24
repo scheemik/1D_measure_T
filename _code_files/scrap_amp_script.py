@@ -136,7 +136,24 @@ def get_domain_scales(domain):
     return t, z, f, k
 
 def get_plt_field(field):
-    return np.flipud(np.transpose(field['g'].real))
+    """
+    Takes in a dedalus field and returns an array of the grid space,
+        oriented in the way that I expect
+    """
+    return np.flipud(np.transpose(field['g']))
+
+def return_between_depths(data, z, z_top, z_bot):
+    """
+    Takes in a data array, returns just that array between the
+        two depths provided
+    """
+    # Find the index of the z's closest to specified depths
+    idx_top = hf.find_nearest_index(z, z_top, allow_endpoints=True)
+    idx_bot = hf.find_nearest_index(z, z_bot, allow_endpoints=True)
+    # Pull relevant depths from the data
+    filtered_data = data[:][idx_bot:idx_top]
+    filtered_z    = z[idx_bot:idx_top]
+    return filtered_data, filtered_z
 
 # raise SystemExit(0)
 ###############################################################################
@@ -153,6 +170,15 @@ tr_psi_up, tr_psi_dn = Complex_Demodulation(f_tr, k_tr, psi_tr)
 plt_tr_dn = get_plt_field(tr_psi_dn)
 plt_tr_z = np.flip(z_tr[:])
 plt_tr_t = t_tr[:]
+
+plt_amp, plt_amp_z = return_between_depths(plt_tr_dn, plt_tr_z, z0_dis, sbp.z0_str)
+t_avg_amp = np.average(plt_amp, 1)
+
+plt.pcolormesh(plt_tr_t, plt_amp_z, hf.AAcc(plt_amp).real, cmap='viridis');
+plt.colorbar()
+plt.show()
+plt.plot(t_avg_amp, plt_amp_z)
+plt.show()
 
 ###############################################################################
 # Measuring the transmission coefficient
@@ -184,7 +210,7 @@ def plot_some_stuff(psi, domain):
     plt.pcolormesh(t[:], np.flip(z[:]), plot_psi_up, cmap=cc.cm.bkr);
     plt.show()
 
-if plot_untrimmed:
-    plot_some_stuff(psi, domain)
-else:
-    plot_some_stuff(psi_tr, domain_tr)
+# if plot_untrimmed:
+#     plot_some_stuff(psi, domain)
+# else:
+#     plot_some_stuff(psi_tr, domain_tr)
