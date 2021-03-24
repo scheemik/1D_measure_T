@@ -26,7 +26,7 @@ A       = 2.0e-4                # []        Amplitude of boundary forcing
 f_0     = 0.000                 # [s^-1]    Reference Coriolis parameter
 
 # Background profile in N_0
-n_layers = 1                    # []        Number of mixed layers in the background stratification
+n_layers = 2                    # []        Number of mixed layers in the background stratification
 interface_ratio = 1.0           # []        Ratio between the thickness of an interface to a layer
 
 # Vertical space parameters (z)
