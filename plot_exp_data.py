@@ -15,6 +15,7 @@ Options:
 
 import numpy as np
 import matplotlib.pyplot as plt
+plt.style.use('dark_background')
 
 # Parse input parameters
 from docopt import docopt
@@ -72,7 +73,7 @@ def plot_T_vs_kL(kL_array, new_data, sim_data, theta, omega, title_str='Transmis
     kL_ana = np.linspace(kL_array[0], kL_array[-1], 100)
     ana_data = hf.SY_eq2_4(theta, kL_ana)
     # Plot line for analytical solution
-    axes.plot(kL_ana, ana_data, color='black', label=r'$\mathbb{T}_{ana}$')
+    axes.plot(kL_ana, ana_data, label=r'$\mathbb{T}_{ana}$')
     # Plot points from measurements in simulations
     axes.scatter(kL_array, sim_data, color='red', marker='o', label=r'$\mathbb{T}_{sim}$')
     axes.scatter(kL_array, new_data, color='blue', marker='o', label=r'$\mathbb{T}_{new}$')
