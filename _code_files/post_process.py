@@ -216,10 +216,10 @@ def measure_T2(up_field, dn_field, z_axis, upper_top_z, upper_bot_z, lower_top_z
     I_ = find_avg_amp(dn_array, z_array, upper_top_z, upper_bot_z)
     T_ = find_avg_amp(dn_array, z_array, lower_top_z, lower_bot_z)
     R_ = find_avg_amp(up_array, z_array, upper_top_z, upper_bot_z)
-    print("I = ", I_)
-    print("T = ", T_)
-    print("R = ", R_)
-    print("TR= ", T_+R_)
+    # print("I = ", I_)
+    # print("T = ", T_)
+    # print("R = ", R_)
+    # print("TR= ", T_+R_)
     return T_/I_
 
 # raise SystemExit(0)
@@ -335,18 +335,16 @@ if sbp.plot_spectra:
 ###############################################################################
 # Multiply the downward wavefield by it's complex-conjugate to get AA^*
 
-# Plot this amplitude across time at two specific depths:
-# if sbp.plot_amplitude:
-#     hf.plot_A_of_I_T(z_tr, t_tr, T, tr_dn_field, kL, theta, omega, z_I, z_T, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, title_str=run_name, filename=filename_prefix+'_A_of_I_T.png')
-
-# Plot this amplitude (averaged across time) as a function of depth
-# if sbp.plot_amplitude:
-#     hf.plot_AA_for_z(z_tr, BP_tr, hf.AAcc(tr_dn_field).real, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, title_str=run_name, filename=filename_prefix+'_AA_for_z.png')
-
-# Plot this amplitude across time and space
 if sbp.plot_amplitude:
+    # Across space and time
     dn_amp = hf.AAcc(plt_tr_dn).real
     hf.plot_z_vs_t(plt_tr_z, plt_tr_t, T, dn_amp, BP_tr, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=None, c_map=cc.cm.CET_L3, title_str=run_name+' AA', filename=filename_prefix+'_1D_AA.png')
+    # Time-averaged amplitudes vs. depth
+    dn_t_avg = np.average(dn_amp, 1)
+    plt_tr_up = get_plt_field(tr_psi_up)
+    up_amp = hf.AAcc(plt_tr_up).real
+    up_t_avg = np.average(up_amp, 1)
+    hf.plot_AA_for_z(plt_tr_z, BP_tr, up_t_avg, dn_t_avg, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, title_str=run_name+' AA', filename=filename_prefix+'_AA_for_z.png')
 
 raise SystemExit(0)
 

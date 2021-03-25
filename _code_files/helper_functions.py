@@ -600,13 +600,14 @@ def plot_A_of_I_T(z_array, t_array, T, dn_array, kL, theta, omega, z_I, z_T, plo
 
 ###############################################################################
 
-def plot_AA_for_z(z_array, BP_array, dn_array, kL, theta, omega, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_x=True, plot_full_y=True, title_str='Forced 1D Wave', filename='f_1D_AA_for_z.png'):
+def plot_AA_for_z(z_array, BP_array, up_t_avg, dn_t_avg, kL, theta, omega, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_x=True, plot_full_y=True, title_str='Forced 1D Wave', filename='f_1D_AA_for_z.png'):
     """
     Plots the average of the downward-propagating wave's AA^* for all depths
 
     z_array     array of z values
-    dn_array    wavefield data for downward propagating wave (AA^*, complex parts ~0)
     BP_array    array of the background profile values in z
+    up_t_avg    time-averaged wavefield data for upwarg propagating wave (AA^*, complex parts ~0)
+    dn_t_avg    time-averaged wavefield data for downward propagating wave (AA^*, complex parts ~0)
     kL          Non-dimensional number relating wavelength and layer thickness
     theta       Angle at which wave is incident on stratification structure
     omega       frequency of wave
@@ -620,13 +621,9 @@ def plot_AA_for_z(z_array, BP_array, dn_array, kL, theta, omega, z_I=None, z_T=N
     fig, axes = set_fig_axes([1], [1,4], 0.75)
     # Plot the background profile of N_0
     plot_BP(axes[0], BP_array, z_array, omega)
-    # Find maximum value of the field times its complex conjugate for each z
-    I_and_T_for_z = z_array*0.0
-    for i in range(len(z_array)):
-        # avg_within_bounds assumes real valued input
-        I_and_T_for_z[i] = avg_within_bounds(dn_array[i].real)
-    # Plot boudnary forcing and sponge layer windows
-    axes[1].plot(I_and_T_for_z, z_array, color=my_clrs['incident'], label='Amp')
+    # Plot time-averaged amplitude of upward and downward propagating waves
+    axes[1].plot(up_t_avg, z_array, color=my_clrs['reflection'], label='Up')
+    axes[1].plot(dn_t_avg, z_array, color=my_clrs['incident'], label='Down')
     # Add horizontal lines
     add_lines_to_ax(axes[0], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis)
     add_lines_to_ax(axes[1], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis)
@@ -634,9 +631,9 @@ def plot_AA_for_z(z_array, BP_array, dn_array, kL, theta, omega, z_I=None, z_T=N
     set_plot_bounds(axes[0], plot_full_x, plot_full_y, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis)
     set_plot_bounds(axes[1], plot_full_x, plot_full_y, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis)
     # Add labels
-    axes[1].set_xlabel('Amplitude')
+    axes[1].set_xlabel(r'$Re[AA^*]$')
     #axes[1].set_ylabel(r'$z$')
-    axes[1].set_title(r'Windows')
+    axes[1].set_title(r'Time-averaged amplitude')
     axes[1].legend()
     add_plot_title(fig, title_str, kL, theta, omega)
     plt.savefig(filename)

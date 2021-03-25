@@ -54,9 +54,10 @@ data_arr = np.array(data)
 # csv read in as U32, convert data to float 64 before using
 kL_array = data_arr[:,1].astype('float64')
 th_array = data_arr[:,2].astype('float64')
-sim_data = data_arr[:,3].astype('float64')
+new_data = data_arr[:,3].astype('float64')
+sim_data = data_arr[:,4].astype('float64')
 
-def plot_T_vs_kL(kL_array, sim_data, theta, omega, title_str='Transmission Coefficient', filename='f_1D_T_vs_kL.png'):
+def plot_T_vs_kL(kL_array, new_data, sim_data, theta, omega, title_str='Transmission Coefficient', filename='f_1D_T_vs_kL.png'):
     """
     Plots the transmission coefficient as a function of kL
 
@@ -74,6 +75,7 @@ def plot_T_vs_kL(kL_array, sim_data, theta, omega, title_str='Transmission Coeff
     axes.plot(kL_ana, ana_data, color='black', label=r'$\mathbb{T}_{ana}$')
     # Plot points from measurements in simulations
     axes.scatter(kL_array, sim_data, color='red', marker='o', label=r'$\mathbb{T}_{sim}$')
+    axes.scatter(kL_array, new_data, color='blue', marker='o', label=r'$\mathbb{T}_{new}$')
     axes.legend()
     # Add labels and titles
     axes.set_xlabel(r'$kL$')
@@ -82,4 +84,4 @@ def plot_T_vs_kL(kL_array, sim_data, theta, omega, title_str='Transmission Coeff
     #plt.show()
     plt.savefig(filename)
 
-plot_T_vs_kL(kL_array, sim_data, theta, omega)
+plot_T_vs_kL(kL_array, new_data, sim_data, theta, omega)
