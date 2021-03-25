@@ -222,6 +222,16 @@ def measure_T2(up_field, dn_field, z_axis, upper_top_z, upper_bot_z, lower_top_z
     # print("TR= ", T_+R_)
     return T_/I_
 
+def find_I_and_T_depths(lambda_z, buff_ratio, z0_dis, z0_str, zf_str, zf_dis):
+    # Calculate buffer
+    buff = lambda_z * buff_ratio
+    # Find depths
+    upper_bot_z = z0_str + buff
+    upper_top_z = upper_bot_z + lambda_z
+    lower_top_z = zf_str - buff
+    lower_bot_z = lower_top_z - lambda_z
+    return upper_top_z, upper_bot_z, lower_top_z, lower_bot_z
+
 # raise SystemExit(0)
 ###############################################################################
 ###############################################################################
@@ -240,10 +250,12 @@ plt_tr_t = t_tr[:]
 
 ###############################################################################
 # Measuring the transmission coefficient
+upper_top_z, upper_bot_z, lower_top_z, lower_bot_z = find_I_and_T_depths(sbp.lam_z, 0.5, z0_dis, sbp.z0_str, sbp.zf_str, zf_dis)
+
 I_, T_, AAcc_I, AAcc_T = hf.measure_T(plt_tr_dn, plt_tr_z, z_I, z_T, T_skip=None, T=T, t=plt_tr_t)
 big_T = T_/I_
 print("(n_layers =",n_layers,", kL =",kL,", theta =",theta,")")
-new_T = measure_T2(tr_psi_up, tr_psi_dn, z_tr, z0_dis, sbp.z0_str, sbp.zf_str, zf_dis)
+new_T = measure_T2(tr_psi_up, tr_psi_dn, z_tr, upper_top_z, upper_bot_z, lower_top_z, lower_bot_z)
 print("New simul transmission coefficient is:", new_T)
 print("Simulated transmission coefficient is:", big_T)
 print("AnaEq 2.4 transmission coefficient is:", hf.SY_eq2_4(theta, kL))
