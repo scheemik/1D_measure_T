@@ -22,9 +22,10 @@ import matplotlib
 #matplotlib.use('Agg')
 from matplotlib import ticker
 import matplotlib.pyplot as plt
-from mpl_toolkits.axes_grid1 import make_axes_locatable
+import colorcet as cc
+# from mpl_toolkits.axes_grid1 import make_axes_locatable
 from dedalus import public as de
-from dedalus.extras.plot_tools import quad_mesh
+# from dedalus.extras.plot_tools import quad_mesh
 #plt.ioff()
 
 # Parse input parameters
@@ -252,7 +253,7 @@ import csv
 csv_file = "sim_data.csv"
 with open(csv_file, 'a') as datafile:
     csvwriter = csv.writer(datafile)
-    csvwriter.writerow([run_name, kL, theta, big_T])
+    csvwriter.writerow([run_name, kL, theta, new_T, big_T])
 
 ###############################################################################
 ###############################################################################
@@ -300,7 +301,6 @@ if sbp.plot_untrimmed:
     # Plot untrimmed wavefield
     if sbp.plot_spacetime:
         hf.plot_z_vs_t(plt_z, t[:], T, plot_psi, BP_array, kL, theta, omega, c_gz=sbp.c_gz, c_bf=sbp.c_bf, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, c_map=cmap, title_str=run_name, filename=filename_prefix+'_wave.png')
-
     # Plot untrimmed up and downward propagating waves
         # This will lead to warning about nt not being a power of 2
     # Full domain
@@ -336,16 +336,17 @@ if sbp.plot_spectra:
 # Multiply the downward wavefield by it's complex-conjugate to get AA^*
 
 # Plot this amplitude across time at two specific depths:
-if sbp.plot_amplitude:
-    hf.plot_A_of_I_T(z_tr, t_tr, T, tr_dn_field, kL, theta, omega, z_I, z_T, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, title_str=run_name, filename=filename_prefix+'_A_of_I_T.png')
+# if sbp.plot_amplitude:
+#     hf.plot_A_of_I_T(z_tr, t_tr, T, tr_dn_field, kL, theta, omega, z_I, z_T, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, title_str=run_name, filename=filename_prefix+'_A_of_I_T.png')
 
 # Plot this amplitude (averaged across time) as a function of depth
-if sbp.plot_amplitude:
-    hf.plot_AA_for_z(z_tr, BP_tr, hf.AAcc(tr_dn_field).real, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, title_str=run_name, filename=filename_prefix+'_AA_for_z.png')
+# if sbp.plot_amplitude:
+#     hf.plot_AA_for_z(z_tr, BP_tr, hf.AAcc(tr_dn_field).real, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, title_str=run_name, filename=filename_prefix+'_AA_for_z.png')
 
 # Plot this amplitude across time and space
 if sbp.plot_amplitude:
-    hf.plot_z_vs_t(z_tr, t_tr, T, hf.AAcc(tr_dn_field).real, BP_tr, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=None, c_map=cmap, title_str=run_name+' AA', filename=filename_prefix+'_1D_AA.png')
+    dn_amp = hf.AAcc(plt_tr_dn).real
+    hf.plot_z_vs_t(plt_tr_z, plt_tr_t, T, dn_amp, BP_tr, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=None, c_map=cc.cm.CET_L3, title_str=run_name+' AA', filename=filename_prefix+'_1D_AA.png')
 
 raise SystemExit(0)
 

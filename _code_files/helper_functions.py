@@ -317,12 +317,19 @@ def set_colorbar(data, im, plt, axis):
     plt         plot object
     axis        axis of plot object on which the colorbar will be placed
     """
-    # Find max of absolute value for colorbar for limits symmetric around zero
-    cmax = max(abs(data.flatten()))
-    if cmax==0.0:
-        cmax = 0.001 # to avoid the weird jump with the first frame
-    # Set upper and lower limits on colorbar
-    im.set_clim(-cmax, cmax)
+    # Flatten and find the minimum value in the data
+    flat_data = data.flatten()
+    cmin = min(flat_data)
+    # Find max of absolute value for colorbar
+    cmax = max(abs(flat_data))
+    # If the minimum is negative, make the colorbar symmetric about zero
+    if cmin < 0.0:
+        if cmax==0.0:
+            cmax = 0.001 # to avoid the weird jump with the first frame
+        # Set upper and lower limits on colorbar
+        im.set_clim(-cmax, cmax)
+    else:
+        im.set_clim(0.0, cmax)
     # Add colorbar to im
     cbar = plt.colorbar(im, ax=axis)#, format=ticker.FuncFormatter(latex_exp))
     cbar.ax.ticklabel_format(style='sci', scilimits=(-2,2), useMathText=True)
