@@ -9,7 +9,7 @@ from dedalus import public as de
 import switchboard as sbp
 import helper_functions as hf
 
-plot_untrimmed = True
+plot_untrimmed = False
 
 ###############################################################################
 # Importing parameters from auxiliary files
@@ -155,6 +155,25 @@ def return_between_depths(data, z, z_top, z_bot):
     filtered_z    = z[idx_bot:idx_top]
     return filtered_data, filtered_z
 
+def find_avg_amp(data, z_array, z_top, z_bot):
+    """
+    Takes in field (after CD), averages across time and space (in between
+    specified depths) and returns a single value (ie: I, T, or R)
+
+    data        The field array (either up or dn) after CD, complex valued
+    z_array     The z axis of the field
+    z_top       Top of the depth range of interest
+    z_bot       Bottom of the depth range of interest
+    """
+    # Get the field and axis just in the ROI (range of interest)
+    data_roi, z_roi = return_between_depths(data, z_array, z_top, z_bot)
+    # Get the amplitude of the field (assuming imaginary part goes to zero)
+    data_amp = hf.AAcc(data_roi).real
+    # Take time and space averages of amplitude field
+    data_t_avg      = np.average(data_amp, 1)
+    return_value    = np.average(data_t_avg)
+    return return_value
+
 # raise SystemExit(0)
 ###############################################################################
 ###############################################################################
@@ -171,14 +190,16 @@ plt_tr_dn = get_plt_field(tr_psi_dn)
 plt_tr_z = np.flip(z_tr[:])
 plt_tr_t = t_tr[:]
 
-plt_amp, plt_amp_z = return_between_depths(plt_tr_dn, plt_tr_z, z0_dis, sbp.z0_str)
-t_avg_amp = np.average(plt_amp, 1)
-
-plt.pcolormesh(plt_tr_t, plt_amp_z, hf.AAcc(plt_amp).real, cmap='viridis');
+plt.pcolormesh(plt_tr_t, plt_tr_z, hf.AAcc(plt_tr_dn).real, cmap='viridis');
 plt.colorbar()
 plt.show()
-plt.plot(t_avg_amp, plt_amp_z)
-plt.show()
+
+Incoming = find_avg_amp(plt_tr_dn, plt_tr_z, z0_dis, sbp.z0_str)
+print("I = ", Incoming)
+# plt_amp, plt_amp_z = return_between_depths(plt_tr_dn, plt_tr_z, z0_dis, sbp.z0_str)
+# t_avg_amp = np.average(plt_amp, 1)
+# plt.plot(t_avg_amp, plt_amp_z)
+# plt.show()
 
 ###############################################################################
 # Measuring the transmission coefficient

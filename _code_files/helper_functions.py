@@ -41,12 +41,17 @@ def find_nearest_index(array, value, allow_endpoints=False):
         return 0
     # Use a bisection search function from numpy
     idx = np.searchsorted(array, value, side="left")
-    if allow_endpoints == False:
     # Assumes there is a problem if the result is an endpoint
-        if idx == 0:
+    if idx == 0:
+        if allow_endpoints:
+            return idx
+        else:
             raise Error("Value to the left of index range")
             return None
-        elif idx == len(array):
+    elif idx == len(array):
+        if allow_endpoints:
+            return idx
+        else:
             raise Error("Value to the right of index range")
             return None
     # If closer to the right index, return index

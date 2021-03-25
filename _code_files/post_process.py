@@ -178,6 +178,7 @@ psi_tr, domain_tr, psi, domain, t, z = import_h5_data(h5_files, zf_dis, z0_dis, 
 
 # Perform complex demodulation
 t_tr, z_tr, f_tr, k_tr = get_domain_scales(domain_tr)
+print(z_tr)
 tr_psi_up, tr_psi_dn = Complex_Demodulation(f_tr, k_tr, psi_tr)
 
 ###############################################################################
