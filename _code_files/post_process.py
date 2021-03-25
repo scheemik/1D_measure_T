@@ -168,7 +168,58 @@ def get_domain_scales(domain):
     return t, z, f, k
 
 def get_plt_field(field):
-    return np.flipud(np.transpose(field['g'].real))
+    """
+    Takes in a dedalus field and returns an array of the grid space,
+        oriented in the way that I expect
+    """
+    return np.flipud(np.transpose(field['g']))
+
+def return_between_depths(data, z, z_top, z_bot):
+    """
+    Takes in a data array, returns just that array between the
+        two depths provided
+    """
+    # Find the index of the z's closest to specified depths
+    idx_top = hf.find_nearest_index(z, z_top, allow_endpoints=True)
+    idx_bot = hf.find_nearest_index(z, z_bot, allow_endpoints=True)
+    # Pull relevant depths from the data
+    filtered_data = data[:][idx_bot:idx_top]
+    filtered_z    = z[idx_bot:idx_top]
+    return filtered_data, filtered_z
+
+def find_avg_amp(data, z_array, z_top, z_bot):
+    """
+    Takes in field (after CD), averages across time and space (in between
+    specified depths) and returns a single value (ie: I, T, or R)
+
+    data        The field array (either up or dn) after CD, complex valued
+    z_array     The z axis of the field
+    z_top       Top of the depth range of interest
+    z_bot       Bottom of the depth range of interest
+    """
+    # Get the field and axis just in the ROI (range of interest)
+    data_roi, z_roi = return_between_depths(data, z_array, z_top, z_bot)
+    # Get the amplitude of the field (assuming imaginary part goes to zero)
+    data_amp = hf.AAcc(data_roi).real
+    # Take time and space averages of amplitude field
+    data_t_avg      = np.average(data_amp, 1)
+    return_value    = np.average(data_t_avg)
+    return return_value
+
+def measure_T2(up_field, dn_field, z_axis, upper_top_z, upper_bot_z, lower_top_z, lower_bot_z):
+    # Get arrays of fields and z axis
+    up_array = get_plt_field(up_field)
+    dn_array = get_plt_field(dn_field)
+    z_array  = np.flip(z_axis[:])
+    # Find avg amplitude of Incoming, Transmitted, and Reflected waves
+    I_ = find_avg_amp(dn_array, z_array, upper_top_z, upper_bot_z)
+    T_ = find_avg_amp(dn_array, z_array, lower_top_z, lower_bot_z)
+    R_ = find_avg_amp(up_array, z_array, upper_top_z, upper_bot_z)
+    print("I = ", I_)
+    print("T = ", T_)
+    print("R = ", R_)
+    print("TR= ", T_+R_)
+    return T_/I_
 
 # raise SystemExit(0)
 ###############################################################################
@@ -178,7 +229,6 @@ psi_tr, domain_tr, psi, domain, t, z = import_h5_data(h5_files, zf_dis, z0_dis, 
 
 # Perform complex demodulation
 t_tr, z_tr, f_tr, k_tr = get_domain_scales(domain_tr)
-print(z_tr)
 tr_psi_up, tr_psi_dn = Complex_Demodulation(f_tr, k_tr, psi_tr)
 
 ###############################################################################
@@ -192,6 +242,8 @@ plt_tr_t = t_tr[:]
 I_, T_, AAcc_I, AAcc_T = hf.measure_T(plt_tr_dn, plt_tr_z, z_I, z_T, T_skip=None, T=T, t=plt_tr_t)
 big_T = T_/I_
 print("(n_layers =",n_layers,", kL =",kL,", theta =",theta,")")
+new_T = measure_T2(tr_psi_up, tr_psi_dn, z_tr, z0_dis, sbp.z0_str, sbp.zf_str, zf_dis)
+print("New simul transmission coefficient is:", new_T)
 print("Simulated transmission coefficient is:", big_T)
 print("AnaEq 2.4 transmission coefficient is:", hf.SY_eq2_4(theta, kL))
 
@@ -230,21 +282,21 @@ if sbp.plot_windows:
 
 # Plot trimmed wavefield
 if sbp.plot_spacetime:
-    plt_psi_tr = get_plt_field(psi_tr)
+    plt_psi_tr = get_plt_field(psi_tr).real
     hf.plot_z_vs_t(plt_tr_z, plt_tr_t, T, plt_psi_tr, BP_tr, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=True, plot_full_y=False, T_cutoff=T_cutoff, c_map=cmap, title_str=run_name, filename=filename_prefix+'_wave_tr.png')
 
 # Plot trimmed up and downward propagating waves
 if sbp.plot_up_dn:
-    plt_tr_up = get_plt_field(tr_psi_up)
+    plt_tr_up = get_plt_field(tr_psi_up).real
     hf.plot_z_vs_t(plt_tr_z, plt_tr_t, T, plt_tr_up, BP_tr, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=None, title_str=run_name+' up', c_map=cmap, filename=filename_prefix+'_up_tr.png')
-    hf.plot_z_vs_t(plt_tr_z, plt_tr_t, T, plt_tr_dn, BP_tr, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=None, title_str=run_name+' dn', c_map=cmap, filename=filename_prefix+'_dn_tr.png')
+    hf.plot_z_vs_t(plt_tr_z, plt_tr_t, T, plt_tr_dn.real, BP_tr, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=None, title_str=run_name+' dn', c_map=cmap, filename=filename_prefix+'_dn_tr.png')
 
 ###############################################################################
 # Plotting with untrimmed data
 
 if sbp.plot_untrimmed:
     t, z, f, k = get_domain_scales(domain)
-    plot_psi = get_plt_field(psi)
+    plot_psi = get_plt_field(psi).real
     # Plot untrimmed wavefield
     if sbp.plot_spacetime:
         hf.plot_z_vs_t(plt_z, t[:], T, plot_psi, BP_array, kL, theta, omega, c_gz=sbp.c_gz, c_bf=sbp.c_bf, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, c_map=cmap, title_str=run_name, filename=filename_prefix+'_wave.png')
@@ -254,8 +306,8 @@ if sbp.plot_untrimmed:
     # Full domain
     if sbp.plot_up_dn:
         psi_up, psi_dn = Complex_Demodulation(f, k, psi)
-        plt_up = get_plt_field(psi_up)
-        plt_dn = get_plt_field(psi_dn)
+        plt_up = get_plt_field(psi_up).real
+        plt_dn = get_plt_field(psi_dn).real
         # up_field, dn_field = hfCD.Complex_Demodulate(t_then_z, t, z, kz, plot_psi, dt, omega)
         hf.plot_z_vs_t(plt_z, t, T, plt_up, BP_array, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis,  plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, c_map=cmap, title_str=run_name+' up', filename=filename_prefix+'_up.png')
         hf.plot_z_vs_t(plt_z, t, T, plt_dn, BP_array, kL, theta, omega, z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, plot_full_x=plt_f_x, plot_full_y=plt_f_y, T_cutoff=T_cutoff, c_map=cmap, title_str=run_name+' dn', filename=filename_prefix+'_dn.png')

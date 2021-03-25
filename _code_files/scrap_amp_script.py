@@ -190,12 +190,27 @@ plt_tr_dn = get_plt_field(tr_psi_dn)
 plt_tr_z = np.flip(z_tr[:])
 plt_tr_t = t_tr[:]
 
-plt.pcolormesh(plt_tr_t, plt_tr_z, hf.AAcc(plt_tr_dn).real, cmap='viridis');
-plt.colorbar()
-plt.show()
+# plt.pcolormesh(plt_tr_t, plt_tr_z, hf.AAcc(plt_tr_dn).real, cmap='viridis');
+# plt.colorbar()
+# plt.show()
 
-Incoming = find_avg_amp(plt_tr_dn, plt_tr_z, z0_dis, sbp.z0_str)
-print("I = ", Incoming)
+def measure_T2(up_field, dn_field, z_axis, upper_top_z, upper_bot_z, lower_top_z, lower_bot_z):
+    # Get arrays of fields and z axis
+    up_array = get_plt_field(up_field)
+    dn_array = get_plt_field(dn_field)
+    z_array  = np.flip(z_axis[:])
+    # Find avg amplitude of Incoming, Transmitted, and Reflected waves
+    I_ = find_avg_amp(dn_array, z_array, upper_top_z, upper_bot_z)
+    T_ = find_avg_amp(dn_array, z_array, lower_top_z, lower_bot_z)
+    R_ = find_avg_amp(up_array, z_array, upper_top_z, upper_bot_z)
+    print("I = ", I_)
+    print("T = ", T_)
+    print("R = ", R_)
+    print("TR= ", T_+R_)
+    return T_/I_
+
+new_T = measure_T2(tr_psi_up, tr_psi_dn, z_tr, z0_dis, sbp.z0_str, sbp.zf_str, zf_dis)
+print("New simul transmission coefficient is:", new_T)
 # plt_amp, plt_amp_z = return_between_depths(plt_tr_dn, plt_tr_z, z0_dis, sbp.z0_str)
 # t_avg_amp = np.average(plt_amp, 1)
 # plt.plot(t_avg_amp, plt_amp_z)
@@ -203,11 +218,11 @@ print("I = ", Incoming)
 
 ###############################################################################
 # Measuring the transmission coefficient
-# I_, T_, AAcc_I, AAcc_T = hf.measure_T(plt_tr_dn, plt_tr_z, z_I, z_T, T_skip=None, T=T, t=plt_tr_t)
-# big_T = T_/I_
-# print("(n_layers =",n_layers,", kL =",kL,", theta =",theta,")")
-# print("Simulated transmission coefficient is:", big_T)
-# print("AnaEq 2.4 transmission coefficient is:", hf.SY_eq2_4(theta, kL))
+I_, T_, AAcc_I, AAcc_T = hf.measure_T(plt_tr_dn, plt_tr_z, z_I, z_T, T_skip=None, T=T, t=plt_tr_t)
+big_T = T_/I_
+print("(n_layers =",n_layers,", kL =",kL,", theta =",theta,")")
+print("Simulated transmission coefficient is:", big_T)
+print("AnaEq 2.4 transmission coefficient is:", hf.SY_eq2_4(theta, kL))
 
 
 def plot_some_stuff(psi, domain):
