@@ -453,8 +453,8 @@ def plot_BP(ax, BP, z, omega=None):
     z           1D array of z values
     omega       frequency of wave
     """
-    ax.plot(BP, z, color=my_clrs['N_0'], label=r'$N_0$')
-    ax.set_xlabel(r'$N_0$ (s$^{-1}$)')
+    ax.plot(BP, z, color=my_clrs['N_0'], label=r'$N(z)$')
+    ax.set_xlabel(r'$N$ (s$^{-1}$)')
     ax.set_ylabel(r'$z/\lambda_z$')
     ax.set_title(r'Background Profile')
     ax.set_ylim([min(z),max(z)])
@@ -507,7 +507,7 @@ def plot_v_profiles(z_array, BP_array, bf_array, sp_array, kL=None, theta=None, 
 # Main plotting functions
 ###############################################################################
 
-def plot_z_vs_t(z_array, t_array, T, data, BP_array, kL, theta, omega, c_gz=None, c_bf=None, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_x=True, plot_full_y=True, T_cutoff=0.0, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave.png'):
+def plot_z_vs_t(z_array, t_array, T, data, BP_array, kL, theta, omega, c_gz=None, c_bf=None, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_x=True, plot_full_y=True, T_cutoff=0.0, c_map='RdBu_r', title_str='Forced 1D Wave', filename='f_1D_wave.png', dpi=400):
     """
     Plots the data as a colormap on z vs t with the vertical profile included to the left
 
@@ -551,7 +551,7 @@ def plot_z_vs_t(z_array, t_array, T, data, BP_array, kL, theta, omega, c_gz=None
     axes[1].set_title(r'$\Psi$ (m$^2$/s)')
     add_plot_title(fig, title_str, kL, theta, omega)
     #plt.show()
-    plt.savefig(filename)
+    plt.savefig(filename, dpi=dpi)
 
 ###############################################################################
 
@@ -996,11 +996,11 @@ my_clrs       =  {'b': TAB_COLORS['tab:blue'],
                   'p': CSS4_COLORS['plum'],
                   'diffusion': CSS4_COLORS['peru'],
                   'viscosity': CSS4_COLORS['peru'],
-                  'N_0': TAB_COLORS['tab:blue'],
+                  'N_0': 'skyblue',
                   'rho': CSS4_COLORS['slateblue'],
                   'advection': CSS4_COLORS['indianred'],
                   'coriolis': CSS4_COLORS['teal'],
-                  'omega': CSS4_COLORS['slategray'],
+                  'omega': 'lightcoral',
                   'F_bf': '#008080',            # - teal
                   'F_sp': '#CD853F',            # - peru
                   'temperature': '#B22222',     # - firebrick
