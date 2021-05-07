@@ -74,7 +74,7 @@ def combine_exp_csv_files(csv_files, output_file):
 all_exp_data = combine_exp_csv_files(csv_files, "all_exp_data.csv")
 all_MIT_data = combine_exp_csv_files(MIT_files, "all_MIT_data.csv")
 
-def plot_T_vs_kL(all_exp_data, all_MIT_data, theta, omega, title_str='Transmission Coefficient', filename='pres_64s_1and2l_T_vs_kL.png'):
+def plot_T_vs_kL(all_exp_data, all_MIT_data, theta, omega, title_str='Transmission Coefficient', filename='pres_64s_1and2l_T_vs_kL.png', d_mode=False):
     """
     Plots the transmission coefficient as a function of kL
 
@@ -88,16 +88,20 @@ def plot_T_vs_kL(all_exp_data, all_MIT_data, theta, omega, title_str='Transmissi
     kL_ana = np.linspace(all_exp_data[0,0], all_exp_data[-1,0], 100)
     ana_data = hf.SY_eq2_4(theta, kL_ana)
     # Plot line for analytical solution
-    axes.plot(kL_ana, ana_data, color='black', label=r'$\mathbb{T}_{ana}$')
+    if d_mode:
+        ana_clr = 'w'
+    else:
+        ana_clr = 'k'
+    axes.plot(kL_ana, ana_data, color=ana_clr, label=r'$\mathbb{T}_{analytical}$')
     # Get colors
     plt_clrs = ['r', 'b']
     MIT_clrs = [hf.my_clrs['warm-salty'], hf.my_clrs['cold-fresh']]
     # Plot points from MIT MATLAB code
     for i in range(1,all_MIT_data.shape[1]):
-        axes.plot(all_MIT_data[:,0], all_MIT_data[:,i], color=MIT_clrs[i-1], marker='.', label=rf'$T_{i},MIT$')
+        axes.plot(all_MIT_data[:,0], all_MIT_data[:,i], color=MIT_clrs[i-1], marker='.', label=rf'$T_{i},MATLAB$')
     # Plot points from measurements in simulations
     for i in range(1,all_exp_data.shape[1]):
-        axes.plot(all_exp_data[:,0], all_exp_data[:,i], color=plt_clrs[i-1], marker='.', label=rf'$T_{i}$')
+        axes.plot(all_exp_data[:,0], all_exp_data[:,i], color=plt_clrs[i-1], marker='.', label=rf'$T_{i},Dedalus$')
     axes.legend()
     # Add labels and titles
     axes.set_xlabel(r'$kL$')
@@ -108,3 +112,8 @@ def plot_T_vs_kL(all_exp_data, all_MIT_data, theta, omega, title_str='Transmissi
 
 file_name = exp_name + '.png'
 plot_T_vs_kL(all_exp_data, all_MIT_data, theta, omega, filename=file_name)
+
+# dark mode
+file_name_d = exp_name + '_d.png'
+plt.style.use('dark_background')
+plot_T_vs_kL(all_exp_data, all_MIT_data, theta, omega, filename=file_name_d, d_mode=True)
