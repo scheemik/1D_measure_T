@@ -95,7 +95,6 @@ problem = de.IVP(domain, variables=['psi', 'foo'])
 problem.parameters['NU'] = nu
 problem.parameters['f0'] = f_0
 problem.parameters['N0'] = N_0
-problem.parameters['i']  = 1j
 
 ###############################################################################
 # Forcing from the boundary
@@ -184,7 +183,7 @@ snapshots = add_new_file_handler(snapshot_path)
 snapshots.add_system(solver.state)
 
 # Add analysis task for buoyancy flux
-snapshots.add_task("-i*(k**2)*(psi**2)*((N0*BP)**2)/omega", layout='g', name='J_b')
+# snapshots.add_task("k*", layout='g', name='J_b')
 
 ###############################################################################
 # CFL
