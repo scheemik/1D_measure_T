@@ -14,12 +14,67 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as clrs
 from matplotlib import ticker
 from dedalus.extras.plot_tools import quad_mesh, pad_limits
+try:
+    import switchboard as sbp
+except:
+    print("No switchboard file found")
+    pass
 
 ###############################################################################
 # The analytical solution to the tranmission coefficient in the linear,
 #   non-rotating, non-viscous case. From Sutherland and Yewchuk 2004, equation 2.4
 def SY_eq2_4(theta, kL):
     return 1 / (1 + (np.sinh(kL)/np.sin(2*theta))**2 )
+
+# The analytical solution to the tranmission coefficient in the linear,
+#   rotating, non-viscous case. From Sutherland 2016, equation after 14
+def coth(x):
+    return np.cosh(x)/np.sinh(x)
+def S16_eq14(theta, kL):
+    foo = np.sinh(kL)/np.sin(2*theta)
+    bar = 1 + (kL**2/(np.cos(theta)**2)) - kL*coth(kL)
+    return 1 / (1 + (foo * bar)**2)
+
+# The analytical solution to the tranmission coefficient in the linear,
+#   rotating, non-viscous case. From Sutherland 2016, equation 24
+def coth(x):
+    return np.cosh(x)/np.sinh(x)
+def S16_eq24(theta, kL, N_0, J):
+    lam_z = 1.0
+    m       = 2*np.pi / lam_z
+    k       = m/np.tan(theta)
+    L = kL / k
+    omega = N_0*np.cos(theta)
+    # eq 4
+    m = k*np.sqrt((N_0**2 - omega**2)/(omega**2))
+    # eq 5
+    gamma = k*np.sqrt((omega**2)/(omega**2))
+    # eq 8
+    Delta = np.exp(gamma*L)
+    M = m / gamma
+    Gamma = 0.5*kL*(N_0**2/(omega**2))
+    # eq 13
+    delta_p = Delta*( (1 - Gamma)**2 + M**2 )
+    delta_m = (1/Delta)*( (1 + Gamma)**2 + M**2 )
+    # eq 16
+    b_p = 0.5*( Delta*(1 - Gamma) + (1/Delta)*(1 + Gamma) )
+    # eq 21
+    b_m = 0.5*( Delta*(1 - Gamma) - (1/Delta)*(1 + Gamma) )
+    # eq 17
+    b_0 = np.sqrt(b_p** - 1)
+    # eq 15
+    lambda_p = b_p + b_0
+    lambda_m = b_p - b_0
+    # eq 23
+    Lambda_p = 0.5*(lambda_p**(J-1) + lambda_m**(J-1))
+    Lambda_m = 0.5*(lambda_p**(J-1) - lambda_m**(J-1))
+
+    delta_0 = Gamma**2 - 1 + M**2
+    Gamma_p = b_m*abs(Lambda_m) + abs(b_0)*Lambda_p
+    Gamma_m = b_m*abs(Lambda_m) - abs(b_0)*Lambda_p
+
+    foo = (delta_p*Gamma_p + delta_m*Gamma_m + 2*delta_0*Gamma*abs(Lambda_m)) / (4*M*abs(b_0))
+    return 1 / (1 + foo**2)
 
 ###############################################################################
 # Measuring the Transmission Coefficient
@@ -413,7 +468,7 @@ def add_cg_lines(ax, t, T, c_gz, c_bf):
         #   Adding c_bf to align with center of forcing window
         c_gz_prop = c_gz*T*t + c_bf
         # Plot line of propagation
-        ax.plot(t, c_gz_prop, color=my_clrs['w'], label='Vertical group speed')
+        ax.plot(t, c_gz_prop, color=my_clrs['F_bf'], label='Vertical group speed')
 
 def set_plot_bounds(ax, plot_full_x, plot_full_y, z_array=None, z0_dis=None, zf_dis=None, t_array=None, T=None, T_cutoff=None):
     """
@@ -459,10 +514,20 @@ def plot_BP(ax, BP, z, omega=None):
     ax.set_title(r'Background Profile')
     ax.set_ylim([min(z),max(z)])
     if omega != None:
-        ax.axvline(x=omega, color=my_clrs['omega'], linestyle='--', label=r'$\omega$')
+        ax.axvline(x=omega, color=my_clrs['omega'], linestyle=':', label=r'$\omega$')
         ax.legend()
 
 ###############################################################################
+
+def find_I_and_T_depths(lambda_z, buff_ratio, z0_dis, z0_str, zf_str, zf_dis):
+    # Calculate buffer
+    buff = lambda_z * buff_ratio
+    # Find depths
+    upper_bot_z = z0_str + buff
+    upper_top_z = upper_bot_z + lambda_z
+    lower_top_z = zf_str - buff
+    lower_bot_z = lower_top_z - lambda_z
+    return upper_top_z, upper_bot_z, lower_top_z, lower_bot_z
 
 def plot_v_profiles(z_array, BP_array, bf_array, sp_array, kL=None, theta=None, omega=None, z_I=None, z_T=None, z0_dis=None, zf_dis=None, plot_full_x=True, plot_full_y=True, title_str='Forced 1D Wave', filename='f_1D_windows.png'):
     """
@@ -488,10 +553,16 @@ def plot_v_profiles(z_array, BP_array, bf_array, sp_array, kL=None, theta=None, 
     plot_BP(axes[0], BP_array, z_array, omega)
     # Plot boudnary forcing and sponge layer windows
     axes[1].plot(bf_array, z_array, color=my_clrs['F_bf'], label='Boundary forcing')
-    axes[1].plot(sp_array, z_array, color=my_clrs['F_sp'], label='Sponge layer')
+    axes[1].plot(sp_array, z_array, color=my_clrs['F_sp'], linestyle=':', label='Sponge layer')
+    # Find bounds of amplitude calculation domains
+    upper_top_z, upper_bot_z, lower_top_z, lower_bot_z = find_I_and_T_depths(sbp.lam_z, 0.5, z0_dis, sbp.z0_str, sbp.zf_str, zf_dis)
+    # print('Found bounds: ', upper_top_z, upper_bot_z, lower_top_z, lower_bot_z)
     # Add horizontal lines
-    add_lines_to_ax(axes[0], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis)
-    add_lines_to_ax(axes[1], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis)
+    add_lines_to_ax(axes[0], z_I=upper_top_z, z_T=lower_top_z, z0_dis=z0_dis, zf_dis=zf_dis)
+    add_lines_to_ax(axes[0], z_I=upper_bot_z, z_T=lower_bot_z)
+    # add_lines_to_ax(axes[1], z0_dis=z0_dis, zf_dis=zf_dis)
+    add_lines_to_ax(axes[1], z_I=upper_top_z, z_T=lower_top_z, z0_dis=z0_dis, zf_dis=zf_dis)
+    add_lines_to_ax(axes[1], z_I=upper_bot_z, z_T=lower_bot_z)
     # Set plot bounds to include full domain or not
     set_plot_bounds(axes[0], plot_full_x, plot_full_y, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis)
     set_plot_bounds(axes[1], plot_full_x, plot_full_y, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis)
@@ -501,7 +572,7 @@ def plot_v_profiles(z_array, BP_array, bf_array, sp_array, kL=None, theta=None, 
     axes[1].legend()
     #
     fig.suptitle(r'%s' %(title_str))
-    plt.savefig(filename)
+    plt.savefig(filename, dpi=300)
 
 ###############################################################################
 # Main plotting functions
@@ -537,10 +608,15 @@ def plot_z_vs_t(z_array, t_array, T, data, BP_array, kL, theta, omega, c_gz=None
     im = axes[1].pcolormesh(xmesh, ymesh, data, cmap=c_map)
     # Set colorbar
     set_colorbar(data, im, plt, axes[1])
+    # Find bounds of amplitude calculation domains
+    upper_top_z, upper_bot_z, lower_top_z, lower_bot_z = find_I_and_T_depths(sbp.lam_z, 0.5, z0_dis, sbp.z0_str, sbp.zf_str, zf_dis)
+    # print('Found bounds: ', upper_top_z, upper_bot_z, lower_top_z, lower_bot_z)
     # Add straight lines to profile plot
-    add_lines_to_ax(axes[0], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis)
+    add_lines_to_ax(axes[0], z_I=upper_top_z, z_T=lower_top_z, z0_dis=z0_dis, zf_dis=zf_dis)
+    add_lines_to_ax(axes[0], z_I=upper_bot_z, z_T=lower_bot_z)
     # Add straight lines to wavefield plot
-    add_lines_to_ax(axes[1], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis, T_cutoff=T_cutoff)
+    add_lines_to_ax(axes[1], z_I=upper_top_z, z_T=lower_top_z, z0_dis=z0_dis, zf_dis=zf_dis, T_cutoff=T_cutoff)
+    add_lines_to_ax(axes[1], z_I=upper_bot_z, z_T=lower_bot_z)
     # Add diagonal line for vertical group speed
     add_cg_lines(axes[1], t_array, T, c_gz, c_bf)
     # Set plot bounds to include full domain or not
@@ -583,8 +659,18 @@ def plot_A_of_I_T(z_array, t_array, T, dn_array, kL, theta, omega, z_I, z_T, plo
     axes[1].plot(t_array/T, AAcc_T, color=my_clrs['b'], label=r'$T$')
     # Add horizontal lines to show the overall value of each depth
     #   Add vertical lines to show where the transient ends
-    add_lines_to_ax(axes[0], z_I=I_, T_cutoff=T_cutoff)
-    add_lines_to_ax(axes[1], z_T=T_, T_cutoff=T_cutoff)
+    # add_lines_to_ax(axes[0], z_I=I_, T_cutoff=T_cutoff)
+    # add_lines_to_ax(axes[1], z_T=T_, T_cutoff=T_cutoff)
+
+    # Find bounds of amplitude calculation domains
+    upper_top_z, upper_bot_z, lower_top_z, lower_bot_z = find_I_and_T_depths(sbp.lam_z, 0.5, z0_dis, sbp.z0_str, sbp.zf_str, zf_dis)
+    # print('Found bounds: ', upper_top_z, upper_bot_z, lower_top_z, lower_bot_z)
+    # Add straight lines to profile plot
+    add_lines_to_ax(axes[0], z_I=upper_top_z, z_T=lower_top_z, z0_dis=z0_dis, zf_dis=zf_dis)
+    add_lines_to_ax(axes[0], z_I=upper_bot_z, z_T=lower_bot_z)
+    # Add straight lines to wavefield plot
+    add_lines_to_ax(axes[1], z_I=upper_top_z, z_T=lower_top_z, z0_dis=z0_dis, zf_dis=zf_dis, T_cutoff=T_cutoff)
+    add_lines_to_ax(axes[1], z_I=upper_bot_z, z_T=lower_bot_z)
     # Set plot bounds to include full domain or not
     set_plot_bounds(axes[0], plot_full_x, plot_full_y, t_array=t_array, T=T, T_cutoff=T_cutoff)
     set_plot_bounds(axes[1], plot_full_x, plot_full_y, t_array=t_array, T=T, T_cutoff=T_cutoff)
@@ -624,9 +710,15 @@ def plot_AA_for_z(z_array, BP_array, up_t_avg, dn_t_avg, kL, theta, omega, z_I=N
     # Plot time-averaged amplitude of upward and downward propagating waves
     axes[1].plot(up_t_avg, z_array, color=my_clrs['reflection'], label='Up')
     axes[1].plot(dn_t_avg, z_array, color=my_clrs['incident'], label='Down')
-    # Add horizontal lines
-    add_lines_to_ax(axes[0], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis)
-    add_lines_to_ax(axes[1], z_I=z_I, z_T=z_T, z0_dis=z0_dis, zf_dis=zf_dis)
+    # Find bounds of amplitude calculation domains
+    upper_top_z, upper_bot_z, lower_top_z, lower_bot_z = find_I_and_T_depths(sbp.lam_z, 0.5, z0_dis, sbp.z0_str, sbp.zf_str, zf_dis)
+    # print('Found bounds: ', upper_top_z, upper_bot_z, lower_top_z, lower_bot_z)
+    # Add straight lines to profile plot
+    add_lines_to_ax(axes[0], z_I=upper_top_z, z_T=lower_top_z, z0_dis=z0_dis, zf_dis=zf_dis)
+    add_lines_to_ax(axes[0], z_I=upper_bot_z, z_T=lower_bot_z)
+    # Add straight lines to wavefield plot
+    add_lines_to_ax(axes[1], z_I=upper_top_z, z_T=lower_top_z, z0_dis=z0_dis, zf_dis=zf_dis)
+    add_lines_to_ax(axes[1], z_I=upper_bot_z, z_T=lower_bot_z)
     # Set plot bounds to include full domain or not
     set_plot_bounds(axes[0], plot_full_x, plot_full_y, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis)
     set_plot_bounds(axes[1], plot_full_x, plot_full_y, z_array=z_array, z0_dis=z0_dis, zf_dis=zf_dis)
@@ -996,18 +1088,18 @@ my_clrs       =  {'b': TAB_COLORS['tab:blue'],
                   'p': CSS4_COLORS['plum'],
                   'diffusion': CSS4_COLORS['peru'],
                   'viscosity': CSS4_COLORS['peru'],
-                  'N_0': 'skyblue',
+                  'N_0': "#490092",  #  5 dark purple # 'skyblue',
                   'rho': CSS4_COLORS['slateblue'],
                   'advection': CSS4_COLORS['indianred'],
                   'coriolis': CSS4_COLORS['teal'],
-                  'omega': 'lightcoral',
-                  'F_bf': '#008080',            # - teal
-                  'F_sp': '#CD853F',            # - peru
+                  'omega': "#006ddb",  #  6 royal blue #  'lightcoral',
+                  'F_bf': "#920000",  # 10 dark red # '#008080',            # - teal
+                  'F_sp': "#004949",  #  1 dark olive # '#CD853F',            # - peru
                   'temperature': '#B22222',     # - firebrick
                   'salinity': '#4682B4',        # - steelblue
-                  'incident': '#8A2BE2',        # - blueviolet
-                  'transmission': '#4169E1',    # - royalblue
-                  'reflection': '#FF6347',      # - tomato
+                  'incident': "#db6d00",  # 12 dark orange # '#8A2BE2',        # - blueviolet
+                  'reflection': '#4169E1',      # - royalblue
+                  'transmission': "#009292",  #  2 teal # '#FF6347',    # - tomato
                   'linear': CSS4_COLORS['forestgreen'],
                   'nonlinear': CSS4_COLORS['indianred'],
                   'arctic': CSS4_COLORS['cornflowerblue'],

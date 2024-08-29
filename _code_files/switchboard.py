@@ -10,7 +10,10 @@ import numpy as np
 from dedalus import public as de
 # import sys
 # sys.path.append("../") # Adds higher directory to python modules path
-import params
+try:
+    import params
+except:
+    import _code_files.params as params
 
 ###############################################################################
 # Main parameters, the ones I'll change a lot. Many more below
@@ -26,7 +29,7 @@ A       = 2.0e-4                # []        Amplitude of boundary forcing
 f_0     = 0.000                 # [s^-1]    Reference Coriolis parameter
 
 # Background profile in N_0
-n_layers = 1                    # []        Number of mixed layers in the background stratification
+n_layers = 2                    # []        Number of mixed layers in the background stratification
 interface_ratio = 1.0           # []        Ratio between the thickness of an interface to a layer
 
 # Vertical space parameters (z)
@@ -73,15 +76,15 @@ if boundary_forcing_region == False:
 
 # Plotting parameters
 plot_spacetime  = True
-plot_spectra    = False
-plot_amplitude  = False
-plot_windows    = False
-plot_up_dn      = False
+plot_spectra    = False #False
+plot_amplitude  = False #False
+plot_windows    = True
+plot_up_dn      = False #False
 plot_untrimmed  = True
 # If true, plot will include full simulated domain, if false, just the display domain
 plot_full_x     = True
 plot_full_y     = True
-dark_mode       = True
+dark_mode       = False #True
 
 ###############################################################################
 ###############################################################################
