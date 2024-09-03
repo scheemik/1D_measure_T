@@ -572,7 +572,7 @@ def plot_v_profiles(z_array, BP_array, bf_array, sp_array, kL=None, theta=None, 
     axes[1].legend()
     #
     fig.suptitle(r'%s' %(title_str))
-    plt.savefig(filename, dpi=300)
+    plt.savefig(filename, dpi=300, transparent=True)
 
 ###############################################################################
 # Main plotting functions
@@ -627,7 +627,7 @@ def plot_z_vs_t(z_array, t_array, T, data, BP_array, kL, theta, omega, c_gz=None
     axes[1].set_title(r'$\Psi$ (m$^2$/s)')
     add_plot_title(fig, title_str, kL, theta, omega)
     #plt.show()
-    plt.savefig(filename, dpi=dpi)
+    plt.savefig(filename, dpi=dpi, transparent=True)
 
 ###############################################################################
 
@@ -682,7 +682,7 @@ def plot_A_of_I_T(z_array, t_array, T, dn_array, kL, theta, omega, z_I, z_T, plo
     axes[1].set_title(r'$z_T=%s$' %(z_T))
     add_plot_title(fig, title_str, kL, theta, omega)
     #plt.show()
-    plt.savefig(filename)
+    plt.savefig(filename, transparent=True)
 
 ###############################################################################
 
@@ -728,7 +728,7 @@ def plot_AA_for_z(z_array, BP_array, up_t_avg, dn_t_avg, kL, theta, omega, z_I=N
     axes[1].set_title(r'Time-averaged amplitude')
     axes[1].legend()
     add_plot_title(fig, title_str, kL, theta, omega)
-    plt.savefig(filename)
+    plt.savefig(filename, transparent=True)
 
 ###############################################################################
 
@@ -777,7 +777,7 @@ def plot_spectral(k_array, f_array, r_array, i_array, kL, theta, omega, c_map='v
     axes[1].set_ylim([-100,100])
     add_plot_title(fig, title_str, kL, theta, omega)
     #plt.show()
-    plt.savefig(filename)
+    plt.savefig(filename, transparent=True)
 
 def plot_k_f_spectra(z_array, dz, t_array, dt, T, k_array, f_array, k_data, f_data, kL, theta, omega, z_I, z_T, plot_full_x=True, plot_full_y=True, T_cutoff=0.0, title_str='Forced 1D Wave', filename='f_1D_k_and_f.png'):
     """
@@ -868,7 +868,7 @@ def plot_k_f_spectra(z_array, dz, t_array, dt, T, k_array, f_array, k_data, f_da
         axes[1].set_title(r'Frequency spectrum')
     add_plot_title(fig, title_str, kL, theta, omega)
     #plt.show()
-    plt.savefig(filename)
+    plt.savefig(filename, transparent=True)
 
 ###############################################################################
 

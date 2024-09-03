@@ -21,7 +21,7 @@ import csv
 # Parse input parameters
 # from docopt import docopt
 # args = docopt(__doc__)
-exp_name    = 'repro_Ghaemsaridi_fig_3ab_MIT'#args['EXP']       # Experiment name, needed to find all csv files
+exp_name    = 'repro_Ghaemsaridi_fig_3ab_MIT_alpha'#args['EXP']       # Experiment name, needed to find all csv files
 num_sims    = 64#int(args['SIMS']) # Number of simulations in the experiment
 
 ###############################################################################
@@ -133,7 +133,7 @@ def plot_T_vs_kL(csv_files, theta, omega, title_str='Transmission Coefficient', 
     axes.set_ylabel(r'$\mathbb{T}$')
     plt.title(r'%s for $\theta=$%s' %(title_str, hf.rad_to_degs(theta)))
     #plt.show()
-    plt.savefig(filename, dpi=300)
+    plt.savefig(filename, dpi=300, transparent=True)
 
 file_name = exp_name + '.png'
 plot_T_vs_kL(csv_files, theta, omega, filename=file_name)

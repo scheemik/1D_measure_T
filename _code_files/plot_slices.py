@@ -78,7 +78,7 @@ step_th = sbp.step_th
 def save_fig_as_frame(fig, index, output, dpi):
     savename = 'write_{:06}.png'.format(index)
     savepath = output.joinpath(savename)
-    fig.savefig(str(savepath), dpi=dpi)
+    fig.savefig(str(savepath), dpi=dpi, transparent=True)
     fig.clear()
 
 ###############################################################################

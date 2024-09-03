@@ -8,7 +8,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Enable dark mode plotting
-# plt.style.use('dark_background')
+dark_mode = True
+if dark_mode:
+    plt.style.use('dark_background')
 
 ###############################################################################
 # Import relevant modules
@@ -75,7 +77,11 @@ def plot_T_vs_kL(all_exp_data, theta, omega, title_str='Transmission Coefficient
     kL_ana = np.linspace(all_exp_data[0,0], all_exp_data[-1,0], 100)
     ana_data = hf.SY_eq2_4(theta, kL_ana)
     # Plot line for analytical solution
-    axes.plot(kL_ana, ana_data, color='black', label=r'$\mathbb{T}_{ana}$', zorder=10)
+    if dark_mode:
+        ana_clr = 'white'
+    else:
+        ana_clr = 'black'
+    axes.plot(kL_ana, ana_data, color=ana_clr, label=r'$\mathbb{T}_{ana}$', zorder=10)
     # Get colors
     plt_clrs = [hf.CSS4_COLORS['forestgreen'],
                 hf.CSS4_COLORS['blueviolet'],
@@ -107,6 +113,6 @@ def plot_T_vs_kL(all_exp_data, theta, omega, title_str='Transmission Coefficient
     axes.set_ylabel(r'$\mathbb{T}$', fontsize=this_font_size+6)
     plt.title(r'%s for $\theta=$%s' %(title_str, hf.rad_to_degs(theta)), fontsize=this_font_size)
     #plt.show()
-    plt.savefig(filename, dpi=300)
+    plt.savefig(filename, dpi=300, transparent=True)
 
 plot_T_vs_kL(all_exp_data, theta, omega)

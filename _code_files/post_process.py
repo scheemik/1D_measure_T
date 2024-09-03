@@ -336,7 +336,7 @@ if sbp.plot_spectra:
     log_mag = lambda xmesh, ymesh, data: (xmesh, ymesh, np.log10(np.abs(data)))
     plot_bot_2d(psi_tr, func=log_mag, clim=(-20, 0), cmap='viridis', title="log10(abs(f['c'])", figkw=figkw);
     # plt.show()
-    plt.savefig(filename_prefix+'_k_and_f.png')
+    plt.savefig(filename_prefix+'_k_and_f.png', transparent=True)
     # freqs, ks, spec_data = hfCD.z_t_to_k_omega(t_tr, z_tr, psi_tr, dt, dz)
     # hf.plot_spectral(ks, freqs, spec_data.real, spec_data.imag, kL, theta, omega, c_map='viridis', title_str=run_name, filename=filename_prefix+'_wave_spectra.png')
     # # plot spectra lines
